@@ -1,0 +1,17 @@
+global:
+  # -- Set the verbosity of cert-manager. Range of 0 - 6 with 6 being the most verbose.
+  logLevel: 2
+# -- When true, installs the cert-manager CRDs
+installCRDs: true
+podDnsPolicy: "None"
+podDnsConfig:
+  nameservers:
+    - "1.1.1.1"
+    - "1.0.0.1"
+resources:
+  requests:
+    cpu: 20m
+    memory: 64Mi
+  limits:
+    cpu: 60m
+    memory: 128Mi

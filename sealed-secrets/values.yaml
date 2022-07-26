@@ -1,0 +1,11 @@
+fullnameOverride: sealed-secrets-controller
+ingress:
+  enabled: true
+  ingressClassName: nginx
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 300m
+    memory: 256Mi
