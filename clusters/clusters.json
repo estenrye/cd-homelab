@@ -1,0 +1,10 @@
+{
+  "dialtone": {
+    "dest-server": "https://aksgosdk-374fb4ba.hcp.eastus.azmk8s.io:443",
+    "project": "dialtone"
+  },
+  "stable-cluster": {
+    "dest-server": "https://esten-growth.platform9.io/qbert/v2/e4dac672c2f949869c68ea12de33f221/clusters/27683446-0174-4e83-a408-362bce454fd5/k8sapi",
+    "project": "service"
+  }
+}

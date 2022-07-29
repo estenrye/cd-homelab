@@ -26,9 +26,6 @@ controller:
 
   service:
     enabled: true
-    annotations:
-      external-dns.alpha.kubernetes.io/hostname: ""
-    loadBalancerIP: ""
     enableHttp: true
     enableHttps: true
     externalTrafficPolicy: Local
