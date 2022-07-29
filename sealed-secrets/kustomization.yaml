@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: sealed-secrets
+
+commonAnnotations:
+  argocd.argoproj.io/sync-wave: "-1"
+
+helmChartInflationGenerator:
+  - chartName: sealed-secrets
+    chartRepoUrl: https://bitnami-labs.github.io/sealed-secrets
+    chartVersion: 2.5.2
+    releaseName: sealed-secrets
+    values: values.yaml

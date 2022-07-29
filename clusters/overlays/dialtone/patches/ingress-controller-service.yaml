@@ -1,9 +1,7 @@
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
+- op: add
+  path: /metadata/annotations
+  value:
     external-dns.alpha.kubernetes.io/hostname: "nginx.services.dialtone.rye.ninja."
-  name: ingress-nginx-controller
-  namespace: ingress-nginx
-spec:
-  loadBalancerIP: ""
+- op: add
+  path: /spec/loadBalancerIP
+  value: ""

@@ -3,5 +3,17 @@ kind: Kustomization
 resources:
   - ../../base
 
-patchesStrategicMerge:
-  - patches/ingress-controller-service.yaml
+patchesJson6902:
+  - target:
+      version: v1
+      kind: Service
+      name: ingress-nginx-controller
+      namespace: ingress-nginx
+    path: patches/ingress-controller-service.yaml
+  - target:
+      group: networking.k8s.io
+      version: v1
+      kind: Ingress
+      name: sealed-secrets-controller
+      namespace: sealed-secrets
+    path: patches/sealed-secrets-ingress.yaml
