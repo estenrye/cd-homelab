@@ -3,7 +3,7 @@ kind: Kustomization
 namespace: ingress-nginx
 
 commonAnnotations:
-  argocd.argoproj.io/sync-wave: "-1"
+  argocd.argoproj.io/sync-wave: "-2"
 
 helmChartInflationGenerator:
   - chartName: ingress-nginx
