@@ -1,0 +1,15 @@
+{
+  "cookiecutter": {
+    "project_name": "cluster-dialtone",
+    "project_slug": "cluster-dialtone",
+    "config": {
+      "app_name": "cluster-dialtone",
+      "dest_server": "https://aksgosdk-374fb4ba.hcp.eastus.azmk8s.io:443",
+      "project": "dialtone",
+      "dns_suffix": "services.dialtone.rye.ninja",
+      "nginx_loadBalancerIP": ""
+    }
+  },
+  "_template": "/home/esten/src/cd-homelab/.cookiecutters/overlays/clusters/",
+  "_output_dir": "/home/esten/src/cd-homelab/clusters/overlays"
+}

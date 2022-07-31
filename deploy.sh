@@ -8,11 +8,13 @@ if [ $# -ne 1 ]; then
   exit 1
 fi
 
-APP_NAME=$1
-DEST_SERVER=`yq ".${APP_NAME}.dest_server" ${SCRIPT_DIR}/clusters.yaml`
-PROJECT=`yq ".${APP_NAME}.project" ${SCRIPT_DIR}/clusters.yaml`
+CONFIG="${SCRIPT_DIR}/clusters.yaml"
 
-argocd app create cluster-${APP_NAME} \
+APP_NAME=`yq ".${1}.app_name" ${CONFIG}`
+DEST_SERVER=`yq ".${1}.dest_server" ${CONFIG}`
+PROJECT=`yq ".${1}.project" ${CONFIG}`
+
+argocd app create ${APP_NAME} \
   --project ${PROJECT} \
   --repo git@github.com:estenrye/cd-homelab.git \
   --path clusters/overlays/${APP_NAME} \
