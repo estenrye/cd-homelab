@@ -9,8 +9,8 @@ if [ $# -ne 1 ]; then
 fi
 
 APP_NAME=$1
-DEST_SERVER=`jq -r ".[\"${APP_NAME}\"].dest_server" ${SCRIPT_DIR}/clusters.json`
-PROJECT=`jq -r ".[\"${APP_NAME}\"].project" ${SCRIPT_DIR}/clusters.json`
+DEST_SERVER=`yq ".${APP_NAME}.dest_server" ${SCRIPT_DIR}/clusters.yaml`
+PROJECT=`yq ".${APP_NAME}.project" ${SCRIPT_DIR}/clusters.yaml`
 
 argocd app create cluster-${APP_NAME} \
   --project ${PROJECT} \
