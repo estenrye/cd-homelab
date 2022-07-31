@@ -34,3 +34,7 @@ This repo contains my argo-cd continuous deployment code.
    cd cd-homelab
    brew bundle
    ```
+
+1. If on Linux, Install 1password-cli separately.
+
+   https://developer.1password.com/docs/cli/get-started/
