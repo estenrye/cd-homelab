@@ -22,8 +22,11 @@ COOKIECUTTER_REPLAY='{
   "_template": "SCRIPT_DIR/.cookiecutters/overlays/clusters/",
   "_output_dir": "SCRIPT_DIR/clusters/overlays"
 }'
+
 COOKIECUTTER_REPLAY=`echo ${COOKIECUTTER_REPLAY} | sed "s|CLUSTER_NAME|${1}|g" | sed "s|SCRIPT_DIR|${SCRIPT_DIR}|g"`
+
 yq "${COOKIECUTTER_REPLAY}" clusters.yaml -o json > clusters/overlays/${APP_NAME}/cookiecutter.json
+
 cookiecutter \
   --replay \
   --replay-file clusters/overlays/${APP_NAME}/cookiecutter.json \
