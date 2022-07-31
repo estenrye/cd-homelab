@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: external-dns
+
+commonAnnotations:
+  argocd.argoproj.io/sync-wave: "0"
+
+helmChartInflationGenerator:
+  - chartName: external-dns
+    chartRepoUrl: https://kubernetes-sigs.github.io/external-dns/
+    chartVersion: 1.10.1
+    releaseName: external-dns
+    values: values.yaml

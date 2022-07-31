@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+
+patchesJson6902:
+  - target:
+      version: v1
+      kind: Service
+      name: ingress-nginx-controller
+      namespace: ingress-nginx
+    path: patches/ingress-controller-service.yaml
+  - target:
+      group: networking.k8s.io
+      version: v1
+      kind: Ingress
+      name: sealed-secrets-controller
+      namespace: sealed-secrets
+    path: patches/sealed-secrets-ingress.yaml
