@@ -1,7 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - resources/namespaces.yaml
   - ../../applications/ingress-nginx
   - ../../applications/cert-manager
   - ../../applications/sealed-secrets
+  - ../../applications/external-dns

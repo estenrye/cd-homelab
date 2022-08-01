@@ -36,4 +36,5 @@ domainFilters:
 
 provider: cloudflare
 
-extraArgs: []
+extraArgs:
+  - --zone-id-filter=186a0fa51e8dd54ee6910d0f35d5f0c8

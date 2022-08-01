@@ -5,6 +5,9 @@ namespace: cert-manager
 commonAnnotations:
   argocd.argoproj.io/sync-wave: "-1"
 
+resources:
+  - resources/namespace.yaml
+
 helmChartInflationGenerator:
   - chartName: cert-manager
     chartRepoUrl: https://charts.jetstack.io

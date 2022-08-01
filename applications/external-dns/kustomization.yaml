@@ -5,6 +5,9 @@ namespace: external-dns
 commonAnnotations:
   argocd.argoproj.io/sync-wave: "0"
 
+resources:
+  - resources/namespace.yaml
+
 helmChartInflationGenerator:
   - chartName: external-dns
     chartRepoUrl: https://kubernetes-sigs.github.io/external-dns/

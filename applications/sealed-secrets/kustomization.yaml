@@ -5,6 +5,9 @@ namespace: sealed-secrets
 commonAnnotations:
   argocd.argoproj.io/sync-wave: "-1"
 
+resources:
+  - resources/namespace.yaml
+
 helmChartInflationGenerator:
   - chartName: sealed-secrets
     chartRepoUrl: https://bitnami-labs.github.io/sealed-secrets
