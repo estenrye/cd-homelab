@@ -5,3 +5,4 @@ resources:
   - ../../applications/cert-manager
   - ../../applications/sealed-secrets
   - ../../applications/external-dns
+  - ../../applications/csi-driver-nfs
