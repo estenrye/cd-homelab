@@ -12,7 +12,13 @@ env:
         key: cloudflare_api_token
         optional: false
 
-resources: {}
+resources:
+  limits:
+    cpu: 50m
+    memory: 50Mi
+  requests:
+    cpu: 10m
+    memory: 50Mi
 
 logLevel: info
 logFormat: json
