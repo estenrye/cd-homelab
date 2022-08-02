@@ -7,9 +7,10 @@
       "dest_server": "https://aksgosdk-374fb4ba.hcp.eastus.azmk8s.io:443",
       "project": "dialtone",
       "dns_suffix": "services.dialtone.rye.ninja",
-      "nginx_loadBalancerIP": ""
+      "nginx_loadBalancerIP": "",
+      "csi_nfs_storage_classes": []
     }
   },
-  "_template": "/home/esten/src/cd-homelab/.cookiecutters/overlays/clusters/",
-  "_output_dir": "/home/esten/src/cd-homelab/clusters/overlays"
+  "_template": "/Users/esten/cd-homelab/.cookiecutters/overlays/clusters/",
+  "_output_dir": "/Users/esten/cd-homelab/clusters/overlays"
 }

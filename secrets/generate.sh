@@ -32,7 +32,7 @@ kubectl neat -f ${PLAINTEXT_FILE} -o yaml > "${SCRIPT_DIR}/${PROJECT}/cert-manag
 kubectl create secret generic \
   cloudflare-api-token \
   --namespace cert-manager \
-  --from-literal=qpi-token=${CLOUDFLARE_API_TOKEN} \
+  --from-literal=api-token=${CLOUDFLARE_API_TOKEN} \
   --dry-run=client \
   -o yaml > ${PLAINTEXT_FILE}
 

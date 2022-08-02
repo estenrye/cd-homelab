@@ -8,8 +8,8 @@ env:
   - name: CF_API_TOKEN
     valueFrom:
       secretKeyRef:
-        name: cloudflare_api_token
-        key: cloudflare_api_token
+        name: cloudflare-api-token
+        key: api-token
         optional: false
 
 resources:

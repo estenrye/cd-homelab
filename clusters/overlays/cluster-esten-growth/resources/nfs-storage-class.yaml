@@ -1,0 +1,81 @@
+
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-csi-fast-delete
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: nfs.rye.ninja
+  share: /mnt/fast-ssd/k8s-volumes/Stable-Cluster/delete
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+mountOptions:
+  - nfsvers=4
+  - rsize=1048576
+  - wsize=1048576
+  - hard
+  - timeo=600
+  - retrans=2
+  - resvport
+
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-csi-fast-retain
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: nfs.rye.ninja
+  share: /mnt/fast-ssd/k8s-volumes/Stable-Cluster/retain
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+mountOptions:
+  - nfsvers=4
+  - rsize=1048576
+  - wsize=1048576
+  - hard
+  - timeo=600
+  - retrans=2
+  - resvport
+
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-csi-slow-delete
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: nfs.rye.ninja
+  share: /mnt/main/k8s-volumes/Stable-Cluster/delete
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+mountOptions:
+  - nfsvers=4
+  - rsize=1048576
+  - wsize=1048576
+  - hard
+  - timeo=600
+  - retrans=2
+  - resvport
+
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-csi-slow-retain
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: nfs.rye.ninja
+  share: /mnt/main/k8s-volumes/Stable-Cluster/retain
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+mountOptions:
+  - nfsvers=4
+  - rsize=1048576
+  - wsize=1048576
+  - hard
+  - timeo=600
+  - retrans=2
+  - resvport
+

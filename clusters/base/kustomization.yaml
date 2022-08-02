@@ -6,4 +6,3 @@ resources:
   - resources/cloudflare-cluster-issuer.yaml
   - ../../applications/sealed-secrets
   - ../../applications/external-dns
-  - ../../applications/csi-driver-nfs
