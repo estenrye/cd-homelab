@@ -24,6 +24,7 @@ This repo contains my argo-cd continuous deployment code.
    ```bash
    sudo snap install --classic code
    code --install-extension ms-kubernetes-tools.vscode-kubernetes-tools
+   code --install-extension Gruntfuggly.todo-tree
    ```
 
 1. Install homebrew

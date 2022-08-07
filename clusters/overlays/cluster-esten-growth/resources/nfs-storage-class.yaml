@@ -3,7 +3,7 @@
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: nfs-csi-fast-delete
+  name: fast-delete
 provisioner: nfs.csi.k8s.io
 parameters:
   server: nfs.rye.ninja
@@ -23,7 +23,7 @@ mountOptions:
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: nfs-csi-fast-retain
+  name: fast-retain
 provisioner: nfs.csi.k8s.io
 parameters:
   server: nfs.rye.ninja
@@ -43,7 +43,7 @@ mountOptions:
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: nfs-csi-slow-delete
+  name: slow-delete
 provisioner: nfs.csi.k8s.io
 parameters:
   server: nfs.rye.ninja
@@ -63,7 +63,7 @@ mountOptions:
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: nfs-csi-slow-retain
+  name: slow-retain
 provisioner: nfs.csi.k8s.io
 parameters:
   server: nfs.rye.ninja
