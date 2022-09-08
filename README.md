@@ -130,7 +130,7 @@ ANSIBLE_CONFIG=config/ansible.cfg pyenv exec \
 
 ```
 
-# ##Destroying
+### Destroying
 
 ```bash
 export TAG_OWNER='Your Name'
