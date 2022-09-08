@@ -104,7 +104,7 @@ Host *.compute.internal
   UserKnownHostsFile=/dev/null
 ```
 
-# Deploying
+### Deploying
 
 ```bash
 export TAG_OWNER='Your Name'
@@ -114,23 +114,23 @@ export AWS_PROFILE='hybrid-dev'
 
 # Provision Infrastructure
 
-pyenv exec ansible-playbook -i localhost, infrastructure/provision.yml
+pyenv exec ansible-playbook -i localhost, infrastructure/aws/provision.yml
 
 ANSIBLE_CONFIG=config/ansible.cfg pyenv exec \
   ansible-playbook \
-    -i infrastructure/inventory.aws_ec2.yml \
-    infrastructure/mount_disks.yml
+    -i infrastructure/aws/inventory.aws_ec2.yml \
+    infrastructure/aws/mount_disks.yml
 
 # Provision a Nodelet Cluster
 
 ANSIBLE_CONFIG=config/ansible.cfg pyenv exec \
   ansible-playbook \
-    -i infrastructure/inventory.aws_ec2.yml \
-    nodelet-cluster/playbook.yml
+    -i infrastructure/aws/inventory.aws_ec2.yml \
+    infrastructure/nodelet-cluster/playbook.yml
 
 ```
 
-# Destroying
+# ##Destroying
 
 ```bash
 export TAG_OWNER='Your Name'
@@ -138,6 +138,6 @@ export TAG_TEAM='Your Team'
 export KEY_NAME='your-key-name-in-aws'
 export AWS_PROFILE='hybrid-dev'
 
-pyenv exec ansible-playbook -i localhost, infrastructure/destroy.yml
+pyenv exec ansible-playbook -i localhost, infrastructure/aws/destroy.yml
 ```
 
