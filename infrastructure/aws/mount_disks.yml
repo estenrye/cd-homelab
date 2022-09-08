@@ -1,0 +1,53 @@
+- hosts:
+    - ssh_proxy
+    - nodes
+  tasks:
+    - name: ping all nodes to gather facts
+      ansible.builtin.ping:
+    - name: Create Target Directories
+      ansible.builtin.file:
+        state: directory
+        path: /opt/pf9
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0770
+      become: true
+    - name: Unmount disk
+      ansible.posix.mount:
+        path: /mnt
+        src: /dev/xvdb
+        state: unmounted
+      become: true
+    - name: formatting the volume
+      ansible.builtin.filesystem:
+        dev: /dev/xvdb
+        fstype: ext4
+      become: true
+    - name: Mount disk
+      ansible.posix.mount:
+        path: /opt/pf9
+        src: /dev/xvdb
+        fstype: ext4
+        opts: rw,defaults,nofail,x-systemd.requires=cloud-init.service,_netdev,comment=cloudconfig
+        state: mounted
+      become: true
+    - name: create ansible directory
+      ansible.builtin.file:
+        state: directory
+        path: /opt/pf9/.tmp
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0750
+      become: true
+- hosts:
+    - nodes
+  tasks:
+    - name: Unmount disk
+      ansible.posix.mount:
+        path: /mnt
+        src: "{{ item }}"
+        state: unmounted
+      become: true
+      loop:
+        - /dev/xvdc
+        - /dev/xvdd

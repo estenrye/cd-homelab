@@ -1,0 +1,2 @@
+ansible_ssh_common_args: -o ProxyCommand='ssh -p 22 -W %h:%p -q ubuntu@{{ groups['ssh_proxy'][0] }}'
+ansible_remote_tmp: /opt/pf9/.tmp

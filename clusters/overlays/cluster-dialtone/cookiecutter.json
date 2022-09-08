@@ -5,6 +5,7 @@
     "config": {
       "app_name": "cluster-dialtone",
       "dest_server": "https://aksgosdk-374fb4ba.hcp.eastus.azmk8s.io:443",
+      "kube_config": "~/.kube/dev/dialtone.yaml",
       "project": "dialtone",
       "dns_suffix": "services.dialtone.rye.ninja",
       "nginx_loadBalancerIP": "",

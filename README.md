@@ -71,3 +71,73 @@ This repo contains my argo-cd continuous deployment code.
      neat
    ```
 
+## Preparing an AWS Environment
+
+1. Install prerequisites
+
+```bash
+brew bundle
+./configure-local-env.sh
+source ~/.zshrc
+```
+
+1. Install Python 3.10.6 and required packages.
+
+```bash
+pyenv install 3.10.6
+pyenv local 3.10.6
+pyenv exec pip install --upgrade pip
+pyenv exec pip install -r ./requirements.txt
+pyenv exec ansible-galaxy install -r ./requirements.yml
+```
+
+1. Configure your `~/.ssh/config` for SSH Agent Forwarding
+
+```
+Host *.compute.amazonaws.com
+  ForwardAgent yes
+  StrictHostKeyChecking no
+  UserKnownHostsFile=/dev/null
+
+Host *.compute.internal
+  StrictHostKeyChecking no
+  UserKnownHostsFile=/dev/null
+```
+
+# Deploying
+
+```bash
+export TAG_OWNER='Your Name'
+export TAG_TEAM='Your Team'
+export KEY_NAME='your-key-name-in-aws'
+export AWS_PROFILE='hybrid-dev'
+
+# Provision Infrastructure
+
+pyenv exec ansible-playbook -i localhost, infrastructure/provision.yml
+
+ANSIBLE_CONFIG=config/ansible.cfg pyenv exec \
+  ansible-playbook \
+    -i infrastructure/inventory.aws_ec2.yml \
+    infrastructure/mount_disks.yml
+
+# Provision a Nodelet Cluster
+
+ANSIBLE_CONFIG=config/ansible.cfg pyenv exec \
+  ansible-playbook \
+    -i infrastructure/inventory.aws_ec2.yml \
+    nodelet-cluster/playbook.yml
+
+```
+
+# Destroying
+
+```bash
+export TAG_OWNER='Your Name'
+export TAG_TEAM='Your Team'
+export KEY_NAME='your-key-name-in-aws'
+export AWS_PROFILE='hybrid-dev'
+
+pyenv exec ansible-playbook -i localhost, infrastructure/destroy.yml
+```
+

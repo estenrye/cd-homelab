@@ -1,0 +1,6 @@
+nodelet-cluster/inventory.aws_ec2.yml
+nodelet-cluster/nodelet_public_key
+nodelet-cluster/packages
+aws/inventory.aws_ec2.yml
+aws/policies/ec2_allow_modify_private_ip_address.json
+.DS_Store

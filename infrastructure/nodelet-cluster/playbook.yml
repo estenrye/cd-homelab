@@ -1,0 +1,173 @@
+- hosts: nodes
+  tasks:
+    - name: ping all nodes to gather facts
+      ansible.builtin.ping:
+
+- hosts: localhost
+  tasks:
+    - name: create packages directory
+      ansible.builtin.file:
+        state: directory
+        path: packages
+      
+    - name: Download Dependency Packages
+      ansible.builtin.get_url:
+        url: "{{ item.url }}"
+        dest: "{{ item.local_path }}"
+        mode: 0644
+      loop: "{{ dependencies }}"
+      when: not enable_nat
+
+- hosts: ssh_proxy
+  tasks:
+    - name: ping ssh_proxy to gather facts
+      ansible.builtin.ping:
+    - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
+      community.crypto.openssh_keypair:
+        path: /root/.ssh/id_rsa
+      register: ssh_key_info
+      become: true
+    - name: Write public key to localhost
+      ansible.builtin.copy:
+        dest: nodelet_public_key
+        content: "{{ ssh_key_info.public_key }}"
+      delegate_to: localhost
+    - name: Create Target Directories
+      ansible.builtin.file:
+        state: directory
+        path: "{{ item.path }}"
+        owner: "{{ item.owner }}"
+        group: "{{ item.group }}"
+        mode: 0750
+      become: true
+      loop:
+        - "{{ directories.opt_pf9 }}"
+        - "{{ directories.opt_pf9_artifacts }}"
+        - "{{ directories.opt_pf9_bin }}"
+
+    - name: Download Packages
+      ansible.builtin.get_url:
+        url: "{{ item.url }}"
+        dest: "{{ item.path }}"
+        mode: 0644
+      loop:
+        - "{{ artifacts.nodelet.package }}"
+    
+    - name: Download Nodeletctl CLI
+      ansible.builtin.get_url:
+        url: "{{ artifacts.nodelet.cli.url }}"
+        dest: "{{ artifacts.nodelet.cli.path }}"
+        mode: 0750
+
+- hosts: nodes
+  tasks:
+    - name: add pf9 user
+      ansible.builtin.user:
+        name: pf9
+      become: true
+
+    - name: add authorized key to all nodes
+      ansible.builtin.authorized_key:
+        user: "{{ ansible_user }}"
+        key: "{{ lookup('file', 'nodelet_public_key') }}"
+    - name: Create Target Directories
+      ansible.builtin.file:
+        state: directory
+        path: "{{ item.path }}"
+        owner: pf9
+        group: pf9
+        mode: 0750
+      become: true
+      loop:
+        - "{{ directories.opt_pf9_artifacts }}"
+    - name: update apt
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+      become: true
+    - name: install packages
+      ansible.builtin.package:
+        name:
+          - cgroup-tools
+          - ipvsadm
+          - keepalived
+          - libc6
+          - libcgroup1
+          - libnl-3-200
+          - libnl-genl-3-200
+          - libmysqlclient21
+          - libsensors-config
+          - libsensors5
+          - libsnmp-base
+          - libsnmp35
+          - net-tools
+          - socat
+      become: true
+
+- hosts: controlplane
+  tasks:
+    - name: install packages for VIP management
+      ansible.builtin.package:
+        name:
+          - awscli
+          - jq
+      when: enable_nat
+      become: true
+    - name: template keepalived notify scripts
+      ansible.builtin.template:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: root
+        group: root
+        mode: 0755
+      loop:
+        - src: templates/keepalived_notify_backup.sh.j2
+          dest: /etc/keepalived/notify_backup.sh
+        - src: templates/keepalived_notify_master.sh.j2
+          dest: /etc/keepalived/notify_master.sh
+      become: true
+
+- hosts: initial_controlplane
+  tasks:
+    - name: assign VIP to initial_controlplane
+      ansible.builtin.command:
+        cmd: /etc/keepalived/notify_master.sh
+      become: true
+
+- hosts: ssh_proxy
+  tasks:
+    - name: Template cluster.yml
+      ansible.builtin.template:
+        src: templates/cluster.yml.j2
+        dest: "{{ directories.opt_pf9.path }}/cluster.yml"
+        mode: 0640
+    - name: Provision Cluster
+      ansible.builtin.command: 
+        cmd: >-
+          /opt/pf9/bin/nodeletctl
+            create
+            --config /opt/pf9/cluster.yml
+            --verbose
+        creates: "{{ directories.etc_nodelet.path }}/(( nodeletConfig.clusterName }}/(( nodeletConfig.clusterName }}.yaml"
+      become: true
+    - name: install kubectl
+      community.general.snap:
+        name: kubectl
+        classic: true
+      become: true
+
+- hosts: controlplane
+  tasks:
+    - name: template keepalived conf
+      ansible.builtin.template:
+        src: templates/keepalived.conf.j2
+        dest: /etc/keepalived/keepalived.conf
+        mode: 0644
+        owner: root
+        group: root
+      become: true
+    - name: restart keepalived
+      ansible.builtin.service:
+        name: keepalived
+        state: restarted
+      become: true

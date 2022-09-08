@@ -1,0 +1,14 @@
+{{ nodeletConfig | to_nice_yaml }}
+masterVipInterface: {{ hostvars[groups['controlplane'][0]].ansible_default_ipv4.interface | default('eth0') }}
+calicoV4Interface: {{ hostvars[groups['controlplane'][0]].ansible_default_ipv4.interface | default('eth0') }}
+mtu: {{ hostvars[groups['controlplane'][0]].ansible_default_ipv4.mtu | default(9001) }}
+masterNodes:
+{% for node in groups['controlplane'] %}
+  - nodeName: {{ node }}
+    nodeIP: {{ hostvars[node].ansible_default_ipv4.address}}
+{% endfor %}
+workerNodes:
+{% for node in groups['workers'] %}
+  - nodeName: {{ node }}
+    nodeIP: {{ hostvars[node].ansible_default_ipv4.address}}
+{% endfor %}

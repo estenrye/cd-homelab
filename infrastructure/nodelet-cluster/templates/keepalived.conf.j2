@@ -1,0 +1,48 @@
+vrrp_script chk_apiserver {
+    script /opt/pf9/pf9-kube/vrrp_check_apiserver.sh
+    interval 10
+    fall 6
+    rise 2
+    user pf9
+}
+
+global_defs {
+    enable_script_security
+    script_user pf9
+    vrrp_garp_master_refresh 10
+    vrrp_garp_master_refresh_repeat 2
+}
+
+vrrp_instance K8S_APISERVER {
+    interface ens3
+    state BACKUP
+    virtual_router_id {{ nodeletConfig.masterVipVrouterId }}
+    nopreempt
+
+    authentication {
+        auth_type AH
+        auth_pass m@st3rv1p
+    }
+
+    unicast_src_ip {
+        {{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}
+    }
+
+    unicast_peer {
+{% for controlplane_host in groups['controlplane'] %}
+{% if controlplane_host != inventory_hostname %}
+        {{ hostvars[controlplane_host].ansible_default_ipv4.address }}
+{% endif %}
+{% endfor %}
+    }
+
+    virtual_ipaddress {
+        {{ nodeletConfig.masterIp }}
+    }
+    track_script {
+        chk_apiserver
+    }
+
+    notify_master "/opt/pf9/keepalived_notify_master.sh"
+    notify_backup "/opt/pf9/keepalived_notify_backup.sh"
+}

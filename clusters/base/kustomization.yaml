@@ -3,6 +3,5 @@ kind: Kustomization
 resources:
   - ../../applications/ingress-nginx
   - ../../applications/cert-manager
-  - resources/cloudflare-cluster-issuer.yaml
   - ../../applications/sealed-secrets
   - ../../applications/external-dns

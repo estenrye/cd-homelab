@@ -1,0 +1,429 @@
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Upload SSH Key
+      amazon.aws.ec2_key:
+        region: "{{ aws.region }}"
+        tags:
+          Product: "{{ aws.tags.Product }}"
+          Team: "{{ aws.tags.Team }}"
+          Environment: "{{ aws.tags.Environment }}"
+          Owner: "{{ aws.tags.Owner }}"
+          Name: "{{ aws.key.name }}"
+        name: "{{ aws.key.name }}"
+        key_material: "{{ lookup('file', aws.key.file) }}"
+
+    - name: Create Amazon VPC
+      amazon.aws.ec2_vpc_net:
+        name: "{{ vpc.name }}"
+        cidr_block: "{{ vpc.cidr_block }}"
+        region: "{{ aws.region }}"
+        tags:
+          Product: "{{ aws.tags.Product }}"
+          Team: "{{ aws.tags.Team }}"
+          Environment: "{{ aws.tags.Environment }}"
+          Owner: "{{ aws.tags.Owner }}"
+          Cluster: "{{ aws.tags.Cluster }}"
+          Name: "{{ vpc.name }}"
+      register: vpc_info
+      tags:
+        - policy_template
+
+    - name: Create Internet gateway
+      amazon.aws.ec2_vpc_igw:
+        vpc_id: "{{ vpc_info.vpc.id }}"
+        state: present
+        tags:
+          Product: "{{ aws.tags.Product }}"
+          Team: "{{ aws.tags.Team }}"
+          Environment: "{{ aws.tags.Environment }}"
+          Owner: "{{ aws.tags.Owner }}"
+          Cluster: "{{ aws.tags.Cluster }}"
+          Name: public-gateway
+      register: igw_info
+
+    - name: Create Public Subnet
+      amazon.aws.ec2_vpc_subnet:
+        tags:
+          Product: "{{ aws.tags.Product }}"
+          Team: "{{ aws.tags.Team }}"
+          Environment: "{{ aws.tags.Environment }}"
+          Owner: "{{ aws.tags.Owner }}"
+          Cluster: "{{ aws.tags.Cluster }}"
+          Name: public-subnet
+        region: "{{ aws.region }}"
+        az: "{{ aws.az }}"
+        vpc_id: "{{ vpc_info.vpc.id }}"
+        cidr: "{{ vpc.subnets.public }}"
+      register: public_subnet_info
+
+    - name: Create NAT Gateway
+      amazon.aws.ec2_vpc_nat_gateway:
+        tags:
+          Product: "{{ aws.tags.Product }}"
+          Team: "{{ aws.tags.Team }}"
+          Environment: "{{ aws.tags.Environment }}"
+          Owner: "{{ aws.tags.Owner }}"
+          Cluster: "{{ aws.tags.Cluster }}"
+          Name: nat-gateway
+        region: "{{ aws.region }}"
+        subnet_id: "{{ public_subnet_info.subnet.id }}"
+        if_exist_do_not_create: true
+        wait: true
+      register: nat_info
+      when: vpc.enable_nat
+
+    - name: Create a Private Subnet
+      amazon.aws.ec2_vpc_subnet:
+        tags:
+          Product: "{{ aws.tags.Product }}"
+          Team: "{{ aws.tags.Team }}"
+          Environment: "{{ aws.tags.Environment }}"
+          Owner: "{{ aws.tags.Owner }}"
+          Cluster: "{{ aws.tags.Cluster }}"
+          Name: private-subnet
+        region: "{{ aws.region }}"
+        az: "{{ aws.az }}"
+        vpc_id: "{{ vpc_info.vpc.id }}"
+        cidr: "{{ vpc.subnets.private }}"
+      register: private_subnet_info
+
+    - name: Create gateway route table
+      amazon.aws.ec2_vpc_route_table:
+        region: "{{ aws.region }}"
+        vpc_id: "{{ vpc_info.vpc.id }}"
+        tags:
+          Product: "{{ aws.tags.Product }}"
+          Team: "{{ aws.tags.Team }}"
+          Environment: "{{ aws.tags.Environment }}"
+          Owner: "{{ aws.tags.Owner }}"
+          Cluster: "{{ aws.tags.Cluster }}"
+          Name: gateway-route-table
+        subnets:
+          - "{{ public_subnet_info.subnet.id }}"
+        routes:
+          - dest: 0.0.0.0/0
+            gateway_id: "{{ igw_info.gateway_id }}"
+          - dest: ::/0
+            gateway_id: "{{ igw_info.gateway_id }}"
+      register: gateway_route_table_info
+
+    - name: Create nat route table
+      amazon.aws.ec2_vpc_route_table:
+        region: "{{ aws.region }}"
+        vpc_id: "{{ vpc_info.vpc.id }}"
+        tags:
+          Product: "{{ aws.tags.Product }}"
+          Team: "{{ aws.tags.Team }}"
+          Environment: "{{ aws.tags.Environment }}"
+          Owner: "{{ aws.tags.Owner }}"
+          Cluster: "{{ aws.tags.Cluster }}"
+          Name: nat-route-table
+        subnets:
+          - "{{ private_subnet_info.subnet.id }}"
+        routes:
+          - dest: 0.0.0.0/0
+            gateway_id: "{{ nat_info.nat_gateway_id }}"
+      register: nat_route_table_info
+      when: vpc.enable_nat
+
+    - name: Create DMZ Security Group
+      amazon.aws.ec2_group:
+        name: jumphost-access-group
+        region: "{{ aws.region }}"
+        vpc_id: "{{ vpc_info.vpc.id }}"
+        tags:
+          Product: "{{ aws.tags.Product }}"
+          Team: "{{ aws.tags.Team }}"
+          Environment: "{{ aws.tags.Environment }}"
+          Owner: "{{ aws.tags.Owner }}"
+          Cluster: "{{ aws.tags.Cluster }}"
+          Name: jumphost-access-group
+        description: Manages inbound/outbound to test nodectl cluster
+        rules:
+          - rule_desc: Allow Inbound SSH
+            proto: tcp
+            ports:
+              - 22
+            cidr_ip: "0.0.0.0/0"
+      register: sg_jumphost_info
+
+    - name: Create Node Security Group
+      amazon.aws.ec2_group:
+        name: node-access-group
+        region: "{{ aws.region }}"
+        vpc_id: "{{ vpc_info.vpc.id }}"
+        tags:
+          Product: "{{ aws.tags.Product }}"
+          Team: "{{ aws.tags.Team }}"
+          Environment: "{{ aws.tags.Environment }}"
+          Owner: "{{ aws.tags.Owner }}"
+          Cluster: "{{ aws.tags.Cluster }}"
+          Name: node-access-group
+        description: Manages inbound/outbound to test nodectl cluster
+        rules:
+          - rule_desc: Allow Inbound TCP
+            proto: tcp
+            ports:
+              - 1-65535
+            cidr_ip: "10.5.0.0/16"
+          - rule_desc: Allow Inbound UDP
+            proto: udp
+            ports:
+              - 1-65535
+            cidr_ip: "10.5.0.0/16"
+      register: sg_node_info
+      when: vpc.enable_nat
+
+
+    - name: Get List of Amazon EC2 AMIs
+      amazon.aws.ec2_ami_info:
+        region: "{{ aws.region }}"
+        filters:
+          name: "{{ aws.ami_name_prefix }}"
+      register: ami_list
+    
+    - name: Select Most Recent AMI
+      ansible.builtin.set_fact:
+        ami_info: "{{ ami_list.images | sort(attribute='creation_date') | last }}"
+
+    - name: Create Jumphost
+      amazon.aws.ec2_instance:
+        region: "{{ aws.region }}"
+        tags:
+          Product: "{{ aws.tags.Product }}"
+          Team: "{{ aws.tags.Team }}"
+          Environment: "{{ aws.tags.Environment }}"
+          Owner: "{{ aws.tags.Owner }}"
+          Cluster: "{{ aws.tags.Cluster }}"
+          Name: "jumphost"
+          Role: "ssh_proxy"
+        image_id: "{{ ami_info.image_id }}"
+        instance_initiated_shutdown_behavior: stop
+        instance_type: "{{ vpc.instance_types.jumphost }}"
+        key_name: "{{ aws.key.name }}"
+        network:
+          assign_public_ip: true
+          subnet_id: "{{ public_subnet_info.subnet.id }}"
+        security_group: "{{ sg_jumphost_info.group_id }}"
+        termination_protection: no
+        volumes:
+          - device_name: /dev/xvdb
+            ebs:
+              delete_on_termination: true
+              encrypted: false
+              volume_size: 40
+              volume_type: gp3
+        vpc_subnet_id: "{{ public_subnet_info.subnet.id }}"
+        state: running
+
+    - name: Create IAM Role for EC2 Instances
+      community.aws.iam_role:
+        name: "{{ vpc.name }}-modify-private-ip-address"
+        assume_role_policy_document: "{{ lookup('file', 'policies/ec2_allow_modify_private_ip_address.trusted_entities.json') }}"
+        tags:
+          Product: "{{ aws.tags.Product }}"
+          Team: "{{ aws.tags.Team }}"
+          Environment: "{{ aws.tags.Environment }}"
+          Owner: "{{ aws.tags.Owner }}"
+          Cluster: "{{ aws.tags.Cluster }}"
+          Name: "{{ vpc.name }}-modify-private-ip-address"
+      register: role_info
+
+    - name: Create IAM Instance Profile If it doesn't exist
+      block:
+        - name: Get IAM Instance Profile
+          ansible.builtin.command:
+            cmd: aws iam get-instance-profile --instance-profile-name "{{ role_info.iam_role.role_name }}"
+          register: instance_profile_info
+          changed_when: false
+        - name: Attach IAM Role to Instance Profile
+          ansible.builtin.command:
+            cmd: aws iam add-role-to-instance-profile --instance-profile-name "{{ role_info.iam_role.role_name }}" --role-name "{{ role_info.iam_role.role_name }}"
+          when: (instance_profile_info.stdout | from_json).InstanceProfile.Roles | selectattr( 'RoleName', '==', role_info.iam_role.role_name) | length == 0
+      rescue:
+        - name: Create IAM Instance Profile
+          ansible.builtin.command:
+            cmd: aws iam create-instance-profile --instance-profile-name "{{ role_info.iam_role.role_name }}"
+        - name: Attach IAM Role to Instance Profile
+          ansible.builtin.command:
+            cmd: aws iam add-role-to-instance-profile --instance-profile-name "{{ role_info.iam_role.role_name }}" --role-name "{{ role_info.iam_role.role_name }}"
+
+    - name: Create Initial Controlplane Node
+      amazon.aws.ec2_instance:
+        region: "{{ aws.region }}"
+        exact_count: 1
+        filters:
+          tag:Product: "{{ aws.tags.Product }}"
+          tag:Team: "{{ aws.tags.Team }}"
+          tag:Environment: "{{ aws.tags.Environment }}"
+          tag:Owner: "{{ aws.tags.Owner }}"
+          tag:Cluster: "{{ aws.tags.Cluster }}"
+          tag:Name: nodelet-controlplane
+          tag:Role: controlplane
+          tag:InitialControlplane: 'true'
+          instance-state-name: running
+        tags:
+          Product: "{{ aws.tags.Product }}"
+          Team: "{{ aws.tags.Team }}"
+          Environment: "{{ aws.tags.Environment }}"
+          Owner: "{{ aws.tags.Owner }}"
+          Cluster: "{{ aws.tags.Cluster }}"
+          Name: nodelet-controlplane
+          Role: controlplane
+          InitialControlplane: 'true'
+        image_id: "{{ ami_info.image_id }}"
+        instance_initiated_shutdown_behavior: stop
+        instance_type: "{{ vpc.instance_types.nodelet_master }}"
+        instance_role: "{{ role_info.iam_role.role_name }}"
+        key_name: "{{ aws.key.name }}"
+        network:
+          subnet_id: "{{ private_subnet_info.subnet.id }}"
+        security_group: "{{ sg_node_info.group_id }}"
+        termination_protection: no
+        volumes:
+          - device_name: /dev/xvdb
+            ebs:
+              delete_on_termination: true
+              encrypted: false
+              volume_size: 40
+              volume_type: gp3
+        vpc_subnet_id: "{{ private_subnet_info.subnet.id }}"
+        state: running
+
+    - name: Create Remaining Controlplane Nodes
+      amazon.aws.ec2_instance:
+        region: "{{ aws.region }}"
+        exact_count: "{{ vpc.instance_counts.nodelet_master | int - 1 | int }}"
+        filters:
+          tag:Product: "{{ aws.tags.Product }}"
+          tag:Team: "{{ aws.tags.Team }}"
+          tag:Environment: "{{ aws.tags.Environment }}"
+          tag:Owner: "{{ aws.tags.Owner }}"
+          tag:Cluster: "{{ aws.tags.Cluster }}"
+          tag:Name: nodelet-controlplane
+          tag:Role: controlplane
+          tag:InitialControlplane: 'false'
+          instance-state-name: running
+        tags:
+          Product: "{{ aws.tags.Product }}"
+          Team: "{{ aws.tags.Team }}"
+          Environment: "{{ aws.tags.Environment }}"
+          Owner: "{{ aws.tags.Owner }}"
+          Cluster: "{{ aws.tags.Cluster }}"
+          Name: nodelet-controlplane
+          Role: controlplane
+          InitialControlplane: 'false'
+        image_id: "{{ ami_info.image_id }}"
+        instance_initiated_shutdown_behavior: stop
+        instance_type: "{{ vpc.instance_types.nodelet_master }}"
+        instance_role: "{{ role_info.iam_role.role_name }}"
+        key_name: "{{ aws.key.name }}"
+        network:
+          subnet_id: "{{ private_subnet_info.subnet.id }}"
+        security_group: "{{ sg_node_info.group_id }}"
+        termination_protection: no
+        volumes:
+          - device_name: /dev/xvdb
+            ebs:
+              delete_on_termination: true
+              encrypted: false
+              volume_size: 40
+              volume_type: gp3
+          - device_name: /dev/xvdc
+            ebs:
+              delete_on_termination: true
+              encrypted: false
+              volume_size: 2048
+              volume_type: gp3
+          - device_name: /dev/xvdd
+            ebs:
+              delete_on_termination: true
+              encrypted: false
+              volume_size: 2048
+              volume_type: gp3
+        vpc_subnet_id: "{{ private_subnet_info.subnet.id }}"
+        state: running
+      
+    - name: gather controlplane ec2 instances
+      amazon.aws.ec2_instance_info:
+        region: "{{ aws.region }}"
+        filters:
+          tag:Product: "{{ aws.tags.Product }}"
+          tag:Team: "{{ aws.tags.Team }}"
+          tag:Environment: "{{ aws.tags.Environment }}"
+          tag:Owner: "{{ aws.tags.Owner }}"
+          tag:Cluster: "{{ aws.tags.Cluster }}"
+          tag:Name: nodelet-controlplane
+          tag:Role: controlplane
+          instance-state-name: running
+          vpc-id: "{{ vpc_info.vpc.id }}"
+      register: controlplane_node_info
+      tags:
+        - policy_template
+
+    - name: Set Controlplane Network Interface Fact
+      ansible.builtin.set_fact:
+        controlplane_network_interfaces: "{{ controlplane_node_info.instances | map(attribute='network_interfaces') | flatten }}"
+      tags:
+        - policy_template
+
+    - name: Create Worker Nodes
+      amazon.aws.ec2_instance:
+        region: "{{ aws.region }}"
+        exact_count: "{{ vpc.instance_counts.nodelet_worker | int }}"
+        filters:
+          tag:Product: "{{ aws.tags.Product }}"
+          tag:Team: "{{ aws.tags.Team }}"
+          tag:Environment: "{{ aws.tags.Environment }}"
+          tag:Owner: "{{ aws.tags.Owner }}"
+          tag:Cluster: "{{ aws.tags.Cluster }}"
+          tag:Name: nodelet-worker
+          tag:Role: worker
+          instance-state-name: running
+        tags:
+          Product: "{{ aws.tags.Product }}"
+          Team: "{{ aws.tags.Team }}"
+          Environment: "{{ aws.tags.Environment }}"
+          Owner: "{{ aws.tags.Owner }}"
+          Cluster: "{{ aws.tags.Cluster }}"
+          Name: nodelet-worker
+          Role: worker
+        image_id: "{{ ami_info.image_id }}"
+        instance_initiated_shutdown_behavior: stop
+        instance_type: "{{ vpc.instance_types.nodelet_worker }}"
+        key_name: "{{ aws.key.name }}"
+        network:
+          subnet_id: "{{ private_subnet_info.subnet.id }}"
+        security_group: "{{ sg_node_info.group_id }}"
+        termination_protection: no
+        volumes:
+          - device_name: /dev/xvdb
+            ebs:
+              delete_on_termination: true
+              encrypted: false
+              volume_size: 40
+              volume_type: gp3
+        vpc_subnet_id: "{{ private_subnet_info.subnet.id }}"
+        state: running
+
+    - name: Template aws dynamic inventory file
+      ansible.builtin.template:
+        src: templates/inventory.aws_ec2.yml.j2
+        dest: "{{ item }}"
+      loop:
+        - inventory.aws_ec2.yml
+
+    - name: template policy
+      ansible.builtin.template:
+        src: templates/ec2_allow_modify_private_ip_address.json.j2
+        dest: policies/ec2_allow_modify_private_ip_address.json
+      tags:
+        - policy_template
+
+    - name: Create IAM Policy for EC2 Instances
+      community.aws.iam_policy:
+        iam_type: role
+        iam_name: "{{ vpc.name }}-modify-private-ip-address"
+        policy_name: "{{ vpc.name }}-modify-private-ip-address"
+        policy_json: "{{ lookup('file', 'policies/ec2_allow_modify_private_ip_address.json') }}"

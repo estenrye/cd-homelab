@@ -1,0 +1,15 @@
+plugin: amazon.aws.aws_ec2
+regions:
+  - "{{ aws.region }}"
+filters:
+  tag:Environment: "{{ aws.tags.Environment }}"
+  tag:Product: "{{ aws.tags.Product }}"
+  tag:Team: "{{ aws.tags.Team }}"
+  tag:Owner: "{{ aws.tags.Owner }}"
+boto_profile: "{{ lookup('env', 'AWS_PROFILE') | default('hybrid-dev', true) }}"
+groups:
+  ssh_proxy: "'ssh_proxy' == tags.Role and inventory_hostname.startswith('ec2')"
+  initial_controlplane: "'true' == tags.InitialControlplane and 'controlplane' == tags.Role"
+  controlplane: "'controlplane' == tags.Role"
+  workers: "'worker' == tags.Role"
+  nodes: "('controlplane' == tags.Role or 'worker' == tags.Role )"
