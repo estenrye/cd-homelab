@@ -85,6 +85,10 @@ source ~/.zshrc
 1. Install Python 3.10.6 and required packages.
 
 ```bash
+sudo apt-get install -y make build-essential libssl-dev zlib1g-dev \
+   libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev \
+   libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python-openssl
+
 pyenv install 3.10.6
 pyenv local 3.10.6
 pyenv exec pip install --upgrade pip
