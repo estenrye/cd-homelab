@@ -43,6 +43,7 @@ This repo contains my argo-cd continuous deployment code.
    ```bash
    cd cd-homelab
    brew bundle
+   sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
    ```
 
 1. If on Linux, Install 1password-cli separately.
