@@ -127,15 +127,13 @@
           dest: /etc/keepalived/notify_master.sh
       become: true
 
-- hosts: initial_controlplane
+- hosts: ssh_proxy
   tasks:
     - name: assign VIP to initial_controlplane
       ansible.builtin.command:
         cmd: /etc/keepalived/notify_master.sh
       become: true
-
-- hosts: ssh_proxy
-  tasks:
+      delegate_to: "{{ groups['controlplane'] | first }}"
     - name: Template cluster.yml
       ansible.builtin.template:
         src: templates/cluster.yml.j2

@@ -187,36 +187,6 @@
       ansible.builtin.set_fact:
         ami_info: "{{ ami_list.images | sort(attribute='creation_date') | last }}"
 
-    - name: Create Jumphost
-      amazon.aws.ec2_instance:
-        region: "{{ aws.region }}"
-        tags:
-          Product: "{{ aws.tags.Product }}"
-          Team: "{{ aws.tags.Team }}"
-          Environment: "{{ aws.tags.Environment }}"
-          Owner: "{{ aws.tags.Owner }}"
-          Cluster: "{{ aws.tags.Cluster }}"
-          Name: "jumphost"
-          Role: "ssh_proxy"
-        image_id: "{{ ami_info.image_id }}"
-        instance_initiated_shutdown_behavior: stop
-        instance_type: "{{ vpc.instance_types.jumphost }}"
-        key_name: "{{ aws.key.name }}"
-        network:
-          assign_public_ip: true
-          subnet_id: "{{ public_subnet_info.subnet.id }}"
-        security_group: "{{ sg_jumphost_info.group_id }}"
-        termination_protection: no
-        volumes:
-          - device_name: /dev/xvdb
-            ebs:
-              delete_on_termination: true
-              encrypted: false
-              volume_size: 40
-              volume_type: gp3
-        vpc_subnet_id: "{{ public_subnet_info.subnet.id }}"
-        state: running
-
     - name: Create IAM Role for EC2 Instances
       community.aws.iam_role:
         name: "{{ vpc.name }}-modify-private-ip-address"
@@ -249,19 +219,18 @@
           ansible.builtin.command:
             cmd: aws iam add-role-to-instance-profile --instance-profile-name "{{ role_info.iam_role.role_name }}" --role-name "{{ role_info.iam_role.role_name }}"
 
-    - name: Create Initial Controlplane Node
+    - name: Create Instances
       amazon.aws.ec2_instance:
         region: "{{ aws.region }}"
-        exact_count: 1
+        exact_count: "{{ item.count | int }}"
         filters:
           tag:Product: "{{ aws.tags.Product }}"
           tag:Team: "{{ aws.tags.Team }}"
           tag:Environment: "{{ aws.tags.Environment }}"
           tag:Owner: "{{ aws.tags.Owner }}"
           tag:Cluster: "{{ aws.tags.Cluster }}"
-          tag:Name: nodelet-controlplane
-          tag:Role: controlplane
-          tag:InitialControlplane: 'true'
+          tag:Name: "{{ item.name }}"
+          tag:Role: "{{ item.role }}"
           instance-state-name: running
         tags:
           Product: "{{ aws.tags.Product }}"
@@ -269,81 +238,24 @@
           Environment: "{{ aws.tags.Environment }}"
           Owner: "{{ aws.tags.Owner }}"
           Cluster: "{{ aws.tags.Cluster }}"
-          Name: nodelet-controlplane
-          Role: controlplane
-          InitialControlplane: 'true'
+          Name: "{{ item.name }}"
+          Role: "{{ item.role }}"
         image_id: "{{ ami_info.image_id }}"
         instance_initiated_shutdown_behavior: stop
-        instance_type: "{{ vpc.instance_types.nodelet_master }}"
-        instance_role: "{{ role_info.iam_role.role_name }}"
+        instance_type: "{{ item.instance_type }}"
+        instance_role: "{% if item.role == 'controlplane' %}{{ role_info.iam_role.role_name }}{% endif %}"
         key_name: "{{ aws.key.name }}"
         network:
-          subnet_id: "{{ private_subnet_info.subnet.id }}"
-        security_group: "{{ sg_node_info.group_id }}"
+          assign_public_ip: "{{ item.role == 'ssh_proxy' }}"
+          subnet_id: "{% if item.role == 'ssh_proxy' %}{{ public_subnet_info.subnet.id }}{% else %}{{ private_subnet_info.subnet.id }}{% endif %}"
+        security_group: "{% if item.role == 'ssh_proxy' %}{{ sg_jumphost_info.group_id }}{% else %}{{ sg_node_info.group_id }}{% endif %}"
         termination_protection: no
-        volumes:
-          - device_name: /dev/xvdb
-            ebs:
-              delete_on_termination: true
-              encrypted: false
-              volume_size: 40
-              volume_type: gp3
-        vpc_subnet_id: "{{ private_subnet_info.subnet.id }}"
+        volumes: "{{ item.volumes }}"
+        vpc_subnet_id: "{% if item.role == 'ssh_proxy' %}{{ public_subnet_info.subnet.id }}{% else %}{{ private_subnet_info.subnet.id }}{% endif %}"
         state: running
-
-    - name: Create Remaining Controlplane Nodes
-      amazon.aws.ec2_instance:
-        region: "{{ aws.region }}"
-        exact_count: "{{ vpc.instance_counts.nodelet_master | int - 1 | int }}"
-        filters:
-          tag:Product: "{{ aws.tags.Product }}"
-          tag:Team: "{{ aws.tags.Team }}"
-          tag:Environment: "{{ aws.tags.Environment }}"
-          tag:Owner: "{{ aws.tags.Owner }}"
-          tag:Cluster: "{{ aws.tags.Cluster }}"
-          tag:Name: nodelet-controlplane
-          tag:Role: controlplane
-          tag:InitialControlplane: 'false'
-          instance-state-name: running
-        tags:
-          Product: "{{ aws.tags.Product }}"
-          Team: "{{ aws.tags.Team }}"
-          Environment: "{{ aws.tags.Environment }}"
-          Owner: "{{ aws.tags.Owner }}"
-          Cluster: "{{ aws.tags.Cluster }}"
-          Name: nodelet-controlplane
-          Role: controlplane
-          InitialControlplane: 'false'
-        image_id: "{{ ami_info.image_id }}"
-        instance_initiated_shutdown_behavior: stop
-        instance_type: "{{ vpc.instance_types.nodelet_master }}"
-        instance_role: "{{ role_info.iam_role.role_name }}"
-        key_name: "{{ aws.key.name }}"
-        network:
-          subnet_id: "{{ private_subnet_info.subnet.id }}"
-        security_group: "{{ sg_node_info.group_id }}"
-        termination_protection: no
-        volumes:
-          - device_name: /dev/xvdb
-            ebs:
-              delete_on_termination: true
-              encrypted: false
-              volume_size: 40
-              volume_type: gp3
-          - device_name: /dev/xvdc
-            ebs:
-              delete_on_termination: true
-              encrypted: false
-              volume_size: 2048
-              volume_type: gp3
-          - device_name: /dev/xvdd
-            ebs:
-              delete_on_termination: true
-              encrypted: false
-              volume_size: 2048
-              volume_type: gp3
-        vpc_subnet_id: "{{ private_subnet_info.subnet.id }}"
-        state: running
+      loop: "{{ vpc.instances }}"
+      loop_control:
+        label: "{{ item.name }} { quantity: {{ item.count }} }"
       
     - name: gather controlplane ec2 instances
       amazon.aws.ec2_instance_info:
@@ -368,52 +280,6 @@
       tags:
         - policy_template
 
-    - name: Create Worker Nodes
-      amazon.aws.ec2_instance:
-        region: "{{ aws.region }}"
-        exact_count: "{{ vpc.instance_counts.nodelet_worker | int }}"
-        filters:
-          tag:Product: "{{ aws.tags.Product }}"
-          tag:Team: "{{ aws.tags.Team }}"
-          tag:Environment: "{{ aws.tags.Environment }}"
-          tag:Owner: "{{ aws.tags.Owner }}"
-          tag:Cluster: "{{ aws.tags.Cluster }}"
-          tag:Name: nodelet-worker
-          tag:Role: worker
-          instance-state-name: running
-        tags:
-          Product: "{{ aws.tags.Product }}"
-          Team: "{{ aws.tags.Team }}"
-          Environment: "{{ aws.tags.Environment }}"
-          Owner: "{{ aws.tags.Owner }}"
-          Cluster: "{{ aws.tags.Cluster }}"
-          Name: nodelet-worker
-          Role: worker
-        image_id: "{{ ami_info.image_id }}"
-        instance_initiated_shutdown_behavior: stop
-        instance_type: "{{ vpc.instance_types.nodelet_worker }}"
-        key_name: "{{ aws.key.name }}"
-        network:
-          subnet_id: "{{ private_subnet_info.subnet.id }}"
-        security_group: "{{ sg_node_info.group_id }}"
-        termination_protection: no
-        volumes:
-          - device_name: /dev/xvdb
-            ebs:
-              delete_on_termination: true
-              encrypted: false
-              volume_size: 40
-              volume_type: gp3
-        vpc_subnet_id: "{{ private_subnet_info.subnet.id }}"
-        state: running
-
-    - name: Template aws dynamic inventory file
-      ansible.builtin.template:
-        src: templates/inventory.aws_ec2.yml.j2
-        dest: "{{ item }}"
-      loop:
-        - inventory.aws_ec2.yml
-
     - name: template policy
       ansible.builtin.template:
         src: templates/ec2_allow_modify_private_ip_address.json.j2
@@ -427,3 +293,10 @@
         iam_name: "{{ vpc.name }}-modify-private-ip-address"
         policy_name: "{{ vpc.name }}-modify-private-ip-address"
         policy_json: "{{ lookup('file', 'policies/ec2_allow_modify_private_ip_address.json') }}"
+
+    - name: Template aws dynamic inventory file
+      ansible.builtin.template:
+        src: templates/inventory.aws_ec2.yml.j2
+        dest: "{{ item }}"
+      loop:
+        - inventory.aws_ec2.yml

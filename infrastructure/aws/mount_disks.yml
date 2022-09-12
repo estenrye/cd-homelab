@@ -1,36 +1,61 @@
 - hosts:
-    - ssh_proxy
+    - ssh
     - nodes
   tasks:
     - name: ping all nodes to gather facts
       ansible.builtin.ping:
+
+- hosts:
+    - ssh_proxy
+    - nodes
+  tasks:
+    - name: Get Mounts
+      ansible.builtin.set_fact:
+        mount_list: "{{ (vpc.instances | selectattr('role', 'equalto', hostvars[inventory_hostname].tags.Role) | first)['mounts'] }}"
+
     - name: Create Target Directories
       ansible.builtin.file:
         state: directory
-        path: /opt/pf9
+        path: "{{ item.path }}"
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
         mode: 0770
       become: true
+      loop: "{{ mount_list }}"
+      loop_control:
+        label: "{{ item.path }}"
+
     - name: Unmount disk
       ansible.posix.mount:
         path: /mnt
-        src: /dev/xvdb
+        src: "{{ item.device_name }}"
         state: unmounted
       become: true
+      loop: "{{ mount_list }}"
+      loop_control:
+        label: "{{ item.device_name }}"
+
     - name: formatting the volume
       ansible.builtin.filesystem:
-        dev: /dev/xvdb
-        fstype: ext4
+        dev: "{{ item.device_name }}"
+        fstype: "{{ item.fstype }}"
       become: true
+      loop: "{{ mount_list }}"
+      loop_control:
+        label: "{{ item.device_name }}: {{ item.fstype }}"
+
     - name: Mount disk
       ansible.posix.mount:
-        path: /opt/pf9
-        src: /dev/xvdb
-        fstype: ext4
-        opts: rw,defaults,nofail,x-systemd.requires=cloud-init.service,_netdev,comment=cloudconfig
+        path: "{{ item.path }}"
+        src: "{{ item.device_name }}"
+        fstype: "{{ item.fstype }}"
+        opts: "{{ item.opts }}"
         state: mounted
       become: true
+      loop: "{{ mount_list }}"
+      loop_control:
+        label: "{{ item.device_name }}: {{ item.fstype }} ==> {{ item.path }}"
+
     - name: create ansible directory
       ansible.builtin.file:
         state: directory
@@ -39,15 +64,3 @@
         group: "{{ ansible_user }}"
         mode: 0750
       become: true
-- hosts:
-    - nodes
-  tasks:
-    - name: Unmount disk
-      ansible.posix.mount:
-        path: /mnt
-        src: "{{ item }}"
-        state: unmounted
-      become: true
-      loop:
-        - /dev/xvdc
-        - /dev/xvdd

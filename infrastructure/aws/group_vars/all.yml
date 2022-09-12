@@ -18,12 +18,56 @@ vpc:
   subnets:
     public: 10.5.25.0/24
     private: 10.5.50.0/24
-  instance_counts:
-    nodelet_master: 5
-    nodelet_worker: 3
-  instance_types:
-    jumphost: m4.xlarge
-    nodelet_master: m4.xlarge
-    nodelet_worker: z1d.6xlarge
+  instances:
+    - name: jumphost
+      role: ssh_proxy
+      count: 1
+      instance_type: m4.xlarge
+      volumes:
+        - device_name: /dev/xvdb
+          ebs:
+              delete_on_termination: true
+              encrypted: false
+              volume_size: 40
+              volume_type: gp3
+      mounts:
+        - device_name: /dev/xvdb
+          path: /opt/pf9
+          fstype: ext4
+          opts: rw,defaults,nofail,x-systemd.requires=cloud-init.service,_netdev,comment=cloudconfig
+    - name: nodelet-controlplane
+      role: controlplane
+      count: 5
+      instance_type: m4.xlarge
+      volumes:
+        - device_name: /dev/xvdb
+          ebs:
+              delete_on_termination: true
+              encrypted: false
+              volume_size: 40
+              volume_type: gp3
+      mounts:
+        - device_name: /dev/xvdb
+          path: /opt/pf9
+          fstype: ext4
+          opts: rw,defaults,nofail,x-systemd.requires=cloud-init.service,_netdev,comment=cloudconfig
+    - name: nodelet-worker
+      role: worker
+      count: 3
+      instance_type: z1d.6xlarge
+      volumes:
+        - device_name: /dev/nvme1n1
+          ebs:
+              delete_on_termination: true
+              encrypted: false
+              volume_size: 40
+              volume_type: gp3
+      mounts:
+        - device_name: /dev/nvme1n1
+          path: /opt/pf9
+          fstype: ext4
+          opts: rw,defaults,nofail,x-systemd.requires=cloud-init.service,_netdev,comment=cloudconfig
+          
+
   enable_nat: true
 

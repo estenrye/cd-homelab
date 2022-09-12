@@ -121,14 +121,14 @@ export AWS_PROFILE='hybrid-dev'
 
 pyenv exec ansible-playbook -i localhost, infrastructure/aws/provision.yml
 
-ANSIBLE_CONFIG=config/ansible.cfg pyenv exec \
+ANSIBLE_CONFIG=infrastructure/config/ansible.cfg pyenv exec \
   ansible-playbook \
     -i infrastructure/aws/inventory.aws_ec2.yml \
     infrastructure/aws/mount_disks.yml
 
 # Provision a Nodelet Cluster
 
-ANSIBLE_CONFIG=config/ansible.cfg pyenv exec \
+ANSIBLE_CONFIG=infrastructure/config/ansible.cfg pyenv exec \
   ansible-playbook \
     -i infrastructure/aws/inventory.aws_ec2.yml \
     infrastructure/nodelet-cluster/playbook.yml
