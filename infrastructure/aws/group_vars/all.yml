@@ -56,14 +56,14 @@ vpc:
       count: 3
       instance_type: z1d.6xlarge
       volumes:
-        - device_name: /dev/xvdb
+        - device_name: /dev/nvme1n1
           ebs:
               delete_on_termination: true
               encrypted: false
               volume_size: 40
               volume_type: gp3
       mounts:
-        - device_name: /dev/xvdb
+        - device_name: /dev/nvme1n1
           path: /opt/pf9
           fstype: ext4
           opts: rw,defaults,nofail,x-systemd.requires=cloud-init.service,_netdev,comment=cloudconfig
