@@ -1,0 +1,5 @@
+mounts:
+  - device_name: /dev/nvme1n1
+    path: /opt/pf9
+    fstype: ext4
+    opts: rw,defaults,nofail,x-systemd.requires=cloud-init.service,_netdev,comment=cloudconfig

@@ -1,5 +1,5 @@
 - hosts:
-    - ssh
+    - ssh_proxy
     - nodes
   tasks:
     - name: ping all nodes to gather facts
@@ -9,10 +9,6 @@
     - ssh_proxy
     - nodes
   tasks:
-    - name: Get Mounts
-      ansible.builtin.set_fact:
-        mount_list: "{{ (vpc.instances | selectattr('role', 'equalto', hostvars[inventory_hostname].tags.Role) | first)['mounts'] }}"
-
     - name: Create Target Directories
       ansible.builtin.file:
         state: directory
@@ -21,7 +17,7 @@
         group: "{{ ansible_user }}"
         mode: 0770
       become: true
-      loop: "{{ mount_list }}"
+      loop: "{{ mounts }}"
       loop_control:
         label: "{{ item.path }}"
 
@@ -31,7 +27,7 @@
         src: "{{ item.device_name }}"
         state: unmounted
       become: true
-      loop: "{{ mount_list }}"
+      loop: "{{ mounts }}"
       loop_control:
         label: "{{ item.device_name }}"
 
@@ -40,7 +36,7 @@
         dev: "{{ item.device_name }}"
         fstype: "{{ item.fstype }}"
       become: true
-      loop: "{{ mount_list }}"
+      loop: "{{ mounts }}"
       loop_control:
         label: "{{ item.device_name }}: {{ item.fstype }}"
 
@@ -52,7 +48,7 @@
         opts: "{{ item.opts }}"
         state: mounted
       become: true
-      loop: "{{ mount_list }}"
+      loop: "{{ mounts }}"
       loop_control:
         label: "{{ item.device_name }}: {{ item.fstype }} ==> {{ item.path }}"
 

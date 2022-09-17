@@ -1,4 +1,4 @@
-- hosts: localhost
+- hosts: provisioner
   connection: local
   tasks:
     - name: Upload SSH Key
@@ -71,7 +71,7 @@
         if_exist_do_not_create: true
         wait: true
       register: nat_info
-      when: vpc.enable_nat
+      when: enable_nat
 
     - name: Create a Private Subnet
       amazon.aws.ec2_vpc_subnet:
@@ -125,7 +125,7 @@
           - dest: 0.0.0.0/0
             gateway_id: "{{ nat_info.nat_gateway_id }}"
       register: nat_route_table_info
-      when: vpc.enable_nat
+      when: enable_nat
 
     - name: Create DMZ Security Group
       amazon.aws.ec2_group:
@@ -173,7 +173,7 @@
               - 1-65535
             cidr_ip: "10.5.0.0/16"
       register: sg_node_info
-      when: vpc.enable_nat
+      when: enable_nat
 
 
     - name: Get List of Amazon EC2 AMIs
@@ -253,7 +253,7 @@
         volumes: "{{ item.volumes }}"
         vpc_subnet_id: "{% if item.role == 'ssh_proxy' %}{{ public_subnet_info.subnet.id }}{% else %}{{ private_subnet_info.subnet.id }}{% endif %}"
         state: running
-      loop: "{{ vpc.instances }}"
+      loop: "{{ instances }}"
       loop_control:
         label: "{{ item.name }} { quantity: {{ item.count }} }"
       

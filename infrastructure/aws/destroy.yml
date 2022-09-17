@@ -1,4 +1,4 @@
-- hosts: localhost
+- hosts: provisioner
   connection: local
   tasks:
     - name: Get VPC Id
