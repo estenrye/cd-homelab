@@ -1,0 +1,58 @@
+- name: Install packages
+  ansible.builtin.package:
+    name:
+      # - libapache2-mod-auth-openidc
+      - libapache2-mod-shib2
+- name: enable saml2 and token auth
+  community.general.ini_file:
+    path: "{{ keystone_conf_file_path }}/keystone.conf"
+    exclusive: yes
+    state: present
+    section: "{{ config_data.section }}"
+    option: "{{ config_data.option | default(null) }}"
+    value: "{{ config_data.value | default(null) }}"
+  become: true
+  register: config_info
+  loop_control:
+    loop_var: config_data
+  loop:
+    - section: auth
+      option: methods
+      value: external,password,token,saml2,oidc
+
+    - section: auth
+      option: saml2
+      value: keystone.auth.plugins.mapped.Mapped
+
+    # - section: federation
+    #   option: driver
+    #   value: keystone.contrib.federation.backends.sql.Federation
+
+- name: enable saml2 and token auth
+  community.general.ini_file:
+    path: "{{ keystone_conf_file_path }}/keystone-paste.ini"
+    exclusive: yes
+    state: present
+    section: "{{ config_data.section }}"
+    option: "{{ config_data.option | default(null) }}"
+    value: "{{ config_data.value | default(null) }}"
+  become: true
+  register: config_info
+  loop_control:
+    loop_var: config_data
+  loop:
+    - section: pipeline:api_v3
+      option: pipeline
+      value: sizelimit url_normalize build_auth_context token_auth admin_token_auth json_body ec2_extension_v3 s3_extension simple_cert_extension revoke_extension federation_extension service_v3
+
+# - name: Create the federation extension tables
+#   ansible.builtin.command:
+#     cmd: "{{ keystone_manage_bin }} db_sync"
+#   become: true
+
+- name: restart httpd
+  ansible.builtin.service:
+    name: "{{ keystone_service_name }}"
+    state: restarted
+  become: true
+  when: config_info.changed

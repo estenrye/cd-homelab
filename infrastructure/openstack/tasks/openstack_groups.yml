@@ -1,0 +1,30 @@
+- name: get groups to check for group being present.
+  ansible.builtin.command:
+    cmd: "{{ openstack_bin }} group list -f json"
+  register: group_info
+  become: true
+  changed_when: false
+
+- name: Convert output of group list to map
+  ansible.builtin.set_fact:
+    os_group_map: "{{ group_info.stdout | from_json | items2dict(key_name='Name', value_name='ID') }}"
+
+- name: create Openstack Group
+  ansible.builtin.command:
+    cmd: "{{ openstack_bin }} group create {{ group.name }} -f json --domain={{ os_domain_map[ group.domain ] }}"
+  loop_control:
+    loop_var: group
+  loop: "{{ openstack.groups }}"
+  when: not group.name in os_group_map
+  become: true
+
+- name: get updated list of groups.
+  ansible.builtin.command:
+    cmd: "{{ openstack_bin }} group list -f json"
+  register: group_info
+  become: true
+  changed_when: false
+
+- name: Convert updated output of group list to map
+  ansible.builtin.set_fact:
+    os_group_map: "{{ group_info.stdout | from_json | items2dict(key_name='Name', value_name='ID') }}"

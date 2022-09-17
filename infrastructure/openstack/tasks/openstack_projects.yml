@@ -1,0 +1,31 @@
+- name: get projects to check for project being present.
+  ansible.builtin.command:
+    cmd: "{{ openstack_bin }} project list -f json"
+  register: project_info
+  become: true
+  changed_when: false
+
+- name: Update Project Map
+  ansible.builtin.set_fact:
+    os_project_map: "{{ project_info.stdout | from_json | items2dict(key_name='Name', value_name='ID') }}"
+
+- name: Create Project if it does not exist
+  ansible.builtin.command:
+    cmd: "{{ openstack_bin }} project create {{ project.name }}"
+  loop_control:
+    loop_var: project
+  loop: "{{ openstack.projects }}"
+  when: not project.name in os_project_map
+  become: true
+
+- name: get projects to check for project being present.
+  ansible.builtin.command:
+    cmd: "{{ openstack_bin }} project list -f json"
+  register: project_info
+  changed_when: false
+  become: true
+
+- name: Update Project Map
+  ansible.builtin.set_fact:
+    os_project_map: "{{ project_info.stdout | from_json | items2dict(key_name='Name', value_name='ID') }}"
+  become: true

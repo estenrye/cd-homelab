@@ -1,0 +1,34 @@
+- name: Get OpenStack Mappings list
+  ansible.builtin.command:
+    cmd: "{{ openstack_bin }} mapping list -f json"
+  register: mapping_info
+  become: true
+  changed_when: false
+
+- name: Build OpenStack Mapping Map
+  ansible.builtin.set_fact:
+    os_mapping_map: "{{ mapping_info.stdout | from_json | items2dict(key_name='ID', value_name='ID') }}"
+
+- name: Create OpenStack Mapping Template
+  ansible.builtin.template:
+    src: templates/mapping.json.j2
+    dest: /tmp/{{ mapping.name }}.mapping.json
+    mode: 0644
+  when: mapping.name not in os_mapping_map
+  loop_control:
+    loop_var: mapping
+  loop: "{{ openstack.mappings }}"
+
+- name: Create OpenStack Mapping if it does not exist
+  ansible.builtin.command:
+    argv:
+      - "{{ openstack_bin }}"
+      - mapping
+      - create
+      - --rules=/tmp/{{ mapping.name }}.mapping.json
+      - "{{ mapping.name }}"
+  when: mapping.name not in os_mapping_map
+  loop_control:
+    loop_var: mapping
+  loop: "{{ openstack.mappings }}"
+  become: true

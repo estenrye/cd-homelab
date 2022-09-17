@@ -1,0 +1,30 @@
+- name: get domains to check for domain being present.
+  ansible.builtin.command:
+    cmd: "{{ openstack_bin }} domain list -f json"
+  register: domain_info
+  become: true
+  changed_when: false
+
+- name: Select Domain if it exists
+  ansible.builtin.set_fact:
+    os_domain_map: "{{ domain_info.stdout | from_json | items2dict(key_name='Name', value_name='ID') }}"
+
+- name: create domain
+  ansible.builtin.command:
+    cmd: "{{ openstack_bin }} domain create {{ domain.name }} -f json"
+  loop_control:
+    loop_var: domain
+  loop: "{{ openstack.domains }}"
+  when: not domain.name in os_domain_map
+  become: true
+
+- name: Update list of domains.
+  ansible.builtin.command:
+    cmd: "{{ openstack_bin }} domain list -f json"
+  register: domain_info
+  become: true
+  changed_when: false
+
+- name: Select Domain if it exists
+  ansible.builtin.set_fact:
+    os_domain_map: "{{ domain_info.stdout | from_json | items2dict(key_name='Name', value_name='ID') }}"

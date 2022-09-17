@@ -1,0 +1,36 @@
+{
+  "rules": [
+    {
+      "local": [
+        {
+          "group": {
+            "id": "{{ os_group_map[mapping.openstack_group_name] }}"
+          },
+          "user": {
+            "name": "{0} {1}",
+            "email": "{2}"
+          }
+        }
+      ],
+      "remote": [
+        {
+          "type": "FirstName"
+        },
+        {
+          "type": "LastName"
+        },
+        {
+          "type": "Email"
+        },
+        {
+          "regex": false,
+          "type": "memberOf",
+          "any_one_of": [
+            "{{ mapping.idp_group_name }}"
+          ]
+        }
+      ]
+    }
+  ],
+  "id": "{{ mapping.name }}"
+}

@@ -1,0 +1,16 @@
+- hosts:
+    - ec2-54-201-32-52.us-west-2.compute.amazonaws.com
+  tasks:
+    - name: Include Tasks
+      ansible.builtin.include_tasks:
+        file: "{{ task_file }}"
+      loop_control:
+        loop_var: task_file
+      loop:
+        - tasks/openstack_configure_keystone.yml
+        - tasks/openstack_projects.yml
+        - tasks/openstack_domains.yml
+        - tasks/openstack_groups.yml
+        - tasks/openstack_role_assignment.yml
+        - tasks/openstack_identity_providers.yml
+        - tasks/openstack_mappings.yml

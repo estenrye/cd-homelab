@@ -1,0 +1,26 @@
+- name: get identity providers to check for identity provider being present
+  ansible.builtin.command:
+    cmd: "{{ openstack_bin }} identity provider list -f json"
+  register: identity_provider_info
+  become: true
+  changed_when: false
+
+- name: Select Identity Provider if it exists.
+  ansible.builtin.set_fact:
+    os_identity_provider_map: "{{ identity_provider_info.stdout | from_json | items2dict(key_name='ID', value_name='Enabled') }}"
+
+- name: Create OpenStack Identity Provider if it does not exist
+  ansible.builtin.command:
+    argv:
+      - "{{ openstack_bin }}"
+      - identity
+      - provider
+      - create
+      - --remote-id={{ identity_provider.entity_id }}
+      - --domain={{ os_domain_map[ identity_provider.domain ] }}
+      - "{{ identity_provider.name }}"  
+  become: true
+  loop_control:
+    loop_var: identity_provider
+  loop: "{{ openstack.identity_providers }}"
+  when: identity_provider.name not in os_identity_provider_map

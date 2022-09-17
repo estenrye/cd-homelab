@@ -1,0 +1,44 @@
+- name: Get OpenStack Roles
+  ansible.builtin.command:
+    cmd: "{{ openstack_bin }} role list -f json"
+  become: true
+  register: role_info
+  changed_when: false
+
+- name: Create Role Map
+  ansible.builtin.set_fact:
+    os_role_map: "{{ role_info.stdout | from_json | items2dict(key_name='Name', value_name='ID') }}"
+
+- name: Get OpenStack Role Assignments
+  ansible.builtin.command:
+    cmd: "{{ openstack_bin }} role assignment list -f json"
+  become: true
+  register: role_assignment_info
+  changed_when: false
+
+- name: Update Role Assignment Map
+  ansible.builtin.set_fact:
+    os_role_assignment_list: "{{ role_assignment_info.stdout | from_json }}"
+
+- name: Create Role Assignments if they do not exist
+  ansible.builtin.command:
+    argv:
+      - '{{ openstack_bin }}'
+      - role
+      - add
+      - --group-domain={{ os_domain_map[role_assignment.group_domain] }}
+      - --group={{ os_group_map[role_assignment.group] }}
+      - --project={{ os_project_map[role_assignment.project] }}
+      - "{{ role_assignment.role }}"
+  when: >-
+    not (
+      os_role_assignment_list
+      | selectattr('Role', '==', os_role_map[role_assignment.role])
+      | selectattr('Project', '==', os_project_map[role_assignment.project])
+      | selectattr('Group', '==', os_group_map[role_assignment.group])
+      | first
+      | default(false)
+    )
+  loop_control:
+    loop_var: role_assignment
+  loop: "{{ openstack.role_assignments }}"

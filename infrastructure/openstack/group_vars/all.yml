@@ -1,0 +1,29 @@
+ansible_user: ubuntu
+keystone_conf_file_path: /var/snap/microstack/common/etc/keystone
+keystone_service_name: snap.microstack.keystone-uwsgi.service
+openstack_bin: microstack.openstack
+keystone_manage_bin: microstack.keystone-manage
+
+openstack:
+  domains:
+    - name: external
+  projects:
+    - name: DevOps
+  groups:
+    - name: devops-admin
+      domain: external
+  role_assignments:
+    - role: admin
+      project: DevOps
+      group: devops-admin
+      group_domain: external
+  identity_providers:
+    - name: IDP1
+      domain: external
+      entity_id: JumpCloud
+      url: https://sso.jumpcloud.com/saml2/saml2
+  mappings:
+    - name: IDP1_Mapping
+      idp: IDP1
+      openstack_group_name: devops-admin
+      idp_group_name: acl-openstack-devops-admin
