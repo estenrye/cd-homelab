@@ -1,0 +1,36 @@
+ubuntu-autoinstall-iso:
+  hosts:
+    localhost:
+
+zotac:
+  children:
+    zotac_controlplane:
+    zotac_workers:
+
+zotac_controlplane:
+  hosts:
+    controlplane01.lab.rye.ninja:
+    controlplane02.lab.rye.ninja:
+    controlplane03.lab.rye.ninja:
+
+zotac_workers:
+  hosts:
+    worker01.lab.rye.ninja:
+    worker02.lab.rye.ninja:
+
+controlplane:
+  children:
+    zotac_controlplane:
+
+workers:
+  children:
+    zotac_workers:
+
+ubuntu:
+  children:
+    zotac:
+
+all:
+  children:
+    ubuntu-autoinstall-iso:
+    ubuntu:
