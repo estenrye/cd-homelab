@@ -9,7 +9,7 @@ network:
   vlans:
     eth0.61:
       addresses:
-      - 10.5.50.20/16
+      - 10.5.50.21/16
       gateway4: 10.5.0.1
       id: 61
       link: eth0
