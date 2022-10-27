@@ -5,8 +5,8 @@ namespace: ingress-nginx
 commonAnnotations:
   argocd.argoproj.io/sync-wave: "-2"
 
-resources:
-  - resources/namespace.yaml
+# resources:
+#   - resources/namespace.yaml
 
 helmChartInflationGenerator:
   - chartName: ingress-nginx
