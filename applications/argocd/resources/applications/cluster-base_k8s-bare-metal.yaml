@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-base-k8s-bare-metal
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:estenrye/cd-homelab.git
+    targetRevision: HEAD
+    path: applications/cluster-base/overlays/k8s-bare-metal.usmnblm01.rye.ninja
+
+    # kustomize:
+    #   version: v4.5.7
+
+  destination:
+    server: 'https://kubernetes.default.svc'
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
