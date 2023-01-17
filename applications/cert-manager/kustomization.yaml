@@ -1,17 +1,15 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: cert-manager
 
 commonAnnotations:
   argocd.argoproj.io/sync-wave: "-1"
 
 resources:
-  - resources/namespace.yaml
+  - resources/Namespace.yaml
 
 helmChartInflationGenerator:
   - chartName: cert-manager
     chartRepoUrl: https://charts.jetstack.io
-    chartVersion: v1.9.1
+    chartVersion: v1.11.0
     releaseName: cert-manager
-    releaseNamespace: cert-manager
     values: values.yaml

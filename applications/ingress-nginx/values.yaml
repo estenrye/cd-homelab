@@ -41,5 +41,7 @@ controller:
     type: LoadBalancer
     external:
       enabled: true
+      loadBalancerIP: ""
     internal:
       enabled: false
+      loadBalancerIP: ""

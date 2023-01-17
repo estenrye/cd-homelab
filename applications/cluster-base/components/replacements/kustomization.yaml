@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+replacements:
+  - path: argocd.yaml
+  - path: cert-manager.yaml
+  - path: external-dns.yaml
+  - path: ingress-nginx.yaml
+  - path: metallb.yaml

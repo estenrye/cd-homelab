@@ -1,0 +1,14 @@
+- source:
+    version: v1
+    kind: ConfigMap
+    namespace: default
+    name: cluster-config-env
+    fieldPath: data.INGRESS_NGINX_CONTROLLER_IP_ADDRESS
+  targets:
+    - select:
+        version: v1
+        kind: Service
+        namespace: ingress-nginx
+        name: ingress-nginx-controller
+      fieldPaths:
+        - spec.loadBalancerIP

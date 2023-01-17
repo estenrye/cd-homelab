@@ -1,0 +1,45 @@
+- source:
+    version: v1
+    kind: ConfigMap
+    namespace: default
+    name: cluster-config-env
+    fieldPath: data.1PASSWORD_CLOUDFLARE_API_TOKEN
+  targets:
+    - select:
+        group: onepassword.com
+        version: v1
+        kind: OnePasswordItem
+        namespace: cert-manager
+        name: cloudflare-api-token
+      fieldPaths:
+        - spec.itemPath
+- source:
+    version: v1
+    kind: ConfigMap
+    namespace: default
+    name: cluster-config-env
+    fieldPath: data.DNS_SUFFIX
+  targets:
+    - select:
+        group: cert-manager.io
+        version: v1
+        kind: ClusterIssuer
+        namespace: cert-manager
+        name: cloudflare-dns01-issuer
+      fieldPaths:
+        - spec.acme.solvers.0.selector.dnsZones.0
+- source:
+    version: v1
+    kind: ConfigMap
+    namespace: default
+    name: cluster-config-env
+    fieldPath: data.ACME_EMAIL_ADDRESS
+  targets:
+    - select:
+        group: cert-manager.io
+        version: v1
+        kind: ClusterIssuer
+        namespace: cert-manager
+        name: cloudflare-dns01-issuer
+      fieldPaths:
+        - spec.acme.email

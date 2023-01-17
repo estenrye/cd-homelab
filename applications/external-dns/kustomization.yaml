@@ -5,15 +5,16 @@ namespace: external-dns
 commonAnnotations:
   argocd.argoproj.io/sync-wave: "0"
 
+images:
+  - name: registry.k8s.io/external-dns/external-dns
+    newTag: v0.13.2
+
 resources:
   - resources/namespace.yaml
-
-helmChartInflationGenerator:
-  - chartName: external-dns
-    chartRepoUrl: https://kubernetes-sigs.github.io/external-dns/
-    chartVersion: 1.10.1
-    releaseName: external-dns
-    values: values.yaml
+  - https://raw.githubusercontent.com/kubernetes-sigs/external-dns/master/kustomize/external-dns-serviceaccount.yaml?ref=v0.13.2
+  - https://raw.githubusercontent.com/kubernetes-sigs/external-dns/master/kustomize/external-dns-clusterrole.yaml?ref=v0.13.2
+  - https://raw.githubusercontent.com/kubernetes-sigs/external-dns/master/kustomize/external-dns-clusterrolebinding.yaml?ref=v0.13.2
+  - https://raw.githubusercontent.com/kubernetes-sigs/external-dns/master/kustomize/external-dns-deployment.yaml?ref=v0.13.2
 
 patchesJson6902:
   - target:
