@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cluster-base-k8s-bare-metal
+  name: argocd
   namespace: argocd
 spec:
   destination:
@@ -9,7 +9,7 @@ spec:
     namespace: ''
     server: 'https://kubernetes.default.svc'
   source:
-    path: applications/cluster-base/overlays/k8s-bare-metal.usmnblm01.rye.ninja
+    path: applications/argocd
     repoURL: 'git@github.com:estenrye/cd-homelab.git'
     targetRevision: HEAD
   project: default
