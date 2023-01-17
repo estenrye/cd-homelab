@@ -8,6 +8,7 @@ resources:
   - resources/ingress.yaml
   - resources/projects/default.yaml
   - resources/applications/argocd.yaml
+  - resources/applications/k8s-bare-metal.yaml
 
 patchesJson6902:
   - target:
