@@ -6,3 +6,4 @@ replacements:
   - path: external-dns.yaml
   - path: ingress-nginx.yaml
   - path: metallb.yaml
+  - path: nfs-storage-class.yaml

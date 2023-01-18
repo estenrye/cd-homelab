@@ -7,3 +7,5 @@ resources:
   - resources/metallb
   - resources/ingress-nginx
   - resources/external-dns
+  - resources/csi-driver-nfs
+  - resources/nfs-storage-class.yaml
