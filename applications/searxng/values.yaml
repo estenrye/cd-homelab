@@ -27,7 +27,7 @@ ingress:
           - path: /
             pathType: Prefix
             service:
-              name: main
+              name: searxng
               port: 8080
     tls:
       - secretName: searxng-tls
