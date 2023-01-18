@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cluster-base_k8s-bare-metal
+  name: cluster-base-k8s-bare-metal
   namespace: argocd
 spec:
   destination:
