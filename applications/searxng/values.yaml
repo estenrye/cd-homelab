@@ -3,7 +3,7 @@
 env:
   INSTANCE_NAME: "rye.ninja search"
   BASE_URL: "https://search.rye.ninja/"
-  AUTOCOMPLETE: "false"
+  AUTOCOMPLETE: "true"
 
 
 # -- Configure persistence settings for the chart under this key.
@@ -37,12 +37,17 @@ ingress:
 searxng:
   config:
     use_default_settings: true
+    general:
+      enable_metrics: true
+    search:
+      autocomplete: duckduckgo
     server:
       secret_key: pleasechangeme
     # Uncomment when using the builtin rate limiter
     # See https://docs.searxng.org/src/searx.plugins.limiter.html#limiter-plugin
     # server.limiter: true
-    # redis.url: redis://@searxng-redis:6379/0
+    redis:
+      url: redis://@searxng-redis:6379/0
 
 probes:
   readiness:
@@ -67,4 +72,4 @@ probes:
 # Enable when using searxng builtin rate limiter
 # Values: https://github.com/pascaliske/helm-charts/tree/master/charts/redis
 redis:
-  enabled: false
+  enabled: true
