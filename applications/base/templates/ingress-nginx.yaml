@@ -12,9 +12,8 @@ metadata:
 {{- end }}
 spec:
   destination:
-    name: 'in-cluster'
-    namespace: 'argocd'
-    server: 'https://kubernetes.default.svc'
+    namespace: 'ingress-nginx'
+    server: {{ .Values.destination_server }}
   source:
     path: applications/ingress-nginx/overlays/{{ .Release.Name }}
     repoURL: {{ .Values.repoURL }}

@@ -12,9 +12,8 @@ metadata:
 {{- end }}
 spec:
   destination:
-    name: 'in-cluster'
-    namespace: 'argocd'
-    server: 'https://kubernetes.default.svc'
+    namespace: 'csi-driver-nfs'
+    server: {{ .Values.destination_server }}
   source:
     path: applications/csi-driver-nfs/overlays/{{ .Release.Name }}
     repoURL: {{ .Values.repoURL }}

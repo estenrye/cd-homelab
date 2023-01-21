@@ -1,7 +1,8 @@
 nameOverride: ""
 fullnameOverride: ""
 
-repoURL: 'git@github.com:estenrye/cd-homelab.git'
+server: https://kubernetes.default.svc
+repoURL: git@github.com:estenrye/cd-homelab.git
 targetRevision: HEAD
 
 cert_manager:

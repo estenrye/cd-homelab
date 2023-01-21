@@ -12,9 +12,8 @@ metadata:
 {{- end }}
 spec:
   destination:
-    name: 'in-cluster'
-    namespace: 'argocd'
-    server: 'https://kubernetes.default.svc'
+    namespace: 'metallb-system'
+    server: {{ .Values.destination_server }}
   source:
     path: applications/metallb/overlays/{{ .Release.Name }}
     repoURL: {{ .Values.repoURL }}

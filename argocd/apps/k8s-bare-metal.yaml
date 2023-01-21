@@ -13,6 +13,8 @@ spec:
     path: applications/base
     repoURL: 'git@github.com:estenrye/cd-homelab.git'
     targetRevision: HEAD
+    values: |
+      server: https://kubernetes.default.svc
   project: default
   syncPolicy:
     automated:
