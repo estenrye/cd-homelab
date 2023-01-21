@@ -5,7 +5,7 @@ spec:
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'
-  description: CI/CD
+  description: k8s-bare-metal
   destinations:
   - name: in-cluster
     namespace: 'argocd'
