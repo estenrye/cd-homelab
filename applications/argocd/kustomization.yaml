@@ -9,8 +9,6 @@ resources:
   - resources/projects/default.yaml
   - resources/applications/argocd.yaml
   - resources/applications/k8s-bare-metal.yaml
-  - resources/applications/searxng.yaml
-
 patchesJson6902:
   - target:
       version: v1
