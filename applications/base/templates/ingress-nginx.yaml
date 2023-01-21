@@ -13,7 +13,7 @@ metadata:
 spec:
   destination:
     namespace: 'ingress-nginx'
-    server: {{ .Values.destination_server }}
+    server: {{ .Values.server }}
   source:
     path: applications/ingress-nginx/overlays/{{ .Release.Name }}
     repoURL: {{ .Values.repoURL }}
