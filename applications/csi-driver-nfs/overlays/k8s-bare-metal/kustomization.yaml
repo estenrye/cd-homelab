@@ -5,4 +5,4 @@ bases:
   - ../../base
 
 resources:
-  - nfs-storage-classes.yaml
+  - nfs-storage-class.yaml
