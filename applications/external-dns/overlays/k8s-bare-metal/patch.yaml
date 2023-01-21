@@ -1,0 +1,7 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    operator.1password.io/item-path: vaults/Home_Lab/items/cloudflare_api_token
+  name: external-dns
+  namespace: external-dns

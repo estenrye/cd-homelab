@@ -1,12 +1,12 @@
-{{- if .Values.ingress_nginx.enabled -}}
+{{- if .Values.cert_manager.enabled -}}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ include "base.fullname" . }}-ingress-nginx
+  name: {{ include "base.fullname" . }}-cert-manager-cluster-issuer
   namespace: argocd
   labels:
     {{- include "base.labels" . | nindent 4 }}
-{{- if .Values.ingress_nginx.cascade_delete }}
+{{- if .Values.cert_manager.cascade_delete }}
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 {{- end }}
@@ -16,12 +16,12 @@ spec:
     namespace: 'argocd'
     server: 'https://kubernetes.default.svc'
   source:
-    path: applications/ingress-nginx/overlays/{{ .Release.Name }}
+    path: applications/cert-manager-cluster-issuer/overlays/{{ .Release.Name }}
     repoURL: {{ .Values.repoURL }}
     targetRevision: {{ .Values.targetRevision }}
   project: {{ .Release.Name }}
   syncPolicy:
     automated:
-      prune: {{ .Values.ingress_nginx.syncPolicy.automated.prune }}
-      selfHeal: {{ .Values.ingress_nginx.syncPolicy.automated.selfHeal }}
+      prune: {{ .Values.cert_manager.syncPolicy.automated.prune }}
+      selfHeal: {{ .Values.cert_manager.syncPolicy.automated.selfHeal }}
 {{- end }}
