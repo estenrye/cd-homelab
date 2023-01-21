@@ -1,7 +1,7 @@
 nameOverride: ""
 fullnameOverride: ""
 
-repoUrl: 'git@github.com:estenrye/cd-homelab.git'
+repoURL: 'git@github.com:estenrye/cd-homelab.git'
 targetRevision: HEAD
 
 cert_manager:
