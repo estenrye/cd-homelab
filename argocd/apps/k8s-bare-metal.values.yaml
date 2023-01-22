@@ -1,7 +1,0 @@
-server: https://kubernetes.default.svc
-
-csi_driver_nfs:
-  syncPolicy:
-    automated:
-      prune: false
-      selfHeal: false

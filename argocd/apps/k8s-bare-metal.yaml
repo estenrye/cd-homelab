@@ -10,8 +10,13 @@ spec:
   source:
     helm:
       releaseName: k8s-bare-metal
-      valueFiles:
-        - k8s-bare-metal.values.yaml
+      parameters:
+        - name: server
+          value: https://kubernetes.default.svc
+        - name: csi_driver_nfs.syncPolicy.automated.prune
+          value: "false"
+        - name: csi_driver_nfs.syncPolicy.automated.selfHeal
+          value: "false"
     path: applications/base
     repoURL: 'git@github.com:estenrye/cd-homelab.git'
     targetRevision: HEAD
