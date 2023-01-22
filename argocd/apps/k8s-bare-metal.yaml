@@ -13,13 +13,8 @@ spec:
     path: applications/base
     repoURL: 'git@github.com:estenrye/cd-homelab.git'
     targetRevision: HEAD
-    parameters:
-      - name: server
-        value: https://kubernetes.default.svc
-      - name: csi_driver_nfs.syncPolicy.automated.prune
-        value: false
-      - name: csi_driver_nfs.syncPolicy.automated.selfHeal
-        value: false
+    valueFiles:
+      - k8s-bare-metal.values.yaml
   project: default
   syncPolicy:
     automated:
