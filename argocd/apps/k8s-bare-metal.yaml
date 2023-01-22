@@ -13,14 +13,13 @@ spec:
     path: applications/base
     repoURL: 'git@github.com:estenrye/cd-homelab.git'
     targetRevision: HEAD
-    values: |
-      server: https://kubernetes.default.svc
-      csi_driver_nfs:
-        syncPolicy:
-          automated:
-            selfHeal: false
-            prune: false
-          
+    parameters:
+      - name: server
+        value: https://kubernetes.default.svc
+      - name: csi_driver_nfs.syncPolicy.automated.prune
+        value: false
+      - name: csi_driver_nfs.syncPolicy.automated.selfHeal
+        value: false
   project: default
   syncPolicy:
     automated:
