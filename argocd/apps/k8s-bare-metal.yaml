@@ -10,11 +10,12 @@ spec:
   source:
     helm:
       releaseName: k8s-bare-metal
+      valueFiles:
+        - k8s-bare-metal.values.yaml
     path: applications/base
     repoURL: 'git@github.com:estenrye/cd-homelab.git'
     targetRevision: HEAD
-    valueFiles:
-      - k8s-bare-metal.values.yaml
+    
   project: default
   syncPolicy:
     automated:
