@@ -5,9 +5,6 @@ namespace: kube-system
 commonAnnotations:
   argocd.argoproj.io/sync-wave: "0"
 
-resources:
-  - resources/namespace.yaml
-
 helmChartInflationGenerator:
   - chartName: csi-driver-nfs
     chartRepoUrl: https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts
