@@ -9,7 +9,7 @@ metadata:
     kubernetes.io/tls-acme: "true"
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-    external-dns.alpha.kubernetes.io/hostname: search.rye.ninja
+    external-dns.alpha.kubernetes.io/hostname: argocd.rye.ninja
     external-dns.alpha.kubernetes.io/ttl: "120"
 
 spec:

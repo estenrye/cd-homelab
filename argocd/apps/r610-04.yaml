@@ -1,22 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: k8s-bare-metal
+  name: idrac6-r610-04
   namespace: argocd
 spec:
   destination:
-    namespace: 'argocd'
+    name: ''
+    namespace: ''
     server: 'https://kubernetes.default.svc'
   source:
-    helm:
-      releaseName: k8s-bare-metal
-      parameters:
-        - name: server
-          value: https://kubernetes.default.svc
-    path: charts/base
+    path: applications/idrac6/overlays/r610-04
     repoURL: 'git@github.com:estenrye/cd-homelab.git'
     targetRevision: HEAD
-    
   project: default
   syncPolicy:
     automated:

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "idrac6console.fullname" . }}
+  labels:
+    {{- include "idrac6console.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port.http }}
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: {{ .Values.service.port.vnc }}
+      targetPort: vnc
+      protocol: TCP
+      name: vnc
+  selector:
+    {{- include "idrac6console.selectorLabels" . | nindent 4 }}

@@ -1,0 +1,13 @@
+idrac6HostSecret:
+  onepassword_connect:
+    enabled: true
+    item_path: vaults/Home_Lab/items/r610-idrac-02.usmnblm01.rye.ninja
+
+ingress:
+  enabled: true
+  tls: true
+  className: nginx
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: cloudflare-dns01-issuer
+  host: idrac6.r610-02.usmnblm01.rye.ninja

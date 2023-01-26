@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "idrac6console.fullname" . }}
+  labels:
+    {{- include "idrac6console.labels" . | nindent 4 }}
+  {{- if and .Values.idrac6HostSecret.onepassword_connect.enabled (not .Values.idrac6HostSecret.onepassword_connect.create) }}
+  annotations:
+    operator.1password.io/item-path: {{ .Values.idrac6HostSecret.onepassword_connect.item_path }}
+    operator.1password.io/item-name: {{ include "idrac6console.fullname" . }}-host
+  {{- end }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "idrac6console.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "idrac6console.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: IDRAC_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "idrac6console.fullname" . }}-host
+                  key: username
+                  optional: false
+            - name: IDRAC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "idrac6console.fullname" . }}-host
+                  key: password
+                  optional: false
+            - name: IDRAC_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "idrac6console.fullname" . }}-host
+                  key: idrac_host
+                  optional: false
+            - name: VNC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "idrac6console.fullname" . }}-host
+                  key: vnc_password
+                  optional: false
+          ports:
+            - name: http
+              containerPort: 5800
+              protocol: TCP
+            - name: vnc
+              containerPort: 5900
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
