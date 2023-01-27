@@ -4,3 +4,15 @@
 - op: replace
   path: /apiVersion
   value: networking.k8s.io/v1
+- op: remove
+  path: /spec/rules/0/http/paths/0/backend/serviceName
+- op: remove
+  path: /spec/rules/0/http/paths/0/backend/servicePort
+- op: add
+  path: /spec/rules/0/http/paths/0/backend/service
+  value:
+    name: console
+    port: http
+- op: add
+  path: /spec/rules/0/http/paths/0/backend/service/port
+  value: http
