@@ -8,7 +8,7 @@ resources:
 helmChartInflationGenerator:
   - chartName: operator
     chartRepoUrl: https://operator.min.io/
-    chartVersion: 4.4.2
+    chartVersion: 4.5.8
     releaseName: minio-operator
     values: values.yaml
 
