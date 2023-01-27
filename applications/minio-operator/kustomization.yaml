@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: minio-operator
+
+resources:
+  - namespace.yaml
+
+helmChartInflationGenerator:
+  - chartName: operator
+    chartRepoUrl: https://operator.min.io/
+    chartVersion: 4.4.2
+    releaseName: minio-operator
+    values: values.yaml

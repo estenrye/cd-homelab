@@ -1,0 +1,14 @@
+console:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      kubernetes.io/tls-acme: "true"
+      cert-manager.io/cluster-issuer: cloudflare-dns01-issuer
+      external-dns.alpha.kubernetes.io/hostname: minio-operator.rye.ninja
+      external-dns.alpha.kubernetes.io/ttl: "120"
+    tls:
+      - secretName: minio-operator-console-tls
+        hosts:
+          - minio-operator.rye.ninja
+    host: minio-operator.rye.ninja
