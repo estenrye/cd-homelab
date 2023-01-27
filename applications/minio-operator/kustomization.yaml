@@ -11,3 +11,9 @@ helmChartInflationGenerator:
     chartVersion: 4.4.2
     releaseName: minio-operator
     values: values.yaml
+
+patchesJson6902:
+  - target:
+      kind: Ingress
+      name: minio-operator-console
+    path: patch.yaml

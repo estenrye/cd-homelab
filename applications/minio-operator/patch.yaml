@@ -1,0 +1,6 @@
+- op: add
+  path: /spec/rules/0/http/paths/0/pathType
+  value: Prefix
+- op: replace
+  path: /apiVersion
+  value: networking.k8s.io/v1
