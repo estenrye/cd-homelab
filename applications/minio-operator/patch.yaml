@@ -12,7 +12,8 @@
   path: /spec/rules/0/http/paths/0/backend/service
   value:
     name: console
-    port: http
+    port:
+      name: http
 - op: add
   path: /spec/rules/0/http/paths/0/backend/service/port
   value: http
