@@ -1,0 +1,36 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: mayastor
+
+resources:
+  - namespace.yaml
+  - https://raw.githubusercontent.com/openebs/mayastor-control-plane/v1.0.5/deploy/operator-rbac.yaml
+  - https://raw.githubusercontent.com/openebs/mayastor-control-plane/v1.0.5/deploy/mayastorpoolcrd.yaml
+  - https://raw.githubusercontent.com/openebs/mayastor/v1.0.5/deploy/nats-deployment.yaml
+  - https://raw.githubusercontent.com/openebs/mayastor/v1.0.5/deploy/etcd/storage/localpv.yaml
+  - https://raw.githubusercontent.com/openebs/mayastor/v1.0.5/deploy/etcd/statefulset.yaml 
+  - https://raw.githubusercontent.com/openebs/mayastor/v1.0.5/deploy/etcd/svc.yaml
+  - https://raw.githubusercontent.com/openebs/mayastor/v1.0.5/deploy/etcd/svc-headless.yaml
+  - https://raw.githubusercontent.com/openebs/mayastor/v1.0.5/deploy/csi-daemonset.yaml
+  - https://raw.githubusercontent.com/openebs/mayastor-control-plane/v1.0.5/deploy/core-agents-deployment.yaml
+  - https://raw.githubusercontent.com/openebs/mayastor-control-plane/v1.0.5/deploy/rest-deployment.yaml
+  - https://raw.githubusercontent.com/openebs/mayastor-control-plane/v1.0.5/deploy/rest-service.yaml
+  - https://raw.githubusercontent.com/openebs/mayastor-control-plane/v1.0.5/deploy/csi-deployment.yaml
+  - https://raw.githubusercontent.com/openebs/mayastor-control-plane/v1.0.5/deploy/msp-deployment.yaml
+  - https://raw.githubusercontent.com/openebs/mayastor/v1.0.5/deploy/mayastor-daemonset.yaml
+
+patchesJson6902:
+  - target:
+      group: apps
+      version: v1
+      kind: StatefulSet
+      name: nats
+      namespace: mayastor
+    path: patches/schedule-on-controlplane.yaml
+  - target:
+      group: apps
+      version: v1
+      kind: StatefulSet
+      name: mayastor-etcd
+      namespace: mayastor
+    path: patches/schedule-on-controlplane.yaml

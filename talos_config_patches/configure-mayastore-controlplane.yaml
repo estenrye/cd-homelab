@@ -1,0 +1,10 @@
+machine:
+  kublet:
+    extraMounts:
+      - destination: /var/local
+        type: bind
+        source: /var/local
+        options:
+          - rbind
+          - rshared
+          - rw
