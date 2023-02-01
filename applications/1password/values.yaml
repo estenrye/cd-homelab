@@ -1,3 +1,24 @@
-1password:
-  operator:
-    create: true
+operator:
+  create: true
+  autoRestart: true
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      effect: NoSchedule
+  nodeSelector:
+    node-role.kubernetes.io/control-plane: ""
+
+connect:
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      effect: NoSchedule
+  nodeSelector:
+    node-role.kubernetes.io/control-plane: ""
+
+  ingress:
+    enabled: false
+    ingressClassName: ""
+    hosts:
+      - host: chart-example.local
+        paths: []
+    tls: []
+    annotations: []
