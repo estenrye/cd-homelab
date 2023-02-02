@@ -34,3 +34,31 @@ patchesJson6902:
       name: mayastor-etcd
       namespace: mayastor
     path: patches/schedule-on-controlplane.yaml
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: csi-controller
+      namespace: mayastor
+    path: patches/schedule-on-controlplane.yaml
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: msp-operator
+      namespace: mayastor
+    path: patches/schedule-on-controlplane.yaml
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: rest
+      namespace: mayastor
+    path: patches/schedule-on-controlplane.yaml
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: core-agents
+      namespace: mayastor
+    path: patches/schedule-on-controlplane.yaml
