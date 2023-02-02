@@ -42,3 +42,9 @@ patchesJson6902:
       kind: Deployment
       name: argocd-dex-server
     path: patches/schedule-on-controlplane.yaml
+  - target:
+      version: v1
+      group: apps
+      kind: Deployment
+      name: argocd-applicationset-controller
+    path: patches/schedule-on-controlplane.yaml

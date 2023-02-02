@@ -2,6 +2,8 @@ controller:
   replicas: 1
   runOnMaster: false
   runOnControlPlane: false
+  nodeSelector:
+    node-role.kubernetes.io/control-plane: ""
   resources:
     csiProvisioner:
       limits:
