@@ -12,3 +12,33 @@ patchesJson6902:
       kind: ConfigMap
       name: argocd-cm
     path: patches/argocd-cm.yaml
+  - target:
+      version: v1
+      group: apps
+      kind: Deployment
+      name: argocd-server
+    path: patches/schecule-on-controlplane.yaml
+  - target:
+      version: v1
+      group: apps
+      kind: Deployment
+      name: argocd-repo-server
+    path: patches/schecule-on-controlplane.yaml
+  - target:
+      version: v1
+      group: apps
+      kind: Deployment
+      name: argocd-redis
+    path: patches/schecule-on-controlplane.yaml
+  - target:
+      version: v1
+      group: apps
+      kind: Deployment
+      name: argocd-notifications-controller
+    path: patches/schecule-on-controlplane.yaml
+  - target:
+      version: v1
+      group: apps
+      kind: Deployment
+      name: argocd-dex-server
+    path: patches/schecule-on-controlplane.yaml

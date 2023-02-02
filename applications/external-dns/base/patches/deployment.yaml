@@ -46,3 +46,12 @@
     requests:
       cpu: 10m
       memory: 50Mi
+- op: add
+  path: /spec/template/spec/nodeSelector
+  value:
+    node-role.kubernetes.io/control-plane: ""
+- op: add
+  path: /spec/template/spec/tolerations
+  value:
+    - key: node-role.kubernetes.io/control-plane
+      effect: NoSchedule
