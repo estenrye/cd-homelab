@@ -6,3 +6,12 @@ resources:
   - github.com/metallb/metallb/config/native?ref=v0.13.7
   - resources/L2Advertisement.yaml
   - resources/IPAddressPool.yaml
+
+patchesJson6902:
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: controller
+      namespace: metallb-system
+    path: patches/schedule-on-controlplane.yaml
