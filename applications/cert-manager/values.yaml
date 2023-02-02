@@ -27,3 +27,11 @@ containerSecurityContext:
   capabilities:
     drop:
     - ALL
+
+nodeSelector:
+  kubernetes.io/os: linux
+  node-role.kubernetes.io/control-plane: ""
+
+tolerations:
+  - key: node-role.kubernetes.io/control-plane
+    effect: NoSchedule
