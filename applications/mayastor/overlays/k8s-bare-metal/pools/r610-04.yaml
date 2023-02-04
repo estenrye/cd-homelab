@@ -1,0 +1,10 @@
+apiVersion: openebs.io/v1alpha1
+kind: MayastorPool
+metadata:
+  name: r610-04
+  namespace: mayastor
+spec:
+  node: r610-04
+  disks: 
+    - /dev/sdb
+    - /dev/sdc
