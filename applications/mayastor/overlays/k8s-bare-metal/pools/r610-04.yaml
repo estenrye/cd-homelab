@@ -7,3 +7,13 @@ spec:
   node: r610-04
   disks: 
     - /dev/sdb
+---
+apiVersion: openebs.io/v1alpha1
+kind: MayastorPool
+metadata:
+  name: r610-04-2
+  namespace: mayastor
+spec:
+  node: r610-04
+  disks: 
+    - /dev/sdc
