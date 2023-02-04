@@ -1,9 +1,0 @@
-apiVersion: openebs.io/v1alpha1
-kind: MayastorPool
-metadata:
-  name: zbox-06
-  namespace: mayastor
-spec:
-  node: zbox-06
-  disks: 
-    - /dev/sdb
