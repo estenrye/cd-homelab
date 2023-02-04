@@ -7,6 +7,3 @@ bases:
 
 resources:
   - pools/r610-04.yaml
-  - pools/zbox-04.yaml
-  - pools/zbox-05.yaml
-  - pools/zbox-06.yaml
