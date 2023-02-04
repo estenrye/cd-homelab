@@ -7,4 +7,3 @@ spec:
   node: r610-04
   disks: 
     - /dev/sdb
-    - /dev/sdc
