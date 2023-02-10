@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: minecraft
+
+resources:
+  - namespace.yaml
+  - rcon-ingress.yaml
+
+helmChartInflationGenerator:
+  - chartName: minecraft
+    chartRepoUrl: https://itzg.github.io/minecraft-server-charts/
+    chartVersion: 4.5.0
+    releaseName: minecraft
+    values: values.yaml
