@@ -1,0 +1,4 @@
+- op: add
+  path: /spec/template/spec/nodeSelector
+  value:
+    node-selector.direct.csi.min.io: "true"

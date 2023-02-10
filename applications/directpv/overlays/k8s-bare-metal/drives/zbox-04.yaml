@@ -1,0 +1,14 @@
+apiVersion: direct.csi.min.io/v1beta5
+kind: DirectCSIDrive
+metadata:
+  labels:
+    direct.csi.min.io/access-tier: Unknown
+    direct.csi.min.io/created-by: directcsi-driver
+    direct.csi.min.io/node: zbox-04
+    direct.csi.min.io/path: sdb
+    direct.csi.min.io/version: v1beta5
+  name: zbox-04-sdb
+spec:
+  directCSIOwned: true
+  requestedFormat:
+    filesystem: xfs
