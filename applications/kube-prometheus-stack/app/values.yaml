@@ -245,6 +245,13 @@ prometheus-node-exporter:
 ##
 prometheusOperator:
   enabled: true
+  admissionWebhooks:
+    certManager:
+      enabled: true
+      rootCert:
+        duration: ""  # default to be 5y
+      admissionCert:
+        duration: ""  # default to be 1y
   kubeletService:
     enabled: true
   #TODO: Review prometheusOperator resources
