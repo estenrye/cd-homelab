@@ -5,6 +5,14 @@ server: https://kubernetes.default.svc
 repoURL: git@github.com:estenrye/cd-homelab.git
 targetRevision: HEAD
 
+kube_prometheus_stack:
+  cascade_delete: true
+  enabled: true
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
 one_password:
   cascade_delete: true
   enabled: true

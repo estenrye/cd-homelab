@@ -6,11 +6,11 @@ commonAnnotations:
   argocd.argoproj.io/sync-wave: "-1"
 
 resources:
-  - resources/namespace.yaml
+  - OnePasswordItem.yaml
 
 helmChartInflationGenerator:
   - chartName: kube-prometheus-stack
     chartRepoUrl: https://prometheus-community.github.io/helm-charts
-    chartVersion: 39.2.1
+    chartVersion: 45.0.0
     releaseName: kube-prometheus
     values: values.yaml
