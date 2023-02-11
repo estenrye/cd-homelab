@@ -20,6 +20,8 @@ spec:
     targetRevision: {{ .Values.targetRevision }}
   project: {{ .Release.Name }}
   syncPolicy:
+    syncOptions:
+      - ServerSideApply=true
     automated:
       prune: {{ .Values.one_password.syncPolicy.automated.prune }}
       selfHeal: {{ .Values.one_password.syncPolicy.automated.selfHeal }}
