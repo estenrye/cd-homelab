@@ -6,6 +6,7 @@ commonAnnotations:
   argocd.argoproj.io/sync-wave: "-1"
 
 resources:
+  - namespace.yaml
   - OnePasswordItem.yaml
 
 helmChartInflationGenerator:
