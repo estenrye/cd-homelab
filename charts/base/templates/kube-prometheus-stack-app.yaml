@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ include "base.fullname" . }}-kube-prometheus-stack
+  name: {{ include "base.fullname" . }}-kube-prometheus-stack-app
   namespace: argocd
   labels:
     {{- include "base.labels" . | nindent 4 }}
@@ -15,7 +15,7 @@ spec:
     namespace: monitoring
     server: {{ .Values.server }}
   source:
-    path: applications/kube-prometheus-stack
+    path: applications/kube-prometheus-stack/app
     repoURL: {{ .Values.repoURL }}
     targetRevision: {{ .Values.targetRevision }}
   project: {{ .Release.Name }}
