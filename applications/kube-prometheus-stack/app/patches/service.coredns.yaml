@@ -3,8 +3,3 @@
   value:
     type: ExternalName
     externalName: kube-dns.kube-system
-    ports:
-    - name: http-metrics
-      port: 9153
-      protocol: TCP
-      targetPort: 9153
