@@ -45,7 +45,7 @@ patchesJson6902:
       version: v1
       kind: ServiceMonitor
       name: prometheus-coredns
-    path: patches/servicemonitor.namespaceSelector.yaml
+    path: patches/servicemonitor.coredns.yaml
   # - target:
   #     group: monitoring.coreos.com
   #     version: v1
