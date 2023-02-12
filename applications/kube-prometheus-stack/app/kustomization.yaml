@@ -29,18 +29,18 @@ patchesJson6902:
       version: v1
       kind: ServiceMonitor
       name: prometheus-alertmanager
-    path: patches/servicemonitor.alertmanager.yaml
+    path: patches/servicemonitor.namespaceSelector.yaml
   - target:
       version: v1
       kind: Service
       name: prometheus-alertmanager
     path: patches/service.alertmanager.yaml
-  # - target:
-  #     group: monitoring.coreos.com
-  #     version: v1
-  #     kind: ServiceMonitor
-  #     name: prometheus-apiserver
-  #   path: patches/servicemonitor.yaml
+  - target:
+      group: monitoring.coreos.com
+      version: v1
+      kind: ServiceMonitor
+      name: prometheus-apiserver
+    path: patches/servicemonitor.namespaceSelector.yaml
   # - target:
   #     group: monitoring.coreos.com
   #     version: v1
