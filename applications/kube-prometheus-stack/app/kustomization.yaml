@@ -24,12 +24,11 @@ patchesJson6902:
       kind: ServiceMonitor
       name: prometheus-node-exporter
     path: patches/servicemonitor.yaml
-  # - target:
-  #     group: monitoring.coreos.com
-  #     version: v1
-  #     kind: ServiceMonitor
-  #     name: prometheus-alertmanager
-  #   path: patches/servicemonitor.yaml
+  - target:
+      version: v1
+      kind: Service
+      name: prometheus-alertmanager
+    path: patches/service.alertmanager.yaml
   # - target:
   #     group: monitoring.coreos.com
   #     version: v1
