@@ -5,6 +5,20 @@ namespace: monitoring
 resources:
   - OnePasswordItem.yaml
 
+patchesJson6902:
+  - target:
+      group: monitoring.coreos.com
+      version: v1
+      kind: ServiceMonitor
+      name: prometheus-node-exporter
+    path: patches/servicemonitor.yaml
+  - target:
+      group: monitoring.coreos.com
+      version: v1
+      kind: ServiceMonitor
+      name: kube-state-metrics
+    path: patches/servicemonitor.yaml
+
 helmChartInflationGenerator:
   - chartName: kube-prometheus-stack
     chartRepoUrl: https://prometheus-community.github.io/helm-charts
