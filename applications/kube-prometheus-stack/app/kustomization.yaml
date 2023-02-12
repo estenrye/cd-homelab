@@ -22,68 +22,68 @@ patchesJson6902:
       group: monitoring.coreos.com
       version: v1
       kind: ServiceMonitor
-      name: prometheus-alertmanager
-    path: patches/servicemonitor.yaml
-  - target:
-      group: monitoring.coreos.com
-      version: v1
-      kind: ServiceMonitor
-      name: prometheus-apiserver
-    path: patches/servicemonitor.yaml
-  - target:
-      group: monitoring.coreos.com
-      version: v1
-      kind: ServiceMonitor
-      name: prometheus-coredns
-    path: patches/servicemonitor.yaml
-  - target:
-      group: monitoring.coreos.com
-      version: v1
-      kind: ServiceMonitor
-      name: prometheus-kube-controller-manager
-    path: patches/servicemonitor.yaml
-  - target:
-      group: monitoring.coreos.com
-      version: v1
-      kind: ServiceMonitor
-      name: prometheus-kube-etcd
-    path: patches/servicemonitor.yaml
-  - target:
-      group: monitoring.coreos.com
-      version: v1
-      kind: ServiceMonitor
-      name: prometheus-kube-proxy
-    path: patches/servicemonitor.yaml
-  - target:
-      group: monitoring.coreos.com
-      version: v1
-      kind: ServiceMonitor
-      name: prometheus-kube-scheduler
-    path: patches/servicemonitor.yaml
-  - target:
-      group: monitoring.coreos.com
-      version: v1
-      kind: ServiceMonitor
-      name: prometheus-kubelet
-    path: patches/servicemonitor.yaml
-  - target:
-      group: monitoring.coreos.com
-      version: v1
-      kind: ServiceMonitor
       name: prometheus-node-exporter
     path: patches/servicemonitor.yaml
-  - target:
-      group: monitoring.coreos.com
-      version: v1
-      kind: ServiceMonitor
-      name: prometheus-operator
-    path: patches/servicemonitor.yaml
-  - target:
-      group: monitoring.coreos.com
-      version: v1
-      kind: ServiceMonitor
-      name: prometheus-prometheus
-    path: patches/servicemonitor.yaml
+  # - target:
+  #     group: monitoring.coreos.com
+  #     version: v1
+  #     kind: ServiceMonitor
+  #     name: prometheus-alertmanager
+  #   path: patches/servicemonitor.yaml
+  # - target:
+  #     group: monitoring.coreos.com
+  #     version: v1
+  #     kind: ServiceMonitor
+  #     name: prometheus-apiserver
+  #   path: patches/servicemonitor.yaml
+  # - target:
+  #     group: monitoring.coreos.com
+  #     version: v1
+  #     kind: ServiceMonitor
+  #     name: prometheus-coredns
+  #   path: patches/servicemonitor.yaml
+  # - target:
+  #     group: monitoring.coreos.com
+  #     version: v1
+  #     kind: ServiceMonitor
+  #     name: prometheus-kube-controller-manager
+  #   path: patches/servicemonitor.yaml
+  # - target:
+  #     group: monitoring.coreos.com
+  #     version: v1
+  #     kind: ServiceMonitor
+  #     name: prometheus-kube-etcd
+  #   path: patches/servicemonitor.yaml
+  # - target:
+  #     group: monitoring.coreos.com
+  #     version: v1
+  #     kind: ServiceMonitor
+  #     name: prometheus-kube-proxy
+  #   path: patches/servicemonitor.yaml
+  # - target:
+  #     group: monitoring.coreos.com
+  #     version: v1
+  #     kind: ServiceMonitor
+  #     name: prometheus-kube-scheduler
+  #   path: patches/servicemonitor.yaml
+  # - target:
+  #     group: monitoring.coreos.com
+  #     version: v1
+  #     kind: ServiceMonitor
+  #     name: prometheus-kubelet
+  #   path: patches/servicemonitor.yaml
+  # - target:
+  #     group: monitoring.coreos.com
+  #     version: v1
+  #     kind: ServiceMonitor
+  #     name: prometheus-operator
+  #   path: patches/servicemonitor.yaml
+  # - target:
+  #     group: monitoring.coreos.com
+  #     version: v1
+  #     kind: ServiceMonitor
+  #     name: prometheus-prometheus
+  #   path: patches/servicemonitor.yaml
 
 helmChartInflationGenerator:
   - chartName: kube-prometheus-stack
