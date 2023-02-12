@@ -36,9 +36,8 @@ patchesJson6902:
       name: prometheus-alertmanager
     path: patches/service.alertmanager.yaml
   - target:
-      group: monitoring.coreos.com
       version: v1
-      kind: ServiceMonitor
+      kind: Service
       name: prometheus-coredns
     path: patches/service.coredns.yaml
   # - target:
