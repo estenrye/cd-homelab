@@ -19,8 +19,8 @@ spec:
     repoURL: {{ .Values.repoURL }}
     targetRevision: {{ .Values.targetRevision }}
   project: {{ .Release.Name }}
-  syncPolicy:
-    automated:
-      prune: {{ .Values.one_password.syncPolicy.automated.prune }}
-      selfHeal: {{ .Values.one_password.syncPolicy.automated.selfHeal }}
+  # syncPolicy:
+  #   automated:
+  #     prune: {{ .Values.one_password.syncPolicy.automated.prune }}
+  #     selfHeal: {{ .Values.one_password.syncPolicy.automated.selfHeal }}
 {{- end }}
