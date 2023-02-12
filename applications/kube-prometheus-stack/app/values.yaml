@@ -277,6 +277,12 @@ nodeExporter:
 ##
 prometheus-node-exporter:
   fullnameOverride: prometheus-node-exporter
+  podLabels:
+    jobLabel: node-exporter
+  prometheus:
+    monitor:
+      enabled: true
+      jobLabel: node-exporter
   #TODO: Review node-exporter resources
   resources:
     limits:
