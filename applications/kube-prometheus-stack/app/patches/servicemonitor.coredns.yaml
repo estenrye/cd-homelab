@@ -1,6 +1,5 @@
-- op: replace
-  path: /spec/namespaceSelector/matchNames/0
-  value: monitoring
+- op: remove
+  path: /spec/namespaceSelector
 - op: replace
   path: /spec/jobLabel
   value: coredns
