@@ -1,5 +1,3 @@
-- op: remove
-  path: /spec/namespaceSelector
 - op: replace
   path: /spec/jobLabel
   value: coredns
