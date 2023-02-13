@@ -40,12 +40,11 @@ patchesJson6902:
       kind: Service
       name: prometheus-coredns
     path: patches/service.move-to-kube-system.yaml
-  # - target:
-  #     group: monitoring.coreos.com
-  #     version: v1
-  #     kind: ServiceMonitor
-  #     name: prometheus-coredns
-  #   path: patches/servicemonitor.coredns.yaml
+  - target:
+      version: v1
+      kind: Service
+      name: prometheus-kube-controller-manager
+    path: patches/service.move-to-kube-system.yaml
   # - target:
   #     group: monitoring.coreos.com
   #     version: v1
