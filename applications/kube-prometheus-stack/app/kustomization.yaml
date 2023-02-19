@@ -46,15 +46,13 @@ patchesJson6902:
       name: prometheus-kube-controller-manager
     path: patches/service.move-to-kube-system.yaml
   - target:
-      group: monitoring.coreos.com
       version: v1
-      kind: ServiceMonitor
+      kind: Service
       name: prometheus-kube-controller-manager
     path: patches/service.move-to-kube-system.yaml
   - target:
-      group: monitoring.coreos.com
       version: v1
-      kind: ServiceMonitor
+      kind: Service
       name: prometheus-kube-etcd
     path: patches/service.move-to-kube-system.yaml
   # - target:
