@@ -1,0 +1,7 @@
+- op: replace
+  path: /spec/selector
+  value:
+    k8s-app: kube-controller-manager
+- op: replace
+  path: /metadata/namespace
+  value: kube-system

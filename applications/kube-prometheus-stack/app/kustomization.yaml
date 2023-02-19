@@ -49,7 +49,7 @@ patchesJson6902:
       version: v1
       kind: Service
       name: prometheus-kube-controller-manager
-    path: patches/service.move-to-kube-system.yaml
+    path: patches/service.kube-controller-manager.yaml
   - target:
       version: v1
       kind: Service
