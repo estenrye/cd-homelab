@@ -1,5 +1,9 @@
 - op: remove
   path: /spec/selector
+- op: remove
+  path: /spec/type
+- op: remove
+  path: /spec/clusterIP
 # - op: replace
 #   path: /metadata/namespace
 #   value: kube-system
