@@ -15,17 +15,17 @@ endpoints:
       - 10.5.11.1
     conditions:
       ready: true
-    hostname: etcd
+      serving: true
     nodeName: zbox-01
   - addresses:
       - 10.5.11.2
     conditions:
       ready: true
-    hostname: etcd
+      serving: true
     nodeName: zbox-02
   - addresses:
       - 10.5.11.3
     conditions:
       ready: true
-    hostname: etcd
+      serving: true
     nodeName: zbox-03
