@@ -56,6 +56,12 @@ patchesJson6902:
       kind: Service
       name: prometheus-kube-etcd
     path: patches/service.etcd.yaml
+  - target:
+      group: monitoring.coreos.com
+      version: v1
+      kind: ServiceMonitor
+      name: prometheus-kube-etcd
+    path: patches/servicemonitor.namespaceSelector.yaml
 
   # - target:
   #     group: monitoring.coreos.com
