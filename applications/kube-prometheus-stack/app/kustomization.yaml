@@ -72,24 +72,18 @@ patchesJson6902:
       kind: Service
       name: prometheus-kube-scheduler
     path: patches/service.kube-scheduler.yaml
-  # - target:
-  #     group: monitoring.coreos.com
-  #     version: v1
-  #     kind: ServiceMonitor
-  #     name: prometheus-kubelet
-  #   path: patches/servicemonitor.yaml
-  # - target:
-  #     group: monitoring.coreos.com
-  #     version: v1
-  #     kind: ServiceMonitor
-  #     name: prometheus-operator
-  #   path: patches/servicemonitor.yaml
-  # - target:
-  #     group: monitoring.coreos.com
-  #     version: v1
-  #     kind: ServiceMonitor
-  #     name: prometheus-prometheus
-  #   path: patches/servicemonitor.yaml
+  - target:
+      group: monitoring.coreos.com
+      version: v1
+      kind: ServiceMonitor
+      name: prometheus-operator
+    path: patches/servicemonitor.namespaceSelector.yaml
+  - target:
+      group: monitoring.coreos.com
+      version: v1
+      kind: ServiceMonitor
+      name: prometheus-prometheus
+    path: patches/servicemonitor.namespaceSelector.yaml
 
 helmChartInflationGenerator:
   - chartName: kube-prometheus-stack
