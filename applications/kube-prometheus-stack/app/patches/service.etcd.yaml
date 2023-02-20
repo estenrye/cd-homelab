@@ -1,0 +1,5 @@
+- op: remove
+  path: /spec/selector
+- op: replace
+  path: /metadata/namespace
+  value: kube-system

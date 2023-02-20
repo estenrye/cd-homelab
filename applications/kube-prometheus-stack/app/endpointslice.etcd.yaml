@@ -1,0 +1,30 @@
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: prometheus-kube-etcd
+  labels:
+    kubernetes.io/service-name: prometheus-kube-etcd
+addressType: IPv4
+ports:
+  - name: http-metrics
+    port: 2381
+    protocol: TCP
+endpoints:
+  - addresses:
+      - 10.5.11.1
+    conditions:
+      ready: true
+    hostname: etcd
+    nodeName: zbox-01
+  - addresses:
+      - 10.5.11.2
+    conditions:
+      ready: true
+    hostname: etcd
+    nodeName: zbox-02
+  - addresses:
+      - 10.5.11.3
+    conditions:
+      ready: true
+    hostname: etcd
+    nodeName: zbox-03

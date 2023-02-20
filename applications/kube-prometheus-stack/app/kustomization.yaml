@@ -4,6 +4,7 @@ namespace: monitoring
 
 resources:
   - OnePasswordItem.yaml
+  - endpointslice.etcd.yaml
 
 patchesJson6902:
   - target:
@@ -54,7 +55,7 @@ patchesJson6902:
       version: v1
       kind: Service
       name: prometheus-kube-etcd
-    path: patches/service.move-to-kube-system.yaml
+    path: patches/service.etcd.yaml
   # - target:
   #     group: monitoring.coreos.com
   #     version: v1
