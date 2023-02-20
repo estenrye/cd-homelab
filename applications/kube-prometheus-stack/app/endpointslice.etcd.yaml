@@ -5,27 +5,15 @@ metadata:
   namespace: kube-system
   labels:
     kubernetes.io/service-name: prometheus-kube-etcd
-addressType: IPv4
-ports:
-  - name: http-metrics
-    port: 2381
-    protocol: TCP
-endpoints:
+subsets:
   - addresses:
-      - 10.5.11.1
-    conditions:
-      ready: true
-      serving: true
-    nodeName: zbox-01
-  - addresses:
-      - 10.5.11.2
-    conditions:
-      ready: true
-      serving: true
-    nodeName: zbox-02
-  - addresses:
-      - 10.5.11.3
-    conditions:
-      ready: true
-      serving: true
-    nodeName: zbox-03
+      - ip: 10.5.11.1
+        nodeName: zbox-01
+      - ip: 10.5.11.2
+        nodeName: zbox-02
+      - ip: 10.5.11.3
+        nodeName: zbox-03
+    ports:
+      - name: http-metrics
+        port: 2381
+        protocol: TCP
