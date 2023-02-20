@@ -1,6 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: monitoring
+# namespace: monitoring
 
 resources:
   - OnePasswordItem.yaml
@@ -56,6 +56,7 @@ patchesJson6902:
       kind: Service
       name: prometheus-kube-etcd
     path: patches/service.etcd.yaml
+
   # - target:
   #     group: monitoring.coreos.com
   #     version: v1
@@ -92,4 +93,5 @@ helmChartInflationGenerator:
     chartRepoUrl: https://prometheus-community.github.io/helm-charts
     chartVersion: 45.0.0
     releaseName: kube-prometheus
+    releaseNamespace: monitoring
     values: values.yaml
