@@ -67,13 +67,11 @@ patchesJson6902:
       kind: Service
       name: prometheus-kube-proxy
     path: patches/service.move-to-kube-system.yaml
-
-  # - target:
-  #     group: monitoring.coreos.com
-  #     version: v1
-  #     kind: ServiceMonitor
-  #     name: prometheus-kube-scheduler
-  #   path: patches/servicemonitor.yaml
+  - target:
+      version: v1
+      kind: Service
+      name: prometheus-kube-scheduler
+    path: patches/service.move-to-kube-system.yaml
   # - target:
   #     group: monitoring.coreos.com
   #     version: v1
