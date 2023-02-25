@@ -45,14 +45,14 @@ resources:
 - ./manifests/grafana-serviceAccount.yaml
 - ./manifests/grafana-serviceMonitor.yaml
 - ./manifests/kube-prometheus-prometheusRule.yaml
-- ./manifests/kubeStateMetrics-clusterRole.yaml
-- ./manifests/kubeStateMetrics-clusterRoleBinding.yaml
-- ./manifests/kubeStateMetrics-deployment.yaml
-- ./manifests/kubeStateMetrics-networkPolicy.yaml
-- ./manifests/kubeStateMetrics-prometheusRule.yaml
-- ./manifests/kubeStateMetrics-service.yaml
-- ./manifests/kubeStateMetrics-serviceAccount.yaml
-- ./manifests/kubeStateMetrics-serviceMonitor.yaml
+- ./manifests/kube-state-metrics-clusterRole.yaml
+- ./manifests/kube-state-metrics-clusterRoleBinding.yaml
+- ./manifests/kube-state-metrics-deployment.yaml
+- ./manifests/kube-state-metrics-networkPolicy.yaml
+- ./manifests/kube-state-metrics-prometheusRule.yaml
+- ./manifests/kube-state-metrics-service.yaml
+- ./manifests/kube-state-metrics-serviceAccount.yaml
+- ./manifests/kube-state-metrics-serviceMonitor.yaml
 # - ./manifests/kubernetesControlPlane-prometheusRule.yaml
 # - ./manifests/kubernetesControlPlane-serviceMonitorApiserver.yaml
 # - ./manifests/kubernetesControlPlane-serviceMonitorCoreDNS.yaml
