@@ -5422,7 +5422,7 @@ items:
               {
                   "description": "",
                   "label": "prometheus",
-                  "name": "DS_PROMETHEUS",
+                  "name": "prometheus",
                   "pluginId": "prometheus",
                   "pluginName": "Prometheus",
                   "type": "datasource"
