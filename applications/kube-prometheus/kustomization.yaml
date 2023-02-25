@@ -58,10 +58,12 @@ resources:
 - ./manifests/kube-state-metrics-serviceMonitor.yaml
 - ./manifests/kubernetes-prometheusRule.yaml
 - ./manifests/kubernetes-podMonitorKubeProxy.yaml
+- ./manifests/kubernetes-kubeControllerManagerPrometheusDiscoveryService.yaml
+- ./manifests/kubernetes-serviceMonitorKubeControllerManager.yaml
+- ./manifests/kubernetes-kubeSchedulerPrometheusDiscoveryService.yaml
+- ./manifests/kubernetes-serviceMonitorKubeScheduler.yaml
 # - ./manifests/kubernetesControlPlane-serviceMonitorApiserver.yaml
 # - ./manifests/kubernetesControlPlane-serviceMonitorCoreDNS.yaml
-# - ./manifests/kubernetesControlPlane-serviceMonitorKubeControllerManager.yaml
-# - ./manifests/kubernetesControlPlane-serviceMonitorKubeScheduler.yaml
 # - ./manifests/kubernetesControlPlane-serviceMonitorKubelet.yaml
 - ./manifests/node-exporter-clusterRole.yaml
 - ./manifests/node-exporter-clusterRoleBinding.yaml
