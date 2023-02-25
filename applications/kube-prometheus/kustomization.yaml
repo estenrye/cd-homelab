@@ -62,7 +62,7 @@ resources:
 - ./manifests/kubernetes-serviceMonitorKubeControllerManager.yaml
 - ./manifests/kubernetes-kubeSchedulerPrometheusDiscoveryService.yaml
 - ./manifests/kubernetes-serviceMonitorKubeScheduler.yaml
-# - ./manifests/kubernetesControlPlane-serviceMonitorApiserver.yaml
+- ./manifests/kubernetes-serviceMonitorApiserver.yaml
 # - ./manifests/kubernetesControlPlane-serviceMonitorCoreDNS.yaml
 # - ./manifests/kubernetesControlPlane-serviceMonitorKubelet.yaml
 - ./manifests/node-exporter-clusterRole.yaml
