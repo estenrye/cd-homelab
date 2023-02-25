@@ -7,7 +7,7 @@ targetRevision: HEAD
 
 kube_prometheus_stack:
   cascade_delete: true
-  enabled: true
+  enabled: false
   syncPolicy:
     automated:
       prune: true
