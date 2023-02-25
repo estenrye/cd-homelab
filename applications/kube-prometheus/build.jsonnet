@@ -55,6 +55,7 @@ local ingress(name, namespace, svc_host, svc_name, svc_port) = {
 
 local kp =
   (import 'kube-prometheus/main.libsonnet') +
+  (import 'github.com/etcd-io/etcd/contrib/mixin/mixin.libsonnet') +
   {
     values+:: {
       common+: {
@@ -68,10 +69,9 @@ local kp =
             },
           },
         },
-        dashboards: std.mergePatch(super.dashboards, {
-          // Add more unwanted dashboards here
-          // 'alertmanager-overview.json': null,
-        }),
+        dashboards+:: {  // use this method to import your dashboards to Grafana
+          'etcd-dashboard.json': (import './dashboards/etcd_rev3.json'),
+        },
       },
       kubernetesControlPlane+: {
         kubeProxy: true,
@@ -88,6 +88,73 @@ local kp =
       prometheus+: {
         spec+: {
           externalUrl: 'https://prometheus.rye.ninja',
+        },
+      },
+      serviceEtcd: {
+        apiVersion: 'v1',
+        kind: 'Service',
+        metadata: {
+          name: 'etcd',
+          namespace: 'kube-system',
+          labels: { 'app.kubernetes.io/name': 'etcd' },
+        },
+        spec: {
+          ports: [
+            { name: 'metrics', targetPort: 2379, port: 2379 },
+          ],
+          clusterIP: 'None',
+        },
+      },
+      endpointsEtcd: {
+        apiVersion: 'v1',
+        kind: 'Endpoints',
+        metadata: {
+          name: 'etcd',
+          namespace: 'kube-system',
+          labels: { 'app.kubernetes.io/name': 'etcd' },
+        },
+        subsets: [{
+          addresses: [
+            { ip: etcdIP }
+            for etcdIP in ['10.5.11.1', '10.5.11.2', '10.5.11.3']
+          ],
+          ports: [
+            { name: 'metrics', port: 2379, protocol: 'TCP' },
+          ],
+        }],
+      },
+      serviceMonitorEtcd: {
+        apiVersion: 'monitoring.coreos.com/v1',
+        kind: 'ServiceMonitor',
+        metadata: {
+          name: 'etcd',
+          namespace: 'kube-system',
+          labels: {
+            'app.kubernetes.io/name': 'etcd',
+          },
+        },
+        spec: {
+          jobLabel: 'app.kubernetes.io/name',
+          endpoints: [
+            {
+              port: 'metrics',
+              interval: '30s',
+              scheme: 'https',
+              // Prometheus Operator (and Prometheus) allow us to specify a tlsConfig. This is required as most likely your etcd metrics end points is secure.
+              // tlsConfig: {
+              //   caFile: '/etc/prometheus/secrets/kube-etcd-client-certs/etcd-client-ca.crt',
+              //   keyFile: '/etc/prometheus/secrets/kube-etcd-client-certs/etcd-client.key',
+              //   certFile: '/etc/prometheus/secrets/kube-etcd-client-certs/etcd-client.crt',
+              //   [if $.values.etcd.serverName != null then 'serverName']: $.values.etcd.serverName,
+              //   [if $.values.etcd.insecureSkipVerify != null then 'insecureSkipVerify']: $.values.etcd.insecureSkipVerify,
+              // },
+            },
+          ],
+          selector: {
+            matchLabels: {
+              'app.kubernetes.io/name': 'etcd',
+            },
+          },
         },
       },
     },
@@ -137,9 +204,7 @@ local kp =
         [{ name: 'metrics', port: 10055, targetPort: 10055 }, { name: 'http-metrics-dnsmasq', port: 10054, targetPort: 10054 }]
       ),
     },
-
   };
-
 
 { 'setup/0namespace-namespace': kp.kubePrometheus.namespace }
 + {
