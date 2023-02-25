@@ -1,6 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+- ./resources/grafana-admin-credentials.yaml
 - ./manifests/setup/0namespace-namespace.yaml
 - ./manifests/setup/prometheus-operator-0alertmanagerConfigCustomResourceDefinition.yaml
 - ./manifests/setup/prometheus-operator-0alertmanagerCustomResourceDefinition.yaml
