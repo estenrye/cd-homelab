@@ -44,7 +44,7 @@ resources:
 - ./manifests/grafana-service.yaml
 - ./manifests/grafana-serviceAccount.yaml
 - ./manifests/grafana-serviceMonitor.yaml
-- ./manifests/kubePrometheus-prometheusRule.yaml
+- ./manifests/kube-prometheus-prometheusRule.yaml
 - ./manifests/kubeStateMetrics-clusterRole.yaml
 - ./manifests/kubeStateMetrics-clusterRoleBinding.yaml
 - ./manifests/kubeStateMetrics-deployment.yaml
