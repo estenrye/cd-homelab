@@ -94,3 +94,10 @@ resources:
 # - ./manifests/prometheusAdapter-service.yaml
 # - ./manifests/prometheusAdapter-serviceAccount.yaml
 # - ./manifests/prometheusAdapter-serviceMonitor.yaml
+
+patchesJson6902:
+  - target:
+      version: v1
+      kind: Namespace
+      name: monitoring
+    path: patches/namespace.yaml
