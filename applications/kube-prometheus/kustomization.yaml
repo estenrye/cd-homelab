@@ -26,6 +26,7 @@ resources:
 - ./manifests/alertmanager-service.yaml
 - ./manifests/alertmanager-serviceAccount.yaml
 - ./manifests/alertmanager-serviceMonitor.yaml
+- ./manifests/alertmanager-main-ingress.yaml
 # # - ./manifests/blackboxExporter-clusterRole.yaml
 # # - ./manifests/blackboxExporter-clusterRoleBinding.yaml
 # # - ./manifests/blackboxExporter-configuration.yaml
@@ -44,6 +45,7 @@ resources:
 - ./manifests/grafana-service.yaml
 - ./manifests/grafana-serviceAccount.yaml
 - ./manifests/grafana-serviceMonitor.yaml
+- ./manifests/grafana-ingress.yaml
 - ./manifests/kube-prometheus-prometheusRule.yaml
 - ./manifests/kube-state-metrics-clusterRole.yaml
 - ./manifests/kube-state-metrics-clusterRoleBinding.yaml
@@ -80,6 +82,7 @@ resources:
 - ./manifests/prometheus-service.yaml
 - ./manifests/prometheus-serviceAccount.yaml
 - ./manifests/prometheus-serviceMonitor.yaml
+- ./manifests/prometheus-k8s-ingress.yaml
 # - ./manifests/prometheusAdapter-apiService.yaml
 # - ./manifests/prometheusAdapter-clusterRole.yaml
 # - ./manifests/prometheusAdapter-clusterRoleAggregatedMetricsReader.yaml

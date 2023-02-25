@@ -10,6 +10,7 @@ metadata:
   name: main
   namespace: monitoring
 spec:
+  externalUrl: https://alertmanager.rye.ninja
   image: quay.io/prometheus/alertmanager:v0.25.0
   nodeSelector:
     kubernetes.io/os: linux

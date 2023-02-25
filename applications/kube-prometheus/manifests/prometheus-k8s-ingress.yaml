@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: cloudflare-dns01-issuer
+    external-dns.alpha.kubernetes.io/hostname: prometheus.rye.ninja
+    kubernetes.io/tls-acme: "true"
+  name: prometheus-k8s
+  namespace: monitoring
+spec:
+  rules:
+  - host: prometheus.rye.ninja
+    http:
+      paths:
+      - backend:
+          service:
+            name: prometheus-k8s
+            port:
+              name: web
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - prometheus.rye.ninja
+    secretName: tls-prometheus-k8s

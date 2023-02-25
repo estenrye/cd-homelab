@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: cloudflare-dns01-issuer
+    external-dns.alpha.kubernetes.io/hostname: grafana.rye.ninja
+    kubernetes.io/tls-acme: "true"
+  name: grafana
+  namespace: monitoring
+spec:
+  rules:
+  - host: grafana.rye.ninja
+    http:
+      paths:
+      - backend:
+          service:
+            name: grafana
+            port:
+              name: http
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - grafana.rye.ninja
+    secretName: tls-grafana
