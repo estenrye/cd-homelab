@@ -59,14 +59,14 @@ resources:
 # - ./manifests/kubernetesControlPlane-serviceMonitorKubeControllerManager.yaml
 # - ./manifests/kubernetesControlPlane-serviceMonitorKubeScheduler.yaml
 # - ./manifests/kubernetesControlPlane-serviceMonitorKubelet.yaml
-- ./manifests/nodeExporter-clusterRole.yaml
-- ./manifests/nodeExporter-clusterRoleBinding.yaml
-- ./manifests/nodeExporter-daemonset.yaml
-- ./manifests/nodeExporter-networkPolicy.yaml
-- ./manifests/nodeExporter-prometheusRule.yaml
-- ./manifests/nodeExporter-service.yaml
-- ./manifests/nodeExporter-serviceAccount.yaml
-- ./manifests/nodeExporter-serviceMonitor.yaml
+- ./manifests/node-exporter-clusterRole.yaml
+- ./manifests/node-exporter-clusterRoleBinding.yaml
+- ./manifests/node-exporter-daemonset.yaml
+- ./manifests/node-exporter-networkPolicy.yaml
+- ./manifests/node-exporter-prometheusRule.yaml
+- ./manifests/node-exporter-service.yaml
+- ./manifests/node-exporter-serviceAccount.yaml
+- ./manifests/node-exporter-serviceMonitor.yaml
 - ./manifests/prometheus-clusterRole.yaml
 - ./manifests/prometheus-clusterRoleBinding.yaml
 - ./manifests/prometheus-networkPolicy.yaml
