@@ -10,14 +10,14 @@ resources:
 - ./manifests/setup/prometheus-operator-0prometheusruleCustomResourceDefinition.yaml
 - ./manifests/setup/prometheus-operator-0servicemonitorCustomResourceDefinition.yaml
 - ./manifests/setup/prometheus-operator-0thanosrulerCustomResourceDefinition.yaml
-# - ./manifests/setup/prometheus-operator-clusterRole.yaml
-# - ./manifests/setup/prometheus-operator-clusterRoleBinding.yaml
-# - ./manifests/setup/prometheus-operator-deployment.yaml
-# - ./manifests/setup/prometheus-operator-networkPolicy.yaml
-# - ./manifests/setup/prometheus-operator-prometheusRule.yaml
-# - ./manifests/setup/prometheus-operator-service.yaml
-# - ./manifests/setup/prometheus-operator-serviceAccount.yaml
-# - ./manifests/setup/prometheus-operator-serviceMonitor.yaml
+- ./manifests/setup/prometheus-operator-clusterRole.yaml
+- ./manifests/setup/prometheus-operator-clusterRoleBinding.yaml
+- ./manifests/setup/prometheus-operator-deployment.yaml
+- ./manifests/setup/prometheus-operator-networkPolicy.yaml
+- ./manifests/setup/prometheus-operator-prometheusRule.yaml
+- ./manifests/setup/prometheus-operator-service.yaml
+- ./manifests/setup/prometheus-operator-serviceAccount.yaml
+- ./manifests/setup/prometheus-operator-serviceMonitor.yaml
 # - ./manifests/alertmanager-alertmanager.yaml
 # - ./manifests/alertmanager-networkPolicy.yaml
 # - ./manifests/alertmanager-podDisruptionBudget.yaml
