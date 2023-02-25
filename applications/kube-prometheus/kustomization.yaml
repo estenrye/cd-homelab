@@ -14,7 +14,7 @@ resources:
 - ./manifests/setup/prometheus-operator-clusterRoleBinding.yaml
 - ./manifests/setup/prometheus-operator-deployment.yaml
 - ./manifests/setup/prometheus-operator-networkPolicy.yaml
-- ./manifests/setup/prometheus-operator-prometheusRule.yaml
+# - ./manifests/setup/prometheus-operator-prometheusRule.yaml
 - ./manifests/setup/prometheus-operator-service.yaml
 - ./manifests/setup/prometheus-operator-serviceAccount.yaml
 - ./manifests/setup/prometheus-operator-serviceMonitor.yaml
