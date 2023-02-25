@@ -17,7 +17,7 @@ resources:
 # - ./manifests/setup/prometheus-operator-prometheusRule.yaml
 - ./manifests/setup/prometheus-operator-service.yaml
 - ./manifests/setup/prometheus-operator-serviceAccount.yaml
-- ./manifests/setup/prometheus-operator-serviceMonitor.yaml
+# - ./manifests/setup/prometheus-operator-serviceMonitor.yaml
 # - ./manifests/alertmanager-alertmanager.yaml
 # - ./manifests/alertmanager-networkPolicy.yaml
 # - ./manifests/alertmanager-podDisruptionBudget.yaml
