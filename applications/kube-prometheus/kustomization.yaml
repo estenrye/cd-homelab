@@ -55,7 +55,8 @@ resources:
 - ./manifests/kube-state-metrics-service.yaml
 - ./manifests/kube-state-metrics-serviceAccount.yaml
 - ./manifests/kube-state-metrics-serviceMonitor.yaml
-# - ./manifests/kubernetesControlPlane-prometheusRule.yaml
+- ./manifests/kubernetes-prometheusRule.yaml
+- ./manifests/kubernetes-podMonitorKubeProxy.yaml
 # - ./manifests/kubernetesControlPlane-serviceMonitorApiserver.yaml
 # - ./manifests/kubernetesControlPlane-serviceMonitorCoreDNS.yaml
 # - ./manifests/kubernetesControlPlane-serviceMonitorKubeControllerManager.yaml

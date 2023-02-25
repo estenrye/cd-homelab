@@ -58,6 +58,9 @@ local kp =
           // 'alertmanager-overview.json': null,
         }),
       },
+      kubernetesControlPlane+: {
+        kubeProxy: true,
+      },
     },
     alertmanager+:: {
       alertmanager+: {
@@ -114,6 +117,7 @@ local kp =
 + { ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) }
 + { ['kubernetes-' + name]: kp.kubernetesControlPlane[name] for name in std.objectFields(kp.kubernetesControlPlane) }
 + { [name + '-ingress']: kp.ingress[name] for name in std.objectFields(kp.ingress) }
++ { ['kubernetes-' + name]: kp.kubernetesControlPlane[name] for name in std.objectFields(kp.kubernetesControlPlane) }
 
 { ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) }
 + { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) }
