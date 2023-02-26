@@ -9,7 +9,7 @@ spec:
   endpoints:
   - interval: 30s
     port: metrics
-    scheme: https
+    scheme: http
   jobLabel: app.kubernetes.io/name
   selector:
     matchLabels:
