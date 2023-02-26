@@ -15,8 +15,11 @@ replicaCount: 1
 ##
 resources:
   requests:
-    memory: 512Mi
-    cpu: 500m
+    memory: 3624Mi
+    cpu: 3000m
+  limits:
+    memory: 4096Mi
+    cpu: 12000m
 
 # upgrade strategy type (e.g. Recreate or RollingUpdate)
 strategyType: Recreate

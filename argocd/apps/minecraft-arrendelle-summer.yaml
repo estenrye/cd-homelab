@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: minecraft-arrendelle-summer
+  namespace: argocd
+spec:
+  destination:
+    name: ''
+    namespace: ''
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: applications/minecraft/overlays/arrendelle-summer
+    repoURL: 'git@github.com:estenrye/cd-homelab.git'
+    targetRevision: HEAD
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
