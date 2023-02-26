@@ -12,5 +12,5 @@ subsets:
   - ip: 10.5.11.3
   ports:
   - name: metrics
-    port: 2379
+    port: 2381
     protocol: TCP

@@ -100,7 +100,7 @@ local kp =
         },
         spec: {
           ports: [
-            { name: 'metrics', targetPort: 2379, port: 2379 },
+            { name: 'metrics', targetPort: 2381, port: 2381 },
           ],
           clusterIP: 'None',
         },
@@ -119,7 +119,7 @@ local kp =
             for etcdIP in ['10.5.11.1', '10.5.11.2', '10.5.11.3']
           ],
           ports: [
-            { name: 'metrics', port: 2379, protocol: 'TCP' },
+            { name: 'metrics', port: 2381, protocol: 'TCP' },
           ],
         }],
       },
@@ -141,13 +141,13 @@ local kp =
               interval: '30s',
               scheme: 'https',
               // Prometheus Operator (and Prometheus) allow us to specify a tlsConfig. This is required as most likely your etcd metrics end points is secure.
-              tlsConfig: {
+              // tlsConfig: {
               //   caFile: '/etc/prometheus/secrets/kube-etcd-client-certs/etcd-client-ca.crt',
               //   keyFile: '/etc/prometheus/secrets/kube-etcd-client-certs/etcd-client.key',
               //   certFile: '/etc/prometheus/secrets/kube-etcd-client-certs/etcd-client.crt',
               //   [if $.values.etcd.serverName != null then 'serverName']: $.values.etcd.serverName,
-                insecureSkipVerify: true,
-              },
+                // insecureSkipVerify: true,
+              // },
             },
           ],
           selector: {
