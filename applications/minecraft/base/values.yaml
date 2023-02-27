@@ -104,9 +104,9 @@ minecraftServer:
   # One of: peaceful, easy, normal, and hard
   difficulty: peaceful
   # A comma-separated list of player names to whitelist.
-  whitelist: esten_rye,flower_ada_bread,dracoiam
+  whitelist: esten_rye,flower_ada_bread,DracoIam
   # A comma-separated list of player names who should be admins.
-  ops: esten_rye,flower_ada_bread
+  ops: esten_rye,flower_ada_bread,DracoIam
   # A server icon URL for server listings. Auto-scaled and transcoded.
   icon:
   # Max connected players.
