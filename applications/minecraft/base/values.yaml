@@ -198,8 +198,12 @@ minecraftServer:
 
   # A list of Spigot resources/plugins IDs to download.
   spigetResources:
-    # BlueMap
+    # BlueMap - https://www.spigotmc.org/resources/bluemap.83557/
     - 83557
+    # Waypoints - https://www.spigotmc.org/resources/waypoints.66647/
+    - 66647
+    # Simple Minimap - https://www.spigotmc.org/resources/simpleminimap.108225/
+    - 108225
 
   rcon:
     # If you enable this, make SURE to change your password below.
