@@ -13,4 +13,3 @@ spec:
   selector:
     matchLabels:
       app: minecraft-minecraft-prometheus
-      release: minecraft
