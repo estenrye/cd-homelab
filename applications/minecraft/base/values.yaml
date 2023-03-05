@@ -237,6 +237,8 @@ minecraftServer:
         loadBalancerIP: ""
         loadBalancerSourceRanges: []
         port: 9940
+      ingress:
+        enabled: false
     - name: map
       containerPort: 8100
       protocol: TCP
