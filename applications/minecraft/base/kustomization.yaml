@@ -5,7 +5,6 @@ namespace: minecraft
 resources:
   - namespace.yaml
   - rcon-ingress.yaml
-  - service_monitor.yaml
 
 helmChartInflationGenerator:
   - chartName: minecraft

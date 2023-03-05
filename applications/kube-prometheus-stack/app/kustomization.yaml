@@ -5,6 +5,7 @@ namespace: monitoring
 resources:
   - OnePasswordItem.yaml
   - endpointslice.etcd.yaml
+  - service_monitor.yaml
 
 patchesJson6902:
   - target:
