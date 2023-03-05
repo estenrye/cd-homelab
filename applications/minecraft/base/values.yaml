@@ -204,6 +204,8 @@ minecraftServer:
     - 66647
     # Simple Minimap - https://www.spigotmc.org/resources/simpleminimap.108225/
     - 108225
+    # Prometheus Exporter - https://www.spigotmc.org/resources/prometheus-exporter.36618/
+    - 36618
 
   rcon:
     # If you enable this, make SURE to change your password below.
@@ -224,6 +226,14 @@ minecraftServer:
     # These options allow you to expose another port from the Minecraft server, plugins such
     # as dynmap (8123) and bluemap (8100) will require this for access to their web interfaces
     #
+    - name: prometheus
+      enabled: true
+      embedded: false
+      annotations: {}
+      type: ClusterIP
+      loadBalancerIP: ""
+      loadBalancerSourceRanges: []
+      port: 9940
     - name: map
       containerPort: 8100
       protocol: TCP
