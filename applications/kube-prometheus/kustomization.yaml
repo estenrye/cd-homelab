@@ -188,3 +188,10 @@ patchesJson6902:
       name: prometheus-k8s
       namespace: monitoring
     path: patches/servicemonitor.yaml
+  - target:
+      version: v1
+      group: monitoring.coreos.com
+      kind: ServiceMonitor
+      name: etcd
+      namespace: kube-system
+    path: patches/servicemonitor.yaml
