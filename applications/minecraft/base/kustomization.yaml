@@ -6,6 +6,8 @@ resources:
   - namespace.yaml
   - rcon-ingress.yaml
   - servicemonitor.yaml
+  - prometheus-k8s-role.yaml
+  - prometheus-k8s-role-binding.yaml
 
 helmChartInflationGenerator:
   - chartName: minecraft
