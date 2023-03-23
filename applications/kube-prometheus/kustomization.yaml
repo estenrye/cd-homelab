@@ -112,3 +112,10 @@ patchesJson6902:
       kind: Namespace
       name: monitoring
     path: patches/namespace.yaml
+  - target:
+      version: v1
+      group: monitoring.coreos.com
+      kind: ServiceMonitor
+      name: kublet
+      namespace: monitoring
+    path: patches/kubernetes-serviceMonitorKublet.yaml
