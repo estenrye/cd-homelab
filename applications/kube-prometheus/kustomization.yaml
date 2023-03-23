@@ -104,7 +104,6 @@ resources:
 # - ./manifests/prometheusAdapter-service.yaml
 # - ./manifests/prometheusAdapter-serviceAccount.yaml
 # - ./manifests/prometheusAdapter-serviceMonitor.yaml
-- ./resources/service_monitor.yaml
 
 patchesJson6902:
   - target:
