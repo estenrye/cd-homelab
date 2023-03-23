@@ -116,6 +116,6 @@ patchesJson6902:
       version: v1
       group: monitoring.coreos.com
       kind: ServiceMonitor
-      name: kublet
+      name: kubelet
       namespace: monitoring
     path: patches/kubernetes-serviceMonitorKublet.yaml
