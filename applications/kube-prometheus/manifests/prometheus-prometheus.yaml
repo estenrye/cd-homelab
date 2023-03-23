@@ -44,6 +44,10 @@ spec:
     runAsNonRoot: true
     runAsUser: 1000
   serviceAccountName: prometheus-k8s
-  serviceMonitorNamespaceSelector: {}
-  serviceMonitorSelector: {}
+  serviceMonitorNamespaceSelector:
+    matchLabels:
+      serviceMonitorDiscovery: enabled
+  serviceMonitorSelector:
+    matchLabels:
+      serviceMonitorDiscovery: enabled
   version: 2.42.0

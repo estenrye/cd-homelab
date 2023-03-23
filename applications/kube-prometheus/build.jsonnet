@@ -88,6 +88,16 @@ local kp =
       prometheus+: {
         spec+: {
           externalUrl: 'https://prometheus.rye.ninja',
+          serviceMonitorSelector: {
+            matchLabels: {
+              serviceMonitorDiscovery: "enabled"
+            }
+          },
+          serviceMonitorNamespaceSelector: {
+            matchLabels: {
+              serviceMonitorDiscovery: "enabled"
+            }
+          },
         },
       },
       serviceEtcd: {
