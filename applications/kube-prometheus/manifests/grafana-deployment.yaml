@@ -104,6 +104,15 @@ spec:
         - mountPath: /grafana-dashboard-definitions/0/kubelet
           name: grafana-dashboard-kubelet
           readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/minecraft-general-dashboard
+          name: grafana-dashboard-minecraft-general-dashboard
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/minecraft-players-dashboard
+          name: grafana-dashboard-minecraft-players-dashboard
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/minecraft-server-dashboard
+          name: grafana-dashboard-minecraft-server-dashboard
+          readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/namespace-by-pod
           name: grafana-dashboard-namespace-by-pod
           readOnly: false
@@ -204,6 +213,15 @@ spec:
       - configMap:
           name: grafana-dashboard-kubelet
         name: grafana-dashboard-kubelet
+      - configMap:
+          name: grafana-dashboard-minecraft-general-dashboard
+        name: grafana-dashboard-minecraft-general-dashboard
+      - configMap:
+          name: grafana-dashboard-minecraft-players-dashboard
+        name: grafana-dashboard-minecraft-players-dashboard
+      - configMap:
+          name: grafana-dashboard-minecraft-server-dashboard
+        name: grafana-dashboard-minecraft-server-dashboard
       - configMap:
           name: grafana-dashboard-namespace-by-pod
         name: grafana-dashboard-namespace-by-pod
