@@ -92,7 +92,15 @@ sidecarContainers: []
 #           - port=2049
 #           - hard
 #           - vers=4
-extraVolumes: []
+extraVolumes:
+  - volumeMounts:
+      - name: prometheus-exporter-config
+        mountPath: /data/plugins/PrometheusExporter
+        readOnly: true
+    volumes:
+      - name: prometheus-exporter-config
+        configMap:
+          name: minecraft-minecraft-prometheus
 
 minecraftServer:
   eula: "TRUE"
