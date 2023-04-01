@@ -2,7 +2,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: minecraft-minecraft-rcon
-  namespace: argocd
   annotations:
     cert-manager.io/cluster-issuer: cloudflare-dns01-issuer
     kubernetes.io/ingress.class: nginx

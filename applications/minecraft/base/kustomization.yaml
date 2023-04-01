@@ -4,6 +4,7 @@ namespace: minecraft
 
 resources:
   - namespace.yaml
+  - prometheus-exporter-configmap.yaml
   - rcon-ingress.yaml
   - servicemonitor.yaml
   - prometheus-k8s-role.yaml

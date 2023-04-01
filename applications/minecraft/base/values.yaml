@@ -227,7 +227,7 @@ minecraftServer:
     # as dynmap (8123) and bluemap (8100) will require this for access to their web interfaces
     #
     - name: prometheus
-      containerPort: 9940
+      containerPort: 9225
       protocol: TCP
       service:
         enabled: true
@@ -236,7 +236,7 @@ minecraftServer:
         type: ClusterIP
         loadBalancerIP: ""
         loadBalancerSourceRanges: []
-        port: 9940
+        port: 9225
       ingress:
         enabled: false
     - name: map
