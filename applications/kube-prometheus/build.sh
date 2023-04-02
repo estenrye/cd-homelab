@@ -14,7 +14,7 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 PATH="$SCRIPT_DIR/tmp/bin:${PATH}"
 
 # Download Dashboard Updates
-wget https://grafana.com/api/dashboards/3070/revisions/3/download -O "$SCRIPT_DIR/dashboards/etcd.json"
+# wget https://grafana.com/api/dashboards/3070/revisions/3/download -O "$SCRIPT_DIR/dashboards/etcd.json"
 
 # Make sure to start with a clean 'manifests' dir
 rm -rf manifests
