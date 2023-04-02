@@ -1232,7 +1232,7 @@
         "name": "server_name",
         "options": [],
         "query": {
-          "query": "label_values(mc_players_total, server_name)",
+          "query": "label_values(mc_players_total, job)",
           "refId": "Prometheus-server_name-Variable-Query"
         },
         "refresh": 1,

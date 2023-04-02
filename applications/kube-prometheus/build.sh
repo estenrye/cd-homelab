@@ -38,6 +38,11 @@ jq '.templating.list[].datasource = { "type": "prometheus", "uid": "${DS_PROMETH
    | tee "$SCRIPT_DIR/dashboards/minecraft-general-dashboard-1.json" \
    && mv "$SCRIPT_DIR/dashboards/minecraft-general-dashboard-1.json" "$SCRIPT_DIR/dashboards/minecraft-general-dashboard.json"
 
+jq '.templating.list[0].query.query = "label_values(mc_players_total, job)"' \
+   "$SCRIPT_DIR/dashboards/minecraft-general-dashboard.json" \
+   | tee "$SCRIPT_DIR/dashboards/minecraft-general-dashboard-1.json" \
+   && mv "$SCRIPT_DIR/dashboards/minecraft-general-dashboard-1.json" "$SCRIPT_DIR/dashboards/minecraft-general-dashboard.json"
+
 
 wget https://raw.githubusercontent.com/sladkoff/minecraft-prometheus-exporter/master/dashboards/minecraft-players-dashboard.json -O "$SCRIPT_DIR/dashboards/minecraft-players-dashboard.json"
 wget https://raw.githubusercontent.com/sladkoff/minecraft-prometheus-exporter/master/dashboards/minecraft-server-dashboard.json -O "$SCRIPT_DIR/dashboards/minecraft-server-dashboard.json"
