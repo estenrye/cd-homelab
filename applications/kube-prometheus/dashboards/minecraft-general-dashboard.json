@@ -32,7 +32,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "decimals": 0,
       "fieldConfig": {
         "defaults": {
@@ -97,7 +100,10 @@
       "steppedLine": true,
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "editorMode": "code",
           "exemplar": false,
           "expr": "mc_players_total{server_name=~\"$server_name\"}",
@@ -113,13 +119,19 @@
           "step": 4
         },
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "sum(mc_players_online_total{server_name=~\"$server_name\"}) by (world)",
           "legendFormat": "Online ({{world}})",
           "refId": "B"
         },
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "editorMode": "code",
           "exemplar": false,
           "expr": "mc_whitelisted_players{server_name=~\"$server_name\"}",
@@ -169,7 +181,10 @@
       }
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -234,7 +249,10 @@
       "pluginVersion": "9.3.2",
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "sum(mc_players_online_total{server_name=~\"$server_name\"})",
           "format": "time_series",
           "interval": "",
@@ -249,7 +267,10 @@
       "type": "stat"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -301,7 +322,10 @@
       "pluginVersion": "9.3.2",
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "mc_jvm_memory{type='allocated', server_name=~\"$server_name\"} - scalar(mc_jvm_memory{type='free', server_name=~\"$server_name\"})",
           "instant": false,
           "refId": "A"
@@ -311,7 +335,10 @@
       "type": "gauge"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -367,7 +394,10 @@
       "pluginVersion": "9.3.2",
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "mc_tps{server_name=~\"$server_name\"}",
           "instant": true,
           "legendFormat": "",
@@ -382,7 +412,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -426,7 +459,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "mc_loaded_chunks_total{server_name=~\"$server_name\"}",
           "format": "time_series",
           "intervalFactor": 2,
@@ -471,7 +507,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -515,7 +554,10 @@
       "steppedLine": true,
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "mc_jvm_memory{type='max', server_name=~\"$server_name\"}",
           "format": "time_series",
           "hide": false,
@@ -526,7 +568,10 @@
           "step": 4
         },
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "mc_jvm_memory{type='allocated', server_name=~\"$server_name\"} - scalar(mc_jvm_memory{type='free', server_name=~\"$server_name\"})",
           "format": "time_series",
           "instant": false,
@@ -536,7 +581,10 @@
           "step": 4
         },
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "mc_jvm_memory{type='allocated', server_name=~\"$server_name\"}",
           "hide": true,
           "refId": "C"
@@ -579,7 +627,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -625,7 +676,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "sum (mc_entities_total{server_name=~\"$server_name\"}) by (world)",
           "format": "time_series",
@@ -673,7 +727,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "decimals": 2,
       "description": "",
       "fieldConfig": {
@@ -721,7 +778,10 @@
       "steppedLine": true,
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "mc_tps{server_name=~\"$server_name\"}",
           "format": "time_series",
           "intervalFactor": 2,
@@ -765,7 +825,10 @@
       }
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -847,7 +910,10 @@
       },
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "sum(mc_jvm_threads_current{server_name=~\"$server_name\"})",
           "interval": "",
@@ -855,7 +921,10 @@
           "refId": "A"
         },
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "sum by (state) (mc_jvm_threads_state{server_name=~\"$server_name\"})",
           "hide": false,
@@ -868,7 +937,10 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -947,7 +1019,10 @@
       },
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "mc_players_total{server_name=~\"$server_name\"}",
           "interval": "",
@@ -959,7 +1034,10 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1038,7 +1116,10 @@
       "pluginVersion": "8.2.1",
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "expr": "sum (mc_villagers_total{server_name=~\"$server_name\"}) by (world, level, profession)",
           "format": "time_series",
           "hide": false,
@@ -1053,7 +1134,10 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1105,7 +1189,10 @@
       "pluginVersion": "9.3.2",
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": true,
           "expr": "sort_desc(sum (mc_entities_total{server_name=~\"$server_name\"}) by (type))",
           "instant": true,
@@ -1133,7 +1220,10 @@
           "text": "smp",
           "value": "smp"
         },
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
         "definition": "",
         "hide": 0,
         "includeAll": false,

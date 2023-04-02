@@ -23,17 +23,17 @@ jq '.__inputs = [ {"name": "DS_PROMETHEUS", "label": "prometheus", "description"
    | tee "$SCRIPT_DIR/dashboards/minecraft-general-dashboard-1.json" \
    && mv "$SCRIPT_DIR/dashboards/minecraft-general-dashboard-1.json" "$SCRIPT_DIR/dashboards/minecraft-general-dashboard.json"
 
-jq '.panels[].datasource = "${DS_PROMETHEUS}"' \
+jq '.panels[].datasource = { "type": "prometheus", "uid": "${DS_PROMETHEUS}" }' \
    "$SCRIPT_DIR/dashboards/minecraft-general-dashboard.json" \
    | tee "$SCRIPT_DIR/dashboards/minecraft-general-dashboard-1.json" \
    && mv "$SCRIPT_DIR/dashboards/minecraft-general-dashboard-1.json" "$SCRIPT_DIR/dashboards/minecraft-general-dashboard.json"
 
-jq '.panels[].targets[].datasource = "${DS_PROMETHEUS}"' \
+jq '.panels[].targets[].datasource = { "type": "prometheus", "uid": "${DS_PROMETHEUS}" }' \
    "$SCRIPT_DIR/dashboards/minecraft-general-dashboard.json" \
    | tee "$SCRIPT_DIR/dashboards/minecraft-general-dashboard-1.json" \
    && mv "$SCRIPT_DIR/dashboards/minecraft-general-dashboard-1.json" "$SCRIPT_DIR/dashboards/minecraft-general-dashboard.json"
 
-jq '.templating.list[].datasource = "${DS_PROMETHEUS}"' \
+jq '.templating.list[].datasource = { "type": "prometheus", "uid": "${DS_PROMETHEUS}" }' \
    "$SCRIPT_DIR/dashboards/minecraft-general-dashboard.json" \
    | tee "$SCRIPT_DIR/dashboards/minecraft-general-dashboard-1.json" \
    && mv "$SCRIPT_DIR/dashboards/minecraft-general-dashboard-1.json" "$SCRIPT_DIR/dashboards/minecraft-general-dashboard.json"
