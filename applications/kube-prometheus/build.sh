@@ -18,10 +18,9 @@ wget https://grafana.com/api/dashboards/3070/revisions/3/download -O "$SCRIPT_DI
 
 wget https://raw.githubusercontent.com/sladkoff/minecraft-prometheus-exporter/master/dashboards/minecraft-general-dashboard.json -O "$SCRIPT_DIR/dashboards/minecraft-general-dashboard.json"
 
-jq '.__inputs += [ {"name": "DS_PROMETHEUS", "label": "prometheus", "description": "", "type": "datasource", "pluginId": "prometheus", "pluginName": "Prometheus" } ]' \
+jq '.__inputs = [ {"name": "DS_PROMETHEUS", "label": "prometheus", "description": "", "type": "datasource", "pluginId": "prometheus", "pluginName": "Prometheus" } ]' \
    "$SCRIPT_DIR/dashboards/minecraft-general-dashboard.json" \
    | tee "$SCRIPT_DIR/dashboards/minecraft-general-dashboard-1.json" \
-   | jq '.__inputs' \
    && mv "$SCRIPT_DIR/dashboards/minecraft-general-dashboard-1.json" "$SCRIPT_DIR/dashboards/minecraft-general-dashboard.json"
 
 wget https://raw.githubusercontent.com/sladkoff/minecraft-prometheus-exporter/master/dashboards/minecraft-players-dashboard.json -O "$SCRIPT_DIR/dashboards/minecraft-players-dashboard.json"
