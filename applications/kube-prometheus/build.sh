@@ -23,6 +23,22 @@ jq '.__inputs = [ {"name": "DS_PROMETHEUS", "label": "prometheus", "description"
    | tee "$SCRIPT_DIR/dashboards/minecraft-general-dashboard-1.json" \
    && mv "$SCRIPT_DIR/dashboards/minecraft-general-dashboard-1.json" "$SCRIPT_DIR/dashboards/minecraft-general-dashboard.json"
 
+jq '.panels[].datasource = "${DS_PROMETHEUS}"' \
+   "$SCRIPT_DIR/dashboards/minecraft-general-dashboard.json" \
+   | tee "$SCRIPT_DIR/dashboards/minecraft-general-dashboard-1.json" \
+   && mv "$SCRIPT_DIR/dashboards/minecraft-general-dashboard-1.json" "$SCRIPT_DIR/dashboards/minecraft-general-dashboard.json"
+
+jq '.panels[].targets[].datasource = "${DS_PROMETHEUS}"' \
+   "$SCRIPT_DIR/dashboards/minecraft-general-dashboard.json" \
+   | tee "$SCRIPT_DIR/dashboards/minecraft-general-dashboard-1.json" \
+   && mv "$SCRIPT_DIR/dashboards/minecraft-general-dashboard-1.json" "$SCRIPT_DIR/dashboards/minecraft-general-dashboard.json"
+
+jq '.templating.list[].datasource = "${DS_PROMETHEUS}"' \
+   "$SCRIPT_DIR/dashboards/minecraft-general-dashboard.json" \
+   | tee "$SCRIPT_DIR/dashboards/minecraft-general-dashboard-1.json" \
+   && mv "$SCRIPT_DIR/dashboards/minecraft-general-dashboard-1.json" "$SCRIPT_DIR/dashboards/minecraft-general-dashboard.json"
+
+
 wget https://raw.githubusercontent.com/sladkoff/minecraft-prometheus-exporter/master/dashboards/minecraft-players-dashboard.json -O "$SCRIPT_DIR/dashboards/minecraft-players-dashboard.json"
 wget https://raw.githubusercontent.com/sladkoff/minecraft-prometheus-exporter/master/dashboards/minecraft-server-dashboard.json -O "$SCRIPT_DIR/dashboards/minecraft-server-dashboard.json"
 
