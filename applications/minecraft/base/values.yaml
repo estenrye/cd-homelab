@@ -15,10 +15,10 @@ replicaCount: 1
 ##
 resources:
   requests:
-    memory: 3624Mi
+    memory: 4096Mi
     cpu: 3000m
   limits:
-    memory: 4096Mi
+    memory: 7168Mi
     cpu: 12000m
 
 # upgrade strategy type (e.g. Recreate or RollingUpdate)
@@ -138,7 +138,7 @@ minecraftServer:
   # The maximum number of milliseconds a single tick may take before the server watchdog stops the server with the message. -1 disables this entirely.
   maxTickTime: 60000
   # Determines if animals will be able to spawn.
-  spawnAnimals: true
+  spawnAnimals: false
   # Determines if monsters will be spawned.
   spawnMonsters: false
   # Determines if villagers will be spawned.
@@ -181,11 +181,11 @@ minecraftServer:
   # Check accounts against Minecraft account service.
   onlineMode: true
   # If you adjust this, you may need to adjust resources.requests above to match.
-  memory: 1024M
+  memory: 2048M
   # General JVM options to be passed to the Minecraft server invocation
   jvmOpts: ""
   # Options like -X that need to proceed general JVM options
-  jvmXXOpts: ""
+  jvmXXOpts: "-Xmx2048M"
   # By default, the server configuration will be created and set based on the following environment variables, but only the first time the server is started
   # If you would like to override the server configuration each time the container starts up, you can set this to true
   # see https://github.com/itzg/docker-minecraft-server#server-configuration
