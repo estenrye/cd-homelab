@@ -73,7 +73,6 @@ local kp =
           'etcd-dashboard.json': (import './dashboards/etcd.json'),
           'minecraft-general-dashboard.json': (import './dashboards/minecraft-general-dashboard.json'),
           'minecraft-players-dashboard.json': (import './dashboards/minecraft-players-dashboard.json'),
-          'minecraft-server-dashboard.json': (import './dashboards/minecraft-server-dashboard.json'),
         },
         datasources: [{
           name: 'prometheus',
