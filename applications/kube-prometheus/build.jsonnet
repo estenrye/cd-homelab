@@ -75,7 +75,18 @@ local kp =
           'minecraft-players-dashboard.json': (import './dashboards/minecraft-players-dashboard.json'),
           'minecraft-server-dashboard.json': (import './dashboards/minecraft-server-dashboard.json'),
         },
+        datasources: [{
+          name: 'prometheus',
+          type: 'prometheus',
+          access: 'proxy',
+          orgId: 1,
+          url: 'http://prometheus-k8s.monitoring.svc:9090',
+          version: 1,
+          editable: false,
+          uid: "prometheus"
+        }],
       },
+      dashboardsChecksum: true,
       kubernetesControlPlane+: {
         kubeProxy: true,
       },

@@ -23788,16 +23788,6 @@ items:
           "__elements": {
 
           },
-          "__inputs": [
-              {
-                  "description": "",
-                  "label": "prometheus",
-                  "name": "DS_PROMETHEUS",
-                  "pluginId": "prometheus",
-                  "pluginName": "Prometheus",
-                  "type": "datasource"
-              }
-          ],
           "__requires": [
               {
                   "id": "gauge",
@@ -23866,7 +23856,7 @@ items:
               {
                   "datasource": {
                       "type": "prometheus",
-                      "uid": "${DS_PROMETHEUS}"
+                      "uid": "prometheus"
                   },
                   "fieldConfig": {
                       "defaults": {
@@ -24024,7 +24014,7 @@ items:
                       {
                           "datasource": {
                               "type": "prometheus",
-                              "uid": "${DS_PROMETHEUS}"
+                              "uid": "prometheus"
                           },
                           "editorMode": "code",
                           "exemplar": false,
@@ -24043,7 +24033,7 @@ items:
                       {
                           "datasource": {
                               "type": "prometheus",
-                              "uid": "${DS_PROMETHEUS}"
+                              "uid": "prometheus"
                           },
                           "expr": "sum(mc_players_online_total{job=\"$server_name\"}) by (world)",
                           "legendFormat": "Online ({{world}})",
@@ -24052,7 +24042,7 @@ items:
                       {
                           "datasource": {
                               "type": "prometheus",
-                              "uid": "${DS_PROMETHEUS}"
+                              "uid": "prometheus"
                           },
                           "editorMode": "code",
                           "exemplar": false,
@@ -24074,7 +24064,7 @@ items:
               {
                   "datasource": {
                       "type": "prometheus",
-                      "uid": "${DS_PROMETHEUS}"
+                      "uid": "prometheus"
                   },
                   "fieldConfig": {
                       "defaults": {
@@ -24148,7 +24138,7 @@ items:
                       {
                           "datasource": {
                               "type": "prometheus",
-                              "uid": "${DS_PROMETHEUS}"
+                              "uid": "prometheus"
                           },
                           "expr": "sum(mc_players_online_total{job=\"$server_name\"})",
                           "format": "time_series",
@@ -24166,7 +24156,7 @@ items:
               {
                   "datasource": {
                       "type": "prometheus",
-                      "uid": "${DS_PROMETHEUS}"
+                      "uid": "prometheus"
                   },
                   "description": "",
                   "fieldConfig": {
@@ -24229,7 +24219,7 @@ items:
                       {
                           "datasource": {
                               "type": "prometheus",
-                              "uid": "${DS_PROMETHEUS}"
+                              "uid": "prometheus"
                           },
                           "expr": "mc_jvm_memory{type='allocated', job=\"$server_name\"} - scalar(mc_jvm_memory{type='free', job=\"$server_name\"})",
                           "instant": false,
@@ -24242,7 +24232,7 @@ items:
               {
                   "datasource": {
                       "type": "prometheus",
-                      "uid": "${DS_PROMETHEUS}"
+                      "uid": "prometheus"
                   },
                   "description": "",
                   "fieldConfig": {
@@ -24309,7 +24299,7 @@ items:
                       {
                           "datasource": {
                               "type": "prometheus",
-                              "uid": "${DS_PROMETHEUS}"
+                              "uid": "prometheus"
                           },
                           "expr": "mc_tps{job=\"$server_name\"}",
                           "instant": true,
@@ -24323,7 +24313,7 @@ items:
               {
                   "datasource": {
                       "type": "prometheus",
-                      "uid": "${DS_PROMETHEUS}"
+                      "uid": "prometheus"
                   },
                   "fieldConfig": {
                       "defaults": {
@@ -24414,7 +24404,7 @@ items:
                       {
                           "datasource": {
                               "type": "prometheus",
-                              "uid": "${DS_PROMETHEUS}"
+                              "uid": "prometheus"
                           },
                           "expr": "mc_loaded_chunks_total{job=\"$server_name\"}",
                           "format": "time_series",
@@ -24431,7 +24421,7 @@ items:
               {
                   "datasource": {
                       "type": "prometheus",
-                      "uid": "${DS_PROMETHEUS}"
+                      "uid": "prometheus"
                   },
                   "fieldConfig": {
                       "defaults": {
@@ -24523,7 +24513,7 @@ items:
                       {
                           "datasource": {
                               "type": "prometheus",
-                              "uid": "${DS_PROMETHEUS}"
+                              "uid": "prometheus"
                           },
                           "expr": "mc_jvm_memory{type='max', job=\"$server_name\"}",
                           "format": "time_series",
@@ -24537,7 +24527,7 @@ items:
                       {
                           "datasource": {
                               "type": "prometheus",
-                              "uid": "${DS_PROMETHEUS}"
+                              "uid": "prometheus"
                           },
                           "expr": "mc_jvm_memory{type='allocated', job=\"$server_name\"} - scalar(mc_jvm_memory{type='free', job=\"$server_name\"})",
                           "format": "time_series",
@@ -24550,7 +24540,7 @@ items:
                       {
                           "datasource": {
                               "type": "prometheus",
-                              "uid": "${DS_PROMETHEUS}"
+                              "uid": "prometheus"
                           },
                           "expr": "mc_jvm_memory{type='allocated', job=\"$server_name\"}",
                           "hide": true,
@@ -24563,7 +24553,7 @@ items:
               {
                   "datasource": {
                       "type": "prometheus",
-                      "uid": "${DS_PROMETHEUS}"
+                      "uid": "prometheus"
                   },
                   "fieldConfig": {
                       "defaults": {
@@ -24654,7 +24644,7 @@ items:
                       {
                           "datasource": {
                               "type": "prometheus",
-                              "uid": "${DS_PROMETHEUS}"
+                              "uid": "prometheus"
                           },
                           "exemplar": true,
                           "expr": "sum (mc_entities_total{job=\"$server_name\"}) by (world)",
@@ -24674,7 +24664,7 @@ items:
               {
                   "datasource": {
                       "type": "prometheus",
-                      "uid": "${DS_PROMETHEUS}"
+                      "uid": "prometheus"
                   },
                   "description": "",
                   "fieldConfig": {
@@ -24769,7 +24759,7 @@ items:
                       {
                           "datasource": {
                               "type": "prometheus",
-                              "uid": "${DS_PROMETHEUS}"
+                              "uid": "prometheus"
                           },
                           "expr": "mc_tps{job=\"$server_name\"}",
                           "format": "time_series",
@@ -24786,7 +24776,7 @@ items:
               {
                   "datasource": {
                       "type": "prometheus",
-                      "uid": "${DS_PROMETHEUS}"
+                      "uid": "prometheus"
                   },
                   "fieldConfig": {
                       "defaults": {
@@ -24875,7 +24865,7 @@ items:
                       {
                           "datasource": {
                               "type": "prometheus",
-                              "uid": "${DS_PROMETHEUS}"
+                              "uid": "prometheus"
                           },
                           "exemplar": true,
                           "expr": "sum(mc_jvm_threads_current{job=\"$server_name\"})",
@@ -24886,7 +24876,7 @@ items:
                       {
                           "datasource": {
                               "type": "prometheus",
-                              "uid": "${DS_PROMETHEUS}"
+                              "uid": "prometheus"
                           },
                           "exemplar": true,
                           "expr": "sum by (state) (mc_jvm_threads_state{job=\"$server_name\"})",
@@ -24902,7 +24892,7 @@ items:
               {
                   "datasource": {
                       "type": "prometheus",
-                      "uid": "${DS_PROMETHEUS}"
+                      "uid": "prometheus"
                   },
                   "fieldConfig": {
                       "defaults": {
@@ -24988,7 +24978,7 @@ items:
                       {
                           "datasource": {
                               "type": "prometheus",
-                              "uid": "${DS_PROMETHEUS}"
+                              "uid": "prometheus"
                           },
                           "exemplar": true,
                           "expr": "mc_players_total{job=\"$server_name\"}",
@@ -25003,7 +24993,7 @@ items:
               {
                   "datasource": {
                       "type": "prometheus",
-                      "uid": "${DS_PROMETHEUS}"
+                      "uid": "prometheus"
                   },
                   "fieldConfig": {
                       "defaults": {
@@ -25095,7 +25085,7 @@ items:
                       {
                           "datasource": {
                               "type": "prometheus",
-                              "uid": "${DS_PROMETHEUS}"
+                              "uid": "prometheus"
                           },
                           "expr": "sum (mc_villagers_total{job=\"$server_name\"}) by (world, level, profession)",
                           "format": "time_series",
@@ -25113,7 +25103,7 @@ items:
               {
                   "datasource": {
                       "type": "prometheus",
-                      "uid": "${DS_PROMETHEUS}"
+                      "uid": "prometheus"
                   },
                   "fieldConfig": {
                       "defaults": {
@@ -25174,7 +25164,7 @@ items:
                       {
                           "datasource": {
                               "type": "prometheus",
-                              "uid": "${DS_PROMETHEUS}"
+                              "uid": "prometheus"
                           },
                           "exemplar": true,
                           "expr": "sort_desc(sum (mc_entities_total{job=\"$server_name\"}) by (type))",
@@ -25203,7 +25193,7 @@ items:
                       },
                       "datasource": {
                           "type": "prometheus",
-                          "uid": "${DS_PROMETHEUS}"
+                          "uid": "prometheus"
                       },
                       "definition": "label_values(mc_players_total, job)",
                       "hide": 0,
@@ -25280,16 +25270,6 @@ items:
           "__elements": {
 
           },
-          "__inputs": [
-              {
-                  "description": "",
-                  "label": "prometheus",
-                  "name": "DS_PROMETHEUS",
-                  "pluginId": "prometheus",
-                  "pluginName": "Prometheus",
-                  "type": "datasource"
-              }
-          ],
           "__requires": [
               {
                   "id": "grafana",
@@ -25358,7 +25338,7 @@ items:
                   "dashes": false,
                   "datasource": {
                       "type": "prometheus",
-                      "uid": "${DS_PROMETHEUS}"
+                      "uid": "prometheus"
                   },
                   "decimals": 0,
                   "fieldConfig": {
@@ -25416,7 +25396,7 @@ items:
                       {
                           "datasource": {
                               "type": "prometheus",
-                              "uid": "${DS_PROMETHEUS}"
+                              "uid": "prometheus"
                           },
                           "expr": "sum(mc_player_online{name=~\"$player\", server_name=~\"$server_name\"}) without (uid)",
                           "format": "time_series",
@@ -25473,7 +25453,7 @@ items:
                   "dashes": false,
                   "datasource": {
                       "type": "prometheus",
-                      "uid": "${DS_PROMETHEUS}"
+                      "uid": "prometheus"
                   },
                   "decimals": 3,
                   "fieldConfig": {
@@ -25532,7 +25512,7 @@ items:
                       {
                           "datasource": {
                               "type": "prometheus",
-                              "uid": "${DS_PROMETHEUS}"
+                              "uid": "prometheus"
                           },
                           "expr": "sum(mc_player_statistic{player_name=~\"$player\", statistic=~\"$statistic\", server_name=~\"$server_name\"}) without (player_uid)",
                           "format": "time_series",
@@ -25583,7 +25563,7 @@ items:
               {
                   "datasource": {
                       "type": "prometheus",
-                      "uid": "${DS_PROMETHEUS}"
+                      "uid": "prometheus"
                   },
                   "fieldConfig": {
                       "defaults": {
@@ -25640,7 +25620,7 @@ items:
                       {
                           "datasource": {
                               "type": "prometheus",
-                              "uid": "${DS_PROMETHEUS}"
+                              "uid": "prometheus"
                           },
                           "expr": "sum(mc_player_statistic{player_name=~\"$player\", statistic=\"$statistic\", server_name=~\"$server_name\"}) without (player_uid)",
                           "format": "time_series",
@@ -25669,7 +25649,7 @@ items:
                       },
                       "datasource": {
                           "type": "prometheus",
-                          "uid": "${DS_PROMETHEUS}"
+                          "uid": "prometheus"
                       },
                       "definition": "label_values(mc_player_online, job)",
                       "hide": 0,
@@ -25700,7 +25680,7 @@ items:
                       },
                       "datasource": {
                           "type": "prometheus",
-                          "uid": "${DS_PROMETHEUS}"
+                          "uid": "prometheus"
                       },
                       "definition": "label_values(mc_player_online, name)",
                       "hide": 0,
@@ -25731,7 +25711,7 @@ items:
                       },
                       "datasource": {
                           "type": "prometheus",
-                          "uid": "${DS_PROMETHEUS}"
+                          "uid": "prometheus"
                       },
                       "definition": "",
                       "hide": 0,
