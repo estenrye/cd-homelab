@@ -25277,10 +25277,13 @@ items:
   data:
     minecraft-players-dashboard.json: |-
       {
+          "__elements": {
+
+          },
           "__inputs": [
               {
                   "description": "",
-                  "label": "Prometheus",
+                  "label": "prometheus",
                   "name": "DS_PROMETHEUS",
                   "pluginId": "prometheus",
                   "pluginName": "Prometheus",
@@ -25292,17 +25295,17 @@ items:
                   "id": "grafana",
                   "name": "Grafana",
                   "type": "grafana",
-                  "version": "6.4.2"
-              },
-              {
-                  "id": "grafana-piechart-panel",
-                  "name": "Pie Chart",
-                  "type": "panel",
-                  "version": "1.3.9"
+                  "version": "9.3.6"
               },
               {
                   "id": "graph",
-                  "name": "Graph",
+                  "name": "Graph (old)",
+                  "type": "panel",
+                  "version": ""
+              },
+              {
+                  "id": "piechart",
+                  "name": "Pie chart",
                   "type": "panel",
                   "version": ""
               },
@@ -25317,23 +25320,34 @@ items:
               "list": [
                   {
                       "builtIn": 1,
-                      "datasource": "-- Grafana --",
+                      "datasource": {
+                          "type": "datasource",
+                          "uid": "grafana"
+                      },
                       "enable": true,
                       "hide": true,
                       "iconColor": "rgba(0, 211, 255, 1)",
                       "name": "Annotations & Alerts",
+                      "target": {
+                          "limit": 100,
+                          "matchAny": false,
+                          "tags": [
+
+                          ],
+                          "type": "dashboard"
+                      },
                       "type": "dashboard"
                   }
               ]
           },
           "editable": true,
-          "gnetId": null,
+          "fiscalYearStartMonth": 0,
           "graphTooltip": 0,
           "id": null,
-          "iteration": 1578066885511,
           "links": [
 
           ],
+          "liveNow": false,
           "panels": [
               {
                   "aliasColors": {
@@ -25342,8 +25356,21 @@ items:
                   "bars": false,
                   "dashLength": 10,
                   "dashes": false,
-                  "datasource": "${DS_PROMETHEUS}",
+                  "datasource": {
+                      "type": "prometheus",
+                      "uid": "${DS_PROMETHEUS}"
+                  },
                   "decimals": 0,
+                  "fieldConfig": {
+                      "defaults": {
+                          "links": [
+
+                          ]
+                      },
+                      "overrides": [
+
+                      ]
+                  },
                   "fill": 1,
                   "fillGradient": 0,
                   "gridPos": {
@@ -25352,6 +25379,7 @@ items:
                       "x": 0,
                       "y": 0
                   },
+                  "hiddenSeries": false,
                   "id": 8,
                   "legend": {
                       "alignAsTable": true,
@@ -25371,11 +25399,10 @@ items:
                   ],
                   "nullPointMode": "null",
                   "options": {
-                      "dataLinks": [
-
-                      ]
+                      "alertThreshold": true
                   },
                   "percentage": false,
+                  "pluginVersion": "9.3.6",
                   "pointradius": 5,
                   "points": false,
                   "renderer": "flot",
@@ -25387,6 +25414,10 @@ items:
                   "steppedLine": true,
                   "targets": [
                       {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${DS_PROMETHEUS}"
+                          },
                           "expr": "sum(mc_player_online{name=~\"$player\", server_name=~\"$server_name\"}) without (uid)",
                           "format": "time_series",
                           "intervalFactor": 1,
@@ -25397,11 +25428,9 @@ items:
                   "thresholds": [
 
                   ],
-                  "timeFrom": null,
                   "timeRegions": [
 
                   ],
-                  "timeShift": null,
                   "title": "Online players",
                   "tooltip": {
                       "shared": true,
@@ -25410,9 +25439,7 @@ items:
                   },
                   "type": "graph",
                   "xaxis": {
-                      "buckets": null,
                       "mode": "time",
-                      "name": null,
                       "show": true,
                       "values": [
 
@@ -25424,22 +25451,17 @@ items:
                           "format": "short",
                           "label": "",
                           "logBase": 1,
-                          "max": null,
                           "min": "0",
                           "show": true
                       },
                       {
                           "format": "short",
-                          "label": null,
                           "logBase": 1,
-                          "max": null,
-                          "min": null,
                           "show": true
                       }
                   ],
                   "yaxis": {
-                      "align": false,
-                      "alignLevel": null
+                      "align": false
                   }
               },
               {
@@ -25449,8 +25471,21 @@ items:
                   "bars": false,
                   "dashLength": 10,
                   "dashes": false,
-                  "datasource": "${DS_PROMETHEUS}",
+                  "datasource": {
+                      "type": "prometheus",
+                      "uid": "${DS_PROMETHEUS}"
+                  },
                   "decimals": 3,
+                  "fieldConfig": {
+                      "defaults": {
+                          "links": [
+
+                          ]
+                      },
+                      "overrides": [
+
+                      ]
+                  },
                   "fill": 1,
                   "fillGradient": 0,
                   "gridPos": {
@@ -25459,6 +25494,7 @@ items:
                       "x": 0,
                       "y": 5
                   },
+                  "hiddenSeries": false,
                   "id": 4,
                   "legend": {
                       "alignAsTable": true,
@@ -25479,11 +25515,10 @@ items:
                   ],
                   "nullPointMode": "connected",
                   "options": {
-                      "dataLinks": [
-
-                      ]
+                      "alertThreshold": true
                   },
                   "percentage": false,
+                  "pluginVersion": "9.3.6",
                   "pointradius": 5,
                   "points": false,
                   "renderer": "flot",
@@ -25495,6 +25530,10 @@ items:
                   "steppedLine": false,
                   "targets": [
                       {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${DS_PROMETHEUS}"
+                          },
                           "expr": "sum(mc_player_statistic{player_name=~\"$player\", statistic=~\"$statistic\", server_name=~\"$server_name\"}) without (player_uid)",
                           "format": "time_series",
                           "interval": "",
@@ -25506,11 +25545,9 @@ items:
                   "thresholds": [
 
                   ],
-                  "timeFrom": null,
                   "timeRegions": [
 
                   ],
-                  "timeShift": null,
                   "title": "$statistic over time",
                   "tooltip": {
                       "shared": true,
@@ -25519,9 +25556,7 @@ items:
                   },
                   "type": "graph",
                   "xaxis": {
-                      "buckets": null,
                       "mode": "time",
-                      "name": null,
                       "show": true,
                       "values": [
 
@@ -25531,39 +25566,45 @@ items:
                       {
                           "decimals": 0,
                           "format": "short",
-                          "label": null,
                           "logBase": 1,
-                          "max": null,
                           "min": "0",
                           "show": true
                       },
                       {
                           "format": "short",
-                          "label": null,
                           "logBase": 1,
-                          "max": null,
-                          "min": null,
                           "show": true
                       }
                   ],
                   "yaxis": {
-                      "align": false,
-                      "alignLevel": null
+                      "align": false
                   }
               },
               {
-                  "aliasColors": {
+                  "datasource": {
+                      "type": "prometheus",
+                      "uid": "${DS_PROMETHEUS}"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "color": {
+                              "mode": "palette-classic"
+                          },
+                          "custom": {
+                              "hideFrom": {
+                                  "legend": false,
+                                  "tooltip": false,
+                                  "viz": false
+                              }
+                          },
+                          "mappings": [
 
+                          ]
+                      },
+                      "overrides": [
+
+                      ]
                   },
-                  "breakPoint": "50%",
-                  "cacheTimeout": null,
-                  "combine": {
-                      "label": "Others",
-                      "threshold": 0
-                  },
-                  "datasource": "${DS_PROMETHEUS}",
-                  "fontSize": "80%",
-                  "format": "short",
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -25572,24 +25613,35 @@ items:
                   },
                   "hideTimeOverride": false,
                   "id": 6,
-                  "interval": null,
-                  "legend": {
-                      "show": true,
-                      "values": true
-                  },
-                  "legendType": "Under graph",
                   "links": [
 
                   ],
                   "maxDataPoints": 3,
-                  "nullPointMode": "connected",
                   "options": {
-
+                      "legend": {
+                          "displayMode": "list",
+                          "placement": "bottom",
+                          "showLegend": true
+                      },
+                      "pieType": "pie",
+                      "reduceOptions": {
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "fields": "",
+                          "values": false
+                      },
+                      "tooltip": {
+                          "mode": "single",
+                          "sort": "none"
+                      }
                   },
-                  "pieType": "pie",
-                  "strokeWidth": 1,
                   "targets": [
                       {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${DS_PROMETHEUS}"
+                          },
                           "expr": "sum(mc_player_statistic{player_name=~\"$player\", statistic=\"$statistic\", server_name=~\"$server_name\"}) without (player_uid)",
                           "format": "time_series",
                           "instant": true,
@@ -25599,12 +25651,11 @@ items:
                       }
                   ],
                   "title": "$statistic by player",
-                  "type": "grafana-piechart-panel",
-                  "valueName": "current"
+                  "type": "piechart"
               }
           ],
           "refresh": "30s",
-          "schemaVersion": 20,
+          "schemaVersion": 37,
           "style": "dark",
           "tags": [
 
@@ -25616,8 +25667,11 @@ items:
                       "current": {
 
                       },
-                      "datasource": "${DS_PROMETHEUS}",
-                      "definition": "",
+                      "datasource": {
+                          "type": "prometheus",
+                          "uid": "${DS_PROMETHEUS}"
+                      },
+                      "definition": "label_values(mc_player_online, job)",
                       "hide": 0,
                       "includeAll": true,
                       "label": "Server Name",
@@ -25626,15 +25680,15 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(mc_player_online, server_name)",
+                      "query": {
+                          "query": "label_values(mc_player_online, job)",
+                          "refId": "StandardVariableQuery"
+                      },
                       "refresh": 1,
                       "regex": "",
                       "skipUrlSync": false,
                       "sort": 0,
                       "tagValuesQuery": "",
-                      "tags": [
-
-                      ],
                       "tagsQuery": "",
                       "type": "query",
                       "useTags": false
@@ -25644,8 +25698,11 @@ items:
                       "current": {
 
                       },
-                      "datasource": "${DS_PROMETHEUS}",
-                      "definition": "",
+                      "datasource": {
+                          "type": "prometheus",
+                          "uid": "${DS_PROMETHEUS}"
+                      },
+                      "definition": "label_values(mc_player_online, name)",
                       "hide": 0,
                       "includeAll": true,
                       "label": "Player",
@@ -25654,15 +25711,15 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(mc_player_online, name)",
+                      "query": {
+                          "query": "label_values(mc_player_online, name)",
+                          "refId": "StandardVariableQuery"
+                      },
                       "refresh": 1,
                       "regex": "",
                       "skipUrlSync": false,
                       "sort": 1,
                       "tagValuesQuery": "",
-                      "tags": [
-
-                      ],
                       "tagsQuery": "",
                       "type": "query",
                       "useTags": false
@@ -25672,7 +25729,10 @@ items:
                       "current": {
 
                       },
-                      "datasource": "${DS_PROMETHEUS}",
+                      "datasource": {
+                          "type": "prometheus",
+                          "uid": "${DS_PROMETHEUS}"
+                      },
                       "definition": "",
                       "hide": 0,
                       "includeAll": false,
@@ -25682,15 +25742,15 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(mc_player_statistic,statistic)",
+                      "query": {
+                          "query": "label_values(mc_player_statistic,statistic)",
+                          "refId": "prometheus-statistic-Variable-Query"
+                      },
                       "refresh": 1,
                       "regex": "",
                       "skipUrlSync": false,
                       "sort": 1,
                       "tagValuesQuery": "",
-                      "tags": [
-
-                      ],
                       "tagsQuery": "",
                       "type": "query",
                       "useTags": false
@@ -25727,9 +25787,10 @@ items:
               ]
           },
           "timezone": "",
-          "title": "Players",
-          "uid": "of8FDYamk",
-          "version": 13
+          "title": "Minecraft Players",
+          "uid": "8w6IEmY4k",
+          "version": 5,
+          "weekStart": ""
       }
   kind: ConfigMap
   metadata:

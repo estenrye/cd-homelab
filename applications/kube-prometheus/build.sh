@@ -16,7 +16,6 @@ PATH="$SCRIPT_DIR/tmp/bin:${PATH}"
 # Download Dashboard Updates
 wget https://grafana.com/api/dashboards/3070/revisions/3/download -O "$SCRIPT_DIR/dashboards/etcd.json"
 
-wget https://raw.githubusercontent.com/sladkoff/minecraft-prometheus-exporter/master/dashboards/minecraft-players-dashboard.json -O "$SCRIPT_DIR/dashboards/minecraft-players-dashboard.json"
 wget https://raw.githubusercontent.com/sladkoff/minecraft-prometheus-exporter/master/dashboards/minecraft-server-dashboard.json -O "$SCRIPT_DIR/dashboards/minecraft-server-dashboard.json"
 
 # Make sure to start with a clean 'manifests' dir
