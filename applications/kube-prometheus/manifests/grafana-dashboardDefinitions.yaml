@@ -23785,6 +23785,16 @@ items:
   data:
     minecraft-general-dashboard.json: |-
       {
+          "__inputs": [
+              {
+                  "description": "",
+                  "label": "prometheus",
+                  "name": "DS_PROMETHEUS",
+                  "pluginId": "prometheus",
+                  "pluginName": "Prometheus",
+                  "type": "datasource"
+              }
+          ],
           "annotations": {
               "list": [
                   {
