@@ -1,0 +1,31 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: loki
+
+resources:
+  - resources/namespace.yaml
+  - resources/prometheus-k8s-role.yaml
+  - resources/prometheus-k8s-role-binding.yaml
+
+helmChartInflationGenerator:
+  - chartName: memcached
+    chartRepoUrl: https://charts.bitnami.com/bitnami
+    chartVersion: 6.3.13
+    releaseName: chunk-cache
+    values: memcached.chunk-cache.values.yaml
+  - chartName: memcached
+    chartRepoUrl: https://charts.bitnami.com/bitnami
+    chartVersion: 6.3.13
+    releaseName: write-cache
+    values: memcached.write-cache.values.yaml
+  - chartName: memcached
+    chartRepoUrl: https://charts.bitnami.com/bitnami
+    chartVersion: 6.3.13
+    releaseName: results-cache
+    values: memcached.results-cache.values.yaml
+  - chartName: memcached
+    chartRepoUrl: https://charts.bitnami.com/bitnami
+    chartVersion: 6.3.13
+    releaseName: index-cache
+    values: memcached.index-cache.values.yaml
+
