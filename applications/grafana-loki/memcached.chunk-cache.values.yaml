@@ -1,4 +1,5 @@
 architecture: high-availability
+replicaCount: 3
 
 ## Authentication parameters
 ## ref: https://github.com/bitnami/containers/tree/main/bitnami/memcached#creating-the-memcached-admin-user
