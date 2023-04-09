@@ -36,3 +36,7 @@ backend:
 read:
   persistence:
     storageClass: direct-csi-min-io
+
+write:
+  persistence:
+    storageClass: direct-csi-min-io
