@@ -41,3 +41,16 @@ metrics:
     requests: {}
   serviceMonitor:
     enabled: false
+
+monitoring:
+  # Dashboards for monitoring Loki
+  dashboards:
+    # -- If enabled, create configmap with dashboards for monitoring Loki
+    enabled: true
+    # -- Alternative namespace to create dashboards ConfigMap in
+    namespace: monitoring
+    # -- Additional annotations for the dashboards ConfigMap
+    annotations: {}
+    # -- Labels for the dashboards ConfigMap
+    labels:
+      grafana_dashboard: "1"
