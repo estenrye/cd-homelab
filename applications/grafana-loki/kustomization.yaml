@@ -29,3 +29,24 @@ helmChartInflationGenerator:
     releaseName: index-cache
     values: memcached.index-cache.values.yaml
 
+patchesJson6902:
+  - target:
+      version: v1
+      kind: Service
+      name: chunk-cache-memcached-metrics
+    path: patches/memcached.chunk-cache.metrics-service.yaml
+  - target:
+      version: v1
+      kind: Service
+      name: index-cache-memcached-metrics
+    path: patches/memcached.index-cache.metrics-service.yaml
+  - target:
+      version: v1
+      kind: Service
+      name: results-cache-memcached-metrics
+    path: patches/memcached.results-cache.metrics-service.yaml
+  - target:
+      version: v1
+      kind: Service
+      name: write-cache-memcached-metrics
+    path: patches/memcached.write-cache.metrics-service.yaml
