@@ -1,15 +1,6 @@
 loki:
   podAnnotations:
     operator.1password.io/inject: loki
-  backend:
-    extraEnv:
-      - name: S3_ACCESS_KEY
-        value: op://Home_Lab/items/minio-tenant-loki-svc-account/username
-      - name: S3_SECRET_KEY
-        value: op://Home_Lab/items/minio-tenant-loki-svc-account/password
-    extraArgs:
-      - -s3.access-key-id=${S3_ACCESS_KEY}
-      - -s3.secret-access-key=${S3_SECRET_KEY}
   storage:
     bucketNames:
       chunks: loki-chunks
@@ -29,3 +20,19 @@ loki:
       host: "results-cache-memcached.loki.svc"
       timeout: "500ms"
       default_validity: "12h"
+
+backend:
+  extraEnv:
+    - name: S3_ACCESS_KEY
+      value: op://Home_Lab/items/minio-tenant-loki-svc-account/username
+    - name: S3_SECRET_KEY
+      value: op://Home_Lab/items/minio-tenant-loki-svc-account/password
+  extraArgs:
+    - -s3.access-key-id=${S3_ACCESS_KEY}
+    - -s3.secret-access-key=${S3_SECRET_KEY}
+  persistence:
+    storageClass: direct-csi-min-io
+
+read:
+  persistence:
+    storageClass: direct-csi-min-io
