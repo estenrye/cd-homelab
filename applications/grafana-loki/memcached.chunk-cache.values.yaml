@@ -1,8 +1,9 @@
 architecture: high-availability
 replicaCount: 3
 
-args:
-  - --memory-limit=4096
+memcached:
+  maxItemMemory: 4096
+  extraArgs:
   - --max-item-size=2m
   - --conn-limit=1024
 
@@ -25,7 +26,7 @@ auth:
 
 resources:
   limits:
-    memory: 5000Mi
+    memory: 5500Mi
     cpu: 2000m
   requests:
     memory: 4096Mi
