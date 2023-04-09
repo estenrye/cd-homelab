@@ -1,6 +1,4 @@
 loki:
-  podAnnotations:
-    operator.1password.io/inject: loki
   storage:
     bucketNames:
       chunks: loki-chunks
