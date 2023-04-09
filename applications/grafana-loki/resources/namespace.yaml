@@ -4,3 +4,4 @@ metadata:
   name: loki
   labels:
     serviceMonitorDiscovery: enabled
+    secrets-injection: enabled

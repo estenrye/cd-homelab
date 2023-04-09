@@ -16,19 +16,13 @@ helmChartInflationGenerator:
   - chartName: memcached
     chartRepoUrl: https://charts.bitnami.com/bitnami
     chartVersion: 6.3.13
-    releaseName: write-cache
-    values: memcached.write-cache.values.yaml
-  - chartName: memcached
-    chartRepoUrl: https://charts.bitnami.com/bitnami
-    chartVersion: 6.3.13
     releaseName: results-cache
     values: memcached.results-cache.values.yaml
-  - chartName: memcached
-    chartRepoUrl: https://charts.bitnami.com/bitnami
-    chartVersion: 6.3.13
-    releaseName: index-cache
-    values: memcached.index-cache.values.yaml
-
+  - chartName: loki
+    chartRepoUrl: https://grafana.github.io/helm-charts
+    chartVersion: 5.0.0
+    releaseName: loki
+    values: loki.values.yaml
 patchesJson6902:
   - target:
       version: v1
