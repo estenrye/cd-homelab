@@ -22,6 +22,8 @@ loki:
       default_validity: "12h"
 
 backend:
+  podAnnotations:
+    operator.1password.io/inject: loki
   extraEnv:
     - name: S3_ACCESS_KEY
       value: op://Home_Lab/items/minio-tenant-loki-svc-account/username
@@ -34,9 +36,29 @@ backend:
     storageClass: direct-csi-min-io
 
 read:
+  podAnnotations:
+    operator.1password.io/inject: loki
+  extraEnv:
+    - name: S3_ACCESS_KEY
+      value: op://Home_Lab/items/minio-tenant-loki-svc-account/username
+    - name: S3_SECRET_KEY
+      value: op://Home_Lab/items/minio-tenant-loki-svc-account/password
+  extraArgs:
+    - -s3.access-key-id=${S3_ACCESS_KEY}
+    - -s3.secret-access-key=${S3_SECRET_KEY}
   persistence:
     storageClass: direct-csi-min-io
 
 write:
+  podAnnotations:
+    operator.1password.io/inject: loki
+  extraEnv:
+    - name: S3_ACCESS_KEY
+      value: op://Home_Lab/items/minio-tenant-loki-svc-account/username
+    - name: S3_SECRET_KEY
+      value: op://Home_Lab/items/minio-tenant-loki-svc-account/password
+  extraArgs:
+    - -s3.access-key-id=${S3_ACCESS_KEY}
+    - -s3.secret-access-key=${S3_SECRET_KEY}
   persistence:
     storageClass: direct-csi-min-io
