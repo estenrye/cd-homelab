@@ -2,9 +2,9 @@ architecture: high-availability
 replicaCount: 3
 
 args:
-  - --memory-limit=4096
-  - --max-item-size=2m
-  - --conn-limit=1024
+  - -m=1024
+  - -I=2m
+  - -c=1024
 
 ## Authentication parameters
 ## ref: https://github.com/bitnami/containers/tree/main/bitnami/memcached#creating-the-memcached-admin-user
