@@ -14,10 +14,10 @@ loki:
   memcached:
     chunk_cache:
       enabled: true
-      host: "chunk-cache-memcached.loki.svc"
+      host: "chunk-cache-memcached.loki.svc:11211"
     results_cache:
       enabled: true
-      host: "results-cache-memcached.loki.svc"
+      host: "results-cache-memcached.loki.svc:11211"
       timeout: "500ms"
       default_validity: "12h"
 
