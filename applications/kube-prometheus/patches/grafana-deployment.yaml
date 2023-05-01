@@ -1,0 +1,3 @@
+- op: add
+  path: /spec/template/metadata/annotations/operator.1password.io~1inject
+  value: "grafana"

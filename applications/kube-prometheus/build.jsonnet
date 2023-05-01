@@ -84,11 +84,17 @@ local kp =
           editable: false,
           uid: "prometheus"
         }],
+        env: [
+          { name: "GF_SECURITY_ADMIN_PASSWORD", value: "op://Home_Lab/grafana.rye.ninja/password" }
+        ],
+        plugins: [
+          "grafana-athena-datasource"
+        ],
       },
       dashboardsChecksum: true,
       kubernetesControlPlane+: {
         kubeProxy: true,
-      },
+      }
     },
     alertmanager+:: {
       alertmanager+: {
