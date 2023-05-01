@@ -4,5 +4,5 @@
     name: GF_SECURITY_ADMIN_PASSWORD
     valueFrom:
       secretKeyRef:
-        name: grafana-admin-password
+        name: grafana-admin-credentials
         key: password
