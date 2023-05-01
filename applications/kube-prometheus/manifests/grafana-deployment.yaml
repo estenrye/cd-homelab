@@ -30,8 +30,6 @@ spec:
       automountServiceAccountToken: false
       containers:
       - env:
-        - name: GF_SECURITY_ADMIN_PASSWORD
-          value: op://Home_Lab/grafana.rye.ninja/password
         - name: GF_INSTALL_PLUGINS
           value: grafana-athena-datasource
         image: grafana/grafana:9.3.6

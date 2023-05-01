@@ -85,7 +85,7 @@ local kp =
           uid: "prometheus"
         }],
         env: [
-          { name: "GF_SECURITY_ADMIN_PASSWORD", value: "op://Home_Lab/grafana.rye.ninja/password" }
+          // { name: "GF_SECURITY_ADMIN_PASSWORD", value: "op://Home_Lab/grafana.rye.ninja/password" }
         ],
         plugins: [
           "grafana-athena-datasource"
