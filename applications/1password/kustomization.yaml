@@ -14,3 +14,7 @@ helmChartInflationGenerator:
     chartVersion: 1.10.0
     releaseName: connect
     values: values.yaml
+  - chartName: secret-injector
+    chartRepoUrl: https://1password.github.io/connect-helm-charts/ 
+    chartVersion: 1.0.0
+    releaseName: connect
