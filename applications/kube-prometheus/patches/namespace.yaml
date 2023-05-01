@@ -3,3 +3,4 @@
   value:
     pod-security.kubernetes.io/enforce: privileged
     serviceMonitorDiscovery: enabled
+    secrets-injection: enabled
