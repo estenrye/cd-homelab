@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: ingress-nginx
+
+resources:
+  - resources/OnePasswordItem.yaml
+  - resources/configmap.yaml
+  - resources/kustomization.yaml
+  - resources/servicemonitor.yaml
+  - resources/prometheus-k8s-role.yaml
+  - resources/prometheus-k8s-role-binding.yaml

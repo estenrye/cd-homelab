@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+  - ../../base
+
+patchesJson6902:
+  - path: OnePasswordItem.yaml
+    target:
+      group: onepassword.com
+      version: v1
+      kind: OnePasswordItem
+      namespace: cert-manager
+      name: cloudflare-api-token
+  - path: ClusterIssuer.yaml
+    target:
+      group: cert-manager.io
+      version: v1
+      kind: ClusterIssuer
+      namespace: cert-manager
+      name: cloudflare-dns01-issuer

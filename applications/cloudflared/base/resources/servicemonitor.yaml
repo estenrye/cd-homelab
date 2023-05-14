@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: cloudflared
+  labels:
+    serviceMonitorDiscovery: enabled
+spec:
+  endpoints:
+  - interval: 15s
+    port: prometheus
+  jobLabel: app.kubernetes.io/instance
+  selector:
+    matchLabels:
+      app: minecraft-minecraft-prometheus
