@@ -3,6 +3,7 @@
 tap "1password/tap"
 
 cask "1password-cli"
+brew "adr-tools"
 brew "asciinema"
 brew "argocd"
 brew "cookiecutter"
