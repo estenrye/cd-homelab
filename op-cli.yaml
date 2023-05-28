@@ -1,5 +1,0 @@
----
-account: ryefamily.1password.com
-vault: Home_Lab
-secret_name_prefixes:
-  cloudflare_api_token: cloudflare_api_token_
