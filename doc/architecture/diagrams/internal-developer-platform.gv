@@ -1,0 +1,42 @@
+digraph IDP {
+    # nodesep=0.1;
+    # ranksep=0.1;
+    rankdir=TB;
+    fontname=Helvetica;
+    fontsize=10;
+
+    labelloc="t";
+    label="Internal Developer Platform Component Diagram";
+    fontsize=12;
+    
+    node [ shape=record, fontname=Helvetica, fontsize=10, color=red ];
+    edge [ color=blue, fontname=Helvetica, fontsize=6 ];
+
+
+    cp_operator [ label="CrossPlane\nOperator", shape=oval ];
+    cp_ansible_provider [ label="Crossplane\nAnsible\nProvider", shape=oval ];
+    cp_ansible_provider_crd_providerconfig [ 
+        color=gray,
+        label="apiVersion: ansible.crossplane.io/v1alpha1\nkind: ProviderConfig\l"
+    ];
+    cp_ansible_provider_crd_providerusage [
+        color=gray,
+        label="apiVersion: ansible.crossplane.io/v1alpha1\nkind: ProviderConfigUsage\l"
+    ];
+    cp_ansible_provider_crd_ansiblerun [
+        color=gray,
+        label="apiVersion: ansible.crossplane.io/v1alpha1\nkind: AnsibleRun\l"
+    ];
+
+    subgraph cluster_crossplane_subsystem {
+        label="Crossplane";
+        color="Purple";
+        height=0.1;
+        {
+            cp_ansible_provider_crd_providerconfig,
+            cp_ansible_provider_crd_providerusage,
+            cp_ansible_provider_crd_ansiblerun
+        } -> cp_operator;
+        cp_operator -> cp_ansible_provider;
+    }
+}

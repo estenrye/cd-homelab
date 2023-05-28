@@ -1,0 +1,126 @@
+digraph IDP {
+    compound=true;
+    # nodesep=0.1;
+    # ranksep=0.1;
+    rankdir=LR;
+    fontname=Helvetica;
+    fontsize=10;
+
+    labelloc="t";
+    label="PhoenixNAP BMC Provider Flow Diagram";
+    fontsize=12;
+    
+    node [ shape=record, fontname=Helvetica, fontsize=10, color=red ];
+    edge [ color=blue, fontname=Helvetica, fontsize=6 ];
+
+    user [ label="Developer" ];    
+
+    user -> backstage_bmc_tag_template -> argocd_app_yaml [ lhead=cluster_github_pr ]
+
+    subgraph cluster_backstage {
+        label="Backstage";
+        color="Purple";
+        height=0.1;
+
+        backstage_bmc_tag_template [ color=purple, label="PhoenixNAP BMC\nProvider\nTemplate"];
+    }
+
+    subgraph cluster_github {
+        color="Black";
+        height=0.1;
+        label="github.com/estenrye/cd-homelab"
+
+        subgraph cluster_github_pr {
+            height=0.1;
+            label="Pull Request Created by Backstage"
+            
+            subgraph cluster_github_apps {
+                height=0.1;
+                label="/argocd/apps"
+
+                argocd_app_yaml [ label="argocd-app.yaml\napiVersion: argoproj.io/v1alpha1\nkind: Application\l" ]
+            }
+
+            subgraph cluster_github_crossplane {
+                height=0.1;
+                label="/crossplane/app-name"
+
+                bmc_credentials_yaml [label="bmc-creds.yaml\napiVersion: onepassword.com/v1\nkind: OnePasswordItem\l"]
+                bmc_tag_yaml [ label="tag_tag-name.yaml\napiVersion: phoenixnap-bmc.cloud.rye.ninja/v1alpha1\nkind: BMCTag\l" ]
+            }
+        }
+        
+        github_pr_approval [ color=black,label="Pull Request\nApproval" ]
+        github_pr_merged [ color=black,label="Pull Request\nMerged" ]
+        argocd_app_yaml -> github_pr_approval [ ltail=cluster_github_pr ]
+        github_pr_approval -> github_pr_merged
+    }
+
+    subgraph cluster_crossplane_k8s {
+        rankdir=TD;
+        label="Crossplane Managment Cluster";
+        color="Blue";
+        height=0.1;
+        
+        subgraph cluster_argocd {
+            label="ArgoCD"
+            rankdir=LR;
+            height=0.1;
+
+            argocd_deploy_appname [ label="argocd-apps\nDeploys ArgoCD\nApplication" ]
+            argocd_deploy_crossplane_claims [ label="app-name\nDeploys Crossplane\nResource Claims"]
+            github_pr_merged -> argocd_deploy_appname -> argocd_deploy_crossplane_claims
+        }
+
+        subgraph cluster_argocd_namespace {
+            label="Namespace: argocd";
+            height=0.1;
+            
+            argocd_app [ label="app-name\napiVersion: argoproj.io/v1alpha1\nkind: Application\l" ]
+
+            argocd_operator [ shape=oval, label="ArgoCD Operator"]
+            argocd_app_yaml -> argocd_operator -> argocd_app [ color=red, style=dashed,ltail=cluster_github_apps ]
+            argocd_deploy_appname
+        }
+
+        subgraph cluster_1password_namespace {
+            label="Namespace: 1password";
+            color="Blue";
+            height=0.1;
+
+            onepassword_connect_operator [ color=gray,shape=oval, label="1Password\nConnect\nOperator"]
+        }
+
+        subgraph cluster_crossplane_namespace {
+            label="Namespace: crossplane";
+            color="Blue";
+            height=0.1;
+
+            crossplane_operator [ color=green, shape=oval, label="Crossplane\nOperator"]
+        }
+
+        subgraph cluster_app_name_namespace {
+            label="Namespace: app-name";
+            color="Blue";
+            height=0.1;
+
+            edge [ style=dashed, color=blue, fontname=Helvetica, fontsize=6 ];
+            
+            bmc_credentials [label="bmc-creds\napiVersion: onepassword.com/v1\nkind: OnePasswordItem\l"]
+            bmc_credentials_secret [color=gray,label="bmc-creds\napiVersion: v1\nkind: Secret\l"]
+            bmc_tag [ label="tag_tag-name\napiVersion: phoenixnap-bmc.cloud.rye.ninja/v1alpha1\nkind: BMCTag\l" ]
+            xbmc_tag [ color=green,label="tag_tag-name\napiVersion: phoenixnap-bmc.cloud.rye.ninja/v1alpha1\nkind: XBMCTag\l" ]
+
+
+            edge [ style=dashed, color=red, fontname=Helvetica, fontsize=6 ];
+            bmc_credentials_yaml -> argocd_operator [ ltail=cluster_github_crossplane ]
+            argocd_operator -> bmc_credentials [ lhead=cluster_app_name_namespace ]
+            
+            edge [ style=dashed, color=green, fontname=Helvetica, fontsize=6 ];
+            bmc_credentials-> onepassword_connect_operator -> bmc_credentials_secret [color=gray]
+            bmc_tag -> crossplane_operator -> xbmc_tag
+            
+        }
+    }
+
+}
