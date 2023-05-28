@@ -61,6 +61,10 @@ destruction of resources on the PhoenixNAP Bare Metal Cloud (BMC).
 | --- | --- |
 | [Ansible Provider](https://marketplace.upbound.io/providers/crossplane-contrib/provider-ansible) | [crossplane-contrib/provider-ansible](https://github.com/crossplane-contrib/provider-ansible) |
 
+#### Installation Notes
+
+- Installed Crossplane provider.
+- Installed Ansible provider.
 
 ## Consequences
 
