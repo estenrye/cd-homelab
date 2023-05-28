@@ -2,5 +2,7 @@ apiVersion: pkg.crossplane.io/v1
 kind: Provider
 metadata:
   name: provider-ansible
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   package: xpkg.upbound.io/crossplane-contrib/provider-ansible:v0.5.0
