@@ -3,18 +3,21 @@ kind: ServiceAccount
 metadata:
   name: secrets-injector
   annotations:
-    argocd.argoproj.io/sync-wave: "-2"
+    helm.sh/hook: pre-install
+    helm.sh/hook-weight: "0"
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: secrets-injector
   annotations:
-    argocd.argoproj.io/sync-wave: "-1"
+    helm.sh/hook: pre-install
+    helm.sh/hook-weight: "0"
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: secrets-injector
   annotations:
-    argocd.argoproj.io/sync-wave: "-2"
+    helm.sh/hook: pre-install
+    helm.sh/hook-weight: "0"
