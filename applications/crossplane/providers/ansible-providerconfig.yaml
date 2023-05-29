@@ -8,8 +8,8 @@ spec:
   credentials:
     - filename: /.pnap/config.yaml
       secretRef:
-        key: credentials
-        name: phoenixnap-bmc-credentials
+        key: config.yaml
+        name: bmc-credentials
         namespace: crossplane
       source: Secret
   requirements: |
