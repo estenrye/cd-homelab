@@ -8,6 +8,7 @@ resources:
   - providers/ansible.yaml
   - providers/ansible-providerconfig.yaml
   - providers/terraform.yaml
+  - providers/provider-terraform-phoenixnap-bmc.yaml
 
 helmChartInflationGenerator:
   - chartName: crossplane
