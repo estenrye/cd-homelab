@@ -9,6 +9,8 @@ resources:
   - providers/ansible-providerconfig.yaml
   - providers/terraform.yaml
   - providers/provider-terraform-phoenixnap-bmc.yaml
+commonAnnotations:
+  argocd.argoproj.io/sync-wave: "0"
 
 helmChartInflationGenerator:
   - chartName: crossplane
