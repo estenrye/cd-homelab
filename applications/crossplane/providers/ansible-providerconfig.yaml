@@ -6,7 +6,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   credentials:
-    - filename: ~/.pnap/config.yaml
+    - filename: pnap-bmc-config.yaml
       secretRef:
         key: config.yaml
         name: bmc-credentials
