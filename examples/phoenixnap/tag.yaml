@@ -1,0 +1,59 @@
+apiVersion: ansible.crossplane.io/v1alpha1
+kind: AnsibleRun
+metadata:
+  annotations:
+    ansible.crossplane.io/runPolicy: ObserveAndDelete
+  name: bmc-tag
+spec:
+  forProvider:
+    inventoryInline: |
+      ---
+      tags:
+        hosts:
+          TestTag:
+            description: "Hello World"
+            is_billing_tag: false
+            state: absent
+    playbookInline: |
+      ---
+      - hosts: tags
+        connection: local
+        pre_tasks:
+          - name: Install requests python package on version 2.31.0
+            delegate_to: localhost
+            connection: local
+            ansible.builtin.pip:
+              name: requests==2.31.0
+              extra_args: --user
+        vars_files:
+          - config.yaml
+        collections:
+          - phoenixnap.bmc
+        tasks:
+          - name: Apply Tag State.
+            delegate_to: localhost
+            connection: local
+            register: result
+            phoenixnap.bmc.tag:
+              client_id: "{{ clientId }}"
+              client_secret: "{{ clientSecret }}"
+              name: "{{ inventory_hostname }}"
+              description: "{{ description | default('') }}"
+              is_billing_tag: "{{ is_billing_tag | default(false) }}"
+              state: "{{ state | default('present') }}"
+            retries: 3
+            delay: 3
+            until: (not result.failed) and (result.tags is defined)
+          - name: package result
+            ansible.builtin.set_fact:
+              resultdict:
+                res: "{{ result }}"
+                ansible_host: "{{ result.tags.id | default('') }}"
+            when: result is defined
+            tags:
+              - provision
+          - name: print out relevant response
+            ansible.builtin.debug:
+              var: resultdict
+  providerConfigRef:
+    name: provider-ansible
