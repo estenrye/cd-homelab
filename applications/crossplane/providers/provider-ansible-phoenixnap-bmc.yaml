@@ -1,12 +1,12 @@
 apiVersion: ansible.crossplane.io/v1alpha1
 kind: ProviderConfig
 metadata:
-  name: provider-ansible
+  name: provider-ansible-phoenixnap-bmc
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   credentials:
-    - filename: pnap-bmc-config.yaml
+    - filename: config.yaml
       secretRef:
         key: config.yaml
         name: bmc-credentials
