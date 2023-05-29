@@ -6,7 +6,7 @@ resources:
   - namespace.yaml
   - credentials/ansible-pnap-bmc-credentials.yaml
   - providers/ansible.yaml
-  - providers/ansible-providerconfig.yaml
+  - providers/provider-ansible-phoenixnap-bmc.yaml
   - providers/terraform.yaml
   - providers/provider-terraform-phoenixnap-bmc.yaml
 commonAnnotations:
