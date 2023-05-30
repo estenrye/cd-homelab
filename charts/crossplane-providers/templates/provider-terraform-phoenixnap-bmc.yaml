@@ -2,9 +2,6 @@ apiVersion: tf.upbound.io/v1beta1
 kind: ProviderConfig
 metadata:
   name: default
-  annotations:
-    helm.sh/hook: pre-install
-    helm.sh/hook-weight: "2"
   labels:
   {{- include "crossplane-providers.labels" . | nindent 4 }}
 spec:
