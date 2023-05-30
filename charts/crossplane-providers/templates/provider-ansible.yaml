@@ -2,6 +2,9 @@ apiVersion: pkg.crossplane.io/v1
 kind: Provider
 metadata:
   name: provider-ansible
+  annotations:
+    helm.sh/hook: pre-install
+    helm.sh/hook-weight: "1"
   labels:
   {{- include "crossplane-providers.labels" . | nindent 4 }}
 spec:
