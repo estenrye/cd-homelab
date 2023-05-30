@@ -3,7 +3,7 @@ kind: Provider
 metadata:
   name: provider-terraform
   annotations:
-    helm.sh/hook: post-install
+    helm.sh/hook: pre-install
     helm.sh/hook-weight: "1"
   labels:
   {{- include "crossplane-providers.labels" . | nindent 4 }}

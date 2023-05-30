@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: crossplane-providers
+  namespace: argocd
+spec:
+  destination:
+    namespace: 'crossplane'
+    server: 'https://kubernetes.default.svc'
+  source:
+    helm:
+      releaseName: cp-providers
+      parameters:
+        - name: server
+          value: https://kubernetes.default.svc
+    path: charts/crossplane-providers
+    repoURL: 'git@github.com:estenrye/cd-homelab.git'
+    targetRevision: HEAD
+    
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
