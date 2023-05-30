@@ -10,7 +10,6 @@ spec:
   source:
     helm:
       releaseName: crossplane
-      createNamespace: true
       parameters:
         - name: metrics.enabled
           value: "true"
@@ -21,6 +20,7 @@ spec:
   project: default
   syncPolicy:
     syncOptions:
+      - CreateNamespace=true
       - ServerSideApply=true
     automated:
       prune: false
