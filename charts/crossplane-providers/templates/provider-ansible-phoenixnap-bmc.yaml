@@ -3,8 +3,8 @@ kind: ProviderConfig
 metadata:
   name: provider-ansible-phoenixnap-bmc
   annotations:
-    helm.sh/hook: pre-install
-    helm.sh/hook-weight: "2"
+    helm.sh/hook: post-install
+    helm.sh/hook-weight: "-1"
   labels:
   {{- include "crossplane-providers.labels" . | nindent 4 }}
 spec:
