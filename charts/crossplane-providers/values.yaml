@@ -1,0 +1,13 @@
+# Default values for phoenixnap-bmc-xrd.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+credentials:
+  phoenixnap_bmc: vaults/Home_Lab/items/bmc-api-credentials
+
+provider_versions:
+  ansible: v0.5.0
+  terraform: v0.7.0
+
+metrics:
+  enabled: true

@@ -3,7 +3,10 @@ kind: ProviderConfig
 metadata:
   name: default
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    helm.sh/hook: post-install
+    helm.sh/hook-weight: "2"
+  labels:
+  {{- include "crossplane-providers.labels" . | nindent 4 }}
 spec:
   # Note that unlike most provider configs this one supports an array of
   # credentials. This is because each Terraform workspace uses a single

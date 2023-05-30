@@ -5,13 +5,18 @@ metadata:
   namespace: argocd
 spec:
   destination:
-    name: ''
-    namespace: ''
+    namespace: 'crossplane'
     server: 'https://kubernetes.default.svc'
   source:
-    path: applications/crossplane
+    helm:
+      releaseName: crossplane
+      parameters:
+        - name: server
+          value: https://kubernetes.default.svc
+    path: charts/crossplane-providers
     repoURL: 'git@github.com:estenrye/cd-homelab.git'
     targetRevision: HEAD
+    
   project: default
   syncPolicy:
     syncOptions:

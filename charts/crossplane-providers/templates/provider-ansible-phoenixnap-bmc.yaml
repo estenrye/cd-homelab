@@ -3,7 +3,10 @@ kind: ProviderConfig
 metadata:
   name: provider-ansible-phoenixnap-bmc
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    helm.sh/hook: post-install
+    helm.sh/hook-weight: "2"
+  labels:
+  {{- include "crossplane-providers.labels" . | nindent 4 }}
 spec:
   credentials:
     - filename: config.yaml
