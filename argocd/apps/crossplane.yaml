@@ -11,12 +11,12 @@ spec:
     helm:
       releaseName: crossplane
       parameters:
-        - name: server
-          value: https://kubernetes.default.svc
-    path: charts/crossplane-providers
-    repoURL: 'git@github.com:estenrye/cd-homelab.git'
-    targetRevision: HEAD
-    
+        - name: metrics.enabled
+          value: "true"
+    chart: crossplane
+    targetRevision: 1.10.0
+    repoURL: https://charts.crossplane.io/stable
+
   project: default
   syncPolicy:
     syncOptions:
