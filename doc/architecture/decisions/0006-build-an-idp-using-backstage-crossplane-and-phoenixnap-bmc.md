@@ -16,6 +16,7 @@ bare metal servers using the PhoenixNAP BMC.
 
 | Date | YouTube URL | Presenter | Event |
 | --- | --- | --- | --- |
+| 2021-10-29 | [Shifting Spotify Engineering from Spreadsheets to Backstage](https://www.youtube.com/watch?v=lCgDiusuixM) | Johan Haals & Patrik Oldsberg, Spotify | KubeCon CloudNativeCon North America 2021 |
 | 2022-05-30 | [GitOps Infrastructure with Backstage + Crossplane + ArgoCD](https://www.youtube.com/watch?v=Ii-lpLuzPxw) | Diego Luisi | N/A |
 | 2022-06-01 | [Crossplane Intro & Deep Dive - Compose Your Custom Cloud Platform](https://youtu.be/xECc7XlD5kY) | Jared Watts, Steven Borreli, Yury Tsarev, Christopher Haar | KubeCon + CloudNativeCon North America 2022 |
 | 2022-06-26 | [How to improve the development journey in your company with Backstage.](https://youtu.be/qFP_CcLp0Ao) | Diego Luisi | N/A |
