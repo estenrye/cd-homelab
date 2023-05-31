@@ -56,4 +56,4 @@ spec:
             ansible.builtin.debug:
               var: resultdict
   providerConfigRef:
-    name: provider-ansible
+    name: provider-ansible-phoenixnap-bmc
