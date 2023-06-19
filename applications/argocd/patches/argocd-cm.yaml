@@ -15,6 +15,7 @@
       issuer: https://oauth.id.jumpcloud.com/
       clientID: $argocd-oidc-credentials:clientID
       clientSecret: $argocd-oidc-credentials:clientSecret
+      redirectURI: https://argocd.rye.ninja/applications
       requestedScopes:
       - openid
       - profile
