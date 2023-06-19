@@ -12,7 +12,7 @@
     kustomize.buildOptions: --enable-helm
     oidc.config: |
       name: JumpCloud
-      issuer: https://oauth.id.jumpcloud.com
+      issuer: https://oauth.id.jumpcloud.com/
       clientID: $argocd-oidc-credentials:clientID
       clientSecret: $argocd-oidc-credentials:clientSecret
       requestedScopes:
