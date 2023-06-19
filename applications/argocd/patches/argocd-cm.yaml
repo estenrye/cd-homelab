@@ -1,7 +1,7 @@
 - op: add
   path: /data
   value:
-    server.log.level: debug
+    server.core,url: https://argocd.rye.ninja
     configManagementPlugins: |
       - name: kustomized-helm
         init:
