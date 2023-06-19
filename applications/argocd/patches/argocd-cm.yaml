@@ -1,7 +1,7 @@
 - op: add
   path: /data
   value:
-    server.core,url: https://argocd.rye.ninja
+    url: https://argocd.rye.ninja
     configManagementPlugins: |
       - name: kustomized-helm
         init:
@@ -16,7 +16,6 @@
       issuer: https://oauth.id.jumpcloud.com/
       clientID: $argocd-oidc-credentials:clientID
       clientSecret: $argocd-oidc-credentials:clientSecret
-      redirectURI: https://argocd.rye.ninja/applications
       requestedScopes:
       - openid
       - profile
