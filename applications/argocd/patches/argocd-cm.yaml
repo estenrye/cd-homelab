@@ -1,6 +1,7 @@
 - op: add
   path: /data
   value:
+    server.log.level: debug
     configManagementPlugins: |
       - name: kustomized-helm
         init:
