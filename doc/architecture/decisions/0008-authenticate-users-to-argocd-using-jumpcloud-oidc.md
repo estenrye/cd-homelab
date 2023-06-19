@@ -22,6 +22,7 @@ OIDC for authentication.
 - [Setting up Azure AD Saml using Dex server in ARGOCD](https://blog.knoldus.com/setting-up-azure-ad-saml-using-dex-server-in-argocd%EF%BF%BC/)
 - [Azure AD SAML Enterprise App Auth using Dex](https://argo-cd.readthedocs.io/en/stable/operator-manual/user-management/microsoft/)
 - [ArgoCD - User Management - Auth0](https://argo-cd.readthedocs.io/en/stable/operator-manual/user-management/auth0/)
+- [JumpCloud SSO Supportx](https://github.com/argoproj/argo-cd/discussions/10658)
 
 ## Decision
 
