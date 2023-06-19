@@ -13,8 +13,8 @@
     oidc.config: |
       name: JumpCloud
       issuer: https://oauth.id.jumpcloud.com
-      clientID: $argocd-oidc-credentials:username
-      clientSecret: $argocd-oidc-credentials:credential
+      clientID: $argocd-oidc-credentials:clientID
+      clientSecret: $argocd-oidc-credentials:clientSecret
       requestedScopes:
       - openid
       - profile

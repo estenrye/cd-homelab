@@ -6,7 +6,6 @@ resources:
   - resources/Namespace.yaml
   - https://raw.githubusercontent.com/argoproj/argo-cd/v2.5.6/manifests/install.yaml
   - resources/ingress.yaml
-  - resources/argocd-oidc-credentials.yaml
 patchesJson6902:
   - target:
       version: v1

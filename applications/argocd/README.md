@@ -8,6 +8,11 @@ the clusters I deploy.
 ## Deployment
 
 ```bash
+
+kubectl create secret generic -n argocd argocd-oidc-credentials \
+  --from-literal=clientID=`op read op://Home_Lab/jumpcloud-oidc-secret_argocd.rye.ninja/username` \
+  --from-literal=clientSecret=`op read op://Home_Lab/jumpcloud-oidc-secret_argocd.rye.ninja/credential`
+kubectl label secret -n argocd argocd-oidc-credentials app.kubernetes.io/part-of=argocd
 kubectl apply -k ${HOME}/cd-homelab/applications/argocd
 ```
 
