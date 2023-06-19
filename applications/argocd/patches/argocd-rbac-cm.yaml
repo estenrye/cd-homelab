@@ -3,10 +3,8 @@
   value:
     policy.csv: |
         policy.csv: |
-        p, ACL_ArgoCD_Project_default, applications, *, default/*, allow
-        p, ACL_ArgoCD_Project_k8s-bare-metal, applications, *, k8s-bare-metal/*, allow
-        # let the group membership argocd-admins from OIDC become role:admin - needs to go into the configmap
-        g, ACL_ArgoCD_Global-Administrator, role:admin
+          p, ACL_ArgoCD_Project_default, applications, *, default/*, allow
+          p, ACL_ArgoCD_Project_k8s-bare-metal, applications, *, k8s-bare-metal/*, allow
+          g, ACL_ArgoCD_Global-Administrator, role:admin
         policy.default: role:readonly
-        # essential to get argo to use groups for RBAC:
         scopes: '[groups, email]' 
