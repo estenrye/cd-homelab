@@ -6,12 +6,18 @@ resources:
   - resources/Namespace.yaml
   - https://raw.githubusercontent.com/argoproj/argo-cd/v2.5.6/manifests/install.yaml
   - resources/ingress.yaml
+  - resources/argocd-oidc-credentials.yaml
 patchesJson6902:
   - target:
       version: v1
       kind: ConfigMap
       name: argocd-cm
     path: patches/argocd-cm.yaml
+  - target:
+      version: v1
+      kind: ConfigMap
+      name: argocd-rbac-cm
+    path: patches/argocd-rbac-cm.yaml
   - target:
       version: v1
       group: apps
