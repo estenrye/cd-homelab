@@ -14,7 +14,7 @@
       name: JumpCloud
       issuer: https://oauth.id.jumpcloud.com
       clientID: $argocd-oidc-credentials:username
-      clientSecret: $argocd-oidc-credentials:credentials
+      clientSecret: $argocd-oidc-credentials:credential
       requestedScopes:
       - openid
       - profile
