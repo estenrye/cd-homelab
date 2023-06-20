@@ -70,6 +70,7 @@ local kp =
           },
         },
         dashboards+:: {  // use this method to import your dashboards to Grafana
+          'argocd.json': (import './dashboards/argocd.json'),
           'etcd-dashboard.json': (import './dashboards/etcd.json'),
           'minecraft-general-dashboard.json': (import './dashboards/minecraft-general-dashboard.json'),
           'minecraft-players-dashboard.json': (import './dashboards/minecraft-players-dashboard.json'),

@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: argocd
+
+resources:
+  - resources/prometheus-k8s-role.yaml
+  - resources/prometheus-k8s-role-binding.yaml
+  - resources/argocd-applicationset-controller-metrics.yaml
+  - resources/argocd-metrics.yaml
+  - resources/argocd-repo-server-metrics.yaml
+  - resources/argocd-server-metrics.yaml

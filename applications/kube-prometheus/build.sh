@@ -11,7 +11,11 @@ set -o pipefail
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 # Make sure to use project tooling
-PATH="$SCRIPT_DIR/tmp/bin:${PATH}"
+PATH="$SCRIPT_DIR/tmp/bin:${HOME}/go/bin:${PATH}"
+
+# Make sure to install kube-prometheus library
+go install github.com/brancz/gojsontoyaml@latest
+jb install github.com/prometheus-operator/kube-prometheus/jsonnet/kube-prometheus@main
 
 # Download Dashboard Updates
 # wget https://grafana.com/api/dashboards/3070/revisions/3/download -O "$SCRIPT_DIR/dashboards/etcd.json"
