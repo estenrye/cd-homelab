@@ -10,9 +10,7 @@ metadata:
   namespace: monitoring
 stringData:
   grafana.ini: |
-    [date_formats]
-    default_timezone = UTC
-    [oauth.generic_oauth]
+    [auth.generic_oauth]
     allow_assign_grafana_admin = true
     allow_sign_up = true
     api_url = https://oauth.id.jumpcloud.com/userinfo
@@ -25,6 +23,8 @@ stringData:
     scopes = openid profile email groups
     token_url = https://oauth.id.jumpcloud.com/oauth2/token
     use_pkce = true
+    [date_formats]
+    default_timezone = UTC
     [server]
     root_url = https://grafana.rye.ninja/
 type: Opaque

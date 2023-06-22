@@ -67,7 +67,7 @@ local kp =
             server+: {
               root_url: 'https://grafana.rye.ninja/',
             },
-            'oauth.generic_oauth'+: {
+            'auth.generic_oauth'+: {
               name: 'JumpCloud',
               icon: 'signin',
               enabled: true,
