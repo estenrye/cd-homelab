@@ -20,13 +20,6 @@ This repo contains my argo-cd continuous deployment code.
    git config --global core.editor vim
    ```
 
-1. Install vscode and plugins
-   ```bash
-   sudo snap install --classic code
-   code --install-extension ms-kubernetes-tools.vscode-kubernetes-tools
-   code --install-extension Gruntfuggly.todo-tree
-   ```
-
 1. Install homebrew
    ```bash
    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -44,33 +37,13 @@ This repo contains my argo-cd continuous deployment code.
    cd cd-homelab
    brew bundle
    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+   sh prep-development-env.sh
    ```
 
 1. If on Linux, Install 1password-cli separately.
 
    https://developer.1password.com/docs/cli/get-started/
 
-1. Install krew
-   ```bash
-   (
-      set -x; cd "$(mktemp -d)" &&
-      OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
-      ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
-      KREW="krew-${OS}_${ARCH}" &&
-      curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" &&
-      tar zxvf "${KREW}.tar.gz" &&
-      ./"${KREW}" install krew
-   )
-   echo 'export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"' >> ${HOME}/.profile
-   export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-   ```
-
-1. Install kubectl extensions
-   ```bash
-   kubectl krew install \
-     cert-manager \
-     neat
-   ```
 
 ## Preparing an AWS Environment
 

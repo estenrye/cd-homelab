@@ -6,3 +6,19 @@
       secretKeyRef:
         name: grafana-admin-credentials
         key: password
+- op: add
+  path: /spec/template/spec/containers/0/env/1
+  value:
+    name: GF_AUTH_GENERIC_OAUTH_CLIENT_ID
+    valueFrom:
+      secretKeyRef:
+        name: grafana-oauth-client-credentials
+        key: username
+- op: add
+  path: /spec/template/spec/containers/0/env/2
+  value:
+    name: GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: grafana-oauth-client-credentials
+        key: credential

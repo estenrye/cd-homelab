@@ -67,6 +67,20 @@ local kp =
             server+: {
               root_url: 'https://grafana.rye.ninja/',
             },
+            'oauth.generic_oauth'+: {
+              name: 'JumpCloud',
+              icon: 'signin',
+              enabled: true,
+              allow_sign_up: true,
+              auto_login: true,
+              scopes: 'openid profile email groups',
+              auth_url: 'https://oauth.id.jumpcloud.com/oauth2/auth',
+              token_url: 'https://oauth.id.jumpcloud.com/oauth2/token',
+              api_url: 'https://oauth.id.jumpcloud.com/userinfo',
+              use_pkce: true,
+              allow_assign_grafana_admin: true,
+              role_attribute_path: "contains(info.roles[*], 'ACL_Grafana_Administrator') && 'GrafanaAdmin' || contains(info.roles[*], 'ACL_Grafana_Editor') && 'Editor' || 'Viewer'",
+            }
           },
         },
         dashboards+:: {  // use this method to import your dashboards to Grafana
