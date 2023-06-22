@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
 - ./manifests/setup/0namespace-namespace.yaml
 - ./resources/grafana-admin-credentials.yaml
+- ./resources/grafana-oauth-client-credentials.yaml
 - ./manifests/setup/prometheus-operator-0alertmanagerConfigCustomResourceDefinition.yaml
 - ./manifests/setup/prometheus-operator-0alertmanagerCustomResourceDefinition.yaml
 - ./manifests/setup/prometheus-operator-0podmonitorCustomResourceDefinition.yaml
