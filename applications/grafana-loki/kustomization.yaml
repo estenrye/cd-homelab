@@ -13,23 +13,24 @@ resources:
   - resources/prometheus-k8s-role.yaml
   - resources/prometheus-k8s-role-binding.yaml
 
-helmChartInflationGenerator:
-  - chartName: memcached
-    chartRepoUrl: https://charts.bitnami.com/bitnami
-    chartVersion: 6.3.13
-    releaseName: chunk-cache
-    values: memcached.chunk-cache.values.yaml
-  - chartName: memcached
-    chartRepoUrl: https://charts.bitnami.com/bitnami
-    chartVersion: 6.3.13
-    releaseName: results-cache
-    values: memcached.results-cache.values.yaml
-  - chartName: loki
-    chartRepoUrl: https://grafana.github.io/helm-charts
-    chartVersion: 5.0.0
-    releaseName: loki
-    values: loki.values.yaml
-patchesJson6902:
+helmCharts:
+- name: memcached
+  repo: https://charts.bitnami.com/bitnami
+  version: 6.3.13
+  releaseName: chunk-cache
+  valuesFile: memcached.chunk-cache.values.yaml
+- name: memcached
+  repo: https://charts.bitnami.com/bitnami
+  version: 6.3.13
+  releaseName: results-cache
+  valuesFile: memcached.results-cache.values.yaml
+- name: loki
+  repo: https://grafana.github.io/helm-charts
+  version: 5.0.0
+  releaseName: loki
+  valuesFile: loki.values.yaml
+
+patches:
   - target:
       version: v1
       kind: Service

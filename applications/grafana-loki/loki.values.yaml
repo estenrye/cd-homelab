@@ -1,17 +1,17 @@
-loki:
-  gateway:
-    ingress:
-      enabled: true
+gateway:
+  ingress:
+    enabled: true
+    hosts:
+      - loki.rye.ninja
+    annotations:
+      kubernetes.io/tls-acme: 'true'
+      cert-manager.io/cluster-issuer: cloudflare-dns01-issuer
+      external-dns.alpha.kubernetes.io/hostname: loki.rye.ninja
+    tls:
       hosts:
         - loki.rye.ninja
-      annotations:
-        kubernetes.io/tls-acme: 'true'
-        cert-manager.io/cluster-issuer: cloudflare-dns01-issuer
-        external-dns.alpha.kubernetes.io/hostname: loki.rye.ninja
-      tls:
-        hosts:
-          - loki.rye.ninja
-        secretName: loki-gateway-tls
+      secretName: loki-gateway-tls
+loki:
   storage:
     bucketNames:
       chunks: loki-chunks
