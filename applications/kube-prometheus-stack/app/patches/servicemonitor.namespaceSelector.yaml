@@ -1,3 +1,0 @@
-- op: replace
-  path: /spec/namespaceSelector/matchNames/0
-  value: monitoring

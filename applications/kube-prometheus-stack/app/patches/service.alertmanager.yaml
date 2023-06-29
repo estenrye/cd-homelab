@@ -1,6 +1,0 @@
-- op: add
-  path: /metadata/labels/alertmanager
-  value: prometheus-alertmanager
-- op: add
-  path: /metadata/labels/app.kubernetes.io~1name
-  value: alertmanager
