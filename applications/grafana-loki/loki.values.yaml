@@ -20,8 +20,6 @@ loki:
       default_validity: "12h"
 
 backend:
-  podAnnotations:
-    operator.1password.io/inject: loki
   extraEnv:
     - name: S3_ACCESS_KEY
       valueFrom:
@@ -40,8 +38,6 @@ backend:
     storageClass: direct-csi-min-io
 
 read:
-  podAnnotations:
-    operator.1password.io/inject: loki
   extraEnv:
     - name: S3_ACCESS_KEY
       valueFrom:
@@ -60,8 +56,6 @@ read:
     storageClass: direct-csi-min-io
 
 write:
-  podAnnotations:
-    operator.1password.io/inject: loki
   extraEnv:
     - name: S3_ACCESS_KEY
       valueFrom:
