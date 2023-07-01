@@ -6,6 +6,7 @@ gateway:
       - host: loki.rye.ninja
         paths:
           - path: /
+            pathType: Prefix
     annotations:
       kubernetes.io/tls-acme: 'true'
       cert-manager.io/cluster-issuer: cloudflare-dns01-issuer
