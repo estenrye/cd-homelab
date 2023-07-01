@@ -1,16 +1,19 @@
 gateway:
   ingress:
     enabled: true
+    ingressClassName: nginx
     hosts:
-      - loki.rye.ninja
+      - host: loki.rye.ninja
+        paths:
+          - path: /
     annotations:
       kubernetes.io/tls-acme: 'true'
       cert-manager.io/cluster-issuer: cloudflare-dns01-issuer
       external-dns.alpha.kubernetes.io/hostname: loki.rye.ninja
     tls:
-      - hosts:
-        - loki.rye.ninja
-        secretName: loki-gateway-tls
+      - secretName: loki-gateway-tls
+        hosts:
+          - loki.rye.ninja
 loki:
   storage:
     bucketNames:
