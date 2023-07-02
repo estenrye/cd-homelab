@@ -42,13 +42,19 @@ gateway:
   enabled: false
 loki:
   storage:
+    boltdb_shipper:
+      active_index_directory: /loki/index
+      cache_location: /loki/index_cache
+      resync_interval: 5s
+      shared_store: s3
     bucketNames:
       chunks: loki-chunks
       ruler: loki-ruler
       admin: loki-admin
-    type: s3
+    type: s3   
     s3:
-      s3: s3://minio.minio-tenant.svc
+      endpoint: https://minio.minio-tenant.svc
+      s3: s3://loki
       s3ForcePathStyle: true
       insecure: true
   memcached:
