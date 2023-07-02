@@ -29,10 +29,12 @@ loki:
   memcached:
     chunk_cache:
       enabled: true
-      host: "chunk-cache-memcached.loki.svc:11211"
+      service: "chunk-cache-memcached"
+      batch_size: 256
+      parallelism: 10
     results_cache:
       enabled: true
-      host: "results-cache-memcached.loki.svc:11211"
+      service: "results-cache-memcached"
       timeout: "500ms"
       default_validity: "12h"
 
