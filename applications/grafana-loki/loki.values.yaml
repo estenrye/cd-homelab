@@ -1,20 +1,45 @@
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  annotations:
+    kubernetes.io/tls-acme: 'true'
+    cert-manager.io/cluster-issuer: cloudflare-dns01-issuer
+    external-dns.alpha.kubernetes.io/hostname: loki.rye.ninja
+  #    nginx.ingress.kubernetes.io/auth-type: basic
+  #    nginx.ingress.kubernetes.io/auth-secret: loki-distributed-basic-auth
+  #    nginx.ingress.kubernetes.io/auth-secret-type: auth-map
+  #    nginx.ingress.kubernetes.io/configuration-snippet: |
+  #      proxy_set_header X-Scope-OrgID $remote_user;
+  paths:
+    write:
+      - /api/prom/push
+      - /loki/api/v1/push
+    read:
+      - /api/prom/tail
+      - /loki/api/v1/tail
+      - /loki/api
+      - /api/prom/rules
+      - /loki/api/v1/rules
+      - /prometheus/api/v1/rules
+      - /prometheus/api/v1/alerts
+    singleBinary:
+      - /api/prom/push
+      - /loki/api/v1/push
+      - /api/prom/tail
+      - /loki/api/v1/tail
+      - /loki/api
+      - /api/prom/rules
+      - /loki/api/v1/rules
+      - /prometheus/api/v1/rules
+      - /prometheus/api/v1/alerts
+  hosts:
+    - loki.rye.com
+  tls:
+    - secretName: loki-gateway-tls
+      hosts:
+        - loki.rye.ninja
 gateway:
-  ingress:
-    enabled: true
-    ingressClassName: nginx
-    hosts:
-      - host: loki.rye.ninja
-        paths:
-          - path: /
-            pathType: Prefix
-    annotations:
-      kubernetes.io/tls-acme: 'true'
-      cert-manager.io/cluster-issuer: cloudflare-dns01-issuer
-      external-dns.alpha.kubernetes.io/hostname: loki.rye.ninja
-    tls:
-      - secretName: loki-gateway-tls
-        hosts:
-          - loki.rye.ninja
+  enabled: false
 loki:
   storage:
     bucketNames:
