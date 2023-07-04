@@ -1,0 +1,9 @@
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  name: minio-storage-user
+  namespace: minio-tenant
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  itemPath: vaults/Home_Lab/items/minio-tenant-loki-svc-account

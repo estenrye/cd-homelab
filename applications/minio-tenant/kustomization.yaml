@@ -4,5 +4,7 @@ namespace: minio-tenant
 
 resources:
   - resources/namespace.yaml
+  - resources/minio-root-user.yaml
+  - resources/minio-storage-user.yaml
   - resources/tenant.yaml
   - resources/ingress.yaml

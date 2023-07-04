@@ -3,8 +3,17 @@ kind: Tenant
 metadata:
   name: minio
   namespace: minio-tenant
+  annotations:
+    prometheus.io/path: /minio/v2/metrics/cluster
+    prometheus.io/port: "9000"
+    prometheus.io/scrape: "true"
 spec:
+  users:
+    - name: minio-storage-user
   requestAutoCert: false
+  podManagementPolicy: Parallel
+  image: quay.io/minio/minio:RELEASE.2023-06-23T20-26-00Z
+  mountPath: /export
   exposeServices:
     console: true
     minio: true
@@ -15,6 +24,20 @@ spec:
       value: "https://console.minio.monitoring.rye.ninja"
     - name: MINIO_SERVER_URL
       value: "https://api.minio.minio.monitoring.rye.com"
+    - name: MINIO_STORAGE_CLASS_STANDARD
+      value: "EC:4"
+    - name: MINIO_BROWSER
+      value: "on"
+    - name: MINIO_ROOT_USER
+      valueFrom:
+        secretKeyRef:
+          name: minio-root-user
+          key: accessKey
+    - name: MINIO_ROOT_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: minio-root-user
+          key: secretKey
   pools:
   - name: pool-0
     resources:
