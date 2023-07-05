@@ -5,5 +5,7 @@ metadata:
   namespace: minio-tenant
   annotations:
     argocd.argoproj.io/sync-wave: "0"
+  labels:
+    v1.min.io/tenant: minio
 spec:
   itemPath: vaults/Home_Lab/items/minio-tenant-root-user
