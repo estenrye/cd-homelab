@@ -9,7 +9,7 @@ metadata:
     prometheus.io/scrape: "true"
 spec:
   users:
-    - name: minio-root-user
+    - name: minio-storage-user
   requestAutoCert: false
   podManagementPolicy: Parallel
   image: quay.io/minio/minio:RELEASE.2023-06-23T20-26-00Z
