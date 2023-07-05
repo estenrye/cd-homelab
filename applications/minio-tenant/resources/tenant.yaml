@@ -21,18 +21,18 @@ spec:
     - name: MINIO_DOMAIN
       value: "api.minio.monitoring.rye.ninja"
     - name: MINIO_BROWSER_REDIRECT_URL
-      value: "https://minio.monitoring.rye.ninja/console"
+      value: "https://console.minio.monitoring.rye.ninja"
     - name: MINIO_SERVER_URL
-      value: "https://minio.monitoring.rye.com"
+      value: "https://api.minio.minio.monitoring.rye.com"
   credsSecret:
     name: minio-root-user
   configuration:
     name: minio-env-configuration
   features:
     domains:
-      console: https://minio.monitoring.rye.ninja/console
+      console: http://console.minio.monitoring.rye.ninja
       minio:
-      - https://minio.monitoring.rye.ninja
+      - http://api.minio.monitoring.rye.ninja
   pools:
   - name: pool-0
     resources:
