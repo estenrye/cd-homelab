@@ -23,7 +23,7 @@ spec:
     - name: MINIO_BROWSER_REDIRECT_URL
       value: "https://minio.monitoring.rye.ninja/console"
     - name: MINIO_SERVER_URL
-      value: "https://minio.minio.monitoring.rye.com"
+      value: "https://minio.monitoring.rye.com"
   credsSecret:
     name: minio-root-user
   configuration:
