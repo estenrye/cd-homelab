@@ -3,17 +3,16 @@ kind: Kustomization
 namespace: minio-operator
 
 resources:
-  - namespace.yaml
+- namespace.yaml
 
-helmChartInflationGenerator:
-  - chartName: operator
-    chartRepoUrl: https://operator.min.io/
-    chartVersion: 4.5.8
-    releaseName: minio-operator
-    values: values.yaml
-
-patchesJson6902:
-  - target:
-      kind: Ingress
-      name: minio-operator-console
-    path: patch.yaml
+patches:
+- path: patch.yaml
+  target:
+    kind: Ingress
+    name: minio-operator-console
+helmCharts:
+- name: operator
+  releaseName: minio-operator
+  repo: https://operator.min.io/
+  valuesFile: values.yaml
+  version: 5.0.6
