@@ -24,11 +24,9 @@ spec:
       value: "https://console.minio.monitoring.rye.ninja"
     - name: MINIO_SERVER_URL
       value: "https://api.minio.minio.monitoring.rye.com"
-    - name: MINIO_STORAGE_CLASS_STANDARD
-      value: "EC:4"
-    - name: MINIO_BROWSER
-      value: "on"
   credsSecret:
+    name: minio-root-user
+  configuration:
     name: minio-root-user
   pools:
   - name: pool-0
