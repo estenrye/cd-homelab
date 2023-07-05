@@ -28,6 +28,11 @@ spec:
     name: minio-root-user
   configuration:
     name: minio-root-user
+  features:
+    domains:
+      console: https://console.minio.monitoring.rye.ninja
+      minio:
+      - https://api.minio.monitoring.rye.ninja
   pools:
   - name: pool-0
     resources:
