@@ -9,7 +9,7 @@ metadata:
     prometheus.io/scrape: "true"
 spec:
   users:
-    - name: minio-storage-user
+    - name: minio-root-user
   requestAutoCert: false
   podManagementPolicy: Parallel
   image: quay.io/minio/minio:RELEASE.2023-06-23T20-26-00Z
@@ -27,7 +27,7 @@ spec:
   credsSecret:
     name: minio-root-user
   configuration:
-    name: minio-root-user
+    name: minio-env-configuration
   features:
     domains:
       console: https://console.minio.monitoring.rye.ninja
