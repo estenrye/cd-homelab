@@ -28,6 +28,16 @@ spec:
       value: "EC:4"
     - name: MINIO_BROWSER
       value: "on"
+    - name: MINIO_ROOT_USER
+      valueFrom:
+        secretKeyRef:
+          name: minio-root-user
+          key: accessKey
+    - name: MINIO_ROOT_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: minio-root-user
+          key: secretKey
   credsSecret:
     name: minio-root-user
   pools:
