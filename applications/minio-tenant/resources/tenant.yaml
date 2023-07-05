@@ -20,10 +20,10 @@ spec:
   env:    
     - name: MINIO_DOMAIN
       value: "api.minio.monitoring.rye.ninja"
-    - name: MINIO_BROWSER_REDIRECT_URL
-      value: "https://console.minio.monitoring.rye.ninja"
-    - name: MINIO_SERVER_URL
-      value: "https://api.minio.monitoring.rye.com"
+    # - name: MINIO_BROWSER_REDIRECT_URL
+    #   value: "https://console.minio.monitoring.rye.ninja"
+    # - name: MINIO_SERVER_URL
+    #   value: "https://api.minio.monitoring.rye.com"
   credsSecret:
     name: minio-root-user
   configuration:
