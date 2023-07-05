@@ -18,8 +18,8 @@ spec:
     console: true
     minio: true
   env:    
-    - name: MINIO_DOMAIN
-      value: "api.minio.monitoring.rye.ninja"
+    # - name: MINIO_DOMAIN
+    #   value: "api.minio.monitoring.rye.ninja"
     # - name: MINIO_BROWSER_REDIRECT_URL
     #   value: "https://console.minio.monitoring.rye.ninja"
     # - name: MINIO_SERVER_URL
