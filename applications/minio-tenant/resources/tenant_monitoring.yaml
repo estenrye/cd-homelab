@@ -49,10 +49,10 @@ spec:
         - ReadWriteOnce
         resources:
           requests:
-            storage: 96Gi
+            storage: 200Gi
         storageClassName: direct-csi-min-io
       status: {}
-    volumesPerServer: 1
+    volumesPerServer: 2
   requestAutoCert: false
   serviceAccountName: monitoring-sa
   users:
