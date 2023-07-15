@@ -42,7 +42,7 @@ spec:
             storage: 500Gi
         storageClassName: direct-csi-min-io
       status: {}
-    volumesPerServer: 2
+    volumesPerServer: 1
   requestAutoCert: false
   serviceAccountName: monitoring-minio-sa
   users:
