@@ -43,6 +43,16 @@ spec:
         storageClassName: direct-csi-min-io
       status: {}
     volumesPerServer: 2
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: v1.min.io/tenant
+              operator: In
+              values:
+              - monitoring
+          topologyKey: kubernetes.io/hostname
   requestAutoCert: false
   serviceAccountName: monitoring-minio-sa
   users:
