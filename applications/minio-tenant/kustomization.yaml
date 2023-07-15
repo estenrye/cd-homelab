@@ -5,8 +5,9 @@ namespace: minio-tenant
 resources:
   - resources/namespace.yaml
   - resources/onepassworditem_monitoring-env-configuration.yaml
-  - resources/minio-env-configuration.yaml
-  - resources/minio-root-user.yaml
-  - resources/minio-storage-user.yaml
-  - resources/tenant.yaml
+  - resources/onepassworditem_minio_monitoring-user-1
+  # - resources/minio-env-configuration.yaml
+  # - resources/minio-root-user.yaml
+  # - resources/minio-storage-user.yaml
+  # - resources/tenant.yaml
   - resources/ingress.yaml

@@ -23,7 +23,7 @@ spec:
             path: "/"
             backend:
               service:
-                name: minio
+                name: monitoring
                 port:
                   number: 80
     - host: console.minio.monitoring.rye.ninja
@@ -33,6 +33,6 @@ spec:
             path: "/"
             backend:
               service:
-                name: minio-console
+                name: monitoring-console
                 port:
                   number: 9090
