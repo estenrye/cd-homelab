@@ -39,11 +39,11 @@ spec:
         - ReadWriteOnce
         resources:
           requests:
-            storage: 200Gi
+            storage: 500Gi
         storageClassName: direct-csi-min-io
       status: {}
     volumesPerServer: 2
   requestAutoCert: false
-  serviceAccountName: monitoring-sa
+  serviceAccountName: monitoring-minio-sa
   users:
   - name: monitoring-user-1
