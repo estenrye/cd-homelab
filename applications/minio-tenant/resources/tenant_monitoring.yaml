@@ -38,7 +38,7 @@ spec:
           topologyKey: kubernetes.io/hostname
     name: ss-0
     resources: {}
-    servers: 4
+    servers: 2
     volumeClaimTemplate:
       apiVersion: v1
       kind: persistentvolumeclaims
