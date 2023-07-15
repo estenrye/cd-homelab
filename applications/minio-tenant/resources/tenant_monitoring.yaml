@@ -40,7 +40,7 @@ spec:
         resources:
           requests:
             storage: 500Gi
-        storageClassName: direct-csi-min-io
+        storageClassName: directpv-min-io
       status: {}
     volumesPerServer: 2
     affinity:
