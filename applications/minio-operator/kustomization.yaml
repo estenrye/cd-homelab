@@ -4,6 +4,7 @@ namespace: minio-operator
 
 resources:
 - namespace.yaml
+- minio-sc.yaml
 
 patches:
 - path: patch.yaml
