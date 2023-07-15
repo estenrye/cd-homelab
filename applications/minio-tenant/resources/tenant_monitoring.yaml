@@ -1,15 +1,18 @@
 apiVersion: minio.min.io/v2
 kind: Tenant
 metadata:
+  creationTimestamp: null
   name: monitoring
   namespace: minio-tenant
 scheduler:
   name: ""
 spec:
   certConfig:
-    commonName: '*.monitoring.minio-tenant.svc.cluster.local'
+    commonName: '*.monitoring-hl.minio-tenant.svc.cluster.local'
     dnsNames:
-    - monitoring-monitoring-{0...1}.monitoring.minio-tenant.svc.cluster.local
+    - monitoring-ss-0-{0...3}.monitoring-hl.minio-tenant.svc.cluster.local
+    - api.minio.monitoring.rye.ninja
+    - console.minio.monitoring.rye.ninja
     organizationName:
     - system:nodes
   configuration:
@@ -31,9 +34,9 @@ spec:
             - key: v1.min.io/tenant
               operator: In
               values:
-              - foo
+              - monitoring
           topologyKey: kubernetes.io/hostname
-    name: monitoring
+    name: ss-0
     resources: {}
     servers: 4
     volumeClaimTemplate:
@@ -46,10 +49,11 @@ spec:
         - ReadWriteOnce
         resources:
           requests:
-            storage: 384Gi
+            storage: 96Gi
+        storageClassName: direct-csi-min-io
       status: {}
-    volumesPerServer: 4
+    volumesPerServer: 1
   requestAutoCert: false
-  serviceAccountName: foo-sa
+  serviceAccountName: monitoring-sa
   users:
   - name: monitoring-user-1
