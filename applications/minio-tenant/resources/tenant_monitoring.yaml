@@ -40,9 +40,9 @@ spec:
         resources:
           requests:
             storage: 500Gi
-        storageClassName: directpv-min-io
+        storageClassName: minio
       status: {}
-    volumesPerServer: 2
+    volumesPerServer: 3
     affinity:
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
