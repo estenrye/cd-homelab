@@ -28,7 +28,7 @@ spec:
   pools:
   - name: ss-0
     resources: {}
-    servers: 2
+    servers: 4
     volumeClaimTemplate:
       apiVersion: v1
       kind: persistentvolumeclaims
