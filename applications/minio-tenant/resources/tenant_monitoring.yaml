@@ -28,7 +28,7 @@ spec:
   pools:
   - name: ss-0
     resources: {}
-    servers: 2
+    servers: 4
     volumeClaimTemplate:
       apiVersion: v1
       kind: persistentvolumeclaims
@@ -42,7 +42,7 @@ spec:
             storage: 500Gi
         storageClassName: minio
       status: {}
-    volumesPerServer: 3
+    volumesPerServer: 1
     affinity:
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
