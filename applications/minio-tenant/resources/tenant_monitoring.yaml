@@ -44,6 +44,15 @@ spec:
       status: {}
     volumesPerServer: 1
     affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+              - key: directpv.min.io/node
+                operator: In
+                values:
+                  - r610-02
+                  - r610-04
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
         - labelSelector:
