@@ -1,4 +1,4 @@
-allowVolumeExpansion: false
+allowVolumeExpansion: true
 allowedTopologies:
 - matchLabelExpressions:
   - key: directpv.min.io/identity
