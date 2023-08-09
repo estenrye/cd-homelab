@@ -1,0 +1,46 @@
+version: "3.4"
+
+services:
+  haproxy:
+    image: haproxytech/haproxy-alpine:latest
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    volumes:
+      - ./haproxy:/usr/local/etc/haproxy:ro
+    networks:
+      - internal
+
+  whoami:
+    image: traefik/whoami:latest
+    command:
+      - --port=2001
+    networks:
+      - internal
+  op-connect-api:
+    image: 1password/connect-api:latest
+    volumes:
+      - "${HOME}/.op-connect/1password-credentials.json:/home/opuser/.op/1password-credentials.json"
+      - "data:/home/opuser/.op/data"
+    networks:
+      - internal
+  op-connect-sync:
+    image: 1password/connect-sync:latest
+    # ports:
+    #   - "8081:8080"
+    volumes:
+      - "${HOME}/.op-connect/1password-credentials.json:/home/opuser/.op/1password-credentials.json"
+      - "data:/home/opuser/.op/data"
+    networks:
+      - internal
+  shoelaces:
+    image: estenrye/shoelaces:latest
+    environment:
+      BASE_URL: pxe.127-0-0-1.a.rye.ninja:8080
+    networks:
+      - internal
+volumes:
+  data:
+
+networks:
+  internal:
