@@ -1,0 +1,9 @@
+- hosts:
+    - proxmox_hypervisors
+  tasks:
+  - name: Install Image on PVE Host
+    ansible.builtin.include_tasks:
+      file: tasks/prep-vm-image.yaml
+    loop: "{{ images }}"
+    loop_control:
+      loop_var: image

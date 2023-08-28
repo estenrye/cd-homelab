@@ -15,12 +15,12 @@ proxmox_hypervisors:
       vlan: 61
     sshkeys:
       - ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1MjEAAACFBABRrM38w/r7E5eHrD5eeQ0tU5sNlpseYO3s0kKKf0tbYIOsGW52ofUBzzx2/3PoAANOX/rZIwk6DmmiQxPizKeF6QCZuHrzknDHNHtg2JNWlsh24zNI9OjX8e+bB1oPE8y/PQPXPA8hrf7RZhU0wb3Ld4I6tOpcdiimlOI4sYmPgITmKA== esten@MacBook-Pro
-    image:
-      url: https://cloud-images.ubuntu.com/minimal/releases/jammy/release-20230814/ubuntu-22.04-minimal-cloudimg-amd64.img
-      checksum: "sha256:72ca6ba4f8b7305479ed32ed79890a52aec4f0629762286dbc9a5e5b3997489c"
-      vm_id: 9000
-      template_name: ubuntu-22-04-minimal-20230814
-      ciuser: ubuntu
-      ipv4_address: 10.5.119.1
-      package_manager: apt
-      boot_timeout: 30
+    images:
+      - url: https://cloud-images.ubuntu.com/minimal/releases/jammy/release-20230814/ubuntu-22.04-minimal-cloudimg-amd64.img
+        checksum: "sha256:72ca6ba4f8b7305479ed32ed79890a52aec4f0629762286dbc9a5e5b3997489c"
+        vm_id: 9000
+        template_name: ubuntu-22-04-minimal-20230814
+        ciuser: ubuntu
+        ipv4_address: 10.5.119.1
+        package_manager: apt
+        boot_timeout: 30
