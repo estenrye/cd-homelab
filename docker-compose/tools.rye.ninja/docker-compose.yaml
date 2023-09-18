@@ -27,17 +27,19 @@ services:
       - internal
   op-connect-api:
     image: 1password/connect-api:latest
+    user: "${UID}:${GID}"
     restart: always
     volumes:
-      - "${HOME}/.op-connect/1password-credentials.json:/home/opuser/.op/1password-credentials.json"
+      - "${HOME}/.op-connect:/root/.op"
       - "op-data:/home/opuser/.op/data"
     networks:
       - internal
   op-connect-sync:
     image: 1password/connect-sync:latest
+    user: "${UID}:${GID}"
     restart: always
     volumes:
-      - "${HOME}/.op-connect/1password-credentials.json:/home/opuser/.op/1password-credentials.json"
+      - "${HOME}/.op-connect:/root/.op"
       - "op-data:/home/opuser/.op/data"
     networks:
       - internal
