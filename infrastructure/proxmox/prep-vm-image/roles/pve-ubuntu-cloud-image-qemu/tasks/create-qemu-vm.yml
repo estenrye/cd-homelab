@@ -1,0 +1,415 @@
+- name: Create Proxmox VM
+  ansible.builtin.command:
+    cmd: >
+      /usr/sbin/qm create {{ qemu_vm_id }} 
+        --name "ubuntu-cloud-image-{{ ubuntu_cloud_images_release | replace ('/', '-') }}-{{ ubuntu_cloud_images_version }}" 
+        --memory 8192 
+        --cores 4 
+        --net0 virtio,bridge=vmbr0
+    creates: /etc/pve/nodes/{{ ansible_hostname | split('.') | first }}/qemu-server/{{ qemu_vm_id }}.conf
+
+- name: Import Proxmox VM Boot Disk
+  block:
+    - name: Check for imported disk image
+      ansible.builtin.shell:
+        cmd: zfs list -o name | grep {{ proxmox_zfs_pool }}/vm-{{ qemu_vm_id }}-disk-0
+      changed_when: false
+    - name: Inform user disk is present
+      ansible.builtin.debug:
+        msg: "Disk already imported. Continuing."
+  rescue:
+    - name: Import disk image
+      ansible.builtin.command:
+        cmd: >
+          /usr/sbin/qm importdisk {{ qemu_vm_id }} 
+            {{ ubuntu_cloud_images_dest }} 
+            {{ proxmox_zfs_pool }}
+
+- name: Configure scsihw configuration on Proxmox VM
+  block:
+    - name: Check for scsihw configuration on Proxmox VM
+      ansible.builtin.shell:
+        cmd: "/usr/sbin/qm config {{ qemu_vm_id }} | grep 'scsihw\\: virtio-scsi-pci'"
+      changed_when: false
+    - name: Inform user scsihw configuration is present
+      ansible.builtin.debug:
+        msg: "scsihw configuration already present. Continuing."
+  rescue:
+    - name: Set scsihw on Proxmox VM
+      ansible.builtin.command:
+        cmd: >
+          /usr/sbin/qm set {{ qemu_vm_id }} 
+            --scsihw virtio-scsi-pci 
+
+- name: Check for scsi0 configuration on Proxmox VM
+  block:
+    - name: Check for scsi0 configuration on Proxmox VM
+      ansible.builtin.shell:
+        cmd: "/usr/sbin/qm config {{ qemu_vm_id }} | grep 'scsi0\\: {{ proxmox_zfs_pool }}\\:vm-{{ qemu_vm_id }}-disk-0'"
+      changed_when: false
+    - name: Inform user scsi0 configuration is present
+      ansible.builtin.debug:
+        msg: "scsi0 configuration already present. Continuing."
+  rescue:
+    - name: Set scsi0 on Proxmox VM
+      ansible.builtin.command:
+        cmd: >
+          /usr/sbin/qm set {{ qemu_vm_id }} 
+            --scsi0 {{ proxmox_zfs_pool }}:vm-{{ qemu_vm_id }}-disk-0
+
+- name: Check for Boot Configuration on Proxmox VM
+  block:
+    - name: Check for Boot Configuration on Proxmox VM
+      ansible.builtin.shell:
+        cmd: "/usr/sbin/qm config {{ qemu_vm_id }} | grep 'boot\\: c'"
+      changed_when: false
+    - name: Inform user Boot Configuration is present
+      ansible.builtin.debug:
+        msg: "Boot Configuration already present. Continuing."
+  rescue:
+    - name: Set Boot Configuration on Proxmox VM
+      ansible.builtin.command:
+        cmd: >
+          /usr/sbin/qm set {{ qemu_vm_id }} 
+            --boot c
+
+- name: Check for CloudInit Disc configuration on Proxmox VM
+  block:
+    - name: Check for CloudInit Disc configuration on Proxmox VM
+      ansible.builtin.shell:
+        cmd: "/usr/sbin/qm config {{ qemu_vm_id }} | grep 'ide2\\: {{ proxmox_zfs_pool }}:vm-{{ qemu_vm_id }}-cloudinit'"
+      changed_when: false
+    - name: Inform user CloudInit Disc configuration is present
+      ansible.builtin.debug:
+        msg: "CloudInit Disc configuration already present. Continuing."
+  rescue:
+    - name: Set CloudInit Disc configuration on Proxmox VM
+      ansible.builtin.command:
+        cmd: >
+          /usr/sbin/qm set {{ qemu_vm_id }} 
+            --ide2 {{ proxmox_zfs_pool }}:cloudinit
+
+- name: check for serial0 configuration on Proxmox VM
+  block:
+    - name: Check for serial0 configuration on Proxmox VM
+      ansible.builtin.shell:
+        cmd: "/usr/sbin/qm config {{ qemu_vm_id }} | grep 'serial0\\: socket'"
+      changed_when: false
+    - name: Inform user serial0 configuration is present
+      ansible.builtin.debug:
+        msg: "serial0 configuration already present. Continuing."
+  rescue:
+    - name: Set serial0 configuration on Proxmox VM
+      ansible.builtin.command:
+        cmd: >
+          /usr/sbin/qm set {{ qemu_vm_id }} 
+            --serial0 socket
+
+- name: Check for vga configuration on Proxmox VM
+  block:
+    - name: Check for vga configuration on Proxmox VM
+      ansible.builtin.shell:
+        cmd: "/usr/sbin/qm config {{ qemu_vm_id }} | grep 'vga\\: serial0'"
+      changed_when: false
+    - name: Inform user vga configuration is present
+      ansible.builtin.debug:
+        msg: "vga configuration already present. Continuing."
+  rescue:
+    - name: Set vga configuration on Proxmox VM
+      ansible.builtin.command:
+        cmd: >
+          /usr/sbin/qm set {{ qemu_vm_id }} 
+            --vga serial0
+
+- name: Check for agent configuration on Proxmox VM
+  block:
+    - name: Check for agent configuration on Proxmox VM
+      ansible.builtin.shell:
+        cmd: "/usr/sbin/qm config {{ qemu_vm_id }} | grep 'agent\\: enabled=1'"
+      changed_when: false
+    - name: Inform user agent configuration is present
+      ansible.builtin.debug:
+        msg: "agent configuration already present. Continuing."
+  rescue:
+    - name: Set agent configuration on Proxmox VM
+      ansible.builtin.command:
+        cmd: >
+          /usr/sbin/qm set {{ qemu_vm_id }} 
+            --agent enabled=1
+
+- name: Check for ciupgrade configuration on Proxmox VM
+  block:
+    - name: Check for ciupgrade configuration on Proxmox VM
+      ansible.builtin.shell:
+        cmd: "/usr/sbin/qm config {{ qemu_vm_id }} | grep 'ciupgrade\\: {{ 1 if enable_cloud_init_upgrade else 0 }}'"
+      changed_when: false
+    - name: Inform user ciupgrade configuration is present
+      ansible.builtin.debug:
+        msg: "ciupgrade configuration already present. Continuing."
+  rescue:
+    - name: Set ciupgrade configuration on Proxmox VM
+      ansible.builtin.command:
+        cmd: >
+          /usr/sbin/qm set {{ qemu_vm_id }} 
+            --ciupgrade {{ 1 if enable_cloud_init_upgrade else 0 }}
+
+- name: Check for ciuser configuration on Proxmox VM
+  block:
+    - name: Check for ciuser configuration on Proxmox VM
+      ansible.builtin.shell:
+        cmd: "/usr/sbin/qm config {{ qemu_vm_id }} | grep 'ciuser\\: {{ qemu_vm_user }}'"
+      changed_when: false
+    - name: Inform user ciuser configuration is present
+      ansible.builtin.debug:
+        msg: "ciuser configuration already present. Continuing."
+  rescue:
+    - name: Set ciuser configuration on Proxmox VM
+      ansible.builtin.command:
+        cmd: >
+          /usr/sbin/qm set {{ qemu_vm_id }} 
+            --ciuser {{ qemu_vm_user }}
+
+- name: Check for cipassword configuration on Proxmox VM
+  block:
+    - name: Check for cipassword configuration on Proxmox VM
+      ansible.builtin.shell:
+        cmd: "/usr/sbin/qm config {{ qemu_vm_id }} | grep 'cipassword\\:'"
+      changed_when: false
+      when:
+        - qemu_vm_password is defined
+        - qemu_vm_password is not none
+    - name: Inform user cipassword configuration is present
+      ansible.builtin.debug:
+        msg: "cipassword configuration already present. Continuing."
+  rescue:
+    - name: Set cipassword configuration on Proxmox VM
+      ansible.builtin.command:
+        cmd: >
+          /usr/sbin/qm set {{ qemu_vm_id }} 
+            --cipassword {{ qemu_vm_password }}
+
+- name: Check for sshkeys configuration on Proxmox VM
+  block:
+    - name: Check for sshkeys configuration on Proxmox VM
+      ansible.builtin.shell:
+        cmd: "/usr/sbin/qm config {{ qemu_vm_id }} | grep 'sshkeys\\: {{ qemu_vm_ssh_keys | map('urlencode') | join('%0A') | replace('/', '%2F') }}'"
+      changed_when: false
+      when:
+        - qemu_vm_ssh_keys is defined
+        - qemu_vm_ssh_keys is not none
+        - qemu_vm_ssh_keys | length > 0
+    - name: Inform user sshkeys configuration is present
+      ansible.builtin.debug:
+        msg: "sshkeys configuration already present. Continuing."
+  rescue:
+    - name: Create temporary file
+      ansible.builtin.tempfile:
+        state: file
+        suffix: temp
+      register: tempfile_1
+    - name: Write public sshkeys to tempfile_1
+      ansible.builtin.copy:
+        content: "{{ qemu_vm_ssh_keys | join('\n') }}"
+        dest: "{{ tempfile_1.path }}"
+    - name: Set sshkeys configuration on Proxmox VM
+      ansible.builtin.command:
+        cmd: >
+          /usr/sbin/qm set {{ qemu_vm_id }} 
+            --sshkeys {{ tempfile_1.path }}
+
+- name: Check for static ip configuration on Proxmox VM
+  block:
+    - name: Check for static ip configuration on Proxmox VM
+      ansible.builtin.shell:
+        cmd: "/usr/sbin/qm config {{ qemu_vm_id }} | grep 'ipconfig0\\: ip={{ qemu_vm_ipv4_address }},gw={{ qemu_vm_ipv4_gateway }}'"
+      changed_when: false
+      when:
+        - qemu_vm_ipv4_address is defined
+        - qemu_vm_ipv4_address is not none
+        - qemu_vm_ipv4_gateway is defined
+        - qemu_vm_ipv4_gateway is not none
+    - name: Inform user static ip configuration is present
+      ansible.builtin.debug:
+        msg: "static ip configuration already present. Continuing."
+  rescue:
+    - name: Set static ip configuration on Proxmox VM
+      ansible.builtin.command:
+        cmd: >
+          /usr/sbin/qm set {{ qemu_vm_id }} 
+            --ipconfig0 ip={{ qemu_vm_ipv4_address }},gw={{ qemu_vm_ipv4_gateway }}
+
+- name: Check searchdomain configuration on Proxmox VM
+  block:
+    - name: Check searchdomain configuration on Proxmox VM
+      ansible.builtin.shell:
+        cmd: "/usr/sbin/qm config {{ qemu_vm_id }} | grep 'searchdomain\\: {{ qemu_vm_searchdomain }}'"
+      changed_when: false
+      when:
+        - qemu_vm_searchdomain is defined
+        - qemu_vm_searchdomain is not none
+    - name: Inform user searchdomain configuration is present
+      ansible.builtin.debug:
+        msg: "searchdomain configuration already present. Continuing."
+  rescue:
+    - name: Set searchdomain configuration on Proxmox VM
+      ansible.builtin.command:
+        cmd: >
+          /usr/sbin/qm set {{ qemu_vm_id }} 
+            --searchdomain {{ qemu_vm_searchdomain }}
+
+- name: Check for nameserver configuration on Proxmox VM
+  block:
+    - name: Check for nameserver configuration on Proxmox VM
+      ansible.builtin.shell:
+        cmd: "/usr/sbin/qm config {{ qemu_vm_id }} | grep 'nameserver\\: {{ qemu_vm_nameserver | join(' ') }}'"
+      changed_when: false
+      when:
+        - qemu_vm_nameserver is defined
+        - qemu_vm_nameserver is not none
+        - qemu_vm_nameserver | length > 0
+    - name: Inform user nameserver configuration is present
+      ansible.builtin.debug:
+        msg: "nameserver configuration already present. Continuing."
+  rescue:
+    - name: Set nameserver configuration on Proxmox VM
+      ansible.builtin.command:
+        cmd: >
+          /usr/sbin/qm set {{ qemu_vm_id }} 
+            --nameserver "{{ qemu_vm_nameserver | join(' ') }}"
+
+- name: Start Proxmox
+  block:
+    - name: Check if Proxmox VM is running
+      ansible.builtin.shell:
+        cmd: "/usr/sbin/qm status {{ qemu_vm_id }} | grep 'status\\: running'"
+      changed_when: false
+    - name: Inform user Proxmox VM is running
+      ansible.builtin.debug:
+        msg: "Proxmox VM already running. Continuing."
+  rescue:
+    - name: Start Proxmox VM
+      ansible.builtin.command:
+        cmd: >
+          /usr/sbin/qm start {{ qemu_vm_id }}
+    - name: Wait for Proxmox VM to start
+      ansible.builtin.wait_for_connection:
+        delay: 5
+        timeout: 600
+      delegate_to: "{{ qemu_vm_ipv4_address | ansible.utils.ipaddr('address') }}"
+
+- name: Resize Disk Image
+  ansible.builtin.command:
+    cmd: >
+      /usr/sbin/qm disk resize {{ qemu_vm_id }} 
+        scsi0 
+        +10G
+
+- name: Make VM aware of disk size change.
+  ansible.builtin.shell:
+    cmd: echo 1 > /sys/block/sda/device/rescan
+  delegate_to: "{{ qemu_vm_ipv4_address | ansible.utils.ipaddr('address') }}"
+  become: true
+
+- name: Extend an existing partition to fill all available space
+  ansible.builtin.command:
+    cmd: growpart /dev/sda 1
+  delegate_to: "{{ qemu_vm_ipv4_address | ansible.utils.ipaddr('address') }}"
+  become: true
+
+- name: Resize /dev/sda1
+  ansible.builtin.command:
+    cmd: resize2fs /dev/sda1
+  delegate_to: "{{ qemu_vm_ipv4_address | ansible.utils.ipaddr('address') }}"
+  become: true
+
+- name: Replace archive.ubuntu.com in /etc/apt/sources.list
+  ansible.builtin.replace:
+    path: /etc/apt/sources.list
+    regexp: 'archive.ubuntu.com'
+    replace: 'apt.tools.rye.ninja'
+  delegate_to: "{{ qemu_vm_ipv4_address | ansible.utils.ipaddr('address') }}"
+  become: true
+
+- name: Replace security.ubuntu.com in /etc/apt/sources.list
+  ansible.builtin.replace:
+    path: /etc/apt/sources.list
+    regexp: 'security.ubuntu.com'
+    replace: 'apt.tools.rye.ninja'
+  delegate_to: "{{ qemu_vm_ipv4_address | ansible.utils.ipaddr('address') }}"
+  become: true
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: true
+  delegate_to: "{{ qemu_vm_ipv4_address | ansible.utils.ipaddr('address') }}"
+  become: true
+
+- name: Install packages qemu-guest-agent and cloud-init
+  ansible.builtin.package:
+    name: 
+      - qemu-guest-agent
+      - cloud-init
+  delegate_to: "{{ qemu_vm_ipv4_address | ansible.utils.ipaddr('address') }}"
+  become: true
+
+- name: Install additional packages
+  ansible.builtin.package:
+    name: "{{ qemu_vm_packages }}"
+  delegate_to: "{{ qemu_vm_ipv4_address | ansible.utils.ipaddr('address') }}"
+  become: true
+
+- name: Reboot to activate agent
+  ansible.builtin.reboot:
+  delegate_to: "{{ qemu_vm_ipv4_address | ansible.utils.ipaddr('address') }}"
+  become: true
+
+- name: Shutdown Proxmox VM
+  ansible.builtin.command:
+    cmd: /usr/sbin/qm shutdown {{ qemu_vm_id }} --timeout 600
+
+- name: Wait for Proxmox VM to stop
+  ansible.builtin.wait_for:
+    host: "{{ qemu_vm_ipv4_address | ansible.utils.ipaddr('address') }}"
+    port: 22
+    delay: 5
+    timeout: 300
+    state: stopped
+    msg: "Proxmox VM not stopped in time."
+  delegate_to: localhost
+
+- name: Enable dhcp on Proxmox VM
+  block:
+    - name: Check for dhcp configuration on Proxmox VM
+      ansible.builtin.shell:
+        cmd: "/usr/sbin/qm config {{ qemu_vm_id }} | grep 'ipconfig0\\: dhcp'"
+      changed_when: false
+    - name: Inform user dhcp configuration is present
+      ansible.builtin.debug:
+        msg: "dhcp configuration already present. Continuing."
+  rescue:
+    - name: Set dhcp configuration on Proxmox VM
+      ansible.builtin.command:
+        cmd: >
+          /usr/sbin/qm set {{ qemu_vm_id }} 
+            --ipconfig0 'ip=dhcp'
+
+- name: Clear mac address on Proxmox VM
+  block:
+    - name: Check for mac address configuration on Proxmox VM
+      ansible.builtin.shell:
+        cmd: "/usr/sbin/qm config {{ qemu_vm_id }} | grep 'net0\\: virtio,bridge=vmbr0'"
+      changed_when: false
+    - name: Inform user mac address configuration is cleared
+      ansible.builtin.debug:
+        msg: "mac address configuration already cleared. Continuing."
+  rescue:
+    - name: Set mac address configuration on Proxmox VM
+      ansible.builtin.command:
+        cmd: >
+          /usr/sbin/qm set {{ qemu_vm_id }} 
+            --net0 virtio,bridge=vmbr0
+
+- name: Convert to Template
+  ansible.builtin.command:
+    cmd: /usr/sbin/qm template {{ qemu_vm_id }}

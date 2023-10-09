@@ -1,0 +1,14 @@
+---
+- hosts: all
+  tasks:
+    - include_role:
+        name: pve-ubuntu-cloud-image-qemu
+      vars:
+        qemu_vm_id: "{{ image.qemu_vm_id }}"
+        ubuntu_cloud_images_release: "{{ image.ubuntu_cloud_images_release }}"
+        qemu_vm_ipv4_address: "{{ image.qemu_vm_ipv4_address }}"
+        ubuntu_cloud_images_descriptor: "{{ image.ubuntu_cloud_images_descriptor }}"
+      loop: "{{ images }}"
+      loop_control:
+        loop_var: image
+        label: "{{ image.ubuntu_cloud_images_release | basename }}-{{ image.ubuntu_cloud_images_descriptor }}-{{ image.qemu_vm_id }}"

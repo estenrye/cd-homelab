@@ -1,0 +1,38 @@
+---
+# tasks file for pve-ubuntu-cloud-image
+
+- name: Create Ubuntu Cloud Image Root Path
+  ansible.builtin.file:
+    path: "{{ ubuntu_cloud_images_root_path }}"
+    state: directory
+    mode: '0755'
+
+- name: Download Ubuntu Cloud Image
+  ansible.builtin.get_url:
+    url: "{{ ubuntu_cloud_images_url }}"
+    dest: "{{ ubuntu_cloud_images_dest }}"
+  register: ubuntu_cloud_images_download
+
+- name: Delete QEMU VM Template if Present
+  block: 
+    - name: Check to see if Proxmox VM Template is present.
+      ansible.builtin.shell:
+        cmd: "/usr/sbin/qm config {{ qemu_vm_id }} | grep 'template\\: 1'"
+      changed_when: false
+    - name: Delete Proxmox VM Template
+      ansible.builtin.shell:
+        cmd: "/usr/sbin/qm destroy {{ qemu_vm_id }}"
+      when: "not skip_template_deletion and not (ansible_check_mode | bool)"
+    - name: Create QEMU VM
+      ansible.builtin.include_tasks:
+        file: create-qemu-vm.yml
+      when:
+        - not skip_template_deletion
+  rescue:
+    - name: Inform user
+      ansible.builtin.debug:
+        msg: "Proxmox VM Template not present. Continuing."
+    - name: Create QEMU VM
+      ansible.builtin.include_tasks:
+        file: create-qemu-vm.yml
+
