@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: argocd
+
+helmCharts:
+  - repo: https://argoproj.github.io/argo-helm
+    name: argo-cd
+    version: 5.46.7
+    releaseName: argocd
+    valuesFile: values.yaml
+    includeCRDs: true
+    namespace: argocd
+
+# commonAnnotations:
+#   metadata.annotations.app/argocd/url: https://argocd.example.com
+#   metadata.annotations.app/argocd/host: argocd.example.com
+#   metadata.annotations.app/argocd/ssh/itempath: "vaults/vault-name/items/item-name"
+#   metadata.annotations.app/argocd/oidc/itempath: "vaults/vault-name/items/item-name"
+
+resources:
+- resources/namespace.yaml
+- resources/onepassworditem.yaml

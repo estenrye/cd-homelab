@@ -1,9 +1,0 @@
-- op: add
-  path: /data
-  value:
-    policy.csv: |
-      p, ACL_ArgoCD_Project_default, applications, *, default/*, allow
-      p, ACL_ArgoCD_Project_k8s-bare-metal, applications, *, k8s-bare-metal/*, allow
-      g, ACL_ArgoCD_Global-Administrator, role:admin
-    policy.default: role:readonly
-    scopes: '[groups, email]' 

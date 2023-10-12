@@ -3,18 +3,23 @@ kind: Kustomization
 namespace: 1password
 
 resources:
-  - namespace.yaml
+  - resources/namespace.yaml
 
-helmChartInflationGenerator:
-  - chartName: connect
-    chartRepoUrl: https://1password.github.io/connect-helm-charts/ 
-    chartVersion: 1.10.0
+helmCharts:
+  - name: connect
+    repo: https://1password.github.io/connect-helm-charts/
+    version: 1.10.0
     releaseName: connect
-    values: values.yaml
-  - chartName: secrets-injector
-    chartRepoUrl: https://1password.github.io/connect-helm-charts/ 
-    chartVersion: 1.0.0
-    releaseName: secrets-injector
+    includeCRDs: true
+    valuesInline:
+      operator:
+        create: true
+        autoRestart: true
+      connect:
+        ingress:
+          enabled: false
 
-patchesStrategicMerge:
-- patch.yaml
+  - name: secrets-injector
+    repo: https://1password.github.io/connect-helm-charts/
+    version: 1.0.0
+    releaseName: secrets-injector

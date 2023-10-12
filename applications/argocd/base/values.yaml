@@ -1,0 +1,103 @@
+configs:
+  cm:
+    url: https://argocd.example.com
+    kustomize.buildOptions: --enable-helm
+    server.rbac.log.enforce.enable: true
+
+    ## Ref: https://argo-cd.readthedocs.io/en/latest/operator-manual/rbac/#exec-resource
+    exec.enabled: false
+
+    oidc.config: |
+      name: JumpCloud
+      issuer: https://oauth.id.jumpcloud.com/
+      clientID: $argocd-oidc-credentials:username
+      clientSecret: $argocd-oidc-credentials:credential
+      requestedScopes:
+      - openid
+      - profile
+      - email
+      - groups
+  rbac:
+    policy.csv: |
+      g, App_ArgoCD_Administrator, role:admin
+    policy.default: role:readonly
+    scopes: '[groups, email]'
+
+  cmp:
+    create: true
+    plugins:
+      kustomized-helm:
+        init:
+          command: ["/bin/sh", "-c"]
+          args: ["helm dependency build || true"]
+        generate:
+          command: ["/bin/sh", "-c"]
+          args: ["echo \"$ARGOCD_ENV_HELM_VALUES\" | helm template . --name-template $ARGOCD_APP_NAME --namespace $ARGOCD_APP_NAMESPACE $ARGOCD_ENV_HELM_ARGS -f - --include-crds > all.yaml && kustomize build"]
+    
+redis-ha:
+  enabled: true
+
+controller:
+  replicas: 1
+
+repositories:
+  cd-homelab:
+    url: git@github.com:estenrye/cd-homelab
+    type: git
+
+server:
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+  ingress:
+    # -- Enable an ingress resource for the Argo CD server
+    enabled: true
+    # -- Additional ingress annotations
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      external-dns.alpha.kubernetes.io/hostname: argocd.example.com
+      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    # -- Additional ingress labels
+    labels: {}
+    # -- Defines which ingress controller will implement the resource
+    ingressClassName: "nginx"
+
+    # -- List of ingress hosts
+    ## Argo Ingress.
+    ## Hostnames must be provided if Ingress is enabled.
+    ## Secrets must be manually created in the namespace
+    hosts:
+      - argocd.example.com
+
+    # -- List of ingress paths
+    paths:
+      - /
+    # -- Ingress path type. One of `Exact`, `Prefix` or `ImplementationSpecific`
+    pathType: Prefix
+    # -- Additional ingress paths
+    extraPaths: []
+      # - path: /*
+      #   pathType: Prefix
+      #   backend:
+      #     service:
+      #       name: ssl-redirect
+      #       port:
+      #         name: use-annotation
+
+    # -- Ingress TLS configuration
+    tls:
+      - secretName: argocd-secret
+        hosts:
+          - argocd.example.com
+
+    # -- Uses `server.service.servicePortHttps` instead `server.service.servicePortHttp`
+    https: true
+
+repoServer:
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+
+applicationSet:
+  replicas: 2

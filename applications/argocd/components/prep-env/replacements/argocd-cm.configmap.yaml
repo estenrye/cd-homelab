@@ -1,0 +1,14 @@
+source:
+  apiVersion: argoproj.io
+  kind: Application
+  version: v1alpha1
+  name: argocd
+  namespace: argocd
+  fieldPath: metadata.annotations.app\.argocd/url
+targets:
+  - select:
+      version: v1
+      kind: ConfigMap
+      name: argocd-cm
+    fieldPaths:
+      - data.url
