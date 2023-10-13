@@ -1,10 +1,8 @@
 source:
-  group: argoproj.io
-  kind: Application
-  version: v1alpha1
-  name: argocd
-  namespace: argocd
-  fieldPath: metadata.annotations.app\.cluster-issuer/dnsZone0
+  kind: ConfigMap
+  version: v1
+  name: env-properties
+  fieldPath: data.DNS01_ZONE_NAME
 targets:
   - select:
       group: cert-manager.io

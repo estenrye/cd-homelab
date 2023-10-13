@@ -1,10 +1,8 @@
 source:
-  group: argoproj.io
-  kind: Application
-  version: v1alpha1
-  name: argocd
-  namespace: argocd
-  fieldPath: metadata.annotations.app\.cluster-issuer/email
+  kind: ConfigMap
+  version: v1
+  name: env-properties
+  fieldPath: data.ACME_EMAIL
 targets:
   - select:
       group: cert-manager.io
