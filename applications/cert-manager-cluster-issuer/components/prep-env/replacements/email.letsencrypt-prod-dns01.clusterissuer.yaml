@@ -1,5 +1,5 @@
 source:
-  apiVersion: argoproj.io
+  group: argoproj.io
   kind: Application
   version: v1alpha1
   name: argocd

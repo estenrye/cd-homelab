@@ -6,6 +6,9 @@ metadata:
   # Add this finalizer ONLY if you want these to cascade delete.
   labels:
     name: cert-manager-cluster-issuer
+  annotations:
+    app.cluster-issuer/dns01-item-path: "vaults/Home_Lab/items/letsencrypt-dns01-credentials_cert-manager.rye.ninja"
+    app.cluster-issuer/dnsZone0: "rye.ninja"
 
 spec:
   project: default
@@ -13,7 +16,7 @@ spec:
     repoURL: git@github.com:estenrye/cd-homelab.git
     targetRevision: HEAD
     path: applications/cert-manager-cluster-issuer/overlay
-
+ 
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
