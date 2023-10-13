@@ -33,17 +33,19 @@ configs:
         generate:
           command: ["/bin/sh", "-c"]
           args: ["echo \"$ARGOCD_ENV_HELM_VALUES\" | helm template . --name-template $ARGOCD_APP_NAME --namespace $ARGOCD_APP_NAMESPACE $ARGOCD_ENV_HELM_ARGS -f - --include-crds > all.yaml && kustomize build"]
-    
+
+  repositories:
+    cd-homelab:
+      name: cd-homelab
+      url: git@github.com:estenrye/cd-homelab
+      type: git
+
 redis-ha:
   enabled: true
 
 controller:
   replicas: 1
 
-repositories:
-  cd-homelab:
-    url: git@github.com:estenrye/cd-homelab
-    type: git
 
 server:
   autoscaling:
