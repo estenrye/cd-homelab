@@ -11,12 +11,6 @@ helmCharts:
     includeCRDs: true
     namespace: argocd
 
-# commonAnnotations:
-#   metadata.annotations.app/argocd/url: https://argocd.example.com
-#   metadata.annotations.app/argocd/host: argocd.example.com
-#   metadata.annotations.app/argocd/ssh/itempath: "vaults/vault-name/items/item-name"
-#   metadata.annotations.app/argocd/oidc/itempath: "vaults/vault-name/items/item-name"
-
 resources:
 - resources/namespace.yaml
 - resources/onepassworditem.yaml

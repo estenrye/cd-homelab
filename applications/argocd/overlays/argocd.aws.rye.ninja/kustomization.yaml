@@ -4,6 +4,7 @@ namespace: argocd
 
 resources:
   - apps/argocd.yaml
+  - apps/cert-manager.yaml
   - ../../base
 
 components:
