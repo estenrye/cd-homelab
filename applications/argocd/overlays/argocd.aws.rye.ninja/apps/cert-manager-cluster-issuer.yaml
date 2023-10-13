@@ -18,9 +18,9 @@ spec:
     path: applications/cert-manager-cluster-issuer/overlay
     plugin:
       env:
-        ACME_EMAIL: esten.rye@ryezone.com
-        DNS01_ONEPASSWORD_ITEM_PATH: "vaults/Home_Lab/items/letsencrypt-dns01-credentials_cert-manager.rye.ninja"
-        DNS01_ZONE_NAME: "rye.ninja"
+        - ACME_EMAIL=esten.rye@ryezone.com
+        - DNS01_ONEPASSWORD_ITEM_PATH=vaults/Home_Lab/items/letsencrypt-dns01-credentials_cert-manager.rye.ninja
+        - DNS01_ZONE_NAME=rye.ninja
       name: kustomize-env
 
  
