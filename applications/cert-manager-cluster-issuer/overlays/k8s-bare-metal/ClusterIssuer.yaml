@@ -1,6 +1,0 @@
-- op: replace
-  path: /spec/acme/solvers/0/selector/dnsZones/0
-  value: rye.ninja
-- op: replace
-  path: /spec/acme/email
-  value: esten.rye+acme@ryezone.com

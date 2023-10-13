@@ -1,24 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd
+  name: cert-manager-cluster-issuer
   namespace: argocd
   # Add this finalizer ONLY if you want these to cascade delete.
   labels:
-    name: argocd
-  annotations:
-    app.argocd/oidc-itempath: "vaults/Home_Lab/items/jumpcloud-oidc-secret_argocd.rye.ninja"
-    app.argocd/ssh-itempath: "vaults/Home_Lab/items/ssh-credentials_argocd.rye.ninja"
-    app.argocd/url: https://argocd.rye.ninja
-    app.argocd/host: argocd.rye.ninja
-    app.cluster-issuer/dns01-item-path: "vaults/Home_Lab/items/letsencrypt-dns01-credentials_cert-manager.rye.ninja"
-    app.cluster-issuer/dnsZone0: "rye.ninja"
+    name: cert-manager-cluster-issuer
+
 spec:
   project: default
   source:
     repoURL: git@github.com:estenrye/cd-homelab.git
     targetRevision: HEAD
-    path: applications/argocd/overlays/argocd.aws.rye.ninja
+    path: applications/cert-manager-cluster-issuer/overlay
 
   destination:
     server: https://kubernetes.default.svc

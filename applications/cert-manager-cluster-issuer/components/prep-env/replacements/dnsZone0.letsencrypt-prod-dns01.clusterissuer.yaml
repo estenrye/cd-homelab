@@ -1,0 +1,15 @@
+source:
+  apiVersion: argoproj.io
+  kind: Application
+  version: v1alpha1
+  name: argocd
+  namespace: argocd
+  fieldPath: metadata.annotations.app\.cluster-issuer/dnsZone0
+targets:
+  - select:
+      group: cert-manager.io
+      version: v1
+      kind: ClusterIssuer
+      name: letsencrypt-prod-dns01
+    fieldPaths:
+      - spec.acme.solvers.0.selector.dnsZones.0
