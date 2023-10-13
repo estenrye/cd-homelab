@@ -5,6 +5,7 @@ namespace: argocd
 resources:
   - apps/argocd.yaml
   - apps/cert-manager.yaml
+  - apps/cert-manager-cluster-issuer.yaml
   - ../../base
 
 components:
