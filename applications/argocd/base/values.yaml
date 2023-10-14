@@ -94,7 +94,7 @@ repoServer:
     - name: kustomize-env
       command:
         - "/var/run/argocd/argocd-cmp-server"
-      image: estenrye/kustomize-env
+      image: estenrye/kustomize-env:0.1.0
       securityContext:
         runAsNonRoot: true
         runAsUser: 999
