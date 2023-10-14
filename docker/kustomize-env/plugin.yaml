@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ConfigManagementPlugin
+metadata:
+  name: kustomize-env
+spec:
+  version: v1.0
+  # The init command runs in the Application source directory at the beginning of each manifest generation. The init
+  # command can output anything. A non-zero status code will fail manifest generation.
+  init:
+    command: [/bin/sh]
+    args: [-c, 'echo "Initializing..."']
+  generate:
+    command: ["/bin/sh", "-c"]
+    args: ["kustomize, build, --enable-helm | envsubst"]
+  discover:
+    filename: ./env.properties

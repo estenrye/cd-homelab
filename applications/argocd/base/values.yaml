@@ -23,16 +23,6 @@ configs:
     policy.default: role:readonly
     scopes: '[groups, email]'
 
-  cmp:
-    create: true
-    plugins:
-      kustomize-env:
-        generate:
-          command: ["/bin/sh", "-c"]
-          args: ["kustomize, build, --enable-helm | envsubst"]
-        discover:
-          filename: ./env.properties
-
   repositories:
     cd-homelab:
       name: cd-homelab
@@ -113,14 +103,6 @@ repoServer:
           name: var-files
         - mountPath: /home/argocd/cmp-server/plugins
           name: plugins
-        - mountPath: /home/argocd/cmp-server/config/plugin.yaml
-          subPath: kustomize-env.yaml
-          name: argocd-cmp-cm
-
-  volumes:
-   - name: argocd-cmp-cm
-     configMap:
-       name: argocd-cmp-cm
 
 applicationSet:
   replicas: 2
