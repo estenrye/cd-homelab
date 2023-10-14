@@ -27,6 +27,9 @@ configs:
     create: true
     plugins:
       kustomize-env:
+        init:
+          command: ["/bin/sh", "-c"]
+          args: ["apk add --no-cache kustomize envsubst"]
         generate:
           command: ["/bin/sh", "-c"]
           args: ["kustomize, build, --enable-helm | envsubst"]
@@ -104,7 +107,7 @@ repoServer:
     - name: kustomize-env
       command:
         - "/var/run/argocd/argocd-cmp-server"
-      image: busybox
+      image: alpine
       securityContext:
         runAsNonRoot: true
         runAsUser: 999
