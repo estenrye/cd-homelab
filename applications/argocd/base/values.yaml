@@ -117,5 +117,10 @@ repoServer:
           subPath: kustomize-env.yaml
           name: argocd-cmp-cm
 
+  volumes:
+   - name: argocd-cmp-cm
+     configMap:
+       name: argocd-cmp-cm
+
 applicationSet:
   replicas: 2
