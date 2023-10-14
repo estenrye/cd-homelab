@@ -1,4 +1,3 @@
 FROM alpine
 RUN apk add --no-cache envsubst kustomize
-WORKDIR /home/argocd/cmp-server/config/
-COPY plugin.yaml ./
+COPY plugin.yaml /home/argocd/cmp-server/config/plugin.yaml
