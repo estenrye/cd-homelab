@@ -27,12 +27,11 @@ configs:
     create: true
     plugins:
       kustomize-env:
-        init:
-          command: ["/bin/sh", "-c"]
-          args: ["cat env.properties | envsubst > env.properties"]
         generate:
           command: ["/bin/sh", "-c"]
-          args: ["kustomize build --enable-helm"]
+          args: ["kustomize, build, --enable-helm | envsubst"]
+        discover:
+          filename: ./env.properties
 
   repositories:
     cd-homelab:
@@ -100,6 +99,23 @@ repoServer:
   autoscaling:
     enabled: true
     minReplicas: 2
+  
+  extraContainers:
+    - name: kustomize-env
+      command:
+        - "/var/run/argocd/argocd-cmp-server"
+      image: busybox
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+      volumeMounts:
+        - mountPath: /var/run/argocd
+          name: var-files
+        - mountPath: /home/argocd/cmp-server/plugins
+          name: plugins
+        - mountPath: /home/argocd/cmp-server/config/plugin.yaml
+          subPath: kustomize-env.yaml
+          name: argocd-cmp-cm
 
 applicationSet:
   replicas: 2
