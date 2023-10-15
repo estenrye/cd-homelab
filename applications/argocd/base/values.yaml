@@ -29,10 +29,10 @@ configs:
       kustomize-env:
         init:
           command: ["/bin/sh", "-c"]
-          args: ["kustomize build --enable-helm"]
+          args: ["kustomize build --enable-helm --load-restrictor LoadRestrictionsNone | envsubst"]
         generate:
           command: ["/bin/sh", "-c"]
-          args: ["kustomize build --enable-helm"]
+          args: ["kustomize build --enable-helm --load-restrictor LoadRestrictionsNone | envsubst"]
         discover:
           find:
             glob: "**/env.properties"
