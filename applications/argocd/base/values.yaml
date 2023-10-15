@@ -32,7 +32,7 @@ configs:
           args: [-c, 'echo "Initializing..."']
         generate:
           command: ["/bin/sh", "-c"]
-          args: ["kustomize, build, --enable-helm | envsubst"]
+          args: ["kustomize build --enable-helm | envsubst"]
         discover:
           find:
             glob: "**/env.properties"
