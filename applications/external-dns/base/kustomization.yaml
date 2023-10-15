@@ -10,7 +10,7 @@ helmCharts:
     includeCRDs: true
     namespace: external-dns
     valuesInline:
-      logLevel: info
+      logLevel: debug
       logFormat: json
       interval: 1m
       triggerLoopOnEvent: true
