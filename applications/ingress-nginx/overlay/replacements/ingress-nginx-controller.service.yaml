@@ -1,0 +1,14 @@
+source:
+  kind: ConfigMap
+  version: v1
+  name: env-properties
+  fieldPath: data.INGRESS_NGINX_SERVICE_LOAD_BALANCER_IP
+targets:
+  - select:
+      version: v1
+      kind: Service
+      name: ingress-nginx-controller
+    fieldPaths:
+      - spec.loadBalancerIP
+    options:
+      create: true
