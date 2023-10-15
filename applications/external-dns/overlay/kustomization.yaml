@@ -14,3 +14,4 @@ resources:
 
 replacements:
   - path: replacements/cloudflare-api-token.onepassworditem.yaml
+  - path: replacements/external-dns.deployment.yaml

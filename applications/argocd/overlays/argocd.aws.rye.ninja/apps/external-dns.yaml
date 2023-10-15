@@ -17,6 +17,8 @@ spec:
       env:
         - name: DNS01_ONEPASSWORD_ITEM_PATH
           value: vaults/Home_Lab/items/letsencrypt-dns01-credentials_cert-manager.rye.ninja
+        - name: CLUSTER_NAME
+          value: argocd.aws.rye.ninja
       name: kustomize-env
 
  
