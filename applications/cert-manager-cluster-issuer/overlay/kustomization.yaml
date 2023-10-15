@@ -9,8 +9,8 @@ configMapGenerator:
 generatorOptions:
   disableNameSuffixHash: true
 
-resources:
-  - ../base
+# resources:
+#   - ../base
 
-components:
-  - ../components/prep-env
+# components:
+#   - ../components/prep-env
