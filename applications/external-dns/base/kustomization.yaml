@@ -2,25 +2,56 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: external-dns
 
-commonAnnotations:
-  argocd.argoproj.io/sync-wave: "0"
-
-images:
-  - name: registry.k8s.io/external-dns/external-dns
-    newTag: v0.13.2
+helmCharts:
+  - repo: https://kubernetes-sigs.github.io/external-dns/
+    name: external-dns
+    version: 1.13.1
+    releaseName: external-dns
+    includeCRDs: true
+    namespace: external-dns
+    valuesInline:
+      logLevel: info
+      logFormat: json
+      interval: 1m
+      triggerLoopOnEvent: true
+      registry: txt
+      txtPrefix: edns.
+      sources:
+        - ingress
+        - service
+        - crd
+      policy: sync
+      provider: cloudflare
+      env:
+        - name: CF_API_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: cloudflare-api-token
+              key: password
+              optional: false
+        - name: EXTERNAL_DNS_DOMAIN_FILTER
+          valueFrom:
+            secretKeyRef:
+              name: cloudflare-api-token
+              key: zone_name
+              optional: false
+        - name: EXTERNAL_DNS_ZONE_ID_FILTER
+          valueFrom:
+            secretKeyRef:
+              name: cloudflare-api-token
+              key: zone_id
+              optional: false
+        - name: EXTERNAL_DNS_TXT_OWNER_ID
+          value: cluster-name
+      resources:
+        limits:
+          cpu: 200m
+          memory: 200Mi
+        requests:
+          cpu: 100m
+          memory: 100Mi
 
 resources:
   - resources/namespace.yaml
-  - https://raw.githubusercontent.com/kubernetes-sigs/external-dns/master/kustomize/external-dns-serviceaccount.yaml?ref=v0.13.2
-  - https://raw.githubusercontent.com/kubernetes-sigs/external-dns/master/kustomize/external-dns-clusterrole.yaml?ref=v0.13.2
-  - https://raw.githubusercontent.com/kubernetes-sigs/external-dns/master/kustomize/external-dns-clusterrolebinding.yaml?ref=v0.13.2
-  - https://raw.githubusercontent.com/kubernetes-sigs/external-dns/master/kustomize/external-dns-deployment.yaml?ref=v0.13.2
-
-patchesJson6902:
-  - target:
-      group: apps
-      version: v1
-      kind: Deployment
-      name: external-dns
-      namespace: external-dns
-    path: patches/deployment.yaml
+  - resources/onepassworditem.yaml
+  - https://raw.githubusercontent.com/kubernetes-sigs/external-dns/master/docs/contributing/crd-source/crd-manifest.yaml
