@@ -28,8 +28,8 @@ configs:
     plugins:
       kustomize-env:
         init:
-          command: [/bin/sh]
-          args: [-c, 'echo "Initializing..."']
+          command: ["/bin/sh", "-c"]
+          args: ["kustomize build --enable-helm | envsubst"]
         generate:
           command: ["/bin/sh", "-c"]
           args: ["kustomize build --enable-helm | envsubst"]
