@@ -1,16 +1,61 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: ingress-nginx
-
-commonAnnotations:
-  argocd.argoproj.io/sync-wave: "-2"
 
 resources:
-  - namespace.yaml
+  - resources/namespace.yaml
 
-helmChartInflationGenerator:
-  - chartName: ingress-nginx
-    chartRepoUrl: https://kubernetes.github.io/ingress-nginx
-    chartVersion: 4.4.2
+helmCharts:
+  - name: ingress-nginx
+    namespace: ingress-nginx
+    repo: https://kubernetes.github.io/ingress-nginx
+    version: 4.8.0
     releaseName: ingress-nginx
-    values: values.yaml
+    valuesInline:
+      controller:
+        podAnnotations:
+          linkerd.io/inject: enabled
+        hostNetwork: false
+        ingressClassResource:
+          name: nginx
+          enabled: true
+          default: true
+          controllerValue: "k8s.io/ingress-nginx"
+          parameters: {}
+        ingressClass: nginx
+        publishService:
+          enabled: true
+        kind: Deployment
+        metrics:
+          enabled: true
+          serviceMonitor:
+            enabled: false
+        replicaCount: 3
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 300m
+            memory: 512Mi
+
+        service:
+          enabled: true
+          enableHttp: true
+          enableHttps: true
+          externalTrafficPolicy: Local
+          ipFamilyPolicy: "SingleStack"
+          ipFamilies:
+            - IPv4
+          ports:
+            http: 80
+            https: 443
+          targetPorts:
+            http: http
+            https: https
+          type: LoadBalancer
+          external:
+            enabled: true
+            loadBalancerIP: ""
+          internal:
+            enabled: false
+            loadBalancerIP: ""
