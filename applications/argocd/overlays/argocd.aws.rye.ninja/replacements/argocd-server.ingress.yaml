@@ -1,10 +1,8 @@
 source:
-  apiVersion: argoproj.io
-  kind: Application
-  version: v1alpha1
-  name: argocd
-  namespace: argocd
-  fieldPath: metadata.annotations.app\.argocd/host
+  kind: ConfigMap
+  version: v1
+  name: env-properties
+  fieldPath: data.ARGOCD_HOST
 targets:
   - select:
       group: networking.k8s.io

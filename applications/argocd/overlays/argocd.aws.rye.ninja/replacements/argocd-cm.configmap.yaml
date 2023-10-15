@@ -1,0 +1,12 @@
+source:
+  kind: ConfigMap
+  version: v1
+  name: env-properties
+  fieldPath: data.ARGOCD_URL
+targets:
+  - select:
+      version: v1
+      kind: ConfigMap
+      name: argocd-cm
+    fieldPaths:
+      - data.url

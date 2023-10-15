@@ -6,17 +6,22 @@ metadata:
   # Add this finalizer ONLY if you want these to cascade delete.
   labels:
     name: argocd
-  annotations:
-    app.argocd/oidc-itempath: "vaults/Home_Lab/items/jumpcloud-oidc-secret_argocd.rye.ninja"
-    app.argocd/ssh-itempath: "vaults/Home_Lab/items/ssh-credentials_argocd.rye.ninja"
-    app.argocd/url: https://argocd.rye.ninja
-    app.argocd/host: argocd.rye.ninja
 spec:
   project: default
   source:
     repoURL: git@github.com:estenrye/cd-homelab.git
     targetRevision: HEAD
     path: applications/argocd/overlays/argocd.aws.rye.ninja
+
+    plugin:
+      env:
+        - name: JUMPCLOUD_ARGOCD_OIDC_SECRET_ITEM_PATH
+          value: vaults/Home_Lab/items/jumpcloud-oidc-secret_argocd.rye.ninja
+        - name: JUMPCLOUD_ARGOCD_SSH_SECRET_ITEM_PATH
+          value: vaults/Home_Lab/items/ssh-credentials_argocd.rye.ninja
+        - name: ARGOCD_HOST
+          value: argocd.rye.ninja
+      name: kustomize-env    
 
   destination:
     server: https://kubernetes.default.svc
