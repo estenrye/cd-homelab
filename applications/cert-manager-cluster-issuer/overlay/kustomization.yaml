@@ -12,20 +12,7 @@ generatorOptions:
 resources:
   - ../base
 
-# components:
-#   - ../components/prep-env
-
 replacements:
-  - source:
-      kind: ConfigMap
-      version: v1
-      name: env-properties
-      fieldPath: data.ACME_EMAIL
-    targets:
-      - select:
-          group: cert-manager.io
-          version: v1
-          kind: ClusterIssuer
-          name: letsencrypt-prod-dns01
-        fieldPaths:
-          - spec.acme.email
+  - path: replacements/cert-manager-dns01-credentials.onepassworditem.yaml
+  - path: replacements/dnsZone0.letsencrypt-prod-dns01.clusterissuer.yaml
+  - path: replacements/email.letsencrypt-prod-dns01.clusterissuer.yaml
