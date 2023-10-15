@@ -24,7 +24,7 @@ spec:
           value: vaults/Home_Lab/items/letsencrypt-dns01-credentials_cert-manager.rye.ninja
         - name: DNS01_ZONE_NAME
           value: rye.ninja
-      name: kustomize-env
+      # name: kustomize-env
 
  
   destination:
