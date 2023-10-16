@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: argocd
+
+helmCharts:
+  - repo: https://prometheus-community.github.io/helm-charts
+    name: kube-prometheus-stack
+    version: 51.9.0
+    releaseName: kps
+    valuesFile: values.yaml
+    includeCRDs: true
+    namespace: argocd
+
+resources:
+  - resources/namespace.yaml
+  - resources/grafana-admin-credentials.yaml
+  - resources/grafana-oauth-client-credentials.yaml
+
+patches:
+  - path: patches/grafana.deployment.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: kps-grafana

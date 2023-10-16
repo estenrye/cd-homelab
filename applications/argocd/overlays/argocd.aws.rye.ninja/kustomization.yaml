@@ -9,6 +9,7 @@ resources:
   - apps/cert-manager-cluster-issuer.yaml
   - apps/external-dns.yaml
   - apps/ingress-nginx.yaml
+  - apps/kube-prometheus-stack.yaml
   - ../../base
 
 components:
