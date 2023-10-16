@@ -3,7 +3,8 @@ configs:
     url: https://argocd.example.com
     kustomize.buildOptions: --enable-helm
     server.rbac.log.enforce.enable: true
-
+    ## Ref: https://argo-cd.readthedocs.io/en/stable/faq/#why-is-my-app-out-of-sync-even-after-syncing
+    application.instanceLabelKey: argocd.argoproj.io/instance
     ## Ref: https://argo-cd.readthedocs.io/en/latest/operator-manual/rbac/#exec-resource
     exec.enabled: false
 
