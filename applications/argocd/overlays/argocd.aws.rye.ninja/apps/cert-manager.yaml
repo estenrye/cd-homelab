@@ -30,6 +30,7 @@ spec:
     - PrunePropagationPolicy=foreground # Supported policies are background, foreground and orphan.
     - PruneLast=true # Allow the ability for resource pruning to happen as a final, implicit wave of a sync operation
     - RespectIgnoreDifferences=true # When syncing changes, respect fields ignored by the ignoreDifferences configuration
+    - ServerSideApply=true
 
     # The retry feature is available since v1.7
     retry:
