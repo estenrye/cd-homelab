@@ -20,7 +20,7 @@ configs:
       - groups
   rbac:
     policy.csv: |
-      g, App_ArgoCD_Administrator, role:admin
+      g, ACL_ArgoCD_Global-Administrator, role:admin
     policy.default: role:readonly
     scopes: '[groups, email]'
 
