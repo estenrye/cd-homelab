@@ -16,7 +16,7 @@ spec:
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: kube-prometheus-stack
 
   # Sync policy
   syncPolicy:
