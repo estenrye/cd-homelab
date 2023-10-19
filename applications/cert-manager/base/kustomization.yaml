@@ -15,5 +15,5 @@ helmCharts:
     valuesInline:
       installCRDs: true
       webhook:
-        hostNetwork: true
-        securePort: 10255
+        # hostNetwork: true
+        securePort: 10260
