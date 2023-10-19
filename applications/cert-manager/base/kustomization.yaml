@@ -14,3 +14,6 @@ helmCharts:
     namespace: cert-manager
     valuesInline:
       installCRDs: true
+      webhook:
+        hostNetwork: true
+        securePort: 10255
