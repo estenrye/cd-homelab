@@ -8,6 +8,7 @@ resources:
   - apps/cert-manager.yaml
   - apps/cert-manager-cluster-issuer.yaml
   - apps/crossplane.yaml
+  - apps/crossplane-providers.yaml
   - apps/external-dns.yaml
   - apps/ingress-nginx.yaml
   - apps/kube-prometheus-stack.yaml
