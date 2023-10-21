@@ -10,7 +10,7 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
-  - ../base
+  - ../../base
 
 replacements:
   - path: replacements/cloudflare-api-token.onepassworditem.yaml

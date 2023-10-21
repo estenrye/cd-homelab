@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: git@github.com:estenrye/cd-homelab.git
     targetRevision: HEAD
-    path: applications/external-dns/overlay
+    path: applications/external-dns/overlays/cloudflare
     plugin:
       env:
         - name: DNS01_ONEPASSWORD_ITEM_PATH
