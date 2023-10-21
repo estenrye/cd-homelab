@@ -15,7 +15,7 @@ pull images from the repository.
 3. Select the `PF9-Administrator` or `PF9-Developer` role on the `platform9 (514845858982)` account.
 4. Click Sign In.
 5. Navigate to https://us-west-1.console.aws.amazon.com/cloudformation/home?region=us-west-1#/stacks/create
-6. Copy and paste the following Amazon S3 URL `https://s3.us-west-1.amazonaws.com/cf-templates-11pv4e9hakmqf-us-west-1/2023-10-21T062639.507Z88f-registry.yaml`
+6. Copy and paste the following Amazon S3 URL `https://s3.us-east-2.amazonaws.com/cf-templates-40ajksj53ztb-us-east-2/2023-10-21T074138.876Zr8n-registry.yaml`
 7. Click Next.
 8. Choose a Stack name.  Example: `registry-<your-repo-name>`
 9. Choose a RepositoryName.
