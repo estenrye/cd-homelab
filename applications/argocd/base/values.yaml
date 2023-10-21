@@ -5,6 +5,7 @@ configs:
     server.rbac.log.enforce.enable: true
     ## Ref: https://argo-cd.readthedocs.io/en/stable/faq/#why-is-my-app-out-of-sync-even-after-syncing
     application.instanceLabelKey: argocd.argoproj.io/instance
+    application.resourceTrackingMethod: annotation+label
     ## Ref: https://argo-cd.readthedocs.io/en/latest/operator-manual/rbac/#exec-resource
     exec.enabled: false
 
