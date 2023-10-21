@@ -3,7 +3,14 @@ kind: Kustomization
 namespace: argocd
 
 resources:
-  - apps
+  - apps/1password.yaml
+  - apps/argocd.yaml
+  - apps/cert-manager.yaml
+  - apps/cert-manager-cluster-issuer.yaml
+  - apps/crossplane.yaml
+  - apps/external-dns.yaml
+  - apps/ingress-nginx.yaml
+  - apps/kube-prometheus-stack.yaml
   - ../../base
 
 components:
