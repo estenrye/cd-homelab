@@ -1,0 +1,44 @@
+Parameters:
+  OrgID:
+    Description: Please enter the Organization ID.
+    Type: String
+    Default: o-xipfx1hmfk
+  OrganizationUnitID:
+    Description: "Please enter the Organization Unit ID. '*' selects all OUs."
+    Type: String
+    Default: "*"
+  AccountID:
+    Description: "Please enter the Account ID. '*' selects all accounts under the Organization Unit."
+    Type: String
+    Default: "*"
+  RepositoryName:
+    Description: Please enter the name of the ECR repository you want to create.
+    Type: String
+
+
+Resources:
+  ECRRepo:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: !Sub ${RepositoryName}
+      RepositoryPolicyText:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Sid: AllowPull
+            Effect: Allow
+            Principal: "*"
+            Action:
+              - "ecr:GetDownloadUrlForLayer"
+              - "ecr:BatchGetImage"
+              - "ecr:BatchCheckLayerAvailability"
+              - "ecr:DescribeImages"
+              - "ecr:DescribeRepositories"
+            Condition:
+              ForAnyValue:StringLike:
+                aws:PrincipalOrgPaths:
+                  - !Sub ${OrgID}/*/${OrganizationUnitID}/${AccountID}
+
+Outputs:
+  ImageRepoName:
+    Value: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ECRRepo}
