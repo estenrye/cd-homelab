@@ -13,7 +13,7 @@ resources:
   - apps/ingress-nginx.yaml
   - apps/kube-prometheus-stack.yaml
   - ../../base
-  - ../../../argocd-applicationsets/project.yaml
+  - projects/platform.yaml
 
 components:
   - ../../components/prep-env
