@@ -10,13 +10,14 @@ resources:
   - apps/crossplane.yaml
   - apps/crossplane-providers.yaml
   - apps/external-dns.yaml
-  - apps/ingress-nginx.yaml
+  # - apps/ingress-nginx.yaml
   - apps/kube-prometheus-stack.yaml
   - ../../base
   - projects/platform.yaml
   - appsets/1password.yaml
   - appsets/cert-manager.yaml
   - appsets/cert-manager-cluster-issuer.yaml
+  - appsets/ingress-nginx.yaml
 
 components:
   - ../../components/prep-env
