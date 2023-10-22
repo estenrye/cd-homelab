@@ -9,7 +9,7 @@ spec:
       values:
         acme_email: esten.rye@ryezone.com
         dns01_onepassword_item_path: vaults/Home_Lab/items/letsencrypt-dns01-credentials_cert-manager.rye.ninja
-        dns_zones: '["rye.ninja"]'
+        dns_zones_0: rye.ninja
   template:
     metadata:
       name: '{{name}}-cert-manager-cluster-issuer' # 'name' field of the Secret
@@ -24,7 +24,7 @@ spec:
           valuesObject:
             acme:
               email: "{{acme_email}}"
-            dns_zones: "{{dns_zones}}"
+            dns_zones_0: "{{dns_zones_0}}"
             credentials:
               itemPath: "{{dns01_onepassword_item_path}}"
               cloudflare:

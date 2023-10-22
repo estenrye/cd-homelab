@@ -1,8 +1,7 @@
 acme:
   server: https://acme-v02.api.letsencrypt.org/directory
   email: example@email.com
-dnsZones:
-  - example.com
+dns_zones_0: example.com
 credentials:
   cloudflare:
     enabled: true
