@@ -23,11 +23,11 @@ spec:
           releaseName: letsencrypt-prod
           valuesObject:
             acme:
-              email: "{{acme_email}}"
+              email: '{{acme_email}}'
               server: https://acme-v02.api.letsencrypt.org/directory
-            dns_zones_0: "{{dns_zones_0}}"
+            dns_zones_0: '{{dns_zones_0}}'
             credentials:
-              itemPath: "{{dns01_onepassword_item_path}}"
+              itemPath: '{{dns01_onepassword_item_path}}'
               cloudflare:
                 enabled: true
               route53:
