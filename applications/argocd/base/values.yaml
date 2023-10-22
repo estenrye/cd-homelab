@@ -82,7 +82,7 @@ server:
     enabled: true
     # -- Additional ingress annotations
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod-dns01
+      cert-manager.io/cluster-issuer: letsencrypt-prod-clusterissuer-dns01
       external-dns.alpha.kubernetes.io/hostname: argocd.example.com
       nginx.ingress.kubernetes.io/ssl-passthrough: "true"
       nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"

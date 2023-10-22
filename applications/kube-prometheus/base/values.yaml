@@ -930,7 +930,7 @@ grafana:
     ## Annotations for Grafana Ingress
     ##
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod-dns01
+      cert-manager.io/cluster-issuer: letsencrypt-prod-clusterissuer-dns01
       external-dns.alpha.kubernetes.io/hostname: grafana.rye.ninja
       # kubernetes.io/ingress.class: nginx
       # kubernetes.io/tls-acme: "true"

@@ -6,7 +6,7 @@ resources:
   # - apps/1password.yaml
   - apps/argocd.yaml
   # - apps/cert-manager.yaml
-  - apps/cert-manager-cluster-issuer.yaml
+  # - apps/cert-manager-cluster-issuer.yaml
   - apps/crossplane.yaml
   - apps/crossplane-providers.yaml
   - apps/external-dns.yaml
@@ -16,6 +16,7 @@ resources:
   - projects/platform.yaml
   - appsets/1password.yaml
   - appsets/cert-manager.yaml
+  - appsets/cert-manager-cluster-issuer.yaml
 
 components:
   - ../../components/prep-env

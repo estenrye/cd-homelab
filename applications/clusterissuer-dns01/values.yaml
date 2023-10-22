@@ -1,0 +1,13 @@
+acme:
+  server: https://acme-v02.api.letsencrypt.org/directory
+  email: example@email.com
+dnsZones:
+  - example.com
+credentials:
+  cloudflare:
+    enabled: true
+  route53:
+    enabled: false
+    region: us-east-1
+    hostedZoneID: Z1234567890
+  itemPath: vaults/vault_name_or_uuid/items/item_name_or_uuid

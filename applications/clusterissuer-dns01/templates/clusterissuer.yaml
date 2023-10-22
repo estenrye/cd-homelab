@@ -1,0 +1,37 @@
+{{- $fullName := include "clusterissuer-dns01.fullname" . -}}
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "clusterissuer-dns01.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  acme:
+    email: {{ .Values.email}}
+    server: {{ .Values.acme_server }}
+    privateKeySecretRef:
+      name: {{ printf "%s-%s" "acme-priv-key" $fullName | trunc 63 | trimSuffix "-" }}
+    solvers:
+    - selector:
+        dnsZones:
+          {{- .Values.dnsZones | toYaml | nindent 10 }}
+      dns01:
+      {{- if .Values.credentials.cloudflare.enabled }}
+        cloudflare:
+          apiTokenSecretRef:
+            name: {{ $fullName }}
+            key: password
+      {{- end }}
+      {{- if .Values.credentials.route53.enabled }}
+        route53:
+          region: {{ .Values.credentials.route53.region }}
+          hostedZoneID: {{ .Values.credentials.route53.hostedZoneID }}
+          accessKeyIDSecretRef:
+            name: {{ $fullName }}
+            key: username
+          secretAccessKeySecretRef:
+            name: {{ $fullName }}
+            key: password
+      {{- end }}
