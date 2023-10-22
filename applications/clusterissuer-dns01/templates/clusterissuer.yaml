@@ -16,7 +16,7 @@ spec:
     solvers:
     - selector:
         dnsZones:
-          - {{- .Values.dns_zones_0 }}
+          - {{ .Values.dns_zones_0 }}
       dns01:
       {{- if .Values.credentials.cloudflare.enabled }}
         cloudflare:
