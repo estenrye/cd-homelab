@@ -15,8 +15,8 @@ spec:
       project: "platform"
       source:
         chart: ingress-nginx
-        repoURL: https://charts.jetstack.io
-        targetRevision: v1.13.1
+        repoURL: https://kubernetes.github.io/ingress-nginx
+        targetRevision: 4.8.0
         helm:
           releaseName: ingress-nginx
           valuesObject:
