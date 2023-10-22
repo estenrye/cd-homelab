@@ -9,8 +9,8 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   acme:
-    email: {{ .Values.email}}
-    server: {{ .Values.acme_server }}
+    email: {{ .Values.acme.email}}
+    server: {{ .Values.acme.server }}
     privateKeySecretRef:
       name: {{ printf "%s-%s" "acme-priv-key" $fullName | trunc 63 | trimSuffix "-" }}
     solvers:
