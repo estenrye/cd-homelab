@@ -3,7 +3,7 @@ kind: Kustomization
 namespace: argocd
 
 resources:
-  - apps/1password.yaml
+  # - apps/1password.yaml
   - apps/argocd.yaml
   # - apps/cert-manager.yaml
   - apps/cert-manager-cluster-issuer.yaml
@@ -14,6 +14,7 @@ resources:
   - apps/kube-prometheus-stack.yaml
   - ../../base
   - projects/platform.yaml
+  - appsets/1password.yaml
   - appsets/cert-manager.yaml
 
 components:
