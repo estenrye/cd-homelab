@@ -24,11 +24,14 @@ spec:
           valuesObject:
             acme:
               email: "{{acme_email}}"
+              server: https://acme-v02.api.letsencrypt.org/directory
             dns_zones_0: "{{dns_zones_0}}"
             credentials:
               itemPath: "{{dns01_onepassword_item_path}}"
               cloudflare:
                 enabled: true
+              route53:
+                enabled: false
       destination:
         server: '{{server}}' # 'server' field of the secret
         namespace: cert-manager
