@@ -50,3 +50,12 @@ spec:
       # circumstances. Setting to zero will store no history. This will reduce storage used. Increasing will increase the
       # space used to store the history, so we do not recommend increasing it.
       revisionHistoryLimit: 10
+
+      ignoreDifferences:
+      - group: apps
+        kind: Deployment
+        jqPathExpressions:
+        - .spec.template.spec.containers[] | select(.name == "crossplane").env[] | select(.name == "GOMAXPROCS").valueFrom.resourceFieldRef.divisor
+        - .spec.template.spec.containers[] | select(.name == "crossplane").env[] | select(.name == "GOMEMLIMIT").valueFrom.resourceFieldRef.divisor
+        - .spec.template.spec.initContainers[] | select(.name == "crossplane-init").env[] | select(.name == "GOMAXPROCS").valueFrom.resourceFieldRef.divisor
+        - .spec.template.spec.initContainers[] | select(.name == "crossplane-init").env[] | select(.name == "GOMEMLIMIT").valueFrom.resourceFieldRef.divisor
