@@ -1,0 +1,44 @@
+credentials:
+  itemPath: "vaults/vault_name_or_uuid/items/item_name_or_uuid"
+
+external-dns:
+  logLevel: debug
+  logFormat: json
+  interval: 1m
+  triggerLoopOnEvent: true
+  registry: txt
+  txtPrefix: edns.
+  sources:
+    - ingress
+    - service
+    - crd
+  policy: sync
+  provider: cloudflare
+  env:
+    - name: CF_API_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: cloudflare-api-token
+          key: password
+          optional: false
+    - name: EXTERNAL_DNS_DOMAIN_FILTER
+      valueFrom:
+        secretKeyRef:
+          name: cloudflare-api-token
+          key: zone_name
+          optional: false
+    - name: EXTERNAL_DNS_ZONE_ID_FILTER
+      valueFrom:
+        secretKeyRef:
+          name: cloudflare-api-token
+          key: zone_id
+          optional: false
+    - name: EXTERNAL_DNS_TXT_OWNER_ID
+      value: cluster-name
+  # resources:
+  #   limits:
+  #     cpu: 200m
+  #     memory: 200Mi
+  #   requests:
+  #     cpu: 100m
+  #     memory: 100Mi

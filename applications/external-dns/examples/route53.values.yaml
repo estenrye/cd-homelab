@@ -1,0 +1,41 @@
+logLevel: info
+logFormat: json
+interval: 1m
+triggerLoopOnEvent: true
+registry: txt
+txtPrefix: edns.
+sources:
+  - ingress
+  - service
+  - crd
+provider: aws
+policy: sync
+extraArgs:
+  - --aws-zone-type=public
+  - --aws-prefer-cname
+env:
+  - name: EXTERNAL_DNS_DOMAIN_FILTER
+    value: example.com
+  - name: EXTERNAL_DNS_TXT_OWNER_ID
+    value: cluster-name
+  - name: AWS_DEFAULT_REGION
+    value: REGION
+  - name: AWS_ACCESS_KEY_ID
+    valueFrom:
+      secretKeyRef:
+        name: external-dns-aws-route53-credentials
+        key: username
+        optional: false
+  - name: AWS_SECRET_ACCESS_KEY
+    valueFrom:
+      secretKeyRef:
+        name: external-dns-aws-route53-credentials
+        key: password
+        optional: false
+resources:
+  limits:
+    cpu: 200m
+    memory: 200Mi
+  requests:
+    cpu: 100m
+    memory: 100Mi
