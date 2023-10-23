@@ -4,7 +4,7 @@ namespace: argocd
 
 resources:
   - apps/argocd.yaml
-  - apps/crossplane.yaml
+  # - apps/crossplane.yaml
   # - apps/crossplane-providers.yaml
   - apps/kube-prometheus-stack.yaml
   - ../../base
@@ -13,6 +13,7 @@ resources:
   - appsets/cert-manager.yaml
   - appsets/cert-manager-cluster-issuer.yaml
   - appsets/cloudnative-pg.yaml
+  - appsets/crossplane.yaml
   - appsets/external-dns.yaml
   - appsets/ingress-nginx.yaml
 
