@@ -13,6 +13,7 @@ spec:
   - name: metadata
     patches:
     - fromFieldPath: metadata.labels
+      type: FromCompositeFieldPath
   resources:
   - name: ekscluster
     base:
@@ -34,6 +35,7 @@ spec:
     patches:
     - fromFieldPath: metadata.annotations[crossplane.io/external-name]
       toFieldPath: metadata.annotations[crossplane.io/external-name]
+      type: FromCompositeFieldPath
     - fromFieldPath: spec.parameters.version
       toFieldPath: spec.forProvider.version
     - fromFieldPath: metadata.uid
@@ -42,6 +44,8 @@ spec:
         - type: string
           string:
             fmt: "%s-ekscluster"
+            type: Format
+      type: FromCompositeFieldPath
     - type: ToCompositeFieldPath
       fromFieldPath: metadata.annotations[crossplane.io/external-name]
       toFieldPath: status.clusterName
@@ -50,6 +54,7 @@ spec:
       toFieldPath: status.controlPlaneStatus
     - fromFieldPath: spec.writeConnectionSecretToRef.namespace
       toFieldPath: spec.writeConnectionSecretToRef.namespace
+      type: FromCompositeFieldPath
     readinessChecks:
     - type: MatchString
       fieldPath: status.atProvider.status
@@ -87,10 +92,13 @@ spec:
             small: t3.small
             medium: t3.medium
             large: t3.large
+      type: FromCompositeFieldPath
     - fromFieldPath: spec.parameters.minNodeCount
       toFieldPath: spec.forProvider.scalingConfig.minSize
+      type: FromCompositeFieldPath
     - fromFieldPath: spec.parameters.minNodeCount
       toFieldPath: spec.forProvider.scalingConfig.desiredSize
+      type: FromCompositeFieldPath
     - type: ToCompositeFieldPath
       fromFieldPath: status.atProvider.status
       toFieldPath: status.nodePoolStatus
