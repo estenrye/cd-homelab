@@ -17,13 +17,15 @@ spec:
   # Only permit applications to deploy to the guestbook namespace in the same cluster
   # Destination clusters can be identified by 'server', 'name', or both.
   destinations:
-  - namespace: '1password'
+  - namespace: 1password
     server: '*'
-  - namespace: 'cert-manager'
+  - namespace: cert-manager
     server: '*'
-  - namespace: 'external-dns'
+  - namespace: cnpg-system
     server: '*'
-  - namespace: 'ingress-nginx'
+  - namespace: external-dns
+    server: '*'
+  - namespace: ingress-nginx
     server: '*'
 
   # Deny all cluster-scoped resources from being created, except for Namespace

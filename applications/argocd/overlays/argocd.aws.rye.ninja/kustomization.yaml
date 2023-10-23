@@ -12,6 +12,7 @@ resources:
   - appsets/1password.yaml
   - appsets/cert-manager.yaml
   - appsets/cert-manager-cluster-issuer.yaml
+  - appsets/cloudnative-pg.yaml
   - appsets/external-dns.yaml
   - appsets/ingress-nginx.yaml
 
