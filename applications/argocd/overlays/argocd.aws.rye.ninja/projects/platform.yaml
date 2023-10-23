@@ -23,6 +23,8 @@ spec:
     server: '*'
   - namespace: cnpg-system
     server: '*'
+  - namespace: crossplane-system
+    server: '*'
   - namespace: external-dns
     server: '*'
   - namespace: ingress-nginx
