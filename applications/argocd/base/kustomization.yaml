@@ -14,3 +14,4 @@ helmCharts:
 resources:
 - resources/namespace.yaml
 - resources/onepassworditem.yaml
+- resources/in-cluster.secret.yaml
