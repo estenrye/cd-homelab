@@ -1,11 +1,10 @@
+{{- $fullName := include "crossplane-providers.fullname" . -}}
 {{- range .Values.crossplaneProviders }}
 ---
 apiVersion: pkg.crossplane.io/v1
 kind: Provider
 metadata:
   name: {{ .name }}
-  labels:
-    {{- include "crossplane-providers.labels" . | nindent 4 }}
 spec:
   package: {{ .package }}
 {{- end }}
