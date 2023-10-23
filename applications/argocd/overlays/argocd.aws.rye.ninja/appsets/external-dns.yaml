@@ -11,7 +11,7 @@ spec:
           rye.ninja/environment: cd-cluster
       values:
         targetRevision: HEAD
-        valuesFile: applications/external-dns/examples/cloudflare.values.yaml
+        valuesFile: examples/cloudflare.values.yaml
         onepassword_item_path: vaults/Home_Lab/items/letsencrypt-dns01-credentials_cert-manager.rye.ninja
         clustername: argocd.aws.rye.ninja
   - clusters:
@@ -23,7 +23,7 @@ spec:
               - cd-cluster
       values:
         targetRevision: HEAD
-        valuesFile: applications/external-dns/examples/cloudflare.values.yaml
+        valuesFile: examples/cloudflare.values.yaml
         onepassword_item_path: vaults/Home_Lab/items/letsencrypt-dns01-credentials_cert-manager.rye.ninja
         clustername: '{{ name }}'
   template:
