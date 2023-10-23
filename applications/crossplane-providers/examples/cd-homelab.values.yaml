@@ -3,3 +3,7 @@ crossplaneProviders:
   package: xpkg.upbound.io/upbound/provider-terraform:v0.10.0
 - name: provider-aws-eks
   package: xpkg.upbound.io/upbound/provider-aws-eks:v0.42.0
+- name: provider-aws-iam
+  package: xpkg.upbound.io/upbound/provider-aws-iam:v0.42.0
+- name: provider-aws-ec2
+  package: xpkg.upbound.io/upbound/provider-aws-ec2:v0.42.0
