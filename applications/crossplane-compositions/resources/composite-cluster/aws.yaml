@@ -17,7 +17,7 @@ spec:
   resources:
   - name: ekscluster
     base:
-      apiVersion: eks.aws.crossplane.io/v1beta1
+      apiVersion: eks.aws.upbound.io/v1beta1
       kind: Cluster
       spec:
         forProvider:
@@ -64,7 +64,7 @@ spec:
       - fromConnectionSecretKey: kubeconfig
   - name: eksnodegroup
     base:
-      apiVersion: eks.aws.crossplane.io/v1alpha1
+      apiVersion: eks.aws.upbound.io/v1beta1
       kind: NodeGroup
       spec:
         forProvider:
@@ -114,8 +114,8 @@ spec:
           type: Ready	
         type: MatchCondition
     base:
-      apiVersion: identity.aws.crossplane.io/v1beta1
-      kind: IAMRole
+      apiVersion: iam.aws.upbound.io/v1beta1
+      kind: Role
       metadata:
         labels:
           role: controlplane
@@ -145,8 +145,8 @@ spec:
           type: Ready	
         type: MatchCondition
     base:
-      apiVersion: identity.aws.crossplane.io/v1beta1
-      kind: IAMRole
+      apiVersion: iam.aws.upbound.io/v1beta1
+      kind: Role
       metadata:
         labels:
           role: nodegroup
@@ -176,8 +176,8 @@ spec:
           type: Ready	
         type: MatchCondition
     base:
-      apiVersion: identity.aws.crossplane.io/v1beta1
-      kind: IAMRolePolicyAttachment
+      apiVersion: iam.aws.upbound.io/v1beta1
+      kind: RolePolicyAttachment
       spec:
         forProvider:
           policyArn: arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
@@ -192,8 +192,8 @@ spec:
           type: Ready	
         type: MatchCondition
     base:
-      apiVersion: identity.aws.crossplane.io/v1beta1
-      kind: IAMRolePolicyAttachment
+      apiVersion: iam.aws.upbound.io/v1beta1
+      kind: RolePolicyAttachment
       spec:
         forProvider:
           policyArn: arn:aws:iam::aws:policy/AmazonEKSServicePolicy
@@ -208,8 +208,8 @@ spec:
           type: Ready	
         type: MatchCondition
     base:
-      apiVersion: identity.aws.crossplane.io/v1beta1
-      kind: IAMRolePolicyAttachment
+      apiVersion: iam.aws.upbound.io/v1beta1
+      kind: RolePolicyAttachment
       spec:
         forProvider:
           policyArn: arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
@@ -224,8 +224,8 @@ spec:
           type: Ready	
         type: MatchCondition
     base:
-      apiVersion: identity.aws.crossplane.io/v1beta1
-      kind: IAMRolePolicyAttachment
+      apiVersion: iam.aws.upbound.io/v1beta1
+      kind: RolePolicyAttachment
       spec:
         forProvider:
           policyArn: arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
@@ -240,8 +240,8 @@ spec:
           type: Ready	
         type: MatchCondition
     base:
-      apiVersion: identity.aws.crossplane.io/v1beta1
-      kind: IAMRolePolicyAttachment
+      apiVersion: iam.aws.upbound.io/v1beta1
+      kind: RolePolicyAttachment
       spec:
         forProvider:
           policyArn: arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
@@ -256,7 +256,7 @@ spec:
           type: Ready	
         type: MatchCondition
     base:
-      apiVersion: ec2.aws.crossplane.io/v1beta1
+      apiVersion: ec2.aws.upbound.io/v1beta1
       kind: VPC
       spec:
         forProvider:
@@ -274,7 +274,7 @@ spec:
           type: Ready	
         type: MatchCondition
     base:
-      apiVersion: ec2.aws.crossplane.io/v1beta1
+      apiVersion: ec2.aws.upbound.io/v1beta1
       kind: SecurityGroup
       spec:
         forProvider:
@@ -296,7 +296,7 @@ spec:
           type: Ready	
         type: MatchCondition
     base:
-      apiVersion: ec2.aws.crossplane.io/v1beta1
+      apiVersion: ec2.aws.upbound.io/v1beta1
       kind: Subnet
       metadata:
         labels:
@@ -322,7 +322,7 @@ spec:
           type: Ready	
         type: MatchCondition
     base:
-      apiVersion: ec2.aws.crossplane.io/v1beta1
+      apiVersion: ec2.aws.upbound.io/v1beta1
       kind: Subnet
       metadata:
         labels:
@@ -348,7 +348,7 @@ spec:
           type: Ready	
         type: MatchCondition
     base:
-      apiVersion: ec2.aws.crossplane.io/v1beta1
+      apiVersion: ec2.aws.upbound.io/v1beta1
       kind: Subnet
       metadata:
         labels:
@@ -374,7 +374,7 @@ spec:
           type: Ready	
         type: MatchCondition
     base:
-      apiVersion: ec2.aws.crossplane.io/v1beta1
+      apiVersion: ec2.aws.upbound.io/v1beta1
       kind: InternetGateway
       spec:
         forProvider:
@@ -388,7 +388,7 @@ spec:
           type: Ready	
         type: MatchCondition
     base:
-      apiVersion: ec2.aws.crossplane.io/v1beta1
+      apiVersion: ec2.aws.upbound.io/v1beta1
       kind: RouteTable
       spec:
         forProvider:
