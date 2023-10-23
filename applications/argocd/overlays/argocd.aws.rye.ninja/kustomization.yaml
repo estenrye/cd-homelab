@@ -13,6 +13,7 @@ resources:
   - appsets/cloudnative-pg.yaml
   - appsets/crossplane.yaml
   - appsets/crossplane-providers.yaml
+  - appsets/crossplane-provider-configs.yaml
   - appsets/external-dns.yaml
   - appsets/ingress-nginx.yaml
 

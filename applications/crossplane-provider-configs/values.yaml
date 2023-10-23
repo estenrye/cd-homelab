@@ -1,0 +1,14 @@
+crossplaneProviderConfigs: []
+# - apiVersion: aws.upbound.io/v1beta1
+#   name: default
+#   spec:
+#     credentials:
+#       source: Secret
+#       secretRef:
+#         namespace: crossplane-system
+#         name: aws-crossplane-credentials
+#         key: credentials
+
+onePasswordItems: []
+# - name: aws-crossplane-credentials
+#   itemPath: vaults/vault_name_or_uuid/items/item_name_or_uuid

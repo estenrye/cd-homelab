@@ -1,0 +1,14 @@
+crossplaneProviderConfigs:
+- apiVersion: aws.upbound.io/v1beta1
+  name: default
+  spec:
+    credentials:
+      source: Secret
+      secretRef:
+        namespace: crossplane-system
+        name: aws-crossplane-credentials
+        key: credentials
+
+onePasswordItems:
+- name: aws-crossplane-credentials
+  itemPath: vaults/Home_Lab/items/crossplane-aws-iam-credentials
