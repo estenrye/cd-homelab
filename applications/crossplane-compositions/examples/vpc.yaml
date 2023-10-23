@@ -1,0 +1,16 @@
+apiVersion: ec2.aws.upbound.io/v1beta1
+kind: VPC
+metadata:
+  name: team-a
+spec:
+  forProvider:
+    cidrBlock: "192.168.0.0/16"
+    enableDnsHostnames: true
+    enableDnsSupport: true
+    instanceTenancy: default
+    region: us-east-2
+    tags:
+      - key: Name
+        value: team-a-crosplane-eks-cluster
+      - key: CrossplaneManaged
+        value: "true"
