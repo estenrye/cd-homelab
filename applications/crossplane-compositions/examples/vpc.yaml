@@ -10,7 +10,5 @@ spec:
     instanceTenancy: default
     region: us-east-2
     tags:
-      - key: Name
-        value: team-a-crosplane-eks-cluster
-      - key: CrossplaneManaged
-        value: "true"
+      name: team-a
+      crossplane-managed: "true"
