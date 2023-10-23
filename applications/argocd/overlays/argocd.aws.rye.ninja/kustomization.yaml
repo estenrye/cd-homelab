@@ -4,6 +4,7 @@ namespace: argocd
 
 resources:
   - apps/argocd.yaml
+  - apps/cluster-example.yaml
   - apps/kube-prometheus-stack.yaml
   - ../../base
   - projects/platform.yaml
