@@ -1,0 +1,24 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: team-a
+---
+apiVersion: rye.ninja/v1alpha1
+kind: CompositeKubernetesCluster
+metadata:
+  name: team-a
+  labels:
+    cluster-owner: esten
+spec:
+  compositionRef:
+    # Possible values cluster-google, cluster-azure, cluster-aws
+    name: cluster-aws
+  parameters:
+    # Possible values small, medium, large
+    nodeSize: small
+    # version: "1.20"
+    # minNodeCount: 2
+  writeConnectionSecretToRef:
+    namespace: team-a
+    name: cluster
