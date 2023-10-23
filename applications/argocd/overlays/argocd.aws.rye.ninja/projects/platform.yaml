@@ -54,9 +54,9 @@ spec:
     kind: ProviderConfig
   - group: aws.upbound.io
     kind: ProviderConfig
-  - group: apiextensions.crossplane.io/v1
+  - group: apiextensions.crossplane.io
     kind: CompositeResourceDefinition
-  - group: apiextensions.crossplane.io/v1
+  - group: apiextensions.crossplane.io
     kind: Composition
 
   # Allow all namespaced-scoped resources to be created, except for ResourceQuota, LimitRange, NetworkPolicy
