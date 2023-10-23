@@ -1,0 +1,5 @@
+crossplaneProviders: []
+# - name: provider-terraform
+#   package: xpkg.upbound.io/upbound/provider-terraform:v0.10.0
+# - name: provider-aws-eks
+#   package: xpkg.upbound.io/upbound/provider-aws-eks:v0.42.0

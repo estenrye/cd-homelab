@@ -1,0 +1,9 @@
+{{- range .Values.crossplaneProviders }}
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: {{ .name }}
+spec:
+  package: {{ .package }}
+{{- end }}
