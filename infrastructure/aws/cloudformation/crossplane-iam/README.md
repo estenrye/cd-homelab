@@ -14,7 +14,7 @@ Crossplane will use to authenticate to the AWS API.
 2. Click the AWS icon
 3. Click Sign In.
 4. Navigate to https://us-east-2.console.aws.amazon.com/cloudformation/home?region=us-east-2#/stacks/create
-5. Copy and paste the following Amazon S3 URL `https://s3.us-east-2.amazonaws.com/cf-templates-40ajksj53ztb-us-east-2/2023-10-23T045256.866Zwmp-iam.yaml`
+5. Copy and paste the following Amazon S3 URL `https://s3.us-east-2.amazonaws.com/cf-templates-40ajksj53ztb-us-east-2/2023-10-24T011954.415Z2sb-iam.yaml`
 6. Click Next.
 7. Choose a Stack name.  Example: `crossplane-iam`
 8. Click Next.
@@ -33,7 +33,7 @@ export STACK_NAME=crossplane-iam
 
 aws cloudformation create-stack \
   --stack-name ${STACK_NAME} \
-  --template-url https://s3.us-east-2.amazonaws.com/cf-templates-40ajksj53ztb-us-east-2/2023-10-23T044437.854Zlv1-iam.yaml \
+  --template-url https://s3.us-east-2.amazonaws.com/cf-templates-40ajksj53ztb-us-east-2/2023-10-24T011954.415Z2sb-iam.yaml
 ```
 
 ## References
