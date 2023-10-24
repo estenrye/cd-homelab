@@ -14,6 +14,7 @@ spec:
     mapPublicIpOnLaunch: true
     tags:
       Name: team-a-public-subnet-c
+      CrossplaneManaged: "true"
       kubernetes.io/role/elb: "1"
     vpcIdRef:
       name: team-a
