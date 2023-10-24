@@ -13,4 +13,5 @@ spec:
     vpcIdRef:
       name: team-a
   writeConnectionSecretToRef:
-    name: team-a-private-subnet-a-sg
+    name: team-a-privat
+    namespace: team-a
