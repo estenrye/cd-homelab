@@ -37,11 +37,24 @@ spec:
                     default: us-west-2
                   vpc:
                     type: object
+                    description: VPC configuration settings.
                     properties:
                       cidrBlock:
                         description: The CIDR block for the VPC
                         type: string
                         default: 192.168.0.0/16
+                      availabilityZone-a:
+                        type: object
+                        description: CIDR block configuration settings for AZ A
+                        properties:
+                          publicCidrBlock:
+                            description: The CIDR block for the public subnet
+                            type: string
+                            default: 192.168.0.0/19
+                          privateCidrBlock:
+                            description: The CIDR block for the private subnet
+                            type: string
+                            default: 192.168.96.0/19
                 required:
                   - clusterName
             required:

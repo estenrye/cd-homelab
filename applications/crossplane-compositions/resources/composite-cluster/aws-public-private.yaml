@@ -14,6 +14,21 @@ spec:
     patches:
     - fromFieldPath: metadata.labels
       type: FromCompositeFieldPath
+  - name: vpcIdRef-patchset
+    patches:
+    - fromFieldPath: spec.parameters.clusterName
+      toFieldPath: spec.forProvider.vpcIdRef.name
+      transforms:
+        - type: string
+          string:
+            fmt: "%s-crossplane-ekscluster"
+            type: Format
+  - name: region-patchset
+    patches:
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.region
+      toFieldPath: spec.forProvider.region
+
   resources:
   - name: vpc
     base:
@@ -37,9 +52,49 @@ spec:
           string:
             fmt: "%s-crossplane-ekscluster"
             type: Format
-    - type: FromCompositeFieldPath
-      fromFieldPath: spec.parameters.region
-      toFieldPath: spec.forProvider.region
+    - type: PatchSet
+      patchSetName: region-patchset
     - type: FromCompositeFieldPath
       fromFieldPath: spec.parameters.vpc.cidrBlock
+      toFieldPath: spec.forProvider.cidrBlock
+  - name: publicSubnet-az-A
+    base:
+      apiVersion: ec2.aws.upbound.io/v1beta1
+      kind: Subnet
+      spec:
+        forProvider:
+          assignIpv6AddressOnCreation: false
+          region: us-east-2
+          availabilityZone: us-east-2a
+          cidrBlock: 192.168.0.0/19
+          enableResourceNameDnsARecordOnLaunch: false
+          enableResourceNameDnsAaaaRecordOnLaunch: false
+          mapPublicIpOnLaunch: true
+          tags:
+            Name: team-a-public-subnet-a
+            CrossplaneManaged: "true"
+            kubernetes.io/role/elb: "1"
+          vpcIdRef:
+            name: team-a
+    patches:
+    - type: PatchSet
+      patchSetName: vpcIdRef-patchset
+    - type: PatchSet
+      patchSetName: region-patchset
+    - fromFieldPath: spec.parameters.clusterName
+      toFieldPath: spec.forProvider.tags.Name
+      transforms:
+        - type: string
+          string:
+            fmt: "%s-crossplane-ekscluster-public-subnet-a"
+            type: Format
+    - fromFieldPath: spec.parameters.clusterName
+      toFieldPath: spec.forProvider.availabilityZone
+      transforms:
+        - type: string
+          string:
+            fmt: "%sa"
+            type: Format
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.vpc.availabilityZone-a.publicCidrBlock
       toFieldPath: spec.forProvider.cidrBlock
