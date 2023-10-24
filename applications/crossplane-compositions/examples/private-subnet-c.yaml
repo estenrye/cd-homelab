@@ -33,7 +33,7 @@ spec:
       CrossplaneManaged: "true"
 ---
 apiVersion: ec2.aws.upbound.io/v1beta1
-kind: NatGateway
+kind: NATGateway
 metadata:
   name: team-a-private-subnet-c-nat-gtwy
   namespace: team-a
