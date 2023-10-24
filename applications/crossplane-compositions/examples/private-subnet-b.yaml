@@ -18,3 +18,75 @@ spec:
       kubernetes.io/role/internal-elb: "1"
     vpcIdRef:
       name: team-a
+---
+apiVersion: ec2.aws.upbound.io/v1beta1
+kind: EIP
+metadata:
+  name: team-a-private-subnet-b-eip
+  namespace: team-a
+spec:
+  forProvider:
+    region: us-east-2
+    tags:
+      Name: team-a-private-subnet-b-eip
+      Network: private
+      CrossplaneManaged: "true"
+---
+apiVersion: ec2.aws.upbound.io/v1beta1
+kind: NatGateway
+metadata:
+  name: team-a-private-subnet-b-nat-gtwy
+  namespace: team-a
+spec:
+  forProvider:
+    region: us-east-2
+    allocationIdRef:
+      name: team-a-private-subnet-b-eip
+    subnetIdRef:
+      name: team-a-private-subnet-b
+    tags:
+      Name: team-a-private-subnet-b-nat-gtwy
+      Network: private
+      CrossplaneManaged: "true"
+---
+apiVersion: ec2.aws.upbound.io/v1beta1
+kind: RouteTable
+metadata:
+  name: team-a-private-subnet-b-rtb
+  namespace: team-a
+spec:
+  forProvider:
+    region: us-east-2
+    tags:
+      Name: team-a-private-subnet-b-rtb
+      Network: private
+      CrossplaneManaged: "true"
+    vpcIdRef:
+      name: team-a
+---
+apiVersion: ec2.aws.upbound.io/v1beta1
+kind: Route
+metadata:
+  name: team-a-private-subnet-b-rtb-nat-gtwy-route
+  namespace: team-a
+spec:
+  forProvider:
+    region: us-east-2
+    destinationCidrBlock: 0.0.0.0/0
+    natGatewayIdRef:
+      name: team-a-private-subnet-b-nat-gtwy
+    routeTableIdRef:
+      name: team-a-private-subnet-b-rtb
+---
+apiVersion: ec2.aws.upbound.io/v1beta1
+kind: routeTableAssociation
+metadata:
+  name: team-a-private-subnet-b-rtb-assoc
+  namespace: team-a
+spec:
+  forProvider:
+    region: us-east-2
+    routeTableIdRef:
+      name: team-a-private-subnet-b-rtb
+    subnetIdRef:
+      name: team-a-private-subnet-b
