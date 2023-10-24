@@ -29,17 +29,17 @@ spec:
           tags:
             Name: vpc-name
             CrossplaneManaged: "true"
-      patches:
-      - fromFieldPath: spec.parameters.clusterName
-        toFieldPath: spec.forProvider.tags.Name
-        transforms:
-          - type: string
-            string:
-              fmt: "%s-crossplane-ekscluster"
-              type: Format
-      - fromFieldPath: spec.parameters.region
-        toFieldPath: spec.forProvider.region
-        type: FromCompositeFieldPath
-      - fromFieldPath: spec.parameters.vpc.cidrBlock
-        toFieldPath: spec.forProvider.cidrBlock
-        type: FromCompositeFieldPath
+    patches:
+    - fromFieldPath: spec.parameters.clusterName
+      toFieldPath: spec.forProvider.tags.Name
+      transforms:
+        - type: string
+          string:
+            fmt: "%s-crossplane-ekscluster"
+            type: Format
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.region
+      toFieldPath: spec.forProvider.region
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.vpc.cidrBlock
+      toFieldPath: spec.forProvider.cidrBlock
