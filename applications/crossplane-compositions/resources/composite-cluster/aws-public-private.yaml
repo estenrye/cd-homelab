@@ -10,7 +10,7 @@ spec:
     apiVersion: rye.ninja/v1alpha1
     kind: CompositeKubernetesCluster
   patchSets:
-  - name: routetableIdSelector-patchset
+  - name: routeTableIdSelector-patchset
     patches:
     - type: FromCompositeFieldPath
       fromFieldPath: spec.parameters.clusterName
