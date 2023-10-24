@@ -13,7 +13,7 @@ spec:
   - name: metadata
     patches:
     - fromFieldPath: spec.parameters.clusterName
-      toFieldPath: metadata.labels.rye\.ninja/clusterName
+      toFieldPath: metadata.labels.clusterName
       transforms:
         - type: string
           string:
@@ -22,7 +22,7 @@ spec:
   - name: vpcIdSelector-patchset
     patches:
     - fromFieldPath: spec.parameters.clusterName
-      toFieldPath: spec.forProvider.vpcIdSelector.matchLabels.rye\.ninja/clusterName
+      toFieldPath: spec.forProvider.vpcIdSelector.matchLabels.clusterName
       transforms:
         - type: string
           string:
@@ -70,7 +70,7 @@ spec:
       kind: Subnet
       metadata:
         labels: 
-          rye.ninja/subnet: public-a
+          subnet: public-a
       spec:
         forProvider:
           assignIpv6AddressOnCreation: false
@@ -86,7 +86,7 @@ spec:
             kubernetes.io/role/elb: "1"
           vpcIdSelector:
             matchLabels:
-              rye.ninja/clusterName: vpc-name
+              clusterName: vpc-name
     patches:
     - type: PatchSet
       patchSetName: metadata
