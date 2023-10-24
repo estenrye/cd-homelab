@@ -79,7 +79,7 @@ spec:
       name: team-a-private-subnet-b-rtb
 ---
 apiVersion: ec2.aws.upbound.io/v1beta1
-kind: routeTableAssociation
+kind: RouteTableAssociation
 metadata:
   name: team-a-private-subnet-b-rtb-assoc
   namespace: team-a
