@@ -4,7 +4,6 @@ metadata:
   name: team-a-public-rtb
   namespace: team-a
 spec:
-  region: us-east-2
   tags:
     Name: team-a-igw
     CrossplaneManaged: "true"
