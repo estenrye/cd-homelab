@@ -20,6 +20,7 @@ metadata:
   namespace: team-a
 spec:
   forProvider:
+    region: us-east-2
     destinationCidrBlock: 0.0.0.0/0
     gatewayIdRef:
       name: team-a-igw
