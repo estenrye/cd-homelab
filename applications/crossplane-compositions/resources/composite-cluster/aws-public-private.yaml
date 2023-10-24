@@ -101,7 +101,7 @@ spec:
           string:
             fmt: "%s-crossplane-ekscluster-public-subnet-a"
             type: Format
-    - fromFieldPath: spec.parameters.clusterName
+    - fromFieldPath: spec.parameters.region
       toFieldPath: spec.forProvider.availabilityZone
       transforms:
         - type: string
