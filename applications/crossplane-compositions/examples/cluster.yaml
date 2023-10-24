@@ -1,0 +1,15 @@
+apiVersion: devopstoolkitseries.com/v1alpha1
+kind: CompositeKubernetesCluster
+metadata:
+  name: test-cluster
+  labels:
+    cluster-owner: estenrye
+spec:
+  compositionRef:
+    # Possible values cluster-google, cluster-azure, cluster-aws
+    name: cluster-aws-public-private
+  parameters:
+    clusterName: test-cluster
+  writeConnectionSecretToRef:
+    namespace: team-a
+    name: cluster
