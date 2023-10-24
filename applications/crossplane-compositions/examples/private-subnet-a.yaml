@@ -1,0 +1,19 @@
+apiVersion: ec2.aws.upbound.io/v1beta1
+kind: Subnet
+metadata:
+  name: team-a-private-subnet-a
+  namespace: team-a
+spec:
+  forProvider:
+    assignIpv6AddressOnCreation: false
+    region: us-east-2
+    availabilityZone: us-east-2a
+    cidrBlock: 192.168.96.0/19
+    enableResourceNameDnsARecordOnLaunch: false
+    enableResourceNameDnsAaaaRecordOnLaunch: false
+    mapPublicIpOnLaunch: false
+    tags:
+      Name: team-a-private-subnet-a
+      kubernetes.io/role/internal-elb: "1"
+    vpcIdRef:
+      name: team-a
