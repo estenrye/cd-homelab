@@ -12,6 +12,3 @@ spec:
       CrossplaneManaged: "true"
     vpcIdRef:
       name: team-a
-  writeConnectionSecretToRef:
-    name: team-a-privat
-    namespace: team-a
