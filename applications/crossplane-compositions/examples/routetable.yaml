@@ -1,0 +1,12 @@
+apiVersion: ec2.aws.upbound.io/v1beta1
+kind: RouteTable
+metadata:
+  name: team-a-public-rtb
+  namespace: team-a
+spec:
+  region: us-east-2
+  tags:
+    Name: team-a-igw
+    CrossplaneManaged: "true"
+  vpcIdRef:
+    name: team-a
