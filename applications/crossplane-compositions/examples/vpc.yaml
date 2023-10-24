@@ -10,5 +10,5 @@ spec:
     instanceTenancy: default
     region: us-east-2
     tags:
-      name: team-a
-      crossplane-managed: "true"
+      Name: team-a
+      CrossplaneManaged: "true"
