@@ -55,6 +55,30 @@ spec:
                             description: The CIDR block for the private subnet
                             type: string
                             default: 192.168.96.0/19
+                      availabilityZone-b:
+                        type: object
+                        description: CIDR block configuration settings for AZ B
+                        properties:
+                          publicCidrBlock:
+                            description: The CIDR block for the public subnet
+                            type: string
+                            default: 192.168.32.0/19
+                          privateCidrBlock:
+                            description: The CIDR block for the private subnet
+                            type: string
+                            default: 192.168.128.0/19
+                      availabilityZone-c:
+                        type: object
+                        description: CIDR block configuration settings for AZ C
+                        properties:
+                          publicCidrBlock:
+                            description: The CIDR block for the public subnet
+                            type: string
+                            default: 192.168.64.0/19
+                          privateCidrBlock:
+                            description: The CIDR block for the private subnet
+                            type: string
+                            default: 192.168.160.0/19
                 required:
                   - clusterName
             required:

@@ -111,3 +111,97 @@ spec:
     - type: FromCompositeFieldPath
       fromFieldPath: spec.parameters.vpc.availabilityZone-a.publicCidrBlock
       toFieldPath: spec.forProvider.cidrBlock
+  - name: publicSubnet-az-B
+    base:
+      apiVersion: ec2.aws.upbound.io/v1beta1
+      kind: Subnet
+      metadata:
+        labels: 
+          subnet: public-b
+      spec:
+        forProvider:
+          assignIpv6AddressOnCreation: false
+          region: us-east-2
+          availabilityZone: us-east-2b
+          cidrBlock: 192.168.32.0/19
+          enableResourceNameDnsARecordOnLaunch: false
+          enableResourceNameDnsAaaaRecordOnLaunch: false
+          mapPublicIpOnLaunch: true
+          tags:
+            Name: team-a-public-subnet-b
+            CrossplaneManaged: "true"
+            kubernetes.io/role/elb: "1"
+          vpcIdSelector:
+            matchLabels:
+              clusterName: vpc-name
+    patches:
+    - type: PatchSet
+      patchSetName: metadata
+    - type: PatchSet
+      patchSetName: vpcIdSelector-patchset
+    - type: PatchSet
+      patchSetName: region-patchset
+    - fromFieldPath: spec.parameters.clusterName
+      toFieldPath: spec.forProvider.tags.Name
+      transforms:
+        - type: string
+          string:
+            fmt: "%s-crossplane-ekscluster-public-subnet-b"
+            type: Format
+    - fromFieldPath: spec.parameters.region
+      toFieldPath: spec.forProvider.availabilityZone
+      transforms:
+        - type: string
+          string:
+            fmt: "%sb"
+            type: Format
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.vpc.availabilityZone-b.publicCidrBlock
+      toFieldPath: spec.forProvider.cidrBlock
+  - name: publicSubnet-az-C
+    base:
+      apiVersion: ec2.aws.upbound.io/v1beta1
+      kind: Subnet
+      metadata:
+        labels: 
+          subnet: public-c
+      spec:
+        forProvider:
+          assignIpv6AddressOnCreation: false
+          region: us-east-2
+          availabilityZone: us-east-2c
+          cidrBlock: 192.168.64.0/19
+          enableResourceNameDnsARecordOnLaunch: false
+          enableResourceNameDnsAaaaRecordOnLaunch: false
+          mapPublicIpOnLaunch: true
+          tags:
+            Name: team-a-public-subnet-c
+            CrossplaneManaged: "true"
+            kubernetes.io/role/elb: "1"
+          vpcIdSelector:
+            matchLabels:
+              clusterName: vpc-name
+    patches:
+    - type: PatchSet
+      patchSetName: metadata
+    - type: PatchSet
+      patchSetName: vpcIdSelector-patchset
+    - type: PatchSet
+      patchSetName: region-patchset
+    - fromFieldPath: spec.parameters.clusterName
+      toFieldPath: spec.forProvider.tags.Name
+      transforms:
+        - type: string
+          string:
+            fmt: "%s-crossplane-ekscluster-public-subnet-c"
+            type: Format
+    - fromFieldPath: spec.parameters.region
+      toFieldPath: spec.forProvider.availabilityZone
+      transforms:
+        - type: string
+          string:
+            fmt: "%sc"
+            type: Format
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.vpc.availabilityZone-b.publicCidrBlock
+      toFieldPath: spec.forProvider.cidrBlock
