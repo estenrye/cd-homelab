@@ -12,12 +12,17 @@ spec:
   patchSets:
   - name: metadata
     patches:
-    - fromFieldPath: metadata.labels
-      type: FromCompositeFieldPath
-  - name: vpcIdRef-patchset
+    - fromFieldPath: spec.parameters.clusterName
+      toFieldPath: metadata.labels.rye\.ninja/clusterName
+      transforms:
+        - type: string
+          string:
+            fmt: "%s-crossplane-ekscluster"
+            type: Format
+  - name: vpcIdSelector-patchset
     patches:
     - fromFieldPath: spec.parameters.clusterName
-      toFieldPath: spec.forProvider.vpcIdRef.name
+      toFieldPath: spec.forProvider.vpcIdSelector.matchLabels.rye\.ninja/clusterName
       transforms:
         - type: string
           string:
@@ -45,6 +50,8 @@ spec:
             Name: vpc-name
             CrossplaneManaged: "true"
     patches:
+    - type: PatchSet
+      patchSetName: metadata
     - fromFieldPath: spec.parameters.clusterName
       toFieldPath: spec.forProvider.tags.Name
       transforms:
@@ -61,6 +68,9 @@ spec:
     base:
       apiVersion: ec2.aws.upbound.io/v1beta1
       kind: Subnet
+      metadata:
+        labels: 
+          rye.ninja/subnet: public-a
       spec:
         forProvider:
           assignIpv6AddressOnCreation: false
@@ -74,11 +84,14 @@ spec:
             Name: team-a-public-subnet-a
             CrossplaneManaged: "true"
             kubernetes.io/role/elb: "1"
-          vpcIdRef:
-            name: team-a
+          vpcIdSelector:
+            matchLabels:
+              rye.ninja/clusterName: vpc-name
     patches:
     - type: PatchSet
-      patchSetName: vpcIdRef-patchset
+      patchSetName: metadata
+    - type: PatchSet
+      patchSetName: vpcIdSelector-patchset
     - type: PatchSet
       patchSetName: region-patchset
     - fromFieldPath: spec.parameters.clusterName
