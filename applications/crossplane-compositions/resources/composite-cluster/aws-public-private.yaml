@@ -10,26 +10,24 @@ spec:
     apiVersion: rye.ninja/v1alpha1
     kind: CompositeKubernetesCluster
   patchSets:
-  - name: metadata
+  - name: routetableIdSelector-patchset
     patches:
-    - fromFieldPath: spec.parameters.clusterName
-      toFieldPath: metadata.labels.clusterName
-      transforms:
-        - type: string
-          string:
-            fmt: "%s-crossplane-ekscluster"
-            type: Format
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.clusterName
+      toFieldPath: spec.forProvider.routeTableIdSelector.matchLabels.clusterName
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.clusterName
+      toFieldPath: spec.forProvider.subnetIdSelector.matchLabels.clusterName
   - name: vpcIdSelector-patchset
     patches:
-    - fromFieldPath: spec.parameters.clusterName
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.clusterName
       toFieldPath: spec.forProvider.vpcIdSelector.matchLabels.clusterName
-      transforms:
-        - type: string
-          string:
-            fmt: "%s-crossplane-ekscluster"
-            type: Format
-  - name: region-patchset
+  - name: default-patchset
     patches:
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.clusterName
+      toFieldPath: metadata.labels.clusterName
     - type: FromCompositeFieldPath
       fromFieldPath: spec.parameters.region
       toFieldPath: spec.forProvider.region
@@ -51,7 +49,7 @@ spec:
             CrossplaneManaged: "true"
     patches:
     - type: PatchSet
-      patchSetName: metadata
+      patchSetName: default-patchset
     - fromFieldPath: spec.parameters.clusterName
       toFieldPath: spec.forProvider.tags.Name
       transforms:
@@ -59,8 +57,6 @@ spec:
           string:
             fmt: "%s-crossplane-ekscluster"
             type: Format
-    - type: PatchSet
-      patchSetName: region-patchset
     - type: FromCompositeFieldPath
       fromFieldPath: spec.parameters.vpc.cidrBlock
       toFieldPath: spec.forProvider.cidrBlock
@@ -89,11 +85,9 @@ spec:
               clusterName: vpc-name
     patches:
     - type: PatchSet
-      patchSetName: metadata
+      patchSetName: default-patchset
     - type: PatchSet
       patchSetName: vpcIdSelector-patchset
-    - type: PatchSet
-      patchSetName: region-patchset
     - fromFieldPath: spec.parameters.clusterName
       toFieldPath: spec.forProvider.tags.Name
       transforms:
@@ -136,11 +130,9 @@ spec:
               clusterName: vpc-name
     patches:
     - type: PatchSet
-      patchSetName: metadata
+      patchSetName: default-patchset
     - type: PatchSet
       patchSetName: vpcIdSelector-patchset
-    - type: PatchSet
-      patchSetName: region-patchset
     - fromFieldPath: spec.parameters.clusterName
       toFieldPath: spec.forProvider.tags.Name
       transforms:
@@ -183,11 +175,9 @@ spec:
               clusterName: vpc-name
     patches:
     - type: PatchSet
-      patchSetName: metadata
+      patchSetName: default-patchset
     - type: PatchSet
       patchSetName: vpcIdSelector-patchset
-    - type: PatchSet
-      patchSetName: region-patchset
     - fromFieldPath: spec.parameters.clusterName
       toFieldPath: spec.forProvider.tags.Name
       transforms:
@@ -205,3 +195,91 @@ spec:
     - type: FromCompositeFieldPath
       fromFieldPath: spec.parameters.vpc.availabilityZone-b.publicCidrBlock
       toFieldPath: spec.forProvider.cidrBlock
+  - name: publicRouteTable
+    base:
+      apiVersion: ec2.aws.upbound.io/v1beta1
+      kind: RouteTable
+      metadata:
+        labels: 
+          routetable: public
+      spec:
+        forProvider:
+          region: us-east-2
+          tags:
+            Name: team-a-public-subnet-a-rtb
+            CrossplaneManaged: "true"
+          vpcIdSelector:
+            matchLabels:
+              clusterName: vpc-name
+    patches:
+    - type: PatchSet
+      patchSetName: default-patchset
+    - type: PatchSet
+      patchSetName: vpcIdSelector-patchset
+    - fromFieldPath: spec.parameters.clusterName
+      toFieldPath: spec.forProvider.tags.Name
+      transforms:
+        - type: string
+          string:
+            fmt: "%s-crossplane-ekscluster-public-route-table"
+            type: Format
+  - name: publicRouteTableAssociation-az-A
+    base:
+      apiVersion: ec2.aws.upbound.io/v1beta1
+      kind: RouteTableAssociation
+      spec:
+        forProvider:
+          region: us-east-2
+          routeTableIdSelector:
+            matchLabels:
+              clusterName: clusterName
+              routetable: public
+          subnetIdSelector:
+            matchLabels:
+              clusterName: clusterName
+              subnet: public-a
+    patches:
+    - type: PatchSet
+      patchSetName: default-patchset
+    - type: PatchSet
+      patchSetName: routeTableIdSelector-patchset
+  - name: publicRouteTableAssociation-az-B
+    base:
+      apiVersion: ec2.aws.upbound.io/v1beta1
+      kind: RouteTableAssociation
+      spec:
+        forProvider:
+          region: us-east-2
+          routeTableIdSelector:
+            matchLabels:
+              clusterName: clusterName
+              routetable: public
+          subnetIdSelector:
+            matchLabels:
+              clusterName: clusterName
+              subnet: public-b
+    patches:
+    - type: PatchSet
+      patchSetName: default-patchset
+    - type: PatchSet
+      patchSetName: routeTableIdSelector-patchset
+  - name: publicRouteTableAssociation-az-C
+    base:
+      apiVersion: ec2.aws.upbound.io/v1beta1
+      kind: RouteTableAssociation
+      spec:
+        forProvider:
+          region: us-east-2
+          routeTableIdSelector:
+            matchLabels:
+              clusterName: clusterName
+              routetable: public
+          subnetIdSelector:
+            matchLabels:
+              clusterName: clusterName
+              subnet: public-c
+    patches:
+    - type: PatchSet
+      patchSetName: default-patchset
+    - type: PatchSet
+      patchSetName: routeTableIdSelector-patchset
