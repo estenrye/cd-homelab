@@ -64,6 +64,7 @@ spec:
       metadata:
         labels: 
           subnet: public-a
+          access: public
       spec:
         forProvider:
           assignIpv6AddressOnCreation: false
@@ -109,6 +110,7 @@ spec:
       metadata:
         labels: 
           subnet: public-b
+          access: public
       spec:
         forProvider:
           assignIpv6AddressOnCreation: false
@@ -154,6 +156,7 @@ spec:
       metadata:
         labels: 
           subnet: public-c
+          access: public
       spec:
         forProvider:
           assignIpv6AddressOnCreation: false
@@ -496,6 +499,8 @@ spec:
                   securitygroup: nodepool
               subnetIdsSelector:
                 matchControllerRef: true
+                matchLabels:
+                  access: public
     readinessChecks:
     - type: MatchString
       fieldPath: status.atProvider.status
