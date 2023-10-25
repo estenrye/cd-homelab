@@ -420,6 +420,14 @@ spec:
           string:
             fmt: "%s-crossplane-ekscluster-controlplane-role"
             type: Format
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.clusterName
+      toFieldPath: spec.forProvider.name
+      transforms:
+        - type: string
+          string:
+            fmt: "%s-crossplane-ekscluster-controlplane-role"
+            type: Format
   - name: iamrole-nodegroup
     base:
       apiVersion: iam.aws.upbound.io/v1beta1
@@ -461,6 +469,14 @@ spec:
     - type: FromCompositeFieldPath
       fromFieldPath: spec.parameters.clusterName
       toFieldPath: spec.forProvider.tags.Name
+      transforms:
+        - type: string
+          string:
+            fmt: "%s-crossplane-ekscluster-nodegroup-role"
+            type: Format
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.clusterName
+      toFieldPath: spec.forProvider.name
       transforms:
         - type: string
           string:
