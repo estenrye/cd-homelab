@@ -9,76 +9,9 @@ Resources:
         Statement:
           - Effect: Allow
             Action:
-              - eks:CreateCluster
-              - eks:DescribeCluster
-              - eks:DeleteCluster
+              - eks:*
             Resource: "*"
-          - Effect: Allow
-            Action:
-              - eks:TagResource
-              - eks:UntagResource
-            Resource: "*"
-          - Effect: Allow
-            Action:
-              - eks:CreateFargateProfile
-              - eks:DeleteFargateProfile
-              - eks:DescribeFargateProfile
-              - eks:ListFargateProfiles
-              - eks:TagResource
-              - eks:UntagResource
-            Resource: "*"
-          - Effect: Allow
-            Action:
-              - eks:CreateNodegroup
-              - eks:DeleteNodegroup
-              - eks:DescribeNodegroup
-              - eks:ListNodegroups
-              - eks:TagResource
-              - eks:UntagResource
-            Resource: "*"
-          - Effect: Allow
-            Action:
-              - eks:CreateAddon
-              - eks:DeleteAddon
-              - eks:DescribeAddon
-              - eks:ListAddons
-              - eks:TagResource
-              - eks:UntagResource
-            Resource: "*"
-          - Effect: Allow
-            Action:
-              - eks:CreateUpdate
-              - eks:DeleteUpdate
-              - eks:DescribeUpdate
-              - eks:ListUpdates
-              - eks:TagResource
-              - eks:UntagResource
-            Resource: "*"
-          - Effect: Allow
-            Action:
-              - eks:CreateClusterConfig
-              - eks:DescribeClusterConfig
-              - eks:DeleteClusterConfig
-              - eks:TagResource
-              - eks:UntagResource
-            Resource: "*"
-          - Effect: Allow
-            Action:
-              - eks:AssociateEncryptionConfig
-              - eks:DisassociateEncryptionConfig
-              - eks:ListEncryptionConfigs
-              - eks:TagResource
-              - eks:UntagResource
-            Resource: "*"
-          - Effect: Allow
-            Action:
-              - eks:CreateIdentityProviderConfig
-              - eks:DeleteIdentityProviderConfig
-              - eks:DescribeIdentityProviderConfig
-              - eks:ListIdentityProviderConfigs
-              - eks:TagResource
-              - eks:UntagResource
-            Resource: "*"
+
   CreateCrossplaneIAMUser:
     Type: AWS::IAM::User
     Properties:
