@@ -70,6 +70,7 @@ spec:
           enableResourceNameDnsARecordOnLaunch: false
           enableResourceNameDnsAaaaRecordOnLaunch: false
           mapPublicIpOnLaunch: true
+          cidrBlock: 192.168.0.0/19
           tags:
             kubernetes.io/role/elb: "1"
           vpcIdSelector:
@@ -114,6 +115,7 @@ spec:
           enableResourceNameDnsARecordOnLaunch: false
           enableResourceNameDnsAaaaRecordOnLaunch: false
           mapPublicIpOnLaunch: true
+          cidrBlock: 192.168.32.0/19
           tags:
             kubernetes.io/role/elb: "1"
           vpcIdSelector:
@@ -158,6 +160,7 @@ spec:
           enableResourceNameDnsARecordOnLaunch: false
           enableResourceNameDnsAaaaRecordOnLaunch: false
           mapPublicIpOnLaunch: true
+          cidrBlock: 192.168.64.0/19
           tags:
             kubernetes.io/role/elb: "1"
           vpcIdSelector:
