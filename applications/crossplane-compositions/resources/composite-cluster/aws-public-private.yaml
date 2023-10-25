@@ -290,24 +290,6 @@ spec:
     patches:
     - type: PatchSet
       patchSetName: default-patchset
-  - name: internetGatewayAttachment
-    base:
-      apiVersion: ec2.aws.upbound.io/v1beta1
-      kind: InternetGatewayAttachment
-      spec:
-        forProvider:
-          internetGatewayIdSelector:
-            matchControllerRef: true
-          vpcIdSelector:
-            matchControllerRef: true
-    readinessChecks:
-      - type: MatchCondition
-        matchCondition:
-          status: 'True'
-          type: Ready
-    patches:
-    - type: PatchSet
-      patchSetName: default-patchset
   - name: publicRoute
     base:
       apiVersion: ec2.aws.upbound.io/v1beta1
