@@ -213,9 +213,6 @@ spec:
           routetable: public
       spec:
         forProvider:
-          tags:
-            Name: team-a-public-subnet-a-rtb
-            CrossplaneManaged: "true"
           vpcIdSelector:
             matchControllerRef: true
     readinessChecks:
@@ -378,3 +375,94 @@ spec:
     patches:
     - type: PatchSet
       patchSetName: default-patchset
+  - name: iamrole-controlplane
+    base:
+      apiVersion: iam.aws.upbound.io/v1beta1
+      kind: Role
+      metadata:
+        labels: 
+          iamrole: controlplane
+      spec:
+        forProvider:
+          managedPolicyArns:
+            - arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
+            - arn:aws:iam::aws:policy/AmazonEKSServicePolicy
+          assumeRolePolicyDocument: |
+            {
+              "Version": "2012-10-17",
+              "Statement": [
+                  {
+                      "Effect": "Allow",
+                      "Principal": {
+                          "Service": [
+                              "eks.amazonaws.com"
+                          ]
+                      },
+                      "Action": [
+                          "sts:AssumeRole"
+                      ]
+                  }
+              ]
+            }
+    readinessChecks:
+      - type: MatchCondition
+        matchCondition:
+          status: 'True'
+          type: Ready
+    patches:
+    - type: PatchSet
+      patchSetName: default-patchset
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.clusterName
+      toFieldPath: spec.forProvider.tags.Name
+      transforms:
+        - type: string
+          string:
+            fmt: "%s-crossplane-ekscluster-controlplane-role"
+            type: Format
+  - name: iamrole-nodegroup
+    base:
+      apiVersion: iam.aws.upbound.io/v1beta1
+      kind: Role
+      metadata:
+        labels: 
+          iamrole: nodegroup
+      spec:
+        forProvider:
+          managedPolicyArns:
+            - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+            - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+            - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+          assumeRolePolicyDocument: |
+            {
+              "Version": "2012-10-17",
+              "Statement": [
+                  {
+                      "Effect": "Allow",
+                      "Principal": {
+                          "Service": [
+                              "ec2.amazonaws.com"
+                          ]
+                      },
+                      "Action": [
+                          "sts:AssumeRole"
+                      ]
+                  }
+              ]
+            }
+    readinessChecks:
+      - type: MatchCondition
+        matchCondition:
+          status: 'True'
+          type: Ready
+    patches:
+    - type: PatchSet
+      patchSetName: default-patchset
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.clusterName
+      toFieldPath: spec.forProvider.tags.Name
+      transforms:
+        - type: string
+          string:
+            fmt: "%s-crossplane-ekscluster-nodegroup-role"
+            type: Format
