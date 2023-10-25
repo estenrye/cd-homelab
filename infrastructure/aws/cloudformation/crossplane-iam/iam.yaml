@@ -85,6 +85,7 @@ Resources:
       ManagedPolicyArns: 
         - { "Ref": "CreateEKSClusterPolicy" }
         - arn:aws:iam::aws:policy/AmazonEC2FullAccess
+        - arn:aws:iam::aws:policy/IAMFullAccess
       Path: /
 
   CreateCrossplaneIAMAccessKey:
