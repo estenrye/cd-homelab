@@ -45,7 +45,8 @@ spec:
     patches:
     - type: PatchSet
       patchSetName: default-patchset
-    - fromFieldPath: spec.parameters.clusterName
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.clusterName
       toFieldPath: spec.forProvider.tags.Name
       transforms:
         - type: string
