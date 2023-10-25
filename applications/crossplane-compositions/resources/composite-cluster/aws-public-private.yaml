@@ -18,7 +18,8 @@ spec:
     - type: FromCompositeFieldPath
       fromFieldPath: spec.parameters.region
       toFieldPath: spec.forProvider.region
-    - fromFieldPath: spec.parameters.clusterName
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.clusterName
       toFieldPath: spec.forProvider.tags.Name
       transforms:
         - type: string
@@ -67,14 +68,16 @@ spec:
     patches:
     - type: PatchSet
       patchSetName: default-patchset
-    - fromFieldPath: spec.parameters.clusterName
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.clusterName
       toFieldPath: spec.forProvider.tags.Name
       transforms:
         - type: string
           string:
             fmt: "%s-crossplane-ekscluster-public-subnet-a"
             type: Format
-    - fromFieldPath: spec.parameters.region
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.region
       toFieldPath: spec.forProvider.availabilityZone
       transforms:
         - type: string
@@ -107,14 +110,16 @@ spec:
     patches:
     - type: PatchSet
       patchSetName: default-patchset
-    - fromFieldPath: spec.parameters.clusterName
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.clusterName
       toFieldPath: spec.forProvider.tags.Name
       transforms:
         - type: string
           string:
             fmt: "%s-crossplane-ekscluster-public-subnet-b"
             type: Format
-    - fromFieldPath: spec.parameters.region
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.region
       toFieldPath: spec.forProvider.availabilityZone
       transforms:
         - type: string
@@ -147,14 +152,16 @@ spec:
     patches:
     - type: PatchSet
       patchSetName: default-patchset
-    - fromFieldPath: spec.parameters.clusterName
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.clusterName
       toFieldPath: spec.forProvider.tags.Name
       transforms:
         - type: string
           string:
             fmt: "%s-crossplane-ekscluster-public-subnet-c"
             type: Format
-    - fromFieldPath: spec.parameters.region
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.region
       toFieldPath: spec.forProvider.availabilityZone
       transforms:
         - type: string
