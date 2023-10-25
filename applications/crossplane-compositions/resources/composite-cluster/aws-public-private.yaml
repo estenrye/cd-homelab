@@ -501,6 +501,7 @@ spec:
                 matchControllerRef: true
                 matchLabels:
                   access: public
+              subnetIds: []
     readinessChecks:
     - type: MatchString
       fieldPath: status.atProvider.status
