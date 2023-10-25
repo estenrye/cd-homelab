@@ -497,9 +497,9 @@ spec:
               publicAccessCidrs:
                 - 0.0.0.0/0
               securityGroupIdSelector:
-                - matchControllerRef: true
-                  matchLabels:
-                    securitygroup: nodepool
+                matchControllerRef: true
+                matchLabels:
+                  securitygroup: nodepool
               subnetIdSelector:
                 matchControllerRef: true
                 matchLabels:
