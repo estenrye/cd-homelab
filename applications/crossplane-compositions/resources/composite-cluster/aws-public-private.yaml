@@ -39,6 +39,11 @@ spec:
           enableDnsSupport: true
           instanceTenancy: default
           region: us-east-2
+    readinessChecks:
+      - type: MatchCondition
+        matchCondition:
+          status: 'True'
+          type: Ready
     patches:
     - type: PatchSet
       patchSetName: default-patchset
@@ -65,6 +70,11 @@ spec:
             kubernetes.io/role/elb: "1"
           vpcIdSelector:
             matchControllerRef: true
+    readinessChecks:
+      - type: MatchCondition
+        matchCondition:
+          status: 'True'
+          type: Ready
     patches:
     - type: PatchSet
       patchSetName: default-patchset
@@ -107,6 +117,11 @@ spec:
             kubernetes.io/role/elb: "1"
           vpcIdSelector:
             matchControllerRef: true
+    readinessChecks:
+      - type: MatchCondition
+        matchCondition:
+          status: 'True'
+          type: Ready
     patches:
     - type: PatchSet
       patchSetName: default-patchset
@@ -149,6 +164,11 @@ spec:
             kubernetes.io/role/elb: "1"
           vpcIdSelector:
             matchControllerRef: true
+    readinessChecks:
+      - type: MatchCondition
+        matchCondition:
+          status: 'True'
+          type: Ready
     patches:
     - type: PatchSet
       patchSetName: default-patchset
@@ -180,6 +200,11 @@ spec:
           region: us-east-2
           vpcIdSelector:
             matchControllerRef: true
+    readinessChecks:
+      - type: MatchCondition
+        matchCondition:
+          status: 'True'
+          type: Ready
     patches:
     - type: PatchSet
       patchSetName: default-patchset
@@ -212,6 +237,11 @@ spec:
                 matchLabels:
                   subnet: public-c
                 matchControllerRef: true
+    readinessChecks:
+      - type: MatchCondition
+        matchCondition:
+          status: 'True'
+          type: Ready
     patches:
     - type: PatchSet
       patchSetName: default-patchset
