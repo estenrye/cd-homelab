@@ -558,7 +558,7 @@ spec:
             matchLabels:
               iamrole: nodegroup
           scalingConfig:
-            desiredSize: 3
+          - desiredSize: 3
             maxSize: 10
             minSize: 3
           subnetIdSelector:
@@ -586,7 +586,7 @@ spec:
       toFieldPath: spec.forProvider.instanceTypes
     - type: FromCompositeFieldPath
       fromFieldPath: spec.parameters.nodeGroup.scalingConfig
-      toFieldPath: spec.forProvider.scalingConfig
+      toFieldPath: spec.forProvider.scalingConfig[0]
     - type: ToCompositeFieldPath
       fromFieldPath: status.atProvider.status
       toFieldPath: status.nodePoolStatus
