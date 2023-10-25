@@ -468,3 +468,124 @@ spec:
           string:
             fmt: "%s-crossplane-ekscluster-nodegroup-role"
             type: Format
+  - name: ekscluster
+    base:
+      apiVersion: eks.aws.upbound.io/v1beta1
+      kind: Cluster
+      spec:
+        forProvider:
+          enabledClusterLogTypes:
+            - authenticator
+            - audit
+          kubernetesNetworkConfig:
+            - ipFamily: ipv4
+              serviceIpv4Cidr: 192.100.0.0/16
+          roleArnSelector:
+            matchControllerRef: true
+            matchLabels:
+              iamrole: controlplane
+          version: "1.28"
+          vpcConfig:
+            - endpointPrivateAccess: false
+              endpointPublicAccess: true
+              publicAccessCidrs:
+                - 0.0.0.0/0
+              securityGroupIdsSelector:
+                matchControllerRef: true
+                matchLabels:
+                  securitygroup: nodepool
+              subnetIdsSelector:
+                matchControllerRef: true
+    readinessChecks:
+    - type: MatchString
+      fieldPath: status.atProvider.status
+      matchString: ACTIVE
+    patches:
+    - type: PatchSet
+      patchSetName: default-patchset
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.version
+      toFieldPath: spec.forProvider.version
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.enabledClusterLogTypes
+      toFieldPath: spec.forProvider.enabledClusterLogTypes
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.serviceIpv4CidrBlock
+      toFieldPath: spec.forProvider.serviceIpv4CidrBlock
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.vpc.endpointPrivateAccess
+      toFieldPath: spec.forProvider.endpointPrivateAccess
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.vpc.endpointPublicAccess
+      toFieldPath: spec.forProvider.endpointPublicAccess
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.vpc.publicAccessCidrs
+      toFieldPath: spec.forProvider.publicAccessCidrs
+    - type: FromCompositeFieldPath
+      fromFieldPath: metadata.uid
+      toFieldPath: spec.writeConnectionSecretToRef.name
+      transforms:
+        - type: string
+          string:
+            fmt: "%s-ekscluster"
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.writeConnectionSecretToRef.namespace
+      toFieldPath: spec.writeConnectionSecretToRef.namespace
+    - type: ToCompositeFieldPath
+      fromFieldPath: metadata.annotations[crossplane.io/external-name]
+      toFieldPath: status.clusterName
+    - type: ToCompositeFieldPath
+      fromFieldPath: status.atProvider.status
+      toFieldPath: status.controlPlaneStatus
+    connectionDetails:
+      - fromConnectionSecretKey: kubeconfig
+  - name: eksnodegroup
+    base:
+      apiVersion: eks.aws.upbound.io/v1beta1
+      kind: NodeGroup
+      spec:
+        forProvider:
+          capacityType: SPOT
+          clusterNameSelector:
+            matchControllerRef: true
+          diskSize: 20
+          forceUpdateVersion: false
+          instanceTypes:
+            - t3.medium
+          nodeRoleArnSelector:
+            matchControllerRef: true
+            matchLabels:
+              iamrole: nodegroup
+          scalingConfig:
+            desiredSize: 3
+            maxSize: 10
+            minSize: 3
+          subnetIdSelector:
+            matchControllerRef: true
+          versionSeelctor:
+            matchControllerRef: true
+    readinessChecks:
+    - type: MatchString
+      fieldPath: status.atProvider.status
+      matchString: ACTIVE
+    patches:
+    - type: PatchSet
+      patchSetName: default-patchset
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.nodeGroup.capacityType
+      toFieldPath: spec.forProvider.capacityType
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.nodeGroup.diskSize
+      toFieldPath: spec.forProvider.diskSize
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.nodeGroup.forceUpdateVersion
+      toFieldPath: spec.forProvider.forceUpdateVersion
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.nodeGroup.instanceTypes
+      toFieldPath: spec.forProvider.instanceTypes
+    - type: FromCompositeFieldPath
+      fromFieldPath: spec.parameters.nodeGroup.scalingConfig
+      toFieldPath: spec.forProvider.scalingConfig
+    - type: ToCompositeFieldPath
+      fromFieldPath: status.atProvider.status
+      toFieldPath: status.nodePoolStatus

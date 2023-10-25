@@ -35,6 +35,61 @@ spec:
                     description: The region to create the cluster in
                     type: string
                     default: us-west-2
+                  version:
+                    description: The Kubernetes version to use for the cluster
+                    type: string
+                    default: "1.28"
+                  enabledClusterLogTypes:
+                    description: The list of log types to enable for the cluster.  [api, audit, authenticator, controllerManager, scheduler]
+                    type: array
+                    items:
+                      type: string
+                    default:
+                    - audit
+                    - authenticator
+                  serviceIpv4CidrBlock:
+                    description: The CIDR block for the Kubernetes service IP addresses
+                    type: string
+                    default: 192.100.0.0/16
+                  nodeGroup:
+                    type: object
+                    description: Node group configuration settings.
+                    properties:
+                      capacityType: 
+                        description: The capacity type for the node group.  [ON_DEMAND, SPOT]
+                        type: string
+                        default: ON_DEMAND
+                      diskSize:
+                        description: The disk size for the node group
+                        type: integer
+                        default: 20
+                      forceUpdateVersion:
+                        description: Force the update if the existing node group's pods are unable to be drained due to a pod disruption budget issue
+                        type: boolean
+                        default: false
+                      instanceTypes:
+                        description: The list of instance types to use for the node group
+                        type: array
+                        items:
+                          type: string
+                        default:
+                        - t3.small
+                      scalingConfig:
+                        type: object
+                        description: Scaling configuration settings.
+                        properties:
+                          desiredSize:
+                            description: The desired number of nodes for the node group
+                            type: integer
+                            default: 3
+                          maxSize:
+                            description: The maximum number of nodes for the node group
+                            type: integer
+                            default: 10
+                          minSize:
+                            description: The minimum number of nodes for the node group
+                            type: integer
+                            default: 3
                   vpc:
                     type: object
                     description: VPC configuration settings.
@@ -79,6 +134,21 @@ spec:
                             description: The CIDR block for the private subnet
                             type: string
                             default: 192.168.160.0/19
+                      enablePrivateAccess:
+                        description: Enable private access to the cluster API server endpoint
+                        type: boolean
+                        default: false
+                      enablePublicAccess:
+                        description: Enable public access to the cluster API server endpoint
+                        type: boolean
+                        default: true
+                      publicAccessCidrBlocks:
+                        description: The list of CIDR blocks to allow public access to the cluster API server endpoint
+                        type: array
+                        items:
+                          type: string
+                        default:
+                        - 0.0.0.0/0
                 required:
                   - clusterName
             required:
