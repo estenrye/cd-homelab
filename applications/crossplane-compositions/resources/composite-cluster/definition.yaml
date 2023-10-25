@@ -169,6 +169,9 @@ spec:
     - name: clusterName
       type: string
       jsonPath: ".status.clusterName"
-    - name: vpc
+    - name: controlPlane
       type: string
-      jsonPath: ".status.vpcStatus"
+      jsonPath: ".status.controlPlaneStatus"
+    - name: nodePool
+      type: string
+      jsonPath: ".status.nodePoolStatus"
