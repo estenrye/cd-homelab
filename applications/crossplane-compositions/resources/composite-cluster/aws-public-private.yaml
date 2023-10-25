@@ -240,6 +240,11 @@ spec:
             matchControllerRef: true
             matchLabels:
               subnet: public-a
+    readinessChecks:
+      - type: MatchCondition
+        matchCondition:
+          status: 'True'
+          type: Ready
     patches:
     - type: PatchSet
       patchSetName: default-patchset
@@ -258,6 +263,11 @@ spec:
             matchControllerRef: true
             matchLabels:
               subnet: public-b
+    readinessChecks:
+      - type: MatchCondition
+        matchCondition:
+          status: 'True'
+          type: Ready
     patches:
     - type: PatchSet
       patchSetName: default-patchset
@@ -275,6 +285,11 @@ spec:
             matchControllerRef: true
             matchLabels:
               subnet: public-c
+    readinessChecks:
+      - type: MatchCondition
+        matchCondition:
+          status: 'True'
+          type: Ready
     patches:
     - type: PatchSet
       patchSetName: default-patchset
@@ -288,6 +303,11 @@ spec:
             matchControllerRef: true
           vpcIdSelector:
             matchControllerRef: true
+    readinessChecks:
+      - type: MatchCondition
+        matchCondition:
+          status: 'True'
+          type: Ready
     patches:
     - type: PatchSet
       patchSetName: default-patchset
@@ -300,6 +320,11 @@ spec:
           destinationCidrBlock: 0.0.0.0/0
           gatewayIdSelector:
             matchControllerRef: true
+    readinessChecks:
+      - type: MatchCondition
+        matchCondition:
+          status: 'True'
+          type: Ready
     patches:
     - type: PatchSet
       patchSetName: default-patchset
