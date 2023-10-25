@@ -34,11 +34,9 @@ spec:
       kind: VPC
       spec:
         forProvider:
-          cidrBlock: "192.168.0.0/16"
           enableDnsHostnames: true
           enableDnsSupport: true
           instanceTenancy: default
-          region: us-east-2
     readinessChecks:
       - type: MatchCondition
         matchCondition:
@@ -47,6 +45,13 @@ spec:
     patches:
     - type: PatchSet
       patchSetName: default-patchset
+    - fromFieldPath: spec.parameters.clusterName
+      toFieldPath: spec.forProvider.tags.Name
+      transforms:
+        - type: string
+          string:
+            fmt: "%s-crossplane-ekscluster"
+            type: Format
     - type: FromCompositeFieldPath
       fromFieldPath: spec.parameters.vpc.cidrBlock
       toFieldPath: spec.forProvider.cidrBlock
@@ -60,9 +65,6 @@ spec:
       spec:
         forProvider:
           assignIpv6AddressOnCreation: false
-          region: us-east-2
-          availabilityZone: us-east-2a
-          cidrBlock: 192.168.0.0/19
           enableResourceNameDnsARecordOnLaunch: false
           enableResourceNameDnsAaaaRecordOnLaunch: false
           mapPublicIpOnLaunch: true
@@ -107,9 +109,6 @@ spec:
       spec:
         forProvider:
           assignIpv6AddressOnCreation: false
-          region: us-east-2
-          availabilityZone: us-east-2b
-          cidrBlock: 192.168.32.0/19
           enableResourceNameDnsARecordOnLaunch: false
           enableResourceNameDnsAaaaRecordOnLaunch: false
           mapPublicIpOnLaunch: true
@@ -154,9 +153,6 @@ spec:
       spec:
         forProvider:
           assignIpv6AddressOnCreation: false
-          region: us-east-2
-          availabilityZone: us-east-2c
-          cidrBlock: 192.168.64.0/19
           enableResourceNameDnsARecordOnLaunch: false
           enableResourceNameDnsAaaaRecordOnLaunch: false
           mapPublicIpOnLaunch: true
@@ -197,7 +193,6 @@ spec:
       kind: InternetGateway
       spec:
         forProvider:
-          region: us-east-2
           vpcIdSelector:
             matchControllerRef: true
     readinessChecks:
@@ -217,31 +212,93 @@ spec:
           routetable: public
       spec:
         forProvider:
-          region: us-east-2
+          tags:
+            Name: team-a-public-subnet-a-rtb
+            CrossplaneManaged: "true"
           vpcIdSelector:
             matchControllerRef: true
-          routes:
-            - destinationCidrBlock: 0.0.0.0/0
-              gatewayIdSelector:
-                matchControllerRef: true
-          associations:
-            - subnetIdSelector:
-                matchLabels:
-                  subnet: public-a
-                matchControllerRef: true
-            - subnetIdSelector:
-                matchLabels:
-                  subnet: public-b
-                matchControllerRef: true
-            - subnetIdSelector:
-                matchLabels:
-                  subnet: public-c
-                matchControllerRef: true
     readinessChecks:
       - type: MatchCondition
         matchCondition:
           status: 'True'
           type: Ready
+    patches:
+    - type: PatchSet
+      patchSetName: default-patchset
+  - name: publicRouteTableAssociation-az-A
+    base:
+      apiVersion: ec2.aws.upbound.io/v1beta1
+      kind: RouteTableAssociation
+      spec:
+        forProvider:
+          routeTableIdSelector:
+            matchControllerRef: true
+            matchLabels:
+              routetable: public
+          subnetIdSelector:
+            matchControllerRef: true
+            matchLabels:
+              subnet: public-a
+    patches:
+    - type: PatchSet
+      patchSetName: default-patchset
+  - name: publicRouteTableAssociation-az-B
+    base:
+      apiVersion: ec2.aws.upbound.io/v1beta1
+      kind: RouteTableAssociation
+      spec:
+        forProvider:
+          region: us-east-2
+          routeTableIdSelector:
+            matchControllerRef: true
+            matchLabels:
+              routetable: public
+          subnetIdSelector:
+            matchControllerRef: true
+            matchLabels:
+              subnet: public-b
+    patches:
+    - type: PatchSet
+      patchSetName: default-patchset
+  - name: publicRouteTableAssociation-az-C
+    base:
+      apiVersion: ec2.aws.upbound.io/v1beta1
+      kind: RouteTableAssociation
+      spec:
+        forProvider:
+          routeTableIdSelector:
+            matchControllerRef: true
+            matchLabels:
+              routetable: public
+          subnetIdSelector:
+            matchControllerRef: true
+            matchLabels:
+              subnet: public-c
+    patches:
+    - type: PatchSet
+      patchSetName: default-patchset
+  - name: internetGatewayAttachment
+    base:
+      apiVersion: ec2.aws.upbound.io/v1beta1
+      kind: InternetGatewayAttachment
+      spec:
+        forProvider:
+          internetGatewayIdSelector:
+            matchControllerRef: true
+          vpcIdSelector:
+            matchControllerRef: true
+    patches:
+    - type: PatchSet
+      patchSetName: default-patchset
+  - name: publicRoute
+    base:
+      apiVersion: ec2.aws.upbound.io/v1beta1
+      kind: Route
+      spec:
+        forProvider:
+          destinationCidrBlock: 0.0.0.0/0
+          gatewayIdSelector:
+            matchControllerRef: true
     patches:
     - type: PatchSet
       patchSetName: default-patchset
