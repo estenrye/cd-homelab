@@ -10,19 +10,6 @@ spec:
     apiVersion: rye.ninja/v1alpha1
     kind: CompositeKubernetesCluster
   patchSets:
-  - name: routeTableIdSelector-patchset
-    patches:
-    - type: FromCompositeFieldPath
-      fromFieldPath: spec.parameters.clusterName
-      toFieldPath: spec.forProvider.routeTableIdSelector.matchLabels.clusterName
-    - type: FromCompositeFieldPath
-      fromFieldPath: spec.parameters.clusterName
-      toFieldPath: spec.forProvider.subnetIdSelector.matchLabels.clusterName
-  - name: vpcIdSelector-patchset
-    patches:
-    - type: FromCompositeFieldPath
-      fromFieldPath: spec.parameters.clusterName
-      toFieldPath: spec.forProvider.vpcIdSelector.matchLabels.clusterName
   - name: default-patchset
     patches:
     - type: FromCompositeFieldPath
@@ -81,13 +68,10 @@ spec:
             CrossplaneManaged: "true"
             kubernetes.io/role/elb: "1"
           vpcIdSelector:
-            matchLabels:
-              clusterName: vpc-name
+            matchControllerRef: true
     patches:
     - type: PatchSet
       patchSetName: default-patchset
-    - type: PatchSet
-      patchSetName: vpcIdSelector-patchset
     - fromFieldPath: spec.parameters.clusterName
       toFieldPath: spec.forProvider.tags.Name
       transforms:
@@ -126,13 +110,10 @@ spec:
             CrossplaneManaged: "true"
             kubernetes.io/role/elb: "1"
           vpcIdSelector:
-            matchLabels:
-              clusterName: vpc-name
+            matchControllerRef: true
     patches:
     - type: PatchSet
       patchSetName: default-patchset
-    - type: PatchSet
-      patchSetName: vpcIdSelector-patchset
     - fromFieldPath: spec.parameters.clusterName
       toFieldPath: spec.forProvider.tags.Name
       transforms:
@@ -171,13 +152,10 @@ spec:
             CrossplaneManaged: "true"
             kubernetes.io/role/elb: "1"
           vpcIdSelector:
-            matchLabels:
-              clusterName: vpc-name
+            matchControllerRef: true
     patches:
     - type: PatchSet
       patchSetName: default-patchset
-    - type: PatchSet
-      patchSetName: vpcIdSelector-patchset
     - fromFieldPath: spec.parameters.clusterName
       toFieldPath: spec.forProvider.tags.Name
       transforms:
@@ -209,13 +187,10 @@ spec:
             Name: team-a-public-subnet-a-rtb
             CrossplaneManaged: "true"
           vpcIdSelector:
-            matchLabels:
-              clusterName: vpc-name
+            matchControllerRef: true
     patches:
     - type: PatchSet
       patchSetName: default-patchset
-    - type: PatchSet
-      patchSetName: vpcIdSelector-patchset
     - fromFieldPath: spec.parameters.clusterName
       toFieldPath: spec.forProvider.tags.Name
       transforms:
@@ -231,18 +206,16 @@ spec:
         forProvider:
           region: us-east-2
           routeTableIdSelector:
+            matchControllerRef: true
             matchLabels:
-              clusterName: clusterName
               routetable: public
           subnetIdSelector:
+            matchControllerRef: true
             matchLabels:
-              clusterName: clusterName
               subnet: public-a
     patches:
     - type: PatchSet
       patchSetName: default-patchset
-    - type: PatchSet
-      patchSetName: routeTableIdSelector-patchset
   - name: publicRouteTableAssociation-az-B
     base:
       apiVersion: ec2.aws.upbound.io/v1beta1
@@ -251,18 +224,16 @@ spec:
         forProvider:
           region: us-east-2
           routeTableIdSelector:
+            matchControllerRef: true
             matchLabels:
-              clusterName: clusterName
               routetable: public
           subnetIdSelector:
+            matchControllerRef: true
             matchLabels:
-              clusterName: clusterName
               subnet: public-b
     patches:
     - type: PatchSet
       patchSetName: default-patchset
-    - type: PatchSet
-      patchSetName: routeTableIdSelector-patchset
   - name: publicRouteTableAssociation-az-C
     base:
       apiVersion: ec2.aws.upbound.io/v1beta1
@@ -271,12 +242,12 @@ spec:
         forProvider:
           region: us-east-2
           routeTableIdSelector:
+            matchControllerRef: true
             matchLabels:
-              clusterName: clusterName
               routetable: public
           subnetIdSelector:
+            matchControllerRef: true
             matchLabels:
-              clusterName: clusterName
               subnet: public-c
     patches:
     - type: PatchSet
