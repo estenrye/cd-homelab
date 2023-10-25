@@ -496,11 +496,11 @@ spec:
               endpointPublicAccess: true
               publicAccessCidrs:
                 - 0.0.0.0/0
-              securityGroupIdsSelector:
+              securityGroupIdSelector:
                 matchControllerRef: true
                 matchLabels:
                   securitygroup: nodepool
-              subnetIdsSelector:
+              subnetIdSelector:
                 matchControllerRef: true
                 matchLabels:
                   access: public
