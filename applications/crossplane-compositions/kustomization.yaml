@@ -3,5 +3,4 @@ kind: Kustomization
 
 resources:
   - resources/composite-cluster/definition.yaml
-  - resources/composite-cluster/aws.yaml
   - resources/composite-cluster/aws-public-private.yaml
