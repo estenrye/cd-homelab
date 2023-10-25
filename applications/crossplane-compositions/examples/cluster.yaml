@@ -11,5 +11,5 @@ spec:
   parameters:
     clusterName: test-cluster
   writeConnectionSecretToRef:
-    namespace: team-a
-    name: cluster
+    name: test-cluster-connection
+    namespace: argocd

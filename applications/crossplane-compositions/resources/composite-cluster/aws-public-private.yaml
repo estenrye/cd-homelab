@@ -476,6 +476,9 @@ spec:
       apiVersion: eks.aws.upbound.io/v1beta1
       kind: Cluster
       spec:
+        writeConnectionSecretToRef:
+          name: clustername
+          namespace: myns
         forProvider:
           enabledClusterLogTypes:
             - authenticator
