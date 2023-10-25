@@ -332,3 +332,49 @@ spec:
     patches:
     - type: PatchSet
       patchSetName: default-patchset
+  - name: nodepool-security-group
+    base:
+      apiVersion: ec2.aws.upbound.io/v1beta1
+      kind: SecurityGroup
+      metadata:
+        labels: 
+          securitygroup: nodepool
+      spec:
+        forProvider:
+          name: nodepool-security-group
+          description: Security group for EKS node pools
+          vpcIdSelector:
+            matchControllerRef: true
+    readinessChecks:
+      - type: MatchCondition
+        matchCondition:
+          status: 'True'
+          type: Ready
+    patches:
+    - type: PatchSet
+      patchSetName: default-patchset
+  - name: nodepool-security-group-egress
+    base:
+      apiVersion: ec2.aws.upbound.io/v1beta1
+      kind: SecurityGroupRule
+      spec:
+        forProvider:
+          description: Allow all outbound traffic
+          securityGroupIdSelector:
+            matchControllerRef: true
+            matchLabels:
+              securitygroup: nodepool
+          type: egress
+          fromPort: 0
+          toPort: 0
+          protocol: "-1"
+          cidrBlocks:
+          -  0.0.0.0/0
+    readinessChecks:
+      - type: MatchCondition
+        matchCondition:
+          status: 'True'
+          type: Ready
+    patches:
+    - type: PatchSet
+      patchSetName: default-patchset
