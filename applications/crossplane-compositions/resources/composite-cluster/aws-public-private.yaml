@@ -252,5 +252,3 @@ spec:
     patches:
     - type: PatchSet
       patchSetName: default-patchset
-    - type: PatchSet
-      patchSetName: routeTableIdSelector-patchset
