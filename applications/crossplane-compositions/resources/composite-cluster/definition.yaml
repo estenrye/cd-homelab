@@ -50,7 +50,7 @@ spec:
                   serviceIpv4CidrBlock:
                     description: The CIDR block for the Kubernetes service IP addresses
                     type: string
-                    default: 192.100.0.0/16
+                    default: 10.100.0.0/16
                   nodeGroup:
                     type: object
                     description: Node group configuration settings.

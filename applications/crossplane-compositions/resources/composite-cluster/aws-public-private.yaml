@@ -485,7 +485,7 @@ spec:
             - audit
           kubernetesNetworkConfig:
             - ipFamily: ipv4
-              serviceIpv4Cidr: 192.100.0.0/16
+              serviceIpv4Cidr: 10.100.0.0/16
           roleArnSelector:
             matchControllerRef: true
             matchLabels:
