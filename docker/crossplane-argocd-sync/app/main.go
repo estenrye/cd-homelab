@@ -34,13 +34,13 @@ import (
 //
 // kind: Secret
 type ArgoEksConfig struct {
+	BearerToken     string          `json:"bearerToken"`
 	TLSClientConfig TLSClientConfig `json:"tlsClientConfig"`
 }
 
 type TLSClientConfig struct {
-	BearerToken string `json:"bearerToken"`
-	Insecure    bool   `json:"insecure"`
-	CaData      string `json:"caData"`
+	Insecure bool   `json:"insecure"`
+	CaData   string `json:"caData"`
 }
 
 func copySecret(new *v1.Secret, old *v1.Secret) (*v1.Secret, error) {
@@ -62,7 +62,7 @@ func copySecret(new *v1.Secret, old *v1.Secret) (*v1.Secret, error) {
 				return nil, err
 			}
 			if len(kubeConfig.Users) > 0 {
-				argoEksConfig.TLSClientConfig.BearerToken = kubeConfig.Users[0].User.Token
+				argoEksConfig.BearerToken = kubeConfig.Users[0].User.Token
 			}
 		case "clusterCA":
 			b64cert := b64.StdEncoding.EncodeToString(v)
@@ -183,9 +183,9 @@ func main() {
 					}
 					// secretOut, err := clientsetCore.CoreV1().Secrets("argocd").Create(&secret)
 					contextUpdate, cancelUpdate := context.WithTimeout(context.Background(), 20*time.Second)
-					opts := metav1.CreateOptions{}
+					opts := metav1.UpdateOptions{}
 					defer cancelUpdate()
-					secretOut, err := clientsetCore.CoreV1().Secrets("argocd").Create(contextUpdate, result, opts)
+					secretOut, err := clientsetCore.CoreV1().Secrets("argocd").Update(contextUpdate, result, opts)
 					// secretOut, err := clientsetCore.CoreV1().Secrets("argocd").Create(&secret)
 					if err != nil {
 						fmt.Println(err)
