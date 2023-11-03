@@ -43,7 +43,97 @@ type TLSClientConfig struct {
 	CaData   string `json:"caData"`
 }
 
-func copySecret(new *v1.Secret, old *v1.Secret) (*v1.Secret, error) {
+func boostrapOnePassword(connectTokenSecret *v1.Secret, opCredentialsSecret *v1.Secret, targetClusterKubeConfig []byte) error {
+	// TODO: better error logging, give more context.
+	// TODO: add telemetry
+
+	// Connect to target cluster
+	config, err := clientcmd.RESTConfigFromKubeConfig(targetClusterKubeConfig)
+	if err != nil {
+		return err
+	}
+	targetCluster, err := kubernetes.NewForConfig(config)
+	if err != nil {
+		return err
+	}
+
+	// Check if 1password namespace exists on target cluster
+	_, err = targetCluster.CoreV1().Namespaces().Get(
+		context.Background(),
+		"1password",
+		metav1.GetOptions{},
+	)
+	if err != nil {
+		fmt.Println("1password namespace does not exist on target cluster, creating it")
+		_, err = targetCluster.CoreV1().Namespaces().Create(
+			context.Background(),
+			&v1.Namespace{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "1password",
+				},
+			}, metav1.CreateOptions{})
+		if err != nil {
+			return err
+		}
+	} else {
+		return err
+	}
+
+	// Deploy 1password Connect Token
+	_, err = targetCluster.CoreV1().Secrets("1password").Get(
+		context.Background(),
+		"onepassword-token",
+		metav1.GetOptions{},
+	)
+	if err != nil {
+		fmt.Println("1password-token secret exists on target cluster, updating it")
+		_, err = targetCluster.CoreV1().Secrets("1password").Update(
+			context.Background(),
+			connectTokenSecret,
+			metav1.UpdateOptions{})
+		if err != nil {
+			return err
+		}
+	} else {
+		fmt.Println("1password-token secret does not exist on target cluster, creating it")
+		_, err = targetCluster.CoreV1().Secrets("1password").Create(
+			context.Background(),
+			connectTokenSecret,
+			metav1.CreateOptions{})
+		if err != nil {
+			return err
+		}
+	}
+
+	// Deploy 1password Connect Credentials
+	_, err = targetCluster.CoreV1().Secrets("1password").Get(
+		context.Background(),
+		"op-credentials",
+		metav1.GetOptions{},
+	)
+	if err != nil {
+		fmt.Println("op-credentials secret exists on target cluster, updating it")
+		_, err = targetCluster.CoreV1().Secrets("1password").Update(
+			context.Background(),
+			opCredentialsSecret,
+			metav1.UpdateOptions{})
+		if err != nil {
+			return err
+		}
+	} else {
+		fmt.Println("op-credentials secret does not exist on target cluster, creating it")
+		_, err = targetCluster.CoreV1().Secrets("1password").Create(
+			context.Background(),
+			opCredentialsSecret,
+			metav1.CreateOptions{})
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func copySecret(new *v1.Secret, old *v1.Secret, connectTokenSecret *v1.Secret, opCredentialsSecret *v1.Secret) (*v1.Secret, error) {
 	secret := new.DeepCopy()
 
 	argoEksConfig := ArgoEksConfig{}
@@ -51,7 +141,7 @@ func copySecret(new *v1.Secret, old *v1.Secret) (*v1.Secret, error) {
 	argoClusterName := namespace() + "-" + secret.Name
 
 	// extract data from crossplane secret
-	var data = *&secret.Data
+	var data = secret.Data
 	for k, v := range data {
 		switch k {
 		case "kubeconfig":
@@ -63,6 +153,10 @@ func copySecret(new *v1.Secret, old *v1.Secret) (*v1.Secret, error) {
 			}
 			if len(kubeConfig.Users) > 0 {
 				argoEksConfig.BearerToken = kubeConfig.Users[0].User.Token
+			}
+			err = boostrapOnePassword(connectTokenSecret, opCredentialsSecret, v)
+			if err != nil {
+				fmt.Println(err)
 			}
 		case "clusterCA":
 			b64cert := b64.StdEncoding.EncodeToString(v)
@@ -125,6 +219,18 @@ func main() {
 		panic(err.Error())
 	}
 
+	// retrieve 1password Connect Token
+	connectTokenSecret, err := clientsetCore.CoreV1().Secrets(namespace()).Get(context.Background(), "onepassword-token", metav1.GetOptions{})
+	if err != nil {
+		panic(err.Error())
+	}
+
+	// retrieve 1password Connect Credentials
+	opCredentials, err := clientsetCore.CoreV1().Secrets(namespace()).Get(context.Background(), "op-credentials", metav1.GetOptions{})
+	if err != nil {
+		panic(err.Error())
+	}
+
 	// listen for new secrets
 	factory := kubeinformers.NewSharedInformerFactoryWithOptions(clientsetCore, 0, kubeinformers.WithNamespace(namespace()))
 	informer := factory.Core().V1().Secrets().Informer()
@@ -141,7 +247,7 @@ func main() {
 			for _, o := range secret.OwnerReferences {
 				if o.Kind == "ClusterAuth" {
 					// prepare argo config
-					result, err := copySecret(secret, nil)
+					result, err := copySecret(secret, nil, connectTokenSecret, opCredentials)
 					if err != nil {
 						fmt.Println(err)
 					}
@@ -177,7 +283,7 @@ func main() {
 			for _, o := range newSecret.OwnerReferences {
 				if o.Kind == "ClusterAuth" {
 					// prepare argo config
-					result, err := copySecret(newSecret, oldSecret)
+					result, err := copySecret(newSecret, oldSecret, connectTokenSecret, opCredentials)
 					if err != nil {
 						fmt.Println(err)
 					}

@@ -3,6 +3,10 @@
 # Declare variables to be passed into your templates.
 replicaCount: 1
 
+onePassword:
+  tokenItemPath: "vaults/vault-name/items/item-name"
+  credentialsItemPath: "vaults/vault-name/items/item-name"
+
 image:
   repository: estenrye/crossplane-argocd-sync
   pullPolicy: IfNotPresent
