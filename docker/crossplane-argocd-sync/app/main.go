@@ -43,8 +43,7 @@ type TLSClientConfig struct {
 	CaData   string `json:"caData"`
 }
 
-func boostrapOnePassword(connectTokenSecret *v1.Secret, opCredentialsSecret *v1.Secret, targetClusterKubeConfig []byte) error {
-	// TODO: better error logging, give more context.
+func boostrapOnePassword(connectTokenSecret *v1.Secret, opCredentialsSecret *v1.Secret, targetClusterName string, targetClusterKubeConfig []byte) error {
 	// TODO: add telemetry
 
 	// Connect to target cluster
@@ -52,21 +51,27 @@ func boostrapOnePassword(connectTokenSecret *v1.Secret, opCredentialsSecret *v1.
 	if err != nil {
 		return err
 	}
+	fmt.Printf("Succssfully parsed kubeconfig for target cluster (%s)\n", targetClusterName)
+	fmt.Printf("Creating client for target cluster (%s)\n", targetClusterName)
+
 	targetCluster, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		return err
 	}
+	fmt.Printf("Successfully created client for target cluster (%s)\n", targetClusterName)
 
 	// Check if 1password namespace exists on target cluster
+	fmt.Printf("Checking if 1password namespace exists on target cluster (%s)\n", targetClusterName)
 	_, err = targetCluster.CoreV1().Namespaces().Get(
-		context.Background(),
+		context.TODO(),
 		"1password",
 		metav1.GetOptions{},
 	)
+
 	if err != nil {
-		fmt.Println("1password namespace does not exist on target cluster, creating it")
+		fmt.Printf("1password namespace does not exist on target cluster (%s), creating it\n", targetClusterName)
 		_, err = targetCluster.CoreV1().Namespaces().Create(
-			context.Background(),
+			context.TODO(),
 			&v1.Namespace{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "1password",
@@ -76,59 +81,108 @@ func boostrapOnePassword(connectTokenSecret *v1.Secret, opCredentialsSecret *v1.
 			return err
 		}
 	} else {
-		return err
+		fmt.Printf("1password namespace exists on target cluster (%s)\n", targetClusterName)
 	}
 
 	// Deploy 1password Connect Token
+	fmt.Printf("Checking if 1password-token secret exists on target cluster (%s)\n", targetClusterName)
 	_, err = targetCluster.CoreV1().Secrets("1password").Get(
-		context.Background(),
+		context.TODO(),
 		"onepassword-token",
 		metav1.GetOptions{},
 	)
 	if err != nil {
-		fmt.Println("1password-token secret exists on target cluster, updating it")
-		_, err = targetCluster.CoreV1().Secrets("1password").Update(
-			context.Background(),
-			connectTokenSecret,
-			metav1.UpdateOptions{})
-		if err != nil {
-			return err
-		}
-	} else {
-		fmt.Println("1password-token secret does not exist on target cluster, creating it")
+		fmt.Println(err)
+		fmt.Printf("onepassword-token secret does not exist on target cluster (%s), creating it\n", targetClusterName)
 		_, err = targetCluster.CoreV1().Secrets("1password").Create(
-			context.Background(),
-			connectTokenSecret,
+			context.TODO(),
+			&v1.Secret{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "onepassword-token",
+					Namespace: "1password",
+				},
+				Data: map[string][]byte{
+					"token": connectTokenSecret.Data["credential"],
+				},
+			},
 			metav1.CreateOptions{})
 		if err != nil {
+			fmt.Println(err)
+			fmt.Printf("failed to create onepassword-token on target cluster (%s)\n", targetClusterName)
 			return err
 		}
+		fmt.Printf("successfully created onepassword-token on target cluster (%s)\n", targetClusterName)
+	} else {
+		fmt.Printf("onepassword-token secret exists on target cluster (%s), updating it\n", targetClusterName)
+		_, err = targetCluster.CoreV1().Secrets("1password").Update(
+			context.TODO(),
+			&v1.Secret{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "onepassword-token",
+					Namespace: "1password",
+				},
+				Data: map[string][]byte{
+					"token": connectTokenSecret.Data["credential"],
+				},
+			},
+			metav1.UpdateOptions{})
+		if err != nil {
+			fmt.Println(err)
+			fmt.Printf("failed to update onepassword-token on target cluster (%s)\n", targetClusterName)
+			return err
+		}
+		fmt.Printf("successfully updated onepassword-token on target cluster (%s)\n", targetClusterName)
 	}
 
 	// Deploy 1password Connect Credentials
+	fmt.Printf("Checking if op-credentials secret exists on target cluster (%s)\n", targetClusterName)
 	_, err = targetCluster.CoreV1().Secrets("1password").Get(
-		context.Background(),
+		context.TODO(),
 		"op-credentials",
 		metav1.GetOptions{},
 	)
 	if err != nil {
-		fmt.Println("op-credentials secret exists on target cluster, updating it")
-		_, err = targetCluster.CoreV1().Secrets("1password").Update(
-			context.Background(),
-			opCredentialsSecret,
-			metav1.UpdateOptions{})
-		if err != nil {
-			return err
-		}
-	} else {
-		fmt.Println("op-credentials secret does not exist on target cluster, creating it")
+		fmt.Println(err)
+		fmt.Printf("op-credentials secret does not exist on target cluster (%s), creating it\n", targetClusterName)
 		_, err = targetCluster.CoreV1().Secrets("1password").Create(
-			context.Background(),
-			opCredentialsSecret,
+			context.TODO(),
+			&v1.Secret{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "op-credentials",
+					Namespace: "1password",
+				},
+				Data: map[string][]byte{
+					"1password-credentials.json": []byte(b64.StdEncoding.EncodeToString(opCredentialsSecret.Data["1password-credentials.json"])),
+				},
+			},
 			metav1.CreateOptions{})
 		if err != nil {
+			fmt.Println(err)
+			fmt.Printf("failed to create op-credentials on target cluster (%s)\n", targetClusterName)
 			return err
 		}
+		fmt.Printf("successfully created op-credentials on target cluster (%s)\n", targetClusterName)
+
+	} else {
+		fmt.Printf("op-credentials secret exists on target cluster (%s), updating it\n", targetClusterName)
+		_, err = targetCluster.CoreV1().Secrets("1password").Update(
+			context.TODO(),
+			&v1.Secret{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "op-credentials",
+					Namespace: "1password",
+				},
+				Data: map[string][]byte{
+					"1password-credentials.json": []byte(b64.StdEncoding.EncodeToString(opCredentialsSecret.Data["1password-credentials.json"])),
+				},
+			},
+			metav1.UpdateOptions{})
+		if err != nil {
+			fmt.Println(err)
+			fmt.Printf("failed to update op-credentials on target cluster (%s)\n", targetClusterName)
+			return err
+		}
+		fmt.Printf("successfully updated op-credentials on target cluster (%s)\n", targetClusterName)
 	}
 	return nil
 }
@@ -154,7 +208,7 @@ func copySecret(new *v1.Secret, old *v1.Secret, connectTokenSecret *v1.Secret, o
 			if len(kubeConfig.Users) > 0 {
 				argoEksConfig.BearerToken = kubeConfig.Users[0].User.Token
 			}
-			err = boostrapOnePassword(connectTokenSecret, opCredentialsSecret, v)
+			err = boostrapOnePassword(connectTokenSecret, opCredentialsSecret, secret.Name, v)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -217,18 +271,32 @@ func main() {
 	clientsetCore, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		panic(err.Error())
+	} else {
+		fmt.Println("Connected to Kubernetes API")
 	}
 
 	// retrieve 1password Connect Token
 	connectTokenSecret, err := clientsetCore.CoreV1().Secrets(namespace()).Get(context.Background(), "onepassword-token", metav1.GetOptions{})
 	if err != nil {
 		panic(err.Error())
+	} else {
+		fmt.Println("Found 1password-token secret")
+		connectTokenSecret = connectTokenSecret.DeepCopy()
+		connectTokenSecret.UID = ""
+		connectTokenSecret.ResourceVersion = ""
+		connectTokenSecret.Namespace = "1password"
 	}
 
 	// retrieve 1password Connect Credentials
 	opCredentials, err := clientsetCore.CoreV1().Secrets(namespace()).Get(context.Background(), "op-credentials", metav1.GetOptions{})
 	if err != nil {
 		panic(err.Error())
+	} else {
+		fmt.Println("Found op-credentials secret")
+		opCredentials = opCredentials.DeepCopy()
+		opCredentials.UID = ""
+		opCredentials.ResourceVersion = ""
+		opCredentials.Namespace = "1password"
 	}
 
 	// listen for new secrets
