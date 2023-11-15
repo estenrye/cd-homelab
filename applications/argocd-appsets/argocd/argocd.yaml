@@ -15,7 +15,7 @@ spec:
   project: platform
   sources:
   - repoURL: git@github.com:estenrye/cd-homelab.git
-    targetRevision: '{{ values.targetRevision }}'
+    targetRevision: HEAD
     path: applications/argocd-appsets/argocd
   - chart: argocd
     repoURL: https://argoproj.github.io/argo-helm
