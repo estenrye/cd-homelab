@@ -1,0 +1,11 @@
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: layer2
+spec:
+  ipAddressPools:
+  {{- range .Values.ipAddressPools }}
+  {{- if eq .protocol "layer2" }}
+  - {{ .name }}
+  {{- end }}
+  {{- end }}
