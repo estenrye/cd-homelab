@@ -8,7 +8,7 @@ spec:
   - clusters:
       selector:
         matchLabels:
-          pf9.io/environment: cd-cluster
+          rye.ninja/environment: cd-cluster
       values:
         targetRevision: HEAD
   template:
