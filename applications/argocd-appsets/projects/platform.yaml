@@ -31,6 +31,8 @@ spec:
     server: '*'
   - namespace: ingress-nginx
     server: '*'
+  - namespace: metallb
+    server: '*'
 
   # Deny all cluster-scoped resources from being created, except for Namespace
   clusterResourceWhitelist:
