@@ -16,14 +16,14 @@ spec:
   sources:
   - repoURL: git@github.com:estenrye/cd-homelab.git
     targetRevision: HEAD
-    path: applications/argocd-appsets/argocd
+    ref: values
   - chart: argo-cd
     repoURL: https://argoproj.github.io/argo-helm
     targetRevision: 5.51.2
     helm:
       releaseName: argocd
       valueFiles:
-        - helm/values.yaml
+        - $values/applications/argocd-appsets/argocd/helm/values.yaml
 
   destination:
     server: https://kubernetes.default.svc
