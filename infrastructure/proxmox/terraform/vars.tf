@@ -33,91 +33,56 @@ variable "hosts_qemu_pxe" {
   }
 }
 
-variable "hosts_qemu_clone" {
+variable "hosts" {
   type = map(object({
     vmid = number
     ip = string
     mac = string
-    cpu = number
+    cores = number
     memory = number
-    disk = string
-    storage = string
-    target_node = string
-    bridge = string
-    clone = string
   }))
   default = {
     "controlplane01.infra.usmnblm01" = {
-      vmid = 101
+      vmid = 201
       ip = "10.5.216.1"
       mac = "de:ad:dc:05:d8:01"
-      bridge = "vmbr0"
-      cpu = 4
+      cores = 4
       memory = 8192
-      disk = "40G"
-      storage = "local-data"
-      target_node = "pve01"
-      clone = "ubuntu-cloud-image-jammy-current"
     }
     "controlplane02.infra.usmnblm01" = {
-      vmid = 102
+      vmid = 202
       ip = "10.5.216.2"
       mac = "de:ad:dc:05:d8:02"
-      bridge = "vmbr0"
-      cpu = 4
+      cores = 4
       memory = 8192
-      disk = "40G"
-      storage = "local-data"
-      target_node = "pve01"
-      clone = "ubuntu-cloud-image-jammy-current"
     }
-    # "controlplane03.infra.usmnblm01" = {
-    #   vmid = 103
-    #   ip = "10.5.216.3"
-    #   mac = "de:ad:dc:05:d8:03"
-    #   bridge = "vmbr0"
-    #   cpu = 4
-    #   memory = 8192
-    #   disk = "40G"
-    #   storage = "local-data"
-    #   target_node = "pve01"
-    #   clone = "ubuntu-cloud-image-jammy-current"
-    # }
-    # "worker01.infra.usmnblm01" = {
-    #   vmid = 104
-    #   ip = "10.5.216.10"
-    #   mac = "de:ad:dc:05:d8:0a"
-    #   bridge = "vmbr0"
-    #   cpu = 4
-    #   memory = 16394
-    #   disk = "40G"
-    #   storage = "local-data"
-    #   target_node = "pve01"
-    #   clone = "ubuntu-cloud-image-jammy-current"
-    # }
-    # "worker02.infra.usmnblm01" = {
-    #   vmid = 105
-    #   ip = "10.5.216.11"
-    #   mac = "de:ad:dc:05:d8:0b"
-    #   bridge = "vmbr0"
-    #   cpu = 4
-    #   memory = 16394
-    #   disk = "40G"
-    #   storage = "local-data"
-    #   target_node = "pve01"
-    #   clone = "ubuntu-cloud-image-jammy-current"
-    # }
-    # "worker03.infra.usmnblm01" = {
-    #   vmid = 106
-    #   ip = "10.5.216.12"
-    #   mac = "de:ad:dc:05:d8:0c"
-    #   bridge = "vmbr0"
-    #   cpu = 4
-    #   memory = 16394
-    #   disk = "40G"
-    #   storage = "local-data"
-    #   target_node = "pve01"
-    #   clone = "ubuntu-cloud-image-jammy-current"
-    # }
+    "controlplane03.infra.usmnblm01" = {
+      vmid = 203
+      ip = "10.5.216.3"
+      mac = "de:ad:dc:05:d8:03"
+      cores = 4
+      memory = 8192
+    }
+    "node01.infra.usmnblm01" = {
+      vmid = 210
+      ip = "10.5.216.10"
+      mac = "de:ad:dc:05:d8:0a"
+      cores = 6
+      memory = 16394
+    }
+    "node02.infra.usmnblm01" = {
+      vmid = 211
+      ip = "10.5.216.11"
+      mac = "de:ad:dc:05:d8:0b"
+      cores = 6
+      memory = 16394
+    }
+    "node03.infra.usmnblm01" = {
+      vmid = 212
+      ip = "10.5.216.12"
+      mac = "de:ad:dc:05:d8:0c"
+      cores = 6
+      memory = 16394
+    }
   }
 }

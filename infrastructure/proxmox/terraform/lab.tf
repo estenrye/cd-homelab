@@ -30,7 +30,7 @@ data "onepassword_item" "unifi_credentials" {
 
 data "onepassword_item" "cloudflare_api_token" {
   vault = "Home_Lab"
-  uuid = "cloudflare_api_token"
+  uuid = "letsencrypt-dns01-credentials_cert-manager.rye.ninja"
 }
 
 data "onepassword_item" "proxmox_credentials" {
@@ -64,8 +64,8 @@ data "cloudflare_zone" "zone" {
 }
 
 # register a host with unifi
-resource "unifi_user" "qemu_server_pxe_static_ip" {
-  for_each = var.hosts_qemu_pxe
+resource "unifi_user" "static_ip" {
+  for_each = var.hosts
 
   name = join(".", [each.key, var.cloudflare_zone])
   mac = each.value.mac
@@ -75,8 +75,8 @@ resource "unifi_user" "qemu_server_pxe_static_ip" {
 }
 
 # create a cloudflare a record using the cloudflare terraform provider
-resource "cloudflare_record" "qemu_server_pxe_a_record" {
-  for_each = var.hosts_qemu_pxe
+resource "cloudflare_record" "a_record" {
+  for_each = var.hosts
 
   zone_id = "${data.cloudflare_zone.zone.id}"
   name    = each.key
@@ -86,77 +86,106 @@ resource "cloudflare_record" "qemu_server_pxe_a_record" {
   proxied = false
 }
 
-resource "proxmox_vm_qemu" "qemu_server_pxe" {
-    for_each = var.hosts_qemu_pxe
+resource "proxmox_lxc" "basic" {
+  for_each = var.hosts
 
-    name                      = join(".", [each.key, var.cloudflare_zone])
-    agent                     = 1
-    boot                      = "order=virtio0;net0"
-    pxe                       = true
-    target_node               = each.value.target_node
-    scsihw                   = "virtio-scsi-single"
-    memory                    = each.value.memory
-    cores                     = each.value.cpu
+  vmid = each.value.vmid
+  target_node  = "pve01"
+  hostname     = join(".", [each.key, var.cloudflare_zone])
+  clone       = "101"
 
-    network {
-        bridge    = each.value.bridge
-        firewall  = false
-        link_down = false
-        model     = "virtio"
-        macaddr   = each.value.mac
-    }
-    disk {
-        size = each.value.disk
-        storage = each.value.storage
-        type = "virtio"
-    }
+  cores = each.value.cores
+  memory = each.value.memory
+  onboot = true
+  start = true
+  swap = 0
+  unprivileged = false
+
+  // Terraform will crash without rootfs defined
+  rootfs {
+    storage = "local-data"
+    size    = "100G"
+  }
+
+  network {
+    name   = "eth0"
+    bridge = "vmbr0"
+    ip     = "dhcp"
+    hwaddr = each.value.mac
+  }
 }
 
-# register a host with unifi
-resource "unifi_user" "qemu_server_clone_static_ip" {
-  for_each = var.hosts_qemu_clone
+# resource "proxmox_vm_qemu" "qemu_server_pxe" {
+#     for_each = var.hosts_qemu_pxe
 
-  name = join(".", [each.key, var.cloudflare_zone])
-  mac = each.value.mac
-  network_id = "${data.unifi_network.lab_network.id}"
-  fixed_ip = each.value.ip
-  local_dns_record = join(".", [each.key, var.cloudflare_zone])
-}
+#     name                      = join(".", [each.key, var.cloudflare_zone])
+#     agent                     = 1
+#     boot                      = "order=virtio0;net0"
+#     pxe                       = true
+#     target_node               = each.value.target_node
+#     scsihw                   = "virtio-scsi-single"
+#     memory                    = each.value.memory
+#     cores                     = each.value.cpu
 
-# create a cloudflare a record using the cloudflare terraform provider
-resource "cloudflare_record" "qemu_server_clone_a_record" {
-  for_each = var.hosts_qemu_clone
+#     network {
+#         bridge    = each.value.bridge
+#         firewall  = false
+#         link_down = false
+#         model     = "virtio"
+#         macaddr   = each.value.mac
+#     }
+#     disk {
+#         size = each.value.disk
+#         storage = each.value.storage
+#         type = "virtio"
+#     }
+# }
 
-  zone_id = "${data.cloudflare_zone.zone.id}"
-  name    = each.key
-  value   = each.value.ip
-  type    = "A"
-  ttl     = 300
-  proxied = false
-}
+# # register a host with unifi
+# resource "unifi_user" "qemu_server_clone_static_ip" {
+#   for_each = var.hosts_qemu_clone
 
-resource "proxmox_vm_qemu" "qemu_server_clone" {
-    for_each = var.hosts_qemu_clone
+#   name = join(".", [each.key, var.cloudflare_zone])
+#   mac = each.value.mac
+#   network_id = "${data.unifi_network.lab_network.id}"
+#   fixed_ip = each.value.ip
+#   local_dns_record = join(".", [each.key, var.cloudflare_zone])
+# }
 
-    vmid                      = each.value.vmid
-    name                      = join(".", [each.key, var.cloudflare_zone])
-    agent                     = 1
-    clone                     = each.value.clone
-    target_node               = each.value.target_node
-    memory                    = each.value.memory
-    cores                     = each.value.cpu
-    boot = "scsi0"
-    full_clone = false
-    network {
-        bridge    = each.value.bridge
-        firewall  = false
-        link_down = false
-        model     = "virtio"
-        macaddr   = each.value.mac
-    }
-    disk {
-        size = each.value.disk
-        storage = each.value.storage
-        type = "scsi"
-    }
-}
+# # create a cloudflare a record using the cloudflare terraform provider
+# resource "cloudflare_record" "qemu_server_clone_a_record" {
+#   for_each = var.hosts_qemu_clone
+
+#   zone_id = "${data.cloudflare_zone.zone.id}"
+#   name    = each.key
+#   value   = each.value.ip
+#   type    = "A"
+#   ttl     = 300
+#   proxied = false
+# }
+
+# resource "proxmox_vm_qemu" "qemu_server_clone" {
+#     for_each = var.hosts_qemu_clone
+
+#     vmid                      = each.value.vmid
+#     name                      = join(".", [each.key, var.cloudflare_zone])
+#     agent                     = 1
+#     clone                     = each.value.clone
+#     target_node               = each.value.target_node
+#     memory                    = each.value.memory
+#     cores                     = each.value.cpu
+#     boot = "scsi0"
+#     full_clone = false
+#     network {
+#         bridge    = each.value.bridge
+#         firewall  = false
+#         link_down = false
+#         model     = "virtio"
+#         macaddr   = each.value.mac
+#     }
+#     disk {
+#         size = each.value.disk
+#         storage = each.value.storage
+#         type = "scsi"
+#     }
+# }
