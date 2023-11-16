@@ -8,6 +8,13 @@ the clusters I deploy.
 ## Deployment
 
 ```bash
+kubectl create namespace argocd
+kubectl apply -n argocd -f ${HOME}/src/cd-homelab/applications/argocd-appsets/argocd/onepassworditem.yaml
+helm repo add argo https://argoproj.github.io/argo-helm
+helm install argocd argo/argo-cd -n argocd -f ${HOME}/src/cd-homelab/applications/argocd/argocd/values.yaml
+kubectl apply -n argocd -f ${HOME}/src/cd-homelab/applications/argocd-appsets/projects/platform.yaml
+kubectl apply -n argocd -f ${HOME}/src/cd-homelab/applications/argocd-appsets/argocd/in-cluster.secret.yaml
+kubectl apply -n argocd -f ${HOME}/src/cd-homelab/applications/argocd-appsets/appsets/appsets.yaml
 
 kubectl create secret generic -n argocd argocd-oidc-credentials \
   --from-literal=clientID=`op read op://Home_Lab/jumpcloud-oidc-secret_argocd.rye.ninja/username` \
