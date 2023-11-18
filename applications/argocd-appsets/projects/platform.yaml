@@ -64,6 +64,8 @@ spec:
     kind: CompositeResourceDefinition
   - group: apiextensions.crossplane.io
     kind: Composition
+  - group: storage.k8s.io
+    kind: CSIDriver
 
   # Allow all namespaced-scoped resources to be created, except for ResourceQuota, LimitRange, NetworkPolicy
   namespaceResourceBlacklist:
