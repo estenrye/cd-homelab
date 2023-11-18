@@ -31,6 +31,8 @@ spec:
     server: '*'
   - namespace: ingress-nginx
     server: '*'
+  - namespace: kube-system
+    server: '*'
   - namespace: metallb
     server: '*'
 
