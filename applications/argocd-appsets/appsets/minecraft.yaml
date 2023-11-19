@@ -22,8 +22,8 @@ spec:
       name: '{{.instanceName}}-minecraft' # 'name' field of the Secret
     spec:
       project: "default"
-      source:
-        chart: minecraft
+      sources:
+      - chart: minecraft
         repoURL: https://itzg.github.io/minecraft-server-charts/
         targetRevision: 4.11.0
         helm:
@@ -401,6 +401,9 @@ spec:
                   enabled: false
                   # existingClaim: nil
                   Size: 1Gi
+      - repoURL: git@github.com:estenrye/cd-homelab.git
+        targetRevision: HEAD
+        path: applications/minecraft
 
           
       destination:
