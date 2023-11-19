@@ -49,7 +49,6 @@ spec:
             affinity: {}
             securityContext:
               runAsUser: 1000
-              fsGroup: 2000
             livenessProbe:
               command:
                 - mc-health
