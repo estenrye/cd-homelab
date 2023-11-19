@@ -10,7 +10,7 @@ spec:
   - list:
       elements:
       - instanceName: arrendelle-winter
-        server: in-cluster
+        server: https://kubernetes.default.svc
         downloadWorldUrl: https://s3.us-west-1.wasabisys.com/minecraft-rye-ninja/arrendelle-winter.zip
         jvmMemory: 2048M
         requestMemory: 4096Mi
