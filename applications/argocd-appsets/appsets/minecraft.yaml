@@ -48,7 +48,7 @@ spec:
             tolerations: []
             affinity: {}
             securityContext:
-              runAsUser: 1000
+              runAsUser: 1001
             livenessProbe:
               command:
                 - mc-health
