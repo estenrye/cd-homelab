@@ -1,0 +1,24 @@
+{{- $server := .Values.server }}
+{{- $exportRoot := .Values.exportRoot }}
+{{- $clusterName := .Values.clusterName }}
+{{- range .Values.storageClasses }}
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: {{ .name }}
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: {{ .server | default $server }}
+  share: '{{ .share | default $exportRoot }}/{{ $clusterName }}/{{ .name }}'
+reclaimPolicy: {{ .relaimPolicy | default "Delete" }}
+volumeBindingMode: {{ .volumeBindingMode | default "Immediate" }}
+mountOptions:
+  - nfsvers={{ .nfsvers | default "4" }}
+  - rsize={{ .rsize | default "1048576" }}
+  - wsize={{ .wsize | default "1048576" }}
+  - hard
+  - timeo={{ .timeo | default "600" }}
+  - retrans={{ .retrans | default "2" }}
+  - resvport
+{{- end }}

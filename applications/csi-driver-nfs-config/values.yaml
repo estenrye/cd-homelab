@@ -1,0 +1,8 @@
+clusterName: in-cluster
+server: nfs.rye.ninja
+exportRoot: /mnt/main/k8s-volumes
+
+storageClasses:
+- name: main-retain
+  reclaimPolicy: Retain
+- name: main-delete
