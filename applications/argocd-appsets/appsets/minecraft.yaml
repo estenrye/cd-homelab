@@ -47,8 +47,6 @@ spec:
             nodeSelector: {}
             tolerations: []
             affinity: {}
-            securityContext:
-              runAsUser: 1001
             livenessProbe:
               command:
                 - mc-health
@@ -292,7 +290,13 @@ spec:
                 # subPath: /path/to/dataDir
 
             podAnnotations: {}
-
+            podSecurityContext:
+              runAsUser: 1001
+              runAsGroup: 1001
+              runAsNonRoot: true
+              fsGroup: 1001
+              seccompProfile:
+                type: RuntimeDefault
             deploymentAnnotations:
               operator.1password.io/item-path: "vaults/Home_Lab/items/rcon-api-arrendelle"
               operator.1password.io/item-name: "rcon-password"
