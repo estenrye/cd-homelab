@@ -18,6 +18,8 @@ mountOptions:
   - rsize={{ .rsize | default "1048576" }}
   - wsize={{ .wsize | default "1048576" }}
   - hard
+  - gid={{ .gid | default "1001" }}
+  - uid={{ .uid | default "1001" }}
   - timeo={{ .timeo | default "600" }}
   - retrans={{ .retrans | default "2" }}
   - resvport
