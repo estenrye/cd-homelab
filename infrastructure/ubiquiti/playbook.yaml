@@ -1,0 +1,18 @@
+- hosts: unifi_os
+  become: true
+  gather_facts: true
+  tasks:
+    - name: backup /etc/frr directory to a tar.gz file at /root/frr.tar.gz
+      archive:
+        path: /etc/frr
+        dest: /root/frr.tar.gz
+        format: gz
+        owner: root
+        group: root
+        mode: 0600
+    - name: modify /etc/frr/daemons to replace bgpd=no with bgpd=yes
+      replace:
+        path: /etc/frr/daemons
+        regexp: '^bgpd=no'
+        replace: 'bgpd=yes'
+        backup: yes

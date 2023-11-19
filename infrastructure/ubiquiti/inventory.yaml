@@ -1,0 +1,5 @@
+unifi_os:
+  hosts:
+    unifi-os-console.usmnblm01.rye.ninja:
+  vars:
+    

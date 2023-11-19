@@ -10,7 +10,7 @@ spec:
         targetRevision: HEAD
   template:
     metadata:
-      name: '{{name}}-csi-driver-nfs' # 'name' field of the Secret
+      name: '{{name}}-csi-driver-nfs-config' # 'name' field of the Secret
     spec:
       project: "platform"
       source:
