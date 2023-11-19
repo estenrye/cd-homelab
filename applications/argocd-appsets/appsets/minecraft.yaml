@@ -293,11 +293,11 @@ spec:
             podSecurityContext:
               runAsUser: 1001
               runAsGroup: 1001
-              runAsNonRoot: true
+              runAsNonRoot: false
             securityContext:
               runAsUser: 1001
               runAsGroup: 1001
-              runAsNonRoot: true
+              runAsNonRoot: false
             deploymentAnnotations:
               operator.1password.io/item-path: "vaults/Home_Lab/items/rcon-api-arrendelle"
               operator.1password.io/item-name: "rcon-password"
