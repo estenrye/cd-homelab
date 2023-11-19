@@ -4,6 +4,8 @@ metadata:
   name: minecraft
   namespace: argocd
 spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
   generators:
   - list:
       elements:
