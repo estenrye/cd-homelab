@@ -7,7 +7,7 @@ spec:
   generators:
   - list:
       elements:
-      - name: arrendelle-winter
+      - instanceName: arrendelle-winter
         server: kubernetes.default.svc
         downloadWorldUrl: https://s3.us-west-1.wasabisys.com/minecraft-rye-ninja/arrendelle-winter.zip
         jvmMemory: 2048M
@@ -17,7 +17,7 @@ spec:
         limitCPU: 6000m
   template:
     metadata:
-      name: '{{ .name }}-minecraft' # 'name' field of the Secret
+      name: '{{.instanceName}}-minecraft' # 'name' field of the Secret
     spec:
       project: "default"
       source:
@@ -25,7 +25,7 @@ spec:
         repoURL: https://itzg.github.io/minecraft-server-charts/
         targetRevision: 4.11.0
         helm:
-          releaseName: "{{ .name }}"
+          releaseName: "{{.instanceName}}"
           valuesObject: 
             # ref: https://hub.docker.com/r/itzg/minecraft-server/
             image:
@@ -241,15 +241,15 @@ spec:
                     annotations:
                       cert-manager.io/cluster-issuer: letsencrypt-prod-clusterissuer-dns01
                       kubernetes.io/tls-acme: "true"
-                      external-dns.alpha.kubernetes.io/hostname: "map.{{ .name }}.minecraft.rye.ninja"
+                      external-dns.alpha.kubernetes.io/hostname: "map.{{.instanceName}}.minecraft.rye.ninja"
                       external-dns.alpha.kubernetes.io/ttl: "120"
                     hosts:
-                      - name: map.{{ .name }}.minecraft.rye.ninja
+                      - name: map.{{.instanceName}}.minecraft.rye.ninja
                         path: /
                     tls:
                       - secretName: map-tls
                         hosts:
-                          - map.{{ .name }}.minecraft.rye.ninja
+                          - map.{{.instanceName}}.minecraft.rye.ninja
 
               query:
                 # If you enable this, your server will be "published" to Gamespy
@@ -297,10 +297,10 @@ spec:
               operator.1password.io/item-name: "rcon-password"
 
             serviceAnnotations:
-              external-dns.alpha.kubernetes.io/hostname: "{{ .name }}.minecraft.rye.ninja"
+              external-dns.alpha.kubernetes.io/hostname: "{{.instanceName}}.minecraft.rye.ninja"
 
             rconServiceAnnotations:
-              external-dns.alpha.kubernetes.io/hostname: "rcon.{{ .name }}.minecraft.rye.ninja"
+              external-dns.alpha.kubernetes.io/hostname: "rcon.{{.instanceName}}.minecraft.rye.ninja"
 
             # PLEASE NOTE! rcon must be enabled above!  It does NOT require a nodePort or loadBalancerIP
             mcbackup:
@@ -404,7 +404,7 @@ spec:
           
       destination:
         server: '{{ .server }}' # 'server' field of the secret
-        namespace: '{{ .name }}'
+        namespace: '{{.instanceName}}'
       syncPolicy:
         automated: # automated sync by default retries failed attempts 5 times with following delays between attempts ( 5s, 10s, 20s, 40s, 80s ); retry controlled using `retry` field.
           prune: true # Specifies if resources should be pruned during auto-syncing ( false by default ).
