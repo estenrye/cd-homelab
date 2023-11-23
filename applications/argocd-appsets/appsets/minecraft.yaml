@@ -116,7 +116,7 @@ spec:
               # The maximum number of milliseconds a single tick may take before the server watchdog stops the server with the message. -1 disables this entirely.
               maxTickTime: 60000
               # Determines if animals will be able to spawn.
-              spawnAnimals: false
+              spawnAnimals: true
               # Determines if monsters will be spawned.
               spawnMonsters: false
               # Determines if villagers will be spawned.
