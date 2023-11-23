@@ -6,6 +6,9 @@ metadata:
 spec:
   generators:
   - clusters:
+      selector:
+        matchLabels:
+          rye.ninja/csi-nfs-enabled: "true"
       values:
         targetRevision: HEAD
   template:

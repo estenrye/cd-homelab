@@ -5,7 +5,10 @@ metadata:
   namespace: argocd
 spec:
   generators:
-  - clusters: {} # Automatically use all clusters defined within Argo CD
+  - clusters:
+      selector:
+        matchLabels:
+          rye.ninja/csi-nfs-enabled: "true"
   template:
     metadata:
       name: '{{name}}-csi-driver-nfs' # 'name' field of the Secret
