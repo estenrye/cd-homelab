@@ -82,8 +82,8 @@ spec:
                       name: minecraft-minecraft-prometheus
             minecraftServer:
               eula: "TRUE"
-              version: 1.19.3
-              type: "SPIGOT"
+              version: 1.20.2
+              type: "PAPER"
               # spigotDownloadUrl: https://hub.spigotmc.org/jenkins/job/BuildTools/152/artifact/target/BuildTools.jar
               # Set to true if running Feed The Beast and get an error like "unable to launch forgemodloader"
               ftbLegacyJavaFixer: false
@@ -180,12 +180,17 @@ spec:
               # externalTrafficPolicy: Cluster
               externalIPs:
 
+              modrinth:
+                projects:
+                  # https://modrinth.com/plugin/waypoints
+                  - 1c2olKOU
+                  # https://modrinth.com/plugin/bluemap
+                  - swbUV1cr
+
               # A list of Spigot resources/plugins IDs to download.
               spigetResources:
                 # BlueMap - https://www.spigotmc.org/resources/bluemap.83557/
-                - 83557
-                # Waypoints - https://www.spigotmc.org/resources/waypoints.66647/
-                - 66647
+                # - 83557
                 # Simple Minimap - https://www.spigotmc.org/resources/simpleminimap.108225/
                 - 108225
                 # Prometheus Exporter - https://www.spigotmc.org/resources/prometheus-exporter.36618/

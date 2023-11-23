@@ -304,7 +304,7 @@ persistence:
   ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
   ##   GKE, AWS & OpenStack)
   ##
-  storageClass: "direct-csi-min-io"
+  storageClass: "main-retain"
   dataDir:
     # Set this to false if you don't care to persist state between restarts.
     enabled: true
