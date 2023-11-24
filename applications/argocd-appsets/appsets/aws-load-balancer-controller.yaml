@@ -25,9 +25,6 @@ spec:
             serviceAccount:
               create: false
               name: aws-load-balancer-controller
-      - repoURL: https://github.com/aws/eks-charts.git
-        targetRevision: HEAD
-        path: stable/aws-load-balancer-controller/crds
       destination:
         server: '{{server}}' # 'server' field of the secret
         namespace: kube-system
