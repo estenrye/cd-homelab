@@ -8,6 +8,17 @@ cloudWatch:
 iam:
   vpcResourceControllerPolicy: true
   withOIDC: true
+  serviceAccounts:
+  - metadata:
+      name: aws-load-balancer-controller
+      namespace: kube-system
+    attachPolicyARNs:
+    - arn:aws:iam::aws:policy/AWSLoadBalancerControllerIAMPolicy    
+addons:
+  - name: vpc-cni
+  - name: coredns
+  - name: kube-proxy
+  - name: aws-ebs-csi-driver
 kind: ClusterConfig
 kubernetesNetworkConfig:
   ipFamily: IPv4
