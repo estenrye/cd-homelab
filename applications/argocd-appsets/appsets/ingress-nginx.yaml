@@ -30,7 +30,7 @@ spec:
         targetRevision: 4.8.0
         helm:
           releaseName: ingress-nginx
-          valuesFiles:
+          valueFiles:
           - $valuesrepo/applications/ingress-nginx/values.yaml
           - $valuesrepo/{{ values.valuesFile }}
           valuesObject: {}
