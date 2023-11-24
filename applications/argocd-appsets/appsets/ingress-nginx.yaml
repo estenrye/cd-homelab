@@ -6,63 +6,37 @@ metadata:
 spec:
   generators:
   - clusters:
+      selector:
+        matchLabels:
+          rye.ninja/kubernetes-provider: "k3s"
       values:
-        loadBalancerIP: ""
+        targetRevision: HEAD
+        valuesFile: applications/ingress-nginx/values.k3s.yaml
+  - clusters:
+      selector:
+        matchLabels:
+          rye.ninja/kubernetes-provider: "eks"
+      values:
+        targetRevision: HEAD
+        valuesFile: applications/ingress-nginx/values.eks.yaml
   template:
     metadata:
       name: '{{name}}-ingress-nginx' # 'name' field of the Secret
     spec:
       project: "platform"
-      source:
-        chart: ingress-nginx
+      sources:
+      - chart: ingress-nginx
         repoURL: https://kubernetes.github.io/ingress-nginx
         targetRevision: 4.8.0
         helm:
           releaseName: ingress-nginx
-          valuesObject:
-            controller:
-              podAnnotations:
-                linkerd.io/inject: enabled
-              hostNetwork: false
-              ingressClassResource:
-                name: nginx
-                enabled: true
-                default: true
-                controllerValue: "k8s.io/ingress-nginx"
-                parameters: {}
-              ingressClass: nginx
-              publishService:
-                enabled: true
-              kind: Deployment
-              metrics:
-                enabled: true
-                serviceMonitor:
-                  enabled: false
-              replicaCount: 3
-              resources:
-                requests:
-                  cpu: 100m
-                  memory: 256Mi
-                limits:
-                  cpu: 300m
-                  memory: 512Mi
-
-              service:
-                enabled: true
-                enableHttp: true
-                enableHttps: true
-                externalTrafficPolicy: Local
-                ipFamilyPolicy: "SingleStack"
-                ipFamilies:
-                  - IPv4
-                ports:
-                  http: 80
-                  https: 443
-                targetPorts:
-                  http: http
-                  https: https
-                type: LoadBalancer
-                loadBalancerIP: "{{ values.loadBalancerIP}}"
+          valuesFiles:
+          - $valuesrepo/applications/ingress-nginx/values.yaml
+          - $valuesrepo/{{ values.valuesFile }}
+          valuesObject: {}
+      - repoURL: git@github.com:estenrye/cd-homelab.git
+        targetRevision: '{{ values.targetRevision }}'
+        ref: valuesrepo
       destination:
         server: '{{server}}' # 'server' field of the secret
         namespace: ingress-nginx

@@ -1,0 +1,6 @@
+controller:
+  service:
+    loadBalancerIP: ""
+    loadBalancerClass: service.k8s.aws/nlb
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: instance
