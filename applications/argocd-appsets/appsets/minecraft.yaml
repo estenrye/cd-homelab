@@ -30,12 +30,12 @@ spec:
           releaseName: "{{.instanceName}}"
           valuesObject: 
             # ref: https://hub.docker.com/r/itzg/minecraft-server/
-            image:
-              repository: itzg/minecraft-server
-              tag: java17
-              pullPolicy: IfNotPresent
-              pullSecret: ""
-            replicaCount: 1
+            # image:
+            #   repository: itzg/minecraft-server
+            #   tag: java17
+            #   pullPolicy: IfNotPresent
+            #   pullSecret: ""
+            # replicaCount: 1
             resources:
               requests:
                 memory: "{{ .requestMemory }}"
