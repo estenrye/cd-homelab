@@ -29,13 +29,6 @@ spec:
         helm:
           releaseName: "{{.instanceName}}"
           valuesObject: 
-            # ref: https://hub.docker.com/r/itzg/minecraft-server/
-            # image:
-            #   repository: itzg/minecraft-server
-            #   tag: java17
-            #   pullPolicy: IfNotPresent
-            #   pullSecret: ""
-            # replicaCount: 1
             resources:
               requests:
                 memory: "{{ .requestMemory }}"
@@ -43,34 +36,6 @@ spec:
               limits:
                 memory: "{{ .limitMemory }}"
                 cpu: "{{ .limitCPU }}"
-            strategyType: Recreate
-            nodeSelector: {}
-            tolerations: []
-            affinity: {}
-            livenessProbe:
-              command:
-                - mc-health
-              initialDelaySeconds: 30
-              periodSeconds: 5
-              failureThreshold: 20
-              successThreshold: 1
-              timeoutSeconds: 1
-            readinessProbe:
-              command:
-                - mc-health
-              initialDelaySeconds: 30
-              periodSeconds: 5
-              failureThreshold: 20
-              successThreshold: 1
-              timeoutSeconds: 1
-            startupProbe:
-              command:
-                - mc-health
-              enabled: false
-              failureThreshold: 30
-              periodSeconds: 10
-            initContainers: []
-            sidecarContainers: []
             extraVolumes:
               - volumeMounts:
                   - name: prometheus-exporter-config
@@ -90,9 +55,9 @@ spec:
               # One of: peaceful, easy, normal, and hard
               difficulty: easy
               # A comma-separated list of player names to whitelist.
-              whitelist: esten_rye,flower_ada_bread,DracoIam
+              whitelist: esten_rye,flower_ada_bread,DracoIam,RaeRae15
               # A comma-separated list of player names who should be admins.
-              ops: esten_rye,flower_ada_bread,DracoIam
+              ops: esten_rye,flower_ada_bread,DracoIam,RaeRae15
               # A server icon URL for server listings. Auto-scaled and transcoded.
               icon:
               # Max connected players.
@@ -188,15 +153,13 @@ spec:
                   - swbUV1cr
                   # https://modrinth.com/plugin/commandapi
                   - ExxvCi0y
+                  # https://modrinth.com/plugin/unifiedmetrics
+                  - p1ewR5kV
 
               # A list of Spigot resources/plugins IDs to download.
               spigetResources:
-                # BlueMap - https://www.spigotmc.org/resources/bluemap.83557/
-                # - 83557
                 # Simple Minimap - https://www.spigotmc.org/resources/simpleminimap.108225/
                 - 108225
-                # Prometheus Exporter - https://www.spigotmc.org/resources/prometheus-exporter.36618/
-                - 36618
 
               rcon:
                 # If you enable this, make SURE to change your password below.
@@ -218,7 +181,7 @@ spec:
                 # as dynmap (8123) and bluemap (8100) will require this for access to their web interfaces
                 #
                 - name: prometheus
-                  containerPort: 9225
+                  containerPort: 9100
                   protocol: TCP
                   service:
                     enabled: true
@@ -227,7 +190,7 @@ spec:
                     type: ClusterIP
                     loadBalancerIP: ""
                     loadBalancerSourceRanges: []
-                    port: 9225
+                    port: 9100
                   ingress:
                     enabled: false
                 - name: map
@@ -262,21 +225,6 @@ spec:
                 enabled: false
                 port: 25565
 
-            ## Additional minecraft container environment variables
-            ## Values can be either variable values or `valueFrom` yaml
-            ##
-            extraEnv:
-              {}
-              # some_variable: some value
-              # another_variable:
-              #   valueFrom:
-              #     fieldRef:
-              #       fieldPath: status.hostIP
-
-            ## Additional environment variables to add to the minecraft container from
-            ## ConfigMaps and Secrets
-            ##
-            envFrom: []
 
             persistence:
               annotations: {}
@@ -295,8 +243,6 @@ spec:
                 # existingClaim: nil
                 ## specify a subpath in the volume where the data is. Useful when sharing volumes with other apps.
                 # subPath: /path/to/dataDir
-
-            podAnnotations: {}
             podSecurityContext:
               runAsUser: 1001
               runAsGroup: 1001
@@ -306,8 +252,7 @@ spec:
               runAsGroup: 1001
               runAsNonRoot: false
             deploymentAnnotations:
-              operator.1password.io/item-path: "vaults/Home_Lab/items/rcon-api-arrendelle"
-              operator.1password.io/item-name: "rcon-password"
+              operator.1password.io/item-path: "vaults/Home_Lab/items/rcon-password"
 
             serviceAnnotations:
               external-dns.alpha.kubernetes.io/hostname: "{{.instanceName}}.minecraft.rye.ninja"
