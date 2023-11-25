@@ -31,6 +31,7 @@ spec:
           valueFiles:
             - $valuesrepo/applications/minecraft/values/extraDeploy.values.yaml
             - $valuesrepo/applications/minecraft/values/mcbackup.values.yaml
+            - $valuesrepo/applications/minecraft/values/minecraft.modrinth.values.yaml
           valuesObject:
             mcbackup:
               destDir: /backups/{{ .instanceName }} 
@@ -149,17 +150,6 @@ spec:
               ## Set the externalTrafficPolicy in the Service to either Cluster or Local
               # externalTrafficPolicy: Cluster
               externalIPs:
-
-              modrinth:
-                projects:
-                  # https://modrinth.com/plugin/waypoints
-                  - 1c2olKOU
-                  # https://modrinth.com/plugin/bluemap
-                  - swbUV1cr
-                  # https://modrinth.com/plugin/commandapi
-                  - ExxvCi0y
-                  # https://modrinth.com/plugin/unifiedmetrics
-                  - p1ewR5kV
 
               # A list of Spigot resources/plugins IDs to download.
               spigetResources:
