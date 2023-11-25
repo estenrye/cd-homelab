@@ -28,6 +28,8 @@ spec:
         targetRevision: 4.11.0
         helm:
           releaseName: "{{.instanceName}}"
+          valueFiles:
+            - $valuesrepo/applications/minecraft/extraDeploy.values.yaml
           valuesObject: 
             resources:
               requests:
@@ -251,8 +253,6 @@ spec:
               runAsUser: 1001
               runAsGroup: 1001
               runAsNonRoot: false
-            deploymentAnnotations:
-              operator.1password.io/item-path: "vaults/Home_Lab/items/rcon-password"
 
             serviceAnnotations:
               external-dns.alpha.kubernetes.io/hostname: "{{.instanceName}}.minecraft.rye.ninja"
@@ -361,8 +361,9 @@ spec:
       - repoURL: git@github.com:estenrye/cd-homelab.git
         targetRevision: HEAD
         path: applications/minecraft
-
-          
+      - repoURL: git@github.com:estenrye/cd-homelab.git
+        targetRevision: '{{ values.targetRevision }}'
+        ref: valuesrepo
       destination:
         server: '{{ .server }}' # 'server' field of the secret
         namespace: '{{.instanceName}}'
