@@ -254,7 +254,7 @@ spec:
               external-dns.alpha.kubernetes.io/hostname: "rcon.{{.instanceName}}.minecraft.rye.ninja"
 
       - repoURL: git@github.com:estenrye/cd-homelab.git
-        targetRevision: HEAD
+        targetRevision: 32376f44aed12358d62dd8003cc303034077bfe0
         ref: valuesrepo
       destination:
         server: '{{ .server }}' # 'server' field of the secret
