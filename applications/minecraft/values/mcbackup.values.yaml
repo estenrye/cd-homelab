@@ -68,7 +68,7 @@ mcbackup:
   ## Values can be either variable values or `valueFrom` yaml
   ##
   extraEnv: {}
-  
+
     # some_variable: some value
     # another_variable:
     #   valueFrom:
@@ -78,7 +78,9 @@ mcbackup:
   ## Additional environment variables to add to the minecraft container from
   ## ConfigMaps and Secrets
   ##
-  envFrom: []
+  envFrom:
+    - secretRef:
+        name: minecraft-backup-s3-credentials
 
   resources:
     requests:
