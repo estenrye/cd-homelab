@@ -67,13 +67,8 @@ mcbackup:
   ## Additional minecraft container environment variables
   ## Values can be either variable values or `valueFrom` yaml
   ##
-  extraEnv:
-    RCON_PORT: "25575"
-    RCON_PASSWORD:
-      valueFrom:
-        secretKeyRef:
-          name: rcon-password
-          key: password
+  extraEnv: {}
+  
     # some_variable: some value
     # another_variable:
     #   valueFrom:
