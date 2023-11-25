@@ -1,0 +1,101 @@
+mcbackup:
+  enabled: true
+
+  # ***set to 0 or smaller, script will run once and exit.  DO NOT SET TO 0 or smaller, this will cause K8s to kill your pod!***
+  # backupInterval="1.5d" -> backup every one and a half days (36 hours)
+  # backupInterval="2h 30m" -> backup every two and a half hours
+  backupInterval: 24h
+
+  # option lets you pause backups if no players are online.
+  pauseIfNoPlayers: "false"
+
+  # is set to a positive number, it'll delete old .tgz backup files from DEST_DIR. By default deletes backups older than a week.
+  pruneBackupsDays: 7
+
+  # Set to a negative value to retry indefinitely
+  rconRetries: 5
+  rconRetryInterval: 10s
+
+  # is a comma-separated list of glob(3) patterns to exclude from backups. By default excludes all jar files (plugins, server files),
+  # logs folder and cache (used by i.e. PaperMC server).
+  excludes: "*.jar,cache,logs"
+
+  # backup methods, see https://github.com/itzg/docker-mc-backup e.g. tar, rclone, restic
+  backupMethod: rclone
+  # tar and rclone methods
+  destDir: /backups
+  # is a true/false flag that creates a symbolic link to the latest backup
+  linkLatest: "true"
+  # is the compression method used by tar. Valid value: gzip bzip2 zstd
+  compressMethod: "gzip"
+  # sets the parameters for zstd compression. The --long parameter affects RAM requirements for both compression and decompression
+  # (the default of 25 means 2^25 bytes = 32 MB).
+  zstdParameters: "-3 --long=25 --single-thread"
+  # the name of the remote you've configured in your rclone.conf
+  rcloneRemote: wasabi
+  rcloneDestDir:
+  rcloneCompressMethod: gzip
+
+  # see https://rclone.org/ for details
+  # this value is evaluated as a template
+  rcloneConfig: |
+   [wasabi]
+    type = s3
+    provider = Wasabi
+    env_auth = true
+    region =
+    endpoint = s3.wasabisys.com
+    location_constraint =
+    acl =
+    server_side_encryption =
+    storage_class =
+
+  # if you prefer to create a secret from file (e.g. kubectl create secret generic my-rclone-config --from-file=~/.config/rclone/rclone.conf)
+  # rcloneConfigExistingSecret: my-rclone-config
+
+  resticRepository:
+  # variable to define a space separated list of additional restic tags. see https://hub.docker.com/r/itzg/mc-backup
+  resticAdditionalTags: "mc_backups"
+  # see https://restic.readthedocs.io/en/latest/060_forget.html
+  pruneResticRetention: "--keep-daily 7 --keep-weekly 5 --keep-monthly 12 --keep-yearly 75"
+
+  # At least one of RESTIC_PASSWORD* env variables need to be defined, see https://restic.readthedocs.io/en/latest/030_preparing_a_new_repo.html
+  resticEnvs:
+    []
+    # RESTIC_PASSWORD: restic-password
+
+  ## Additional minecraft container environment variables
+  ## Values can be either variable values or `valueFrom` yaml
+  ##
+  extraEnv:
+    RCON_PORT: "25575"
+    RCON_PASSWORD:
+      valueFrom:
+        secretKeyRef:
+          name: rcon-password
+          key: password
+    # some_variable: some value
+    # another_variable:
+    #   valueFrom:
+    #     fieldRef:
+    #       fieldPath: status.hostIP
+
+  ## Additional environment variables to add to the minecraft container from
+  ## ConfigMaps and Secrets
+  ##
+  envFrom: []
+
+  resources:
+    requests:
+      memory: 512Mi
+      cpu: 500m
+    limits:
+      memory: 1024Mi
+      cpu: 1000m
+  persistence:
+    annotations: {}
+    # storageClass: "-"
+    backupDir:
+      enabled: true
+      Size: 1Gi
+

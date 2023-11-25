@@ -29,7 +29,8 @@ spec:
         helm:
           releaseName: "{{.instanceName}}"
           valueFiles:
-            - $valuesrepo/applications/minecraft/extraDeploy.values.yaml
+            - $valuesrepo/applications/minecraft/values/extraDeploy.values.yaml
+            - $valuesrepo/applications/minecraft/values/mcbackup.values.yaml
           valuesObject: 
             resources:
               requests:
