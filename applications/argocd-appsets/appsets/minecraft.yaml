@@ -31,7 +31,7 @@ spec:
           valueFiles:
             - $valuesrepo/applications/minecraft/values/extraDeploy.values.yaml
             - $valuesrepo/applications/minecraft/values/mcbackup.values.yaml
-            - $valuesrepo/applications/minecraft/values/minecraft.modrinth.values.yaml
+            - $valuesrepo/applications/minecraft/values/minecraftServer.modrinth.values.yaml
           valuesObject:
             mcbackup:
               destDir: /backups/{{ .instanceName }} 
