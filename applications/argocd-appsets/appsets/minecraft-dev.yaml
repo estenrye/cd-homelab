@@ -35,7 +35,7 @@ spec:
             - $valuesrepo/applications/minecraft/values/minecraftServer.modrinth.values.yaml
             - $valuesrepo/applications/minecraft/values/minecraftServer.spiget.values.yaml
             - $valuesrepo/applications/minecraft/values/minecraftServer.users.values.yaml
-            - $valuesrepo/applications/minecraft/values/overides/{{ .instanceName }}.yaml
+            - $valuesrepo/applications/minecraft/values/overrides/{{ .instanceName }}.yaml
           valuesObject:
             mcbackup:
               destDir: /backups/{{ .instanceName }} 
