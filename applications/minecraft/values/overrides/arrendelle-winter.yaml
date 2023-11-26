@@ -1,0 +1,24 @@
+resources:
+  requests:
+    memory: 4096Mi
+    cpu: 3000m
+  limits:
+    memory: 7168Mi
+    cpu: 6000m
+minecraftServer:
+  version: 1.20.2
+  type: "PAPER"
+  difficulty: easy
+  downloadWorldUrl: https://s3.us-west-1.wasabisys.com/minecraft-rye-ninja/arrendelle-winter.zip
+  memory: 2048M
+  jvmXXOpts: "-Xmx2048M"
+  spawnAnimals: true
+  # Determines if monsters will be spawned.
+  spawnMonsters: false
+  # Determines if villagers will be spawned.
+  spawnNPCs: true
+  # Sets the area that non-ops can not edit (0 to disable)
+  spawnProtection: 2
+  # Max view distance (in chunks).
+  viewDistance: 10
+  

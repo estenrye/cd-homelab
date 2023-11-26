@@ -1,0 +1,5 @@
+minecraftServer:
+  # A list of Spigot resources/plugins IDs to download.
+  spigetResources:
+    # Simple Minimap - https://www.spigotmc.org/resources/simpleminimap.108225/
+    - 108225

@@ -1,0 +1,6 @@
+# ref: https://hub.docker.com/r/itzg/minecraft-server/
+image:
+  repository: itzg/minecraft-server
+  tag: latest
+  pullPolicy: IfNotPresent
+  pullSecret: ""

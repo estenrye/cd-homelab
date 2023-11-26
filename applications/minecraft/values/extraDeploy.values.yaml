@@ -11,3 +11,9 @@ extraDeploy:
       name: minecraft-backup-s3-credentials
     spec:
       itemPath: "vaults/Home_Lab/items/minecraft-backup.wasabi.rye.ninja"
+  - apiVersion: onepassword.com/v1
+    kind: OnePasswordItem
+    metadata:
+      name: curse-forge-api-key
+    spec:
+      itemPath: "vaults/Home_Lab/items/minecraft-api-key.curseforge.rye.ninja"

@@ -1,0 +1,213 @@
+
+## Configure resource requests and limits
+## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+##
+resources:
+  requests:
+    memory: 512Mi
+    cpu: 500m
+
+minecraftServer:
+  # This must be overridden, since we can't accept this for the user.
+  eula: "TRUE"
+  # One of: LATEST, SNAPSHOT, or a specific version (ie: "1.7.9").
+  version: "LATEST"
+  # This can be one of "VANILLA", "FORGE", "SPIGOT", "BUKKIT", "PAPER", "FTBA", "SPONGEVANILLA", "CURSEFORGE"
+  type: "VANILLA"
+  # If type is set to FORGE, this sets the version; this is ignored if forgeInstallerUrl is set
+  forgeVersion:
+  # If type is set to SPONGEVANILLA, this sets the version
+  spongeVersion:
+  # If type is set to FORGE, this sets the URL to download the Forge installer
+  forgeInstallerUrl:
+  # If type is set to BUKKIT, this sets the URL to download the Bukkit package
+  bukkitDownloadUrl:
+  # If type is set to SPIGOT, this sets the URL to download the Spigot package
+  spigotDownloadUrl:
+  # If type is set to PAPER, this sets the URL to download the PaperSpigot package
+  paperDownloadUrl:
+  # If type is set to FTBA, this sets the modpack to run
+  ftbModpackId:
+  # If type is set to FTBA and a modpack is set, this sets the version to run
+  ftbModpackVersionId:
+  # If type is set to CURSEFORGE, this sets the server mod to run. Can also provide url to curseforge package.
+  cfServerMod:
+  # Set to true if running Feed The Beast and get an error like "unable to launch forgemodloader"
+  ftbLegacyJavaFixer: default
+  # One of: peaceful, easy, normal, and hard
+  difficulty: easy
+  # A comma-separated list of player names to whitelist.
+  whitelist:
+  # A comma-separated list of player names who should be admins.
+  ops:
+  # A server icon URL for server listings. Auto-scaled and transcoded.
+  icon:
+  # Max connected players.
+  maxPlayers: 20
+  # This sets the maximum possible size in blocks, expressed as a radius, that the world border can obtain.
+  maxWorldSize: 10000
+  # Allows players to travel to the Nether.
+  allowNether: default
+  # Allows server to announce when a player gets an achievement.
+  announcePlayerAchievements: default
+  # Enables command blocks.
+  enableCommandBlock: default
+  # If true, players will always join in the default gameMode even if they were previously set to something else.
+  forcegameMode: default
+  # Defines whether structures (such as villages) will be generated.
+  generateStructures: default
+  # If set to true, players will be set to spectator mode if they die.
+  hardcore: default
+  # The maximum height in which building is allowed.
+  maxBuildHeight: 256
+  # The maximum number of milliseconds a single tick may take before the server watchdog stops the server with the message. -1 disables this entirely.
+  maxTickTime: 60000
+  # Determines if animals will be able to spawn.
+  spawnAnimals: default
+  # Determines if monsters will be spawned.
+  spawnMonsters: default
+  # Determines if villagers will be spawned.
+  spawnNPCs: default
+  # Sets the area that non-ops can not edit (0 to disable)
+  spawnProtection: 16
+  # Max view distance (in chunks).
+  viewDistance: 10
+  # Define this if you want a specific map generation seed.
+  levelSeed:
+  # One of: creative, survival, adventure, spectator
+  gameMode: survival
+  # Message of the Day
+  motd: "Welcome to Minecraft on Kubernetes!"
+  # If true, enable player-vs-player damage.
+  pvp: default
+  # One of: DEFAULT, FLAT, LARGEBIOMES, AMPLIFIED, CUSTOMIZED
+  levelType: DEFAULT
+  # When levelType == FLAT or CUSTOMIZED, this can be used to further customize map generation.
+  # ref: https://hub.docker.com/r/itzg/minecraft-server/
+  generatorSettings:
+  worldSaveName: world
+  # If set, this URL will be downloaded at startup and used as a starting point
+  downloadWorldUrl:
+  # force re-download of server file
+  forceReDownload: false
+  # If set, the modpack at this URL will be downloaded at startup
+  downloadModpackUrl:
+  # If true, old versions of downloaded mods will be replaced with new ones from downloadModpackUrl
+  removeOldMods: false
+  # A list of VanillaTweaks Share Codes to download. (https://vanillatweaks.net/share#wUq1iz => "wUq1iz")
+  vanillaTweaksShareCodes: []
+  # Optional URI to a resource pack. The player may choose to use it.
+  resourcePackUrl:
+  # Optional SHA-1 digest of the resource pack, in lowercase hexadecimal.
+  # It is recommended to specify this, because it is used to verify the integrity of the resource pack.
+  resourcePackSha:
+  # When true, players will be prompted for a response and will be disconnected if they decline the required pack
+  resourcePackEnforce: false
+  # Check accounts against Minecraft account service.
+  onlineMode: default
+  # Require public key to be signed by Mojang to join
+  enforceSecureProfile: default
+  # If you adjust this, you may need to adjust resources.requests above to match.
+  memory: 1024M
+  # General JVM options to be passed to the Minecraft server invocation
+  jvmOpts: ""
+  # Options like -X that need to proceed general JVM options
+  jvmXXOpts: ""
+  # By default, the server configuration will be created and set based on the following environment variables, but only the first time the server is started
+  # If you would like to override the server configuration each time the container starts up, you can set this to true
+  # see https://github.com/itzg/docker-minecraft-server#server-configuration
+  overrideServerProperties: false
+  # DEPRECATED: use top-level rconServiceAnnotations instead
+  serviceAnnotations: {}
+  serviceType: LoadBalancer
+  ## Set the port used if the serviceType is NodePort
+  nodePort:
+  # Set the external port of the service, usefull when using the LoadBalancer service type
+  servicePort: 25565
+  clusterIP:
+  loadBalancerIP:
+  # loadBalancerSourceRanges: []
+  ## Set the externalTrafficPolicy in the Service to either Cluster or Local
+  # externalTrafficPolicy: Cluster
+  externalIPs:
+
+  # List with URLs and paths to jar files, additionally may be a directory with jars
+  # This works for both mods and plugins depending on server type
+  modUrls: []
+  pluginUrls: []
+
+  # A list of Spigot resources/plugins IDs to download.
+  spigetResources: []
+
+  # Additional service specs to be defined
+  extraServiceSpec: {}
+
+  # A list of Modrinth project slugs with optional version after colon
+  modrinth:
+    projects: []
+    # Downloads Modrinth project dependencies marked as optional
+    optionalDependencies: false
+    # The version type is used to determine the newest version to use from each project. The allowed values are: release, beta, alpha
+    allowedVersionType: release
+
+
+  extraPorts:
+    []
+
+    # These options allow you to expose another port from the Minecraft server, plugins such
+    # as dynmap (8123) and bluemap (8100) will require this for access to their web interfaces
+    #
+    # - name: map
+    #   containerPort: 8123
+    #   protocol: TCP
+    #   service:
+    #     enabled: false
+    #     embedded: false
+    #     annotations: {}
+    #     type: ClusterIP
+    #     ## Set the external port if the rcon serviceType is NodePort
+    ##     nodePort:
+    #     loadBalancerIP: ""
+    #     loadBalancerSourceRanges: []
+    #     externalTrafficPolicy: Cluster
+    #     port: 8123
+    #   ingress:
+    #     ingressClassName: nginx
+    #     enabled: false
+    #     annotations:
+    ## Deprecated way for specifying the ingressClass. Kube.version < 1.18
+    ##       kubernetes.io/ingress.class: nginx
+    #       kubernetes.io/tls-acme: "true"
+    #     hosts:
+    #       - name: map.local
+    #         path: /
+    #     tls:
+    #       - secretName: map-tls
+    #         hosts:
+    #           - map.local
+
+## Additional minecraft container environment variables
+## Values can be either variable values or `valueFrom` yaml
+##
+extraEnv:
+  {}
+  # some_variable: some value
+  # another_variable:
+  #   valueFrom:
+  #     fieldRef:
+  #       fieldPath: status.hostIP
+
+## Additional environment variables to add to the minecraft container from
+## ConfigMaps and Secrets
+##
+envFrom: []
+
+podAnnotations: {}
+podLabels: {}
+
+deploymentAnnotations: {}
+deploymentLabels: {}
+
+serviceAnnotations: {}
+serviceLabels: {}
+

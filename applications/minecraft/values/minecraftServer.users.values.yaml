@@ -1,0 +1,4 @@
+minecraftServer:
+  whitelist: esten_rye,flower_ada_bread,DracoIam,RaeRae15
+  # A comma-separated list of player names who should be admins.
+  ops: esten_rye,flower_ada_bread,DracoIam,RaeRae15

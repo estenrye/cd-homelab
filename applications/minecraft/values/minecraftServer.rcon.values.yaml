@@ -1,0 +1,22 @@
+minecraftServer:
+  rcon:
+    # If you enable this, make SURE to change your password below.
+    enabled: false
+    # By default, the container will generate a random password at startup
+    # to ensure internal RCON tooling, including a backup container,
+    # can be used, but the password is secure.
+    withGeneratedPassword: false
+    port: 25575
+    existingSecret: rcon-password
+    secretKey: password
+    serviceType: ClusterIP
+    ## Set the external port if the rcon serviceType is NodePort
+    nodePort:
+    clusterIP:
+    loadBalancerIP:
+    # loadBalancerSourceRanges: []
+    ## Set the externalTrafficPolicy in the Service to either Cluster or Local
+    # externalTrafficPolicy: Cluster
+
+rconServiceAnnotations: {}
+rconServiceLabels: {}

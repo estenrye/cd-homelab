@@ -1,0 +1,5 @@
+minecraftServer:
+  query:
+    # If you enable this, your server will be "published" to Gamespy
+    enabled: false
+    port: 25565
