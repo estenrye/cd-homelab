@@ -7,6 +7,7 @@ metadata:
 parameters:
   fsType: ext4
   type: io2
+  iops: "2000"
 provisioner: kubernetes.io/aws-ebs
 reclaimPolicy: Delete
 volumeBindingMode: WaitForFirstConsumer
