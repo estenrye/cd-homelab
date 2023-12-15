@@ -96,7 +96,7 @@ server:
     # -- Additional ingress annotations
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod-clusterissuer-dns01
-      external-dns.alpha.kubernetes.io/hostname: argocd.rye.ninja
+      # external-dns.alpha.kubernetes.io/hostname: argocd.rye.ninja
       nginx.ingress.kubernetes.io/ssl-passthrough: "true"
       nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
     # -- Additional ingress labels
