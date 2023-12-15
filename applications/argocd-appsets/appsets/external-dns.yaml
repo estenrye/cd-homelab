@@ -7,8 +7,15 @@ spec:
   generators:
   - clusters:
       selector:
-        matchLabels:
-          rye.ninja/environment: cd-cluster
+        matchExpressions:
+          - key: rye.ninja/environment
+            operator: In
+            values:
+              - cd-cluster
+          - key: rye.ninja/egress-load-balancer
+            operator: NotIn
+            values:
+              - cloudflared
       values:
         targetRevision: HEAD
         valuesFile: examples/cloudflare.values.yaml
