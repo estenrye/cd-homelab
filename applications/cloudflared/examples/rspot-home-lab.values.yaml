@@ -1,0 +1,19 @@
+credentials:
+  itemPath: "vaults/Home_Lab/items/cloudflared.rspot-home-lab.rye.ninja"
+
+cloudflare-tunnel:
+  # Default values for cloudflare-tunnel.
+
+  # Cloudflare parameters.
+  cloudflare:
+    tunnelName: "rspot-home-lab"
+
+    ingress:
+      - hostname: "*.rspot-home-lab.rye.ninja"
+        service: http://ingress-nginx-controller.ingress-nginx:80
+        # TODO: figure out how to get this to work
+        # service: https://ingress-nginx-controller.ingress-nginx:443
+      - hostname: "argocd.rye.ninja"
+        service: http://ingress-nginx-controller.ingress-nginx:80
+        # TODO: figure out how to get this to work
+        # service: https://ingress-nginx-controller.ingress-nginx:443
