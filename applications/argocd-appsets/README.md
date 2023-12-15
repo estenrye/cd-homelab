@@ -11,7 +11,7 @@ the clusters I deploy.
 kubectl create namespace argocd
 kubectl apply -n argocd -f ${HOME}/src/cd-homelab/applications/argocd-appsets/argocd/onepassworditem.yaml
 helm repo add argo https://argoproj.github.io/argo-helm
-helm install argocd argo/argo-cd -n argocd -f ${HOME}/src/cd-homelab/applications/argocd/argocd/values.yaml
+helm install argocd argo/argo-cd -n argocd -f ${HOME}/src/cd-homelab/applications/argocd-appsets/argocd/helm/values.yaml
 kubectl apply -n argocd -f ${HOME}/src/cd-homelab/applications/argocd-appsets/projects/platform.yaml
 kubectl apply -n argocd -f ${HOME}/src/cd-homelab/applications/argocd-appsets/argocd/in-cluster.secret.yaml
 kubectl apply -n argocd -f ${HOME}/src/cd-homelab/applications/argocd-appsets/appsets/appsets.yaml
