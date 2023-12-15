@@ -1,4 +1,6 @@
 controller:
+  # extraArgs:
+  #   default-ssl-certificate: "ingress-nginx/wildcard"
   podAnnotations:
     linkerd.io/inject: enabled
   hostNetwork: false
@@ -24,18 +26,7 @@ controller:
     limits:
       cpu: 300m
       memory: 512Mi
-  service:
+  opentelemetry:
     enabled: true
-    enableHttp: true
-    enableHttps: true
-    externalTrafficPolicy: Local
-    ipFamilyPolicy: "SingleStack"
-    ipFamilies:
-      - IPv4
-    ports:
-      http: 80
-      https: 443
-    targetPorts:
-      http: http
-      https: https
-    type: LoadBalancer
+defaultBackend:
+  enabled: true

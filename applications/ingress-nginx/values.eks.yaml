@@ -1,5 +1,6 @@
 controller:
   service:
+    type: LoadBalancer
     loadBalancerIP: ""
     loadBalancerClass: service.k8s.aws/nlb
     annotations:
