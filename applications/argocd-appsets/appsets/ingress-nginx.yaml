@@ -8,17 +8,21 @@ spec:
   - clusters:
       selector:
         matchLabels:
-          rye.ninja/kubernetes-provider: "k3s"
+          rye.ninja/egress-load-balancer: "cloudflared"
       values:
         targetRevision: HEAD
         valuesFile: applications/ingress-nginx/values.k3s.yaml
   - clusters:
       selector:
         matchLabels:
-          rye.ninja/kubernetes-provider: "eks"
+          rye.ninja/egress-load-balancer: "eks"
       values:
         targetRevision: HEAD
         valuesFile: applications/ingress-nginx/values.eks.yaml
+  - clusters:
+      values:
+        targetRevision: HEAD
+        valuesFile: applications/ingress-nginx/values.svc-load-balancer.yaml
   template:
     metadata:
       name: '{{name}}-ingress-nginx' # 'name' field of the Secret

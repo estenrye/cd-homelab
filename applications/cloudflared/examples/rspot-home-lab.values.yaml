@@ -15,5 +15,7 @@ cloudflare-tunnel:
         # service: https://ingress-nginx-controller.ingress-nginx:443
       - hostname: "argocd.rye.ninja"
         service: https://argocd-server.argocd:443
+        noTLSVerify: true
         # TODO: figure out how to get this to work
+        httpHostHeader: "argocd.rye.ninja"
         # service: https://ingress-nginx-controller.ingress-nginx:443
