@@ -94,5 +94,5 @@ mcbackup:
     # storageClass: "-"
     backupDir:
       enabled: true
-      Size: 1Gi
+      Size: 5Gi
 
