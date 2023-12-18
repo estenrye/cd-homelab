@@ -22,10 +22,3 @@ minecraftServer:
   # Max view distance (in chunks).
   viewDistance: 10
   
-persistence:
-  dataDir:
-    Size: 4Gi
-mcbackup:
-  persistence:
-    backupDir:
-      Size: 4Gi
