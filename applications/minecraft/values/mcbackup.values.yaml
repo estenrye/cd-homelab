@@ -38,20 +38,9 @@ mcbackup:
 
   # see https://rclone.org/ for details
   # this value is evaluated as a template
-  rcloneConfig: |
-   [wasabi]
-    type = s3
-    provider = Wasabi
-    env_auth = true
-    region =
-    endpoint = s3.wasabisys.com
-    location_constraint =
-    acl =
-    server_side_encryption =
-    storage_class =
 
   # if you prefer to create a secret from file (e.g. kubectl create secret generic my-rclone-config --from-file=~/.config/rclone/rclone.conf)
-  # rcloneConfigExistingSecret: my-rclone-config
+  rcloneConfigExistingSecret: minecraft-backup-s3-credentials
 
   resticRepository:
   # variable to define a space separated list of additional restic tags. see https://hub.docker.com/r/itzg/mc-backup

@@ -10,7 +10,7 @@ extraDeploy:
     metadata:
       name: minecraft-backup-s3-credentials
     spec:
-      itemPath: "vaults/Home_Lab/items/minecraft-backup.wasabi.rye.ninja"
+      itemPath: "vaults/Home_Lab/items/backup.minecraft.rye.ninja"
   - apiVersion: onepassword.com/v1
     kind: OnePasswordItem
     metadata:
