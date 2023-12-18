@@ -38,7 +38,8 @@ spec:
             - $valuesrepo/applications/minecraft/values/overrides/{{ .instanceName }}.yaml
           valuesObject:
             mcbackup:
-              destDir: /backups/{{ .instanceName }} 
+              destDir: /backups/{{ .instanceName }}
+              rcloneDestDir: "wasabi:minecraft-backups/{{ .instanceName }}"
             minecraftServer:
               extraPorts:
                 # These options allow you to expose another port from the Minecraft server, plugins such
