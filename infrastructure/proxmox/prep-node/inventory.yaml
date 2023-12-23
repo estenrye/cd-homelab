@@ -1,0 +1,22 @@
+all:
+  vars:
+    acme_email: esten.rye+acme@ryezone.com
+    acme_directory: https://acme-v02.api.letsencrypt.org/directory
+
+    pve_acmedomain1: "pve.usmnbm01.rye.ninja"
+    
+    op_vault_id: "jaou7gkrt6by3xnocca3rdyyii"
+
+    # The cloudflare_api_credentials_item is the name of the item in 1Password that contains the Cloudflare API credentials.
+    # It should contain the following fields:
+    #   account_id: The Cloudflare account id.
+    #   password: The Cloudflare API token.
+    #   zone_id: The Cloudflare zone id.
+    cloudflare_api_credentials_item: "letsencrypt-dns01-credentials_cert-manager.rye.ninja"
+
+  children:
+    proxmox-servers:
+      hosts:
+        pve01.usmnblm01.rye.ninja:
+        pve02.usmnblm01.rye.ninja:
+        pve03.usmnblm01.rye.ninja:

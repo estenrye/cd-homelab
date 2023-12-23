@@ -1,0 +1,8 @@
+deb http://apt.tools.rye.ninja/debian bookworm main contrib
+
+deb http://apt.tools.rye.ninja/debian bookworm-updates main contrib
+
+# security updates
+deb http://apt.tools.rye.ninja/debian-security bookworm-security main contrib
+
+deb http://apt.tools.rye.ninja/pve-no-subscription bookworm pve-no-subscription

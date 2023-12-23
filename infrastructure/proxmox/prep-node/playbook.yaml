@@ -1,0 +1,226 @@
+- hosts: proxmox-servers
+  environment:
+    OP_CONNECT_HOST: "http://op-connect-api.127-0-0-1.a.rye.ninja:8080"
+  tasks:
+    - name: Get the Cloudflare API Account Id.
+      onepassword.connect.field_info:
+        vault: "{{ op_vault_id }}"
+        item: "{{ cloudflare_api_credentials_item }}"
+        field: "account_id"
+      register: cloudflare_api_account_id
+      delegate_to: localhost
+    
+    - name: Get the Cloudflare API Token.
+      onepassword.connect.field_info:
+        vault: "{{ op_vault_id }}"
+        item: "{{ cloudflare_api_credentials_item}}"
+        field: "password"
+      register: cloudflare_api_token
+      delegate_to: localhost
+    
+    - name: Get the Cloudflare API Zone Id.
+      onepassword.connect.field_info:
+        vault: "{{ op_vault_id}}"
+        item: "{{ cloudflare_api_credentials_item }}"
+        field: "zone_id"
+      register: cloudflare_api_zone_id
+      delegate_to: localhost
+
+    - name: Copy files/etc/apt/sources.list to /etc/apt/sources.list
+      copy:
+        src: files/etc/apt/{{ item }}
+        dest: /etc/apt/{{ item }}
+        owner: root
+        group: root
+        mode: 0644
+        backup: no
+      loop:
+        - sources.list
+        - sources.list.d/ceph.list
+        - sources.list.d/pve-enterprise.list
+
+    - name: Install the jq package
+      apt:
+        name:
+          - jq
+        state: present
+        update_cache: yes
+
+    - name: check to see if acme account info exists
+      ansible.builtin.command:
+        argv:
+          - pvenode
+          - acme
+          - account
+          - info
+          - default
+          - --output-format=json
+      changed_when: false
+      register: acme_account_info
+
+    - name: Decide whether to register acme account
+      ansible.builtin.set_fact:
+        acme_register_account: "{{ ((acme_account_info.stdout | from_json).account.contact | first).split(':') | last != acme_email }}"
+
+    - name: Get acme registry URL
+      ansible.builtin.command:
+        argv:
+          - pvesh
+          - get
+          - /cluster/acme/directories
+          - --output-format=json
+      when: acme_register_account
+      changed_when: false
+      register: acme_directories
+
+    - name: Set acme directory URL
+      ansible.builtin.set_fact:
+        acme_directory: "{{ (acme_directories.stdout | from_json | first).url }}"
+      when: acme_register_account
+
+    - name: get acme directory terms of service
+      ansible.builtin.command:
+        argv:
+          - pvesh
+          - get
+          - /cluster/acme/tos
+          - -directory={{ acme_directory }}
+      when: acme_register_account
+      changed_when: false
+      register: acme_tos
+      
+    - name: Register an ACME account
+      ansible.builtin.command:
+        argv:
+          - pvesh
+          - create
+          - /cluster/acme/account
+          - -contact={{ acme_email }}
+          - -directory={{ acme_directory }}
+          - -tos_url={{ acme_tos.stdout }}
+          - -name=default
+      when: acme_register_account
+
+    - name: Get acme provider info
+      ansible.builtin.command:
+        argv:
+          - pvenode
+          - acme
+          - plugin
+          - list
+          - --output-format=json
+      changed_when: false
+      register: acme_providers
+
+    - name: Set acme provider info
+      ansible.builtin.set_fact:
+        expected_acme_provider_info: "CF_Account_ID={{ cloudflare_api_account_id.field.value }}\nCF_Token={{ cloudflare_api_token.field.value }}\nCF_Zone_ID={{ cloudflare_api_zone_id.field.value }}\n"
+        acme_provider_info: "{{ (acme_providers.stdout | from_json | selectattr('plugin', 'equalto', 'cloudflare') | first).data | default('') }}"
+
+    - name: Check to see if acme provider info is correct
+      ansible.builtin.set_fact:
+        acme_configure_provider: "{{ expected_acme_provider_info != acme_provider_info }}"
+
+    - debug:
+        msg: "confiugre: {{ acme_configure_provider }}\nexpected: {{ expected_acme_provider_info }}\n   actual: {{ acme_provider_info }}"
+    - name: Create temporary file with acme token data
+      tempfile:
+        path: /root
+        prefix: acme_token_
+        suffix: .ini
+        state: file
+      register: acme_token_file
+      when: acme_configure_provider
+
+    - name: Write acme token data to temporary file
+      ansible.builtin.copy:
+        dest: "{{ acme_token_file.path }}"
+        content: "{{ expected_acme_provider_info }}"
+      when: acme_configure_provider
+
+    - name: Configure acme provider
+      ansible.builtin.command:
+        argv:
+          - pvenode
+          - acme
+          - plugin
+          - add
+          - dns
+          - cloudflare
+          - --api=cf
+          - --data={{ acme_token_file.path }}
+      when: acme_configure_provider
+
+    - name: Remove temporary token file.
+      ansible.builtin.file:
+        path: "{{ acme_token_file.path }}"
+        state: absent
+      when: acme_configure_provider
+
+    - name: Set expected value for acmedomain0 and acmedomain1
+      ansible.builtin.set_fact:
+        expected_acmedomain0: "acmedomain0: {{ inventory_hostname }},plugin=cloudflare"
+        expected_acmedomain1: "acmedomain1: {{ pve_acmedomain1 }},plugin=cloudflare"
+
+    - name: Get acmedomain0
+      ansible.builtin.command:
+        argv:
+          - pvenode
+          - config
+          - get
+          - --property=acmedomain0
+      changed_when: acmedomain0.stdout != expected_acmedomain0
+      register: acmedomain0
+
+    - name: Set acmedomain0
+      ansible.builtin.command:
+        argv:
+          - pvenode
+          - config
+          - set
+          - --acmedomain0
+          - "{{ inventory_hostname }},plugin=cloudflare"
+      when: acmedomain0.changed
+
+    - name: Get acmedomain1
+      ansible.builtin.command:
+        argv:
+          - pvenode
+          - config
+          - get
+          - --property=acmedomain1
+      changed_when: acmedomain1.stdout != expected_acmedomain1
+      register: acmedomain1
+
+    - name: Set acmedomain1
+      ansible.builtin.command:
+        argv:
+          - pvenode
+          - config
+          - set
+          - --acmedomain1
+          - "{{ pve_acmedomain1 }},plugin=cloudflare"
+      when: acmedomain1.changed
+
+    - name: Order ACME certificate when acmedomain0 or acmedomain1 have changed.
+      ansible.builtin.command:
+        argv:
+          - pvenode
+          - acme
+          - cert
+          - order
+          - --force
+      when: acmedomain0.changed or acmedomain1.changed
+      register: acme_order_cert
+
+    - debug:
+        var: acme_order_cert
+
+    - name: Set Cloudflare A Record
+      community.general.cloudflare_dns:
+        zone: rye.ninja
+        record: "{{ inventory_hostname | replace('.rye.ninja', '') }}"
+        type: A
+        value: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+        proxied: false
+        api_token: "{{ cloudflare_api_token.field.value }}"

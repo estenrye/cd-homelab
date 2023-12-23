@@ -10,10 +10,13 @@ Accepted
 
 Steps to provision an ArgoCD cluster on Rackspace Spot.
 
-1. Provision 1Password on Rackspace Spot using the instructions in [1Password](../../applications/1password/README.md).
-2. Provision a CloudflareD tunnel on Rackspace Spot using the instructions in [CloudflareD](../../applications/cloudflared/README.md).
+1. Provision 1Password on Rackspace Spot using the instructions in [1Password](../../../applications/1password/README.md).
+2. Provision a ClusterIssuer for DNS01 on Rackspace Spot using the instructions in [ClusterIssuer for DNS01](../../../applications/clusterissuer-dns01/README.md).
+
+
+
+2. Provision a CloudflareD tunnel on Rackspace Spot using the instructions in [CloudflareD](../../../applications/cloudflared/README.md).
 3. Provision an Ingress Nginx controller on Rackspace Spot using the instructions in [Ingress Nginx](../../applications/ingress-nginx/README.md).
-4. Provision a ClusterIssuer for DNS01 on Rackspace Spot using the instructions in [ClusterIssuer for DNS01](../../applications/clusterissuer-dns01/README.md).
 
 
 ## Decision
