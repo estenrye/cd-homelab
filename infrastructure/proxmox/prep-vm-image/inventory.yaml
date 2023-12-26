@@ -4,7 +4,7 @@ proxmox_hypervisors:
     # pve02.usmnblm01.rye.ninja:
   vars:
     ansible_user: root
-    data_store: local-data
+    data_store: pmoxpool01
     nameserver:
       - 1.1.1.1
       - 1.0.0.1
@@ -23,4 +23,4 @@ proxmox_hypervisors:
         ciuser: ubuntu
         ipv4_address: 10.5.119.1
         package_manager: apt
-        boot_timeout: 30
+        boot_timeout: 60

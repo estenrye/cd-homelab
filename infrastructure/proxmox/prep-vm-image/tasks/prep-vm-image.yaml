@@ -1,9 +1,16 @@
-- name: Check to see if Proxmox VM Template is present.
-  ansible.builtin.shell:
-    cmd: "/usr/sbin/qm config {{ image.vm_id }} | grep 'template\\: 1'"
-  register: check_template_result
-  ignore_errors: true
-  changed_when: false
+- name: Check for Template
+  block:
+    - name: Check to see if Proxmox VM Template is present.
+      ansible.builtin.shell:
+        cmd: "/usr/sbin/qm config {{ image.vm_id }} | grep 'template\\: 1'"
+      changed_when: false
+    - name: Delete Proxmox VM Template
+      ansible.builtin.command:
+        cmd: /usr/sbin/qm destroy {{ image.vm_id }}
+  rescue:
+    - name: Notify the user that the template does not exist.
+      ansible.builtin.debug:
+        msg: "Template does not exist. Continuing with install."
 
 - name: Download VM Image File
   ansible.builtin.get_url:
@@ -11,336 +18,57 @@
     dest: /local-data/images/{{ image.url | basename }}
     url: "{{ image.url }}"
   register: image_download
-  when: 
-    - check_template_result.failed
-
-- name: Create Proxmox VM
-  ansible.builtin.command:
-    cmd: >
-      /usr/sbin/qm create {{ image.vm_id }} 
-        --name "{{ image.template_name }}" 
-        --memory 2048 
-        --cores 2 
-        --net0 virtio,bridge=vmbr0
-    creates: /etc/pve/nodes/{{ inventory_hostname | split('.') | first }}/qemu-server/{{ image.vm_id }}.conf
-  when: 
-    - check_template_result.failed
-
-# Import disk Image
-
-- name: Check for imported disk image
-  ansible.builtin.shell:
-    cmd: zfs list -o name | grep local-data/vm-{{ image.vm_id }}-disk-0
-  ignore_errors: true
-  changed_when: false
-  register: check_disk_result
-  when: 
-    - check_template_result.failed
-
-- name: Import disk image to Proxmox VM
-  ansible.builtin.command:
-    cmd: >
-      /usr/sbin/qm disk import {{ image.vm_id }}
-        {{ image_download.dest }}
-        {{ data_store }}
-  when:
-    - check_template_result.failed
-    - check_disk_result.failed
-
-# Set scsihw
-
-- name: Check for scsihw configuration on Proxmox VM
-  ansible.builtin.shell:
-    cmd: "/usr/sbin/qm config {{ image.vm_id }} | grep 'scsihw\\: virtio-scsi-pci'"
-  ignore_errors: true
-  changed_when: false
-  register: check_scsihw_result
-  when:
-    - check_template_result.failed
-
-- name: Set scsihw on Proxmox VM
-  ansible.builtin.command:
-    cmd: >
-      /usr/sbin/qm set {{ image.vm_id }} 
-        --scsihw virtio-scsi-pci 
-  when:
-    - check_template_result.failed
-    - check_scsihw_result.failed
-
-# Set SCSI0
-
-- name: Check for scsi0 configuration on Proxmox VM
-  ansible.builtin.shell:
-    cmd: "/usr/sbin/qm config {{ image.vm_id }} | grep 'scsi0\\: {{ data_store }}\\:vm-{{ image.vm_id }}-disk-0'"
-  ignore_errors: true
-  changed_when: false
-  register: check_scsi0_result
-  when:
-    - check_template_result.failed
-
-- name: Set SCSI0 on Proxmox VM
-  ansible.builtin.command:
-    cmd: >
-      /usr/sbin/qm set {{ image.vm_id }} 
-        --scsihw virtio-scsi-pci 
-        --scsi0 "{{ data_store }}:vm-{{ image.vm_id }}-disk-0"
-  when: 
-    - check_template_result.failed
-    - check_scsi0_result.failed
-
-# Boot configuration
-
-- name: Check for Boot configuration on Proxmox VM
-  ansible.builtin.shell:
-    cmd: "/usr/sbin/qm config {{ image.vm_id }} | grep 'boot\\: c'"
-  ignore_errors: true
-  changed_when: false
-  register: check_boot_result
-  when: 
-    - check_template_result.failed
-
-- name: Set Boot to 'c' on Proxmox VM
-  ansible.builtin.command:
-    cmd: >
-      /usr/sbin/qm set {{ image.vm_id }}
-        --boot c
-  when: 
-    - check_template_result.failed
-    - check_boot_result.failed
-
-# Boot Disk Configuration
-
-- name: Check for BootDisk configuration on Proxmox VM
-  ansible.builtin.shell:
-    cmd: "/usr/sbin/qm config {{ image.vm_id }} | grep 'bootdisk\\: scsi0'"
-  ignore_errors: true
-  changed_when: false
-  register: check_bootdisk_result
-  when: 
-    - check_template_result.failed
-
-- name: Set Boot Disk to SCSI0 on Proxmox VM
-  ansible.builtin.command:
-    cmd: >
-      /usr/sbin/qm set {{ image.vm_id }}
-        --bootdisk scsi0
-  when: 
-    - check_template_result.failed
-    - check_bootdisk_result.failed
-
-# Cloud Init
-
-- name: Check for CloudInit Disc configuration on Proxmox VM
-  ansible.builtin.shell:
-    cmd: "/usr/sbin/qm config {{ image.vm_id }} | grep 'ide2\\: {{ data_store }}\\:vm-{{ image.vm_id }}-cloudinit,media=cdrom'"
-  ignore_errors: true
-  changed_when: false
-  register: check_cloudinit_result
-  when: 
-    - check_template_result.failed
-
-- name: Create CloudInit Disk on Proxmox VM
-  ansible.builtin.command:
-    cmd: >
-      /usr/sbin/qm set {{ image.vm_id }}
-        --ide2 "{{ data_store }}:cloudinit"
-  when: 
-    - check_template_result.failed
-    - check_cloudinit_result.failed
-
-# Serial0
-- name: Check for serial0 configuration on Proxmox VM
-  ansible.builtin.shell:
-    cmd: "/usr/sbin/qm config {{ image.vm_id }} | grep 'serial0\\: socket'"
-  ignore_errors: true
-  changed_when: false
-  register: check_serial0_result
-  when:
-    - check_template_result.failed
-
-- name: Add Serial0 on Proxmox VM
-  ansible.builtin.command:
-    cmd: >
-      /usr/sbin/qm set {{ image.vm_id }}
-        --serial0 socket
-  when:
-    - check_template_result.failed
-    - check_serial0_result.failed
-
-# vga
-- name: Check for vga configuration on Proxmox VM
-  ansible.builtin.shell:
-    cmd: "/usr/sbin/qm config {{ image.vm_id }} | grep 'vga\\: serial0'"
-  ignore_errors: true
-  changed_when: false
-  register: check_vga_result
-  when:
-    - check_template_result.failed
-
-- name: Add vga on Proxmox VM
-  ansible.builtin.command:
-    cmd: >
-      /usr/sbin/qm set {{ image.vm_id }}
-        --vga serial0
-  when:
-    - check_template_result.failed
-    - check_vga_result.failed
-
-# agent
-- name: Check for agent configuration on Proxmox VM
-  ansible.builtin.shell:
-    cmd: "/usr/sbin/qm config {{ image.vm_id }} | grep 'agent\\: enabled=1'"
-  ignore_errors: true
-  changed_when: false
-  register: check_agent_result
-  when: 
-    - check_template_result.failed
-
-- name: Set Agent Enabled on Proxmox VM
-  ansible.builtin.command:
-    cmd: >
-      /usr/sbin/qm set {{ image.vm_id }}
-        --agent enabled=1
-  when:
-    - check_template_result.failed
-    - check_agent_result.failed
-
-# ciupgrade
-- name: Check for ciupgrade configuration on Proxmox VM
-  ansible.builtin.shell:
-    cmd: "/usr/sbin/qm config {{ image.vm_id }} | grep 'ciupgrade\\: 0'"
-  ignore_errors: true
-  changed_when: false
-  register: check_ciupgrade_result
-  when:
-    - check_template_result.failed
-
-- name: Set ciupgrade on Proxmox VM
-  ansible.builtin.command:
-    cmd: >
-      /usr/sbin/qm set {{ image.vm_id }}
-        --ciupgrade 0
-  when:
-    - check_template_result.failed
-    - check_ciupgrade_result.failed
-
-# ciuser
-- name: Check for ciuser configuration on Proxmox VM
-  ansible.builtin.shell:
-    cmd: "/usr/sbin/qm config {{ image.vm_id }} | grep 'ciuser\\: {{ image.ciuser }}'"
-  ignore_errors: true
-  changed_when: false
-  register: check_ciuser_result
-  when:
-    - check_template_result.failed
-
-- name: Set ciuser on Proxmox VM
-  ansible.builtin.command:
-    cmd: >
-      /usr/sbin/qm set {{ image.vm_id }}
-        --ciuser {{ image.ciuser }}
-  when:
-    - check_template_result.failed
-    - check_ciuser_result.failed
-
-# cipassword
-- name: Set cipassword on Proxmox VM
-  ansible.builtin.command:
-    cmd: >
-      /usr/sbin/qm set {{ image.vm_id }}
-        --cipassword {{ image.cipassword }}
-  when: 
-    - check_template_result.failed
-    - image.cipassword is defined
-
-# sshkeys
-
-- name: Check for sshkeys configuration on Proxmox VM
-  ansible.builtin.shell:
-    cmd: "/usr/sbin/qm config {{ image.vm_id }} | grep 'sshkeys\\: {{ sshkeys | map('urlencode') | join('%0A') | replace('/', '%2F') }}'"
-  ignore_errors: true
-  changed_when: false
-  register: check_sshkeys_result
-  when:
-    - check_template_result.failed
 
 - name: write sshkeys to file
   ansible.builtin.copy:
     dest: /local-data/images/ssh_keys
     content: "{{ sshkeys | join('\n') }}"
   register: sshkeys_result
-  when:
-    - check_template_result.failed
-    - check_sshkeys_result.failed
 
-- name: Set sshkeys on Proxmox VM
+- name: Create Proxmox VM
   ansible.builtin.command:
     cmd: >
-      /usr/sbin/qm set {{ image.vm_id }}
+      /usr/sbin/qm create {{ image.vm_id }} 
+        --name "{{ image.template_name }}" 
+        --memory 8192 
+        --cores 4
+        --net0 virtio,bridge=vmbr0
+        --scsihw virtio-scsi-pci
+        --boot c
+        --ide2 "{{ data_store }}:cloudinit"
+        --serial0 socket
+        --vga serial0
+        --agent enabled=1
+        --ciupgrade 0
+        --ciuser {{ image.ciuser }}
         --sshkeys '{{ sshkeys_result.dest }}'
-  when:
-    - check_template_result.failed
-    - check_sshkeys_result.failed
-
-# set static ip for agent installation
-
-- name: Check for static ip configuration on Proxmox VM
-  ansible.builtin.shell:
-    cmd: "/usr/sbin/qm config {{ image.vm_id }} | grep 'ipconfig0\\: ip={{ image.ipv4_address }}/{{ ipv4.subnet_size }},gw={{ ipv4.gateway }}'"
-  ignore_errors: true
-  changed_when: false
-  register: check_dhcp_result
-  when:
-    - check_template_result.failed
-
-- name: Set static ip on Proxmox VM
-  ansible.builtin.command:
-    cmd: >
-      /usr/sbin/qm set {{ image.vm_id }}
         --ipconfig0 'ip={{ image.ipv4_address }}/{{ ipv4.subnet_size }},gw={{ ipv4.gateway }}'
-  when:
-    - check_template_result.failed
-    - check_dhcp_result.failed
-
-# searchdomain
-
-- name: Check for searchdomain configuration on Proxmox VM
-  ansible.builtin.shell:
-    cmd: "/usr/sbin/qm config {{ image.vm_id }} | grep 'searchdomain\\: {{ searchdomain }}'"
-  ignore_errors: true
-  changed_when: false
-  register: check_searchdomain_result
-  when:
-    - check_template_result.failed
-
-- name: Set searchdomain on Proxmox VM
-  ansible.builtin.command:
-    cmd: >
-      /usr/sbin/qm set {{ image.vm_id }}
         --searchdomain '{{ searchdomain }}'
-  when:
-    - check_template_result.failed
-    - check_searchdomain_result.failed
-
-# nameserver
-
-- name: Check for nameserver configuration on Proxmox VM
-  ansible.builtin.shell:
-    cmd: "/usr/sbin/qm config {{ image.vm_id }} | grep 'nameserver\\: {{ nameserver | join(' ') }}'"
-  ignore_errors: true
-  changed_when: false
-  register: check_nameserver_result
-  when:
-    - check_template_result.failed
-
-- name: Set nameserver on Proxmox VM
-  ansible.builtin.command:
-    cmd: >
-      /usr/sbin/qm set {{ image.vm_id }}
         --nameserver '{{ nameserver | join(' ') }}'
-  when:
-    - check_template_result.failed
-    - check_nameserver_result.failed
+    creates: /etc/pve/nodes/{{ inventory_hostname | split('.') | first }}/qemu-server/{{ image.vm_id }}.conf
+
+# Import disk Image
+
+- name: Check for disk image
+  block:
+    - name: Check for imported disk image
+      ansible.builtin.shell:
+        cmd: rbd ls {{ data_store }} | grep vm-{{ image.vm_id }}-disk-0
+      changed_when: false
+      register: check_disk_result
+  rescue:
+    - name: Import disk image to Proxmox VM
+      ansible.builtin.command:
+        cmd: >
+          /usr/sbin/qm disk import {{ image.vm_id }}
+            {{ image_download.dest }}
+            {{ data_store }}
+    - name: Set disk image to boot
+      ansible.builtin.command:
+        cmd: >
+          /usr/sbin/qm set {{ image.vm_id }} 
+            --scsi0 "{{ data_store }}:vm-{{ image.vm_id }}-disk-0"
+            --bootdisk scsi0
 
 # start vm
 
@@ -350,21 +78,17 @@
   register: check_vmstate_result
   ignore_errors: true
   changed_when: false
-  when:
-    - check_template_result.failed
 
 - name: Start Proxmox VM
   ansible.builtin.shell:
     cmd: qm start {{ image.vm_id }}
   when:
-    - check_template_result.failed
     - check_vmstate_result.failed
 
 - name: Wait for VM to start
   ansible.builtin.pause:
     seconds: "{{ image.boot_timeout | default(60) }}"
   when:
-    - check_template_result.failed
     - check_vmstate_result.failed
 
 - name: Check to see if Proxmox VM is in started state.
@@ -373,8 +97,6 @@
   register: check_vmstate_result
   ignore_errors: true
   changed_when: false
-  when:
-    - check_template_result.failed
 
 - name: Update apt cache
   ansible.builtin.apt:
@@ -382,7 +104,6 @@
   delegate_to: "{{ image.ciuser }}@{{ image.ipv4_address }}"
   become: true
   when:
-    - check_template_result.failed
     - image.package_manager == 'apt'
     - check_vmstate_result
 
@@ -390,11 +111,11 @@
   ansible.builtin.package:
     name:
       - qemu-guest-agent
+      - cloud-init
       - vim
   delegate_to: "{{ image.ciuser }}@{{ image.ipv4_address }}"
   become: true
   when:
-    - check_template_result.failed
     - check_vmstate_result
 
 - name: Reboot to activate agent
@@ -402,58 +123,23 @@
   delegate_to: "{{ image.ciuser }}@{{ image.ipv4_address }}"
   become: true
   when:
-    - check_template_result.failed
+
     - check_vmstate_result
 
 - name: Shutdown Proxmox VM
   ansible.builtin.command:
     cmd: /usr/sbin/qm shutdown {{ image.vm_id }} --timeout 600
   when:
-    - check_template_result.failed
     - check_vmstate_result
 
 # enable dhcp before converting to template
 
-- name: Check for dhcp configuration on Proxmox VM
-  ansible.builtin.shell:
-    cmd: "/usr/sbin/qm config {{ image.vm_id }} | grep 'ipconfig0\\: ip=dhcp'"
-  ignore_errors: true
-  changed_when: false
-  register: check_dhcp_result
-  when:
-    - check_template_result.failed
-
-- name: Set dhcp on Proxmox VM
+- name: Set DHCP and Clear MAC address
   ansible.builtin.command:
-    cmd: >
-      /usr/sbin/qm set {{ image.vm_id }}
-        --ipconfig0 'ip=dhcp'
-  when:
-    - check_template_result.failed
-    - check_dhcp_result.failed
-
-# clear mac address
-
-- name: Check for mac address configuration on Proxmox VM
-  ansible.builtin.shell:
-    cmd: "/usr/sbin/qm config {{ image.vm_id }} | grep 'net0\\: virtio,bridge=vmbr0'"
-  ignore_errors: true
-  changed_when: false
-  register: check_macaddress_result
-  when:
-    - check_template_result.failed
-
-- name: clear mac address from Proxmox VM
-  ansible.builtin.command:
-    cmd: /usr/sbin/qm set {{ image.vm_id }} --net0 virtio,bridge=vmbr0
-  when:
-    - check_template_result.failed
-    - check_macaddress_result.failed
+    cmd: /usr/sbin/qm set {{ image.vm_id }} --ipconfig0 'ip=dhcp' --net0 virtio,bridge=vmbr0
 
 # Convert to Template
 
 - name: Convert to Template
   ansible.builtin.command:
     cmd: /usr/sbin/qm template {{ image.vm_id }}
-  when:
-    - check_template_result.failed
