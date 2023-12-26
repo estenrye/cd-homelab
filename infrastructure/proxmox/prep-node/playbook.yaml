@@ -1,4 +1,4 @@
-- hosts: proxmox-servers
+- hosts: proxmox_servers
   environment:
     OP_CONNECT_HOST: "http://op-connect-api.127-0-0-1.a.rye.ninja:8080"
   tasks:
@@ -239,8 +239,9 @@
         line: "{{ item }}"
       with_items:
         - vfio
-        - vfio_iommu_type=1
+        - vfio_iommu_type1
         - vfio_pci
+        - vfio_virqfd
       register: modules_file
 
     - name: Update GRUB
