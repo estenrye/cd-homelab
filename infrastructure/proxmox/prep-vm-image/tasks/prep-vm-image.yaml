@@ -12,11 +12,33 @@
       ansible.builtin.debug:
         msg: "Template does not exist. Continuing with install."
 
+- name: Set Checksum Url
+  ansible.builtin.set_fact:
+    checksum_url: "https://cloud-images.ubuntu.com/minimal/releases/{{ image.suite }}/release/SHA256SUMS"
+
+- name: Set Image Url
+  ansible.builtin.set_fact:
+    image_url: "https://cloud-images.ubuntu.com/minimal/releases/{{ image.suite }}/release/ubuntu-{{ image.version }}-minimal-cloudimg-amd64.img"
+
+- name: Download SHA256SUMS file
+  get_url:
+    url: "{{ checksum_url }}"
+    dest: /local-data/images/{{ image_url | basename }}.sha256sums
+
+- name: Retrieve checksum value
+  shell: "grep {{ image_url | basename }} /local-data/images/{{ image_url | basename }}.sha256sums | awk '{print $1}'"
+  changed_when: false
+  register: checksum_value
+
+- name: Print checksum value
+  debug:
+    var: checksum_value.stdout
+
 - name: Download VM Image File
   ansible.builtin.get_url:
-    checksum: "{{ image.checksum }}"
-    dest: /local-data/images/{{ image.url | basename }}
-    url: "{{ image.url }}"
+    checksum: "sha256:{{ checksum_value.stdout }}"
+    dest: /local-data/images/{{ image_url | basename }}
+    url: "{{ image_url }}"
   register: image_download
 
 - name: write sshkeys to file
@@ -29,7 +51,7 @@
   ansible.builtin.command:
     cmd: >
       /usr/sbin/qm create {{ image.vm_id }} 
-        --name "{{ image.template_name }}" 
+        --name "ubuntu-{{ image.version | replace('.', '-') }}-minimal-{{ ansible_date_time.iso8601_basic_short }}" 
         --memory 8192 
         --cores 4
         --net0 virtio,bridge=vmbr0
@@ -77,48 +99,96 @@
 
 # start vm
 
-- name: Check to see if Proxmox VM is in started state.
-  ansible.builtin.shell:
-    cmd: "/usr/sbin/qm status {{ image.vm_id }} | grep 'status\\: running'"
-  register: check_vmstate_result
-  ignore_errors: true
-  changed_when: false
+- name: Start VM
+  block:
+    - name: Check to see if Proxmox VM is in started state.
+      ansible.builtin.shell:
+        cmd: "/usr/sbin/qm status {{ image.vm_id }} | grep 'status\\: running'"
+      changed_when: false
+  rescue:
+    - name: Start Proxmox VM
+      ansible.builtin.shell:
+        cmd: qm start {{ image.vm_id }}
 
-- name: Start Proxmox VM
-  ansible.builtin.shell:
-    cmd: qm start {{ image.vm_id }}
-  when:
-    - check_vmstate_result.failed
-
-- name: Wait for VM to start
-  ansible.builtin.pause:
-    seconds: "{{ image.boot_timeout | default(60) }}"
-  when:
-    - check_vmstate_result.failed
-
-- name: Check to see if Proxmox VM is in started state.
-  ansible.builtin.shell:
-    cmd: "/usr/sbin/qm status {{ image.vm_id }} | grep 'status\\: running'"
-  register: check_vmstate_result
-  ignore_errors: true
-  changed_when: false
+- name: Wait up to 600 seconds for VM to boot, then timeout.
+  ansible.builtin.wait_for_connection:
+    timeout: 600
+  delegate_to: "{{ image.ciuser }}@{{ image.ipv4_address }}"
 
 - name: expand ext4 filesystem
   ansible.builtin.command:
     cmd: resize2fs /dev/sda1
   delegate_to: "{{ image.ciuser }}@{{ image.ipv4_address }}"
   become: true
-  when:
-    - check_vmstate_result
+
+- name: Write apt-fast sources
+  ansible.builtin.template:
+    src: ../templates/apt-fast.sources.j2
+    dest: /etc/apt/sources.list.d/{{ source.name }}.sources
+    owner: root
+    group: root
+    mode: 0644
+    backup: no
+  delegate_to: "{{ image.ciuser }}@{{ image.ipv4_address }}"
+  become: true
+  loop_control:
+    loop_var: source
+  loop:
+    - name: 00-ubuntu
+      types: deb
+      uris: "{{ apt_mirror | default('http://archive.ubuntu.com') }}/ubuntu"
+      suites: "{{ image.suite }} {{ image.suite }}-updates {{ image.suite }}-backports"
+      components: main restricted universe multiverse
+    - name: 00-ubuntu-src
+      types: deb-src
+      uris: "{{ apt_mirror | default('http://archive.ubuntu.com') }}/ubuntu"
+      suites: "{{ image.suite }} {{ image.suite }}-updates {{ image.suite }}-backports"
+      components: "main restricted universe multiverse"
+      enabled: "no"
+    - name: 00-ubuntu-security
+      types: deb
+      uris: "{{ apt_mirror | default('http://security.ubuntu.com') }}/ubuntu"
+      suites: "{{ image.suite }}-security"
+      components: main restricted universe multiverse
+    - name: 00-ubuntu-security-src
+      types: deb-src
+      uris: "{{ apt_mirror | default('http://security.ubuntu.com') }}/ubuntu"
+      suites: "{{ image.suite }}-security"
+      components: main restricted universe multiverse
+      enabled: "no"
+
+- name: Remove /etc/apt/sources.list
+  ansible.builtin.file:
+    path: /etc/apt/sources.list
+    state: absent
+  delegate_to: "{{ image.ciuser }}@{{ image.ipv4_address }}"
+  become: true
+
+# - name: Replace URL in sources.list
+#   ansible.builtin.replace:
+#     path: /etc/apt/sources.list
+#     regexp: '{{ item }}'
+#     line: 'http://apt.tools.rye.ninja'
+#     backup: no
+#   delegate_to: "{{ image.ciuser }}@{{ image.ipv4_address }}"
+#   become: true
+#   loop:
+#     - "http://archive.ubuntu.com"
+#     - "http://security.ubuntu.com"
+
+# - name: Copy sources.list to sources.list.tmpl
+#   ansible.builtin.copy:
+#     src: /etc/apt/sources.list
+#     dest: /etc/cloud/templates/sources.list.tmpl
+#     remote_src: yes
+#   delegate_to: "{{ image.ciuser }}@{{ image.ipv4_address }}"
+#   become: true
 
 - name: Update apt cache
   ansible.builtin.apt:
     update_cache: true
   delegate_to: "{{ image.ciuser }}@{{ image.ipv4_address }}"
   become: true
-  when:
-    - image.package_manager == 'apt'
-    - check_vmstate_result
 
 - name: Install packages
   ansible.builtin.package:
@@ -128,22 +198,15 @@
       - vim
   delegate_to: "{{ image.ciuser }}@{{ image.ipv4_address }}"
   become: true
-  when:
-    - check_vmstate_result
 
 - name: Reboot to activate agent
   ansible.builtin.reboot:
   delegate_to: "{{ image.ciuser }}@{{ image.ipv4_address }}"
   become: true
-  when:
-
-    - check_vmstate_result
 
 - name: Shutdown Proxmox VM
   ansible.builtin.command:
     cmd: /usr/sbin/qm shutdown {{ image.vm_id }} --timeout 600
-  when:
-    - check_vmstate_result
 
 # enable dhcp before converting to template
 

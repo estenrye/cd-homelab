@@ -1,0 +1,50 @@
+# https://blobfolio.com/2022/deb822-and-apt-key/
+
+Types: {{ source.types | default ('deb') }}
+URIs: {{ source.uris | mandatory }}
+Suites: {{ source.suites | mandatory }}
+Components: {{ source.components | mandatory }}
+{% if source.architectures is defined %}
+Architectures: {{ source.architectures }}
+{% endif %}
+{% if source.by_hash is defined %}
+By-Hash: {{ source.by_hash }}
+{% endif %}
+{% if source.check_valid_until is defined %}
+Check-Valid-Until: {{ source.check_valid_until }}
+{% endif %}
+Enabled: {{ source.enabled | default ('yes') }}
+{% if source.languages is defined %}
+Languages: {{ source.languages }}
+{% endif %}
+{% if source.pdiffs is defined %}
+PDiffs: {{ source.pdiffs }}
+{% endif %}
+{%- if source.signed_by_path is defined %}
+Signed-By: {{ source.signed_by_path }}
+{% endif %}
+{% if source.signed_by_key is defined %}
+Signed-By:
+{{ source.signed_by_key | indent(2) }}
+{% endif %}
+{% if source.targets is defined %}
+Targets: {{ source.targets }}
+{% endif %}
+{% if source.valid_until_max is defined %}
+Valid-Until-Max: {{ source.valid_until_max }}
+{% endif %}
+{% if source.valid_until_min is defined %}
+Valid-Until-Min: {{ source.valid_until_min }}
+{% endif %}
+{% if source.allow_downgrade_to_insecure is defined %}
+Allow-Downgrade-To-Insecure: {{ source.allow_downgrade_to_insecure }}
+{% endif %}
+{% if source.allow_insecure is defined %}
+Allow-Insecure: {{ source.allow_insecure }}
+{% endif %}
+{% if source.allow_weak is defined %}
+Allow-Weak: {{ source.allow_weak }}
+{% endif %}
+{% if source.trusted is defined %}
+Trusted: {{ source.trusted }}
+{% endif %}
