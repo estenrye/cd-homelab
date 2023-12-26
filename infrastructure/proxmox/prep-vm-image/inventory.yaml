@@ -19,6 +19,7 @@ proxmox_hypervisors:
       - url: https://cloud-images.ubuntu.com/minimal/releases/jammy/release-20230814/ubuntu-22.04-minimal-cloudimg-amd64.img
         checksum: "sha256:72ca6ba4f8b7305479ed32ed79890a52aec4f0629762286dbc9a5e5b3997489c"
         vm_id: 9000
+        disk_size: 40G
         template_name: ubuntu-22-04-minimal-20230814
         ciuser: ubuntu
         ipv4_address: 10.5.119.1

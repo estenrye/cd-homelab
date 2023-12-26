@@ -69,6 +69,11 @@
           /usr/sbin/qm set {{ image.vm_id }} 
             --scsi0 "{{ data_store }}:vm-{{ image.vm_id }}-disk-0"
             --bootdisk scsi0
+    - name: Resize disk image
+      ansible.builtin.command:
+        cmd: >
+          /usr/sbin/qm resize {{ image.vm_id }} 
+            scsi0 +{{ image.disk_size }}
 
 # start vm
 
@@ -97,6 +102,14 @@
   register: check_vmstate_result
   ignore_errors: true
   changed_when: false
+
+- name: expand ext4 filesystem
+  ansible.builtin.command:
+    cmd: resize2fs /dev/sda1
+  delegate_to: "{{ image.ciuser }}@{{ image.ipv4_address }}"
+  become: true
+  when:
+    - check_vmstate_result
 
 - name: Update apt cache
   ansible.builtin.apt:
