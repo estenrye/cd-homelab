@@ -92,7 +92,7 @@ resource "proxmox_lxc" "basic" {
   vmid = each.value.vmid
   target_node  = "pve01"
   hostname     = join(".", [each.key, var.cloudflare_zone])
-  clone       = "101"
+  clone       = "100"
 
   cores = each.value.cores
   memory = each.value.memory
@@ -103,7 +103,7 @@ resource "proxmox_lxc" "basic" {
 
   // Terraform will crash without rootfs defined
   rootfs {
-    storage = "local-data"
+    storage = "pmoxpool01"
     size    = "100G"
   }
 
