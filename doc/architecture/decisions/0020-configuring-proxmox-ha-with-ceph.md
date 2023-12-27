@@ -16,7 +16,10 @@ In order to support the high availability of the Proxmox cluster, I have chosen 
 - [I built another server cluster... - Promxox HA Cluster w/ Ceph](https://youtu.be/lELrvffVP04)
 - [Proxmox 8 cluster setup with ceph and HA](https://youtu.be/Mz-nXlqovLI)
 - [$250 Proxmox Cluster gets HYPER-CONVERGED with Ceph! Basic Ceph, RADOS, and RBD for Proxmox VMs](https://www.youtube.com/watch?v=Vd8GG9twjRU)
-
+- [Proxmox 8 Setup: 7 Things to Do After Installing Proxmox 8](https://youtu.be/1hP1anXex4k)
+- [First Steps After Installing Proxmox 8: A Comprehensive Guide](https://theramblingtech.com/setup-proxmox8/)
+- [Proxmox 8.0 - PCIe Passthrough Tutorial](https://youtu.be/_hOBAGKLQkI)
+- [Before I do anything on Proxmox, I do this first...](https://youtu.be/GoZaMgEgrHw)
 
 ## Decision
 

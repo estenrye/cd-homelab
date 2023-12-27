@@ -158,35 +158,21 @@
       enabled: "no"
 
 - name: Remove /etc/apt/sources.list
-  ansible.builtin.file:
-    path: /etc/apt/sources.list
-    state: absent
+  ansible.builtin.copy:
+    dest: "{{ item }}"
+    content: ""
   delegate_to: "{{ image.ciuser }}@{{ image.ipv4_address }}"
   become: true
-
-# - name: Replace URL in sources.list
-#   ansible.builtin.replace:
-#     path: /etc/apt/sources.list
-#     regexp: '{{ item }}'
-#     line: 'http://apt.tools.rye.ninja'
-#     backup: no
-#   delegate_to: "{{ image.ciuser }}@{{ image.ipv4_address }}"
-#   become: true
-#   loop:
-#     - "http://archive.ubuntu.com"
-#     - "http://security.ubuntu.com"
-
-# - name: Copy sources.list to sources.list.tmpl
-#   ansible.builtin.copy:
-#     src: /etc/apt/sources.list
-#     dest: /etc/cloud/templates/sources.list.tmpl
-#     remote_src: yes
-#   delegate_to: "{{ image.ciuser }}@{{ image.ipv4_address }}"
-#   become: true
+  loop:
+    - /etc/apt/sources.list
+    - /etc/cloud/templates/sources.list.tmpl
+    - /etc/cloud/templates/sources.list.ubuntu.tmpl
+    - /etc/cloud/templates/sources.list.debian.tmpl
 
 - name: Update apt cache
   ansible.builtin.apt:
     update_cache: true
+    upgrade: true
   delegate_to: "{{ image.ciuser }}@{{ image.ipv4_address }}"
   become: true
 
