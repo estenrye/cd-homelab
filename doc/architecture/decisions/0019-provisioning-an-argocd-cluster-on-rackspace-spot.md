@@ -16,7 +16,7 @@ Steps to provision an ArgoCD cluster on Rackspace Spot.
 
 
 2. Provision a CloudflareD tunnel on Rackspace Spot using the instructions in [CloudflareD](../../../applications/cloudflared/README.md).
-3. Provision an Ingress Nginx controller on Rackspace Spot using the instructions in [Ingress Nginx](../../applications/ingress-nginx/README.md).
+3. Provision an Ingress Nginx controller on Rackspace Spot using the instructions in [Ingress Nginx](../../../applications/ingress-nginx/README.md).
 
 
 ## Decision

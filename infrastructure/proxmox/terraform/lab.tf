@@ -86,86 +86,8 @@ resource "cloudflare_record" "a_record" {
   proxied = false
 }
 
-resource "proxmox_lxc" "basic" {
-  for_each = var.hosts
-
-  vmid = each.value.vmid
-  target_node  = "pve01"
-  hostname     = join(".", [each.key, var.cloudflare_zone])
-  clone       = "100"
-
-  cores = each.value.cores
-  memory = each.value.memory
-  onboot = true
-  start = true
-  swap = 0
-  unprivileged = false
-
-  // Terraform will crash without rootfs defined
-  rootfs {
-    storage = "pmoxpool01"
-    size    = "100G"
-  }
-
-  network {
-    name   = "eth0"
-    bridge = "vmbr0"
-    ip     = "dhcp"
-    hwaddr = each.value.mac
-  }
-}
-
-# resource "proxmox_vm_qemu" "qemu_server_pxe" {
-#     for_each = var.hosts_qemu_pxe
-
-#     name                      = join(".", [each.key, var.cloudflare_zone])
-#     agent                     = 1
-#     boot                      = "order=virtio0;net0"
-#     pxe                       = true
-#     target_node               = each.value.target_node
-#     scsihw                   = "virtio-scsi-single"
-#     memory                    = each.value.memory
-#     cores                     = each.value.cpu
-
-#     network {
-#         bridge    = each.value.bridge
-#         firewall  = false
-#         link_down = false
-#         model     = "virtio"
-#         macaddr   = each.value.mac
-#     }
-#     disk {
-#         size = each.value.disk
-#         storage = each.value.storage
-#         type = "virtio"
-#     }
-# }
-
-# # register a host with unifi
-# resource "unifi_user" "qemu_server_clone_static_ip" {
-#   for_each = var.hosts_qemu_clone
-
-#   name = join(".", [each.key, var.cloudflare_zone])
-#   mac = each.value.mac
-#   network_id = "${data.unifi_network.lab_network.id}"
-#   fixed_ip = each.value.ip
-#   local_dns_record = join(".", [each.key, var.cloudflare_zone])
-# }
-
-# # create a cloudflare a record using the cloudflare terraform provider
-# resource "cloudflare_record" "qemu_server_clone_a_record" {
-#   for_each = var.hosts_qemu_clone
-
-#   zone_id = "${data.cloudflare_zone.zone.id}"
-#   name    = each.key
-#   value   = each.value.ip
-#   type    = "A"
-#   ttl     = 300
-#   proxied = false
-# }
-
 # resource "proxmox_vm_qemu" "qemu_server_clone" {
-#     for_each = var.hosts_qemu_clone
+#     for_each = var.hosts
 
 #     vmid                      = each.value.vmid
 #     name                      = join(".", [each.key, var.cloudflare_zone])
@@ -173,19 +95,15 @@ resource "proxmox_lxc" "basic" {
 #     clone                     = each.value.clone
 #     target_node               = each.value.target_node
 #     memory                    = each.value.memory
-#     cores                     = each.value.cpu
-#     boot = "scsi0"
+#     cores                     = each.value.cores
+#     hastate                   = each.value.hastate
 #     full_clone = false
+
 #     network {
 #         bridge    = each.value.bridge
 #         firewall  = false
 #         link_down = false
 #         model     = "virtio"
 #         macaddr   = each.value.mac
-#     }
-#     disk {
-#         size = each.value.disk
-#         storage = each.value.storage
-#         type = "scsi"
 #     }
 # }
