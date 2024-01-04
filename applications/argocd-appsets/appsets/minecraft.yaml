@@ -8,15 +8,15 @@ spec:
   goTemplateOptions: ["missingkey=error"]
   generators:
   - list:
-      elements:
-      - instanceName: arrendelle-winter
-        server: https://kubernetes.default.svc
-        downloadWorldUrl: https://s3.us-west-1.wasabisys.com/minecraft-rye-ninja/arrendelle-winter.zip
-        jvmMemory: 2048M
-        requestMemory: 4096Mi
-        requestCPU: 3000m
-        limitMemory: 7168Mi
-        limitCPU: 6000m
+      elements: []
+      # - instanceName: arrendelle-winter
+      #   server: https://kubernetes.default.svc
+      #   downloadWorldUrl: https://s3.us-west-1.wasabisys.com/minecraft-rye-ninja/arrendelle-winter.zip
+      #   jvmMemory: 2048M
+      #   requestMemory: 4096Mi
+      #   requestCPU: 3000m
+      #   limitMemory: 7168Mi
+      #   limitCPU: 6000m
   template:
     metadata:
       name: '{{.instanceName}}-minecraft' # 'name' field of the Secret

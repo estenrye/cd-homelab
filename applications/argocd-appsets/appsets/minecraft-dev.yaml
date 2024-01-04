@@ -8,9 +8,9 @@ spec:
   goTemplateOptions: ["missingkey=error"]
   generators:
   - list:
-      elements:
-      - instanceName: arrendelle-winter-dev
-        server: https://kubernetes.default.svc
+      elements: []
+      # - instanceName: arrendelle-winter-dev
+      #   server: https://kubernetes.default.svc
   template:
     metadata:
       name: '{{.instanceName}}-minecraft' # 'name' field of the Secret
