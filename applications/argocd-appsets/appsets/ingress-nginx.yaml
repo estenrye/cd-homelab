@@ -11,7 +11,7 @@ spec:
           rye.ninja/egress-load-balancer: "cloudflared"
       values:
         targetRevision: HEAD
-        valuesFile: applications/ingress-nginx/values.k3s.yaml
+        valuesFile: applications/ingress-nginx/values.cloudflared.yaml
   - clusters:
       selector:
         matchLabels:
