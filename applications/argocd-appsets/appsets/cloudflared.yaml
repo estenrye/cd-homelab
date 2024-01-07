@@ -13,7 +13,7 @@ spec:
         targetRevision: HEAD
   template:
     metadata:
-      name: '{{name}}-cert-cloudflared' # 'name' field of the Secret
+      name: '{{name}}-cloudflared' # 'name' field of the Secret
       labels:
         rye.ninja/appset: cloudflared
     spec:
