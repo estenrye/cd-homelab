@@ -23,7 +23,7 @@ op item create \
   --account=ryefamily.1password.com \
   --vault=Home_Lab \
   --category="API Credential" \
-  --title=cloudflared.${TUNNEL_ID}.rye.ninja \
+  --title=cloudflared.${TUNNEL_NAME}.rye.ninja \
   --tags=cloudflared \
   "cloudflared.credentials\.json[file]=${HOME}/.cloudflared/${TUNNEL_ID}.json"
 

@@ -29,7 +29,7 @@ spec:
               itemPath: "vaults/Home_Lab/items/cloudflared.{{ name }}.rye.ninja"
             cloudflare-tunnel:
               cloudflare:
-                tunnel: "{{ name }}"
+                tunnelName: "{{ name }}"
                 ingress:
                   - hostname: "*.{{ name }}.rye.ninja"
                     service: http://ingress-nginx-controller.ingress-nginx:80
