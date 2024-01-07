@@ -23,18 +23,18 @@ op item create \
   --account=ryefamily.1password.com \
   --vault=Home_Lab \
   --category="API Credential" \
-  --title=cloudflared.rspot-home-lab.rye.ninja \
+  --title=cloudflared.${TUNNEL_ID}.rye.ninja \
   --tags=cloudflared \
   "cloudflared.credentials\.json[file]=${HOME}/.cloudflared/${TUNNEL_ID}.json"
 
-cloudflared tunnel route dns ${TUNNEL_ID} "*.rspot-home-lab.rye.ninja"
+cloudflared tunnel route dns ${TUNNEL_ID} "*.${TUNNEL_NAME}.rye.ninja"
 ```
 
 ## Deploying the Tunnel
 
 ```bash
 TUNNEL_NAME='rspot-home-lab'
-ITEM_PATH="vaults/Home_Lab/items/cloudflared.rspot-home-lab.rye.ninja"
+ITEM_PATH="vaults/Home_Lab/items/cloudflared.${TUNNEL_NAME}.rye.ninja"
 helm upgrade --install cloudflared \
   --namespace cloudflared \
   --create-namespace \
