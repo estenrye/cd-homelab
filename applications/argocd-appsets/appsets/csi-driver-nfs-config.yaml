@@ -14,6 +14,8 @@ spec:
   template:
     metadata:
       name: '{{name}}-csi-driver-nfs-config' # 'name' field of the Secret
+      labels:
+        rye.ninja/appset: csi-driver-nfs-config
     spec:
       project: "platform"
       source:

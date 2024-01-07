@@ -9,6 +9,8 @@ spec:
   template:
     metadata:
       name: '{{name}}-cert-manager' # 'name' field of the Secret
+      labels:
+        rye.ninja/appset: cert-manager
     spec:
       project: "platform"
       source:

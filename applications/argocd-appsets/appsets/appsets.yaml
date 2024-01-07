@@ -14,6 +14,8 @@ spec:
   template:
     metadata:
       name: '{{name}}-appsets' # 'name' field of the Secret
+      labels:
+        rye.ninja/appset: appsets
     spec:
       project: "default"
       sources:

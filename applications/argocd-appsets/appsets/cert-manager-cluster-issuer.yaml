@@ -13,6 +13,8 @@ spec:
   template:
     metadata:
       name: '{{name}}-cert-manager-cluster-issuer' # 'name' field of the Secret
+      labels:
+        rye.ninja/appset: cert-manager-cluster-issuer
     spec:
       project: "platform"
       source:

@@ -12,6 +12,8 @@ spec:
   template:
     metadata:
       name: '{{name}}-metallb' # 'name' field of the Secret
+      labels:
+        rye.ninja/appset: metallb
     spec:
       project: "platform"
       sources:

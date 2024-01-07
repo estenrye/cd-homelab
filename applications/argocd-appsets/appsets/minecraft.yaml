@@ -20,6 +20,8 @@ spec:
   template:
     metadata:
       name: '{{.instanceName}}-minecraft' # 'name' field of the Secret
+      labels:
+        rye.ninja/appset: minecraft
     spec:
       project: "default"
       sources:

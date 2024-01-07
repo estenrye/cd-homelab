@@ -26,6 +26,8 @@ spec:
   template:
     metadata:
       name: '{{name}}-ingress-nginx' # 'name' field of the Secret
+      labels:
+        rye.ninja/appset: ingress-nginx
     spec:
       project: "platform"
       sources:

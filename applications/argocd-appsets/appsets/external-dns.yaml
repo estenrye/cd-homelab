@@ -36,6 +36,8 @@ spec:
   template:
     metadata:
       name: '{{name}}-external-dns' # 'name' field of the Secret
+      labels:
+        rye.ninja/appset: external-dns
     spec:
       project: "platform"
       source:

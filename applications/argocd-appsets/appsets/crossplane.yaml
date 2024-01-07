@@ -12,6 +12,8 @@ spec:
   template:
     metadata:
       name: '{{name}}-crossplane' # 'name' field of the Secret
+      labels:
+        rye.ninja/appset: crossplane
     spec:
       project: "platform"
       source:
