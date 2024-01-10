@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: minecraft-dev
+  name: minecraft
   namespace: argocd
 spec:
   goTemplate: true
@@ -15,7 +15,7 @@ spec:
     metadata:
       name: '{{.instanceName}}-minecraft' # 'name' field of the Secret
       labels:
-        rye.ninja/appset: minecraft-dev
+        rye.ninja/appset: minecraft
     spec:
       project: "default"
       sources:
