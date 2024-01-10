@@ -1,0 +1,5 @@
+ipAddressPools:
+- name: l2-address-pool
+  protocol: layer2
+  addresses:
+  - 10.5.216.151-10.5.216.180

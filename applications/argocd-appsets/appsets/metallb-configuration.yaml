@@ -23,7 +23,8 @@ spec:
         targetRevision: '{{ values.targetRevision }}'
         path: applications/metallb-configuration
         helm:
-          valueFiles: []
+          valueFiles:
+          - ../../metallb-configuration/examples/values.{{ name }}.yaml
           valuesObject: {}
       destination:
         server: '{{server}}' # 'server' field of the secret
