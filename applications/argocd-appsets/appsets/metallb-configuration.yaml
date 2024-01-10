@@ -24,7 +24,7 @@ spec:
         path: applications/metallb-configuration
         helm:
           valueFiles:
-          - ../../metallb-configuration/examples/values.{{ name }}.yaml
+          - applications/metallb-configuration/examples/values.{{ name }}.yaml
           valuesObject: {}
       destination:
         server: '{{server}}' # 'server' field of the secret
