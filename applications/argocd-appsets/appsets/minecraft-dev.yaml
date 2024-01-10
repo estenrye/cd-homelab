@@ -8,9 +8,9 @@ spec:
   goTemplateOptions: ["missingkey=error"]
   generators:
   - list:
-      elements: []
-      # - instanceName: arrendelle-winter-dev
-      #   server: https://kubernetes.default.svc
+      elements:
+      - instanceName: arrendelle-winter-dev
+        server: https://spot.rackspace.com/apis/ngpc.rxt.io/v1/namespaces/org-pduvfizupzbnb6dq/cloudspaces/rspot-wireguard/proxy
   template:
     metadata:
       name: '{{.instanceName}}-minecraft' # 'name' field of the Secret

@@ -1,27 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: minecraft
+  name: minecraft-dev
   namespace: argocd
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
   - list:
-      elements: []
-      # - instanceName: arrendelle-winter
-      #   server: https://kubernetes.default.svc
-      #   downloadWorldUrl: https://s3.us-west-1.wasabisys.com/minecraft-rye-ninja/arrendelle-winter.zip
-      #   jvmMemory: 2048M
-      #   requestMemory: 4096Mi
-      #   requestCPU: 3000m
-      #   limitMemory: 7168Mi
-      #   limitCPU: 6000m
+      elements:
+      - instanceName: arrendelle-winter
+        server: https://k8s.home-lab.usmnblm01.rye.ninja:6443
   template:
     metadata:
       name: '{{.instanceName}}-minecraft' # 'name' field of the Secret
       labels:
-        rye.ninja/appset: minecraft
+        rye.ninja/appset: minecraft-dev
     spec:
       project: "default"
       sources:
@@ -31,148 +25,24 @@ spec:
         helm:
           releaseName: "{{.instanceName}}"
           valueFiles:
+            - $valuesrepo/applications/minecraft/values/common.values.yaml
+            - $valuesrepo/applications/minecraft/values/image.values.yaml
+            - $valuesrepo/applications/minecraft/values/minecraftServer.values.yaml
+            - $valuesrepo/applications/minecraft/values/minecraftServer.query.values.yaml
+            - $valuesrepo/applications/minecraft/values/minecraftServer.rcon.values.yaml
+            - $valuesrepo/applications/minecraft/values/persistence.values.yaml
+            - $valuesrepo/applications/minecraft/values/securityContext.values.yaml
             - $valuesrepo/applications/minecraft/values/extraDeploy.values.yaml
             - $valuesrepo/applications/minecraft/values/mcbackup.values.yaml
             - $valuesrepo/applications/minecraft/values/minecraftServer.modrinth.values.yaml
+            - $valuesrepo/applications/minecraft/values/minecraftServer.spiget.values.yaml
+            - $valuesrepo/applications/minecraft/values/minecraftServer.users.values.yaml
+            - $valuesrepo/applications/minecraft/values/overrides/{{ .instanceName }}.yaml
           valuesObject:
             mcbackup:
-              destDir: /backups/{{ .instanceName }} 
-            resources:
-              requests:
-                memory: "{{ .requestMemory }}"
-                cpu: "{{ .requestCPU }}"
-              limits:
-                memory: "{{ .limitMemory }}"
-                cpu: "{{ .limitCPU }}"
-            # extraVolumes:
-            #   - volumeMounts:
-            #       - name: prometheus-exporter-config
-            #         mountPath: /data/plugins/PrometheusExporter
-            #         readOnly: true
-            #     volumes:
-            #       - name: prometheus-exporter-config
-            #         configMap:
-            #           name: minecraft-minecraft-prometheus
+              destDir: /backups/{{ .instanceName }}
+              rcloneDestDir: "minecraft-backups/{{ .instanceName }}"
             minecraftServer:
-              eula: "TRUE"
-              version: 1.20.2
-              type: "PAPER"
-              # spigotDownloadUrl: https://hub.spigotmc.org/jenkins/job/BuildTools/152/artifact/target/BuildTools.jar
-              # Set to true if running Feed The Beast and get an error like "unable to launch forgemodloader"
-              ftbLegacyJavaFixer: false
-              # One of: peaceful, easy, normal, and hard
-              difficulty: easy
-              # A comma-separated list of player names to whitelist.
-              whitelist: esten_rye,flower_ada_bread,DracoIam,RaeRae15
-              # A comma-separated list of player names who should be admins.
-              ops: esten_rye,flower_ada_bread,DracoIam,RaeRae15
-              # A server icon URL for server listings. Auto-scaled and transcoded.
-              icon:
-              # Max connected players.
-              maxPlayers: 20
-              # This sets the maximum possible size in blocks, expressed as a radius, that the world border can obtain.
-              maxWorldSize: 10000
-              # Allows players to travel to the Nether.
-              allowNether: true
-              # Allows server to announce when a player gets an achievement.
-              announcePlayerAchievements: true
-              # Enables command blocks.
-              enableCommandBlock: true
-              # If true, players will always join in the default gameMode even if they were previously set to something else.
-              forcegameMode: false
-              # Defines whether structures (such as villages) will be generated.
-              generateStructures: true
-              # If set to true, players will be set to spectator mode if they die.
-              hardcore: false
-              # The maximum height in which building is allowed.
-              maxBuildHeight: 256
-              # The maximum number of milliseconds a single tick may take before the server watchdog stops the server with the message. -1 disables this entirely.
-              maxTickTime: 60000
-              # Determines if animals will be able to spawn.
-              spawnAnimals: true
-              # Determines if monsters will be spawned.
-              spawnMonsters: false
-              # Determines if villagers will be spawned.
-              spawnNPCs: true
-              # Sets the area that non-ops can not edit (0 to disable)
-              spawnProtection: 2
-              # Max view distance (in chunks).
-              viewDistance: 10
-              # Define this if you want a specific map generation seed.
-              levelSeed:
-              # One of: creative, survival, adventure, spectator
-              gameMode: survival
-              # Message of the Day
-              motd: "Welcome to Minecraft on Kubernetes!"
-              # If true, enable player-vs-player damage.
-              pvp: false
-              # One of: DEFAULT, FLAT, LARGEBIOMES, AMPLIFIED, CUSTOMIZED
-              levelType: DEFAULT
-              # When levelType == FLAT or CUSTOMIZED, this can be used to further customize map generation.
-              # ref: https://hub.docker.com/r/itzg/minecraft-server/
-              generatorSettings:
-              worldSaveName: world
-              # If set, this URL will be downloaded at startup and used as a starting point
-              downloadWorldUrl: "{{ .downloadWorldUrl }}"
-              # force re-download of server file
-              forceReDownload: false
-              # If set, the modpack at this URL will be downloaded at startup
-              downloadModpackUrl:
-              # If true, old versions of downloaded mods will be replaced with new ones from downloadModpackUrl
-              removeOldMods: false
-              # A list of VanillaTweaks Share Codes to download. (https://vanillatweaks.net/share#wUq1iz => "wUq1iz")
-              vanillaTweaksShareCodes: []
-              # Optional URI to a resource pack. The player may choose to use it.
-              resourcePackUrl:
-              # Optional SHA-1 digest of the resource pack, in lowercase hexadecimal.
-              # It is recommended to specify this, because it is used to verify the integrity of the resource pack.
-              resourcePackSha:
-              # When true, players will be prompted for a response and will be disconnected if they decline the required pack
-              resourcePackEnforce: false
-              # Check accounts against Minecraft account service.
-              onlineMode: true
-              # If you adjust this, you may need to adjust resources.requests above to match.
-              memory: "{{ .jvmMemory }}"
-              # General JVM options to be passed to the Minecraft server invocation
-              jvmOpts: ""
-              # Options like -X that need to proceed general JVM options
-              jvmXXOpts: "-Xmx{{ .jvmMemory }}"
-              # By default, the server configuration will be created and set based on the following environment variables, but only the first time the server is started
-              # If you would like to override the server configuration each time the container starts up, you can set this to true
-              # see https://github.com/itzg/docker-minecraft-server#server-configuration
-              overrideServerProperties: false
-              serviceType: LoadBalancer
-              ## Set the port used if the serviceType is NodePort
-              nodePort:
-              # Set the external port of the service, usefull when using the LoadBalancer service type
-              servicePort: 25565
-              clusterIP:
-              loadBalancerIP:
-              # loadBalancerSourceRanges: []
-              ## Set the externalTrafficPolicy in the Service to either Cluster or Local
-              # externalTrafficPolicy: Cluster
-              externalIPs:
-
-              # A list of Spigot resources/plugins IDs to download.
-              spigetResources:
-                # Simple Minimap - https://www.spigotmc.org/resources/simpleminimap.108225/
-                - 108225
-
-              rcon:
-                # If you enable this, make SURE to change your password below.
-                enabled: true
-                port: 25575
-                existingSecret: rcon-password
-                secretKey: password
-                serviceType: ClusterIP
-                ## Set the external port if the rcon serviceType is NodePort
-                nodePort:
-                clusterIP:
-                loadBalancerIP:
-                # loadBalancerSourceRanges: []
-                ## Set the externalTrafficPolicy in the Service to either Cluster or Local
-                # externalTrafficPolicy: Cluster
-
               extraPorts:
                 # These options allow you to expose another port from the Minecraft server, plugins such
                 # as dynmap (8123) and bluemap (8100) will require this for access to their web interfaces
@@ -216,47 +86,12 @@ spec:
                       - secretName: map-tls
                         hosts:
                           - map.{{.instanceName}}.minecraft.rye.ninja
-
-              query:
-                # If you enable this, your server will be "published" to Gamespy
-                enabled: false
-                port: 25565
-
-
-            persistence:
-              annotations: {}
-              ## minecraft data Persistent Volume Storage Class
-              ## If defined, storageClassName: <storageClass>
-              ## If set to "-", storageClassName: "", which disables dynamic provisioning
-              ## If undefined (the default) or set to null, no storageClassName spec is
-              ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
-              ##   GKE, AWS & OpenStack)
-              ##
-              storageClass: "main-retain"
-              dataDir:
-                # Set this to false if you don't care to persist state between restarts.
-                enabled: true
-                Size: 2Gi
-                # existingClaim: nil
-                ## specify a subpath in the volume where the data is. Useful when sharing volumes with other apps.
-                # subPath: /path/to/dataDir
-            podSecurityContext:
-              runAsUser: 1001
-              runAsGroup: 1001
-              runAsNonRoot: false
-            securityContext:
-              runAsUser: 1001
-              runAsGroup: 1001
-              runAsNonRoot: false
-
             serviceAnnotations:
               external-dns.alpha.kubernetes.io/hostname: "{{.instanceName}}.minecraft.rye.ninja"
-
             rconServiceAnnotations:
               external-dns.alpha.kubernetes.io/hostname: "rcon.{{.instanceName}}.minecraft.rye.ninja"
-
       - repoURL: git@github.com:estenrye/cd-homelab.git
-        targetRevision: 32376f44aed12358d62dd8003cc303034077bfe0
+        targetRevision: HEAD
         ref: valuesrepo
       destination:
         server: '{{ .server }}' # 'server' field of the secret
