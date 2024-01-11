@@ -1,0 +1,296 @@
+- hosts:
+    - initial_controlplane
+    - controlplane
+    - nodes
+  tags:
+    - prep_nodes
+  tasks:
+    - name: Update apt cache and Update all packages to the latest version
+      ansible.builtin.apt:
+        update_cache: yes
+        upgrade: dist
+      become: true
+    
+    - name: Download the k3s install script
+      ansible.builtin.get_url:
+        url: https://get.k3s.io
+        dest: /home/{{ ansible_user }}/k3s-install.sh
+        mode: 'u=rwx,g=rx,o=rx'
+      become: true
+
+    - name: Install prerequisite apt packages
+      ansible.builtin.apt:
+        name:
+          - python3-pip
+        state: present
+      become: true
+- hosts: 
+    - initial_controlplane
+  tags:
+    - initialize_k3s_cluster
+  environment:
+    OP_CONNECT_HOST: "{{ op_connect_host }}"
+  tasks:
+  - name: Get k3s_url Field Info for k3s-join-token.
+    onepassword.connect.item_info:
+      vault: "{{ op_vault }}"
+      item: "{{ k3s_join_token_item_path }}"
+      # field: url
+    no_log: "{{ enable_no_log }}"
+    delegate_to: localhost
+    register: k3s_cluster_join_info
+
+  - name: get fields from k3s_cluster_join_info
+    ansible.builtin.set_fact:
+      k3s_cluster_join_token: "{{ k3s_cluster_join_info.op_item.fields.password.value }}"
+      k3s_cluster_vip: '{{ k3s_cluster_join_info.op_item.fields["k8s-cluster-vip"].value }}'
+      k3s_cluster_url: "{{ (k3s_cluster_join_info.op_item.urls | first).href }}"
+
+  - name: Get cloudflare token from onepassword
+    onepassword.connect.item_info:
+      vault: "{{ op_vault }}"
+      item: "{{ cloudflare_api_token_item_path }}"
+    no_log: "{{ enable_no_log }}"
+    delegate_to: localhost
+    register: cloudflare_token
+
+  - name: set a cloudflare a record for the k3s cluster
+    community.general.cloudflare_dns:
+      zone: "{{ cloudflare_token.op_item.fields.zone_name.value }}"
+      record: "{{ k3s_cluster_url }}"
+      type: A
+      value: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+      state: present
+      api_token: "{{ cloudflare_token.op_item.fields.password.value }}"
+    delegate_to: localhost
+  
+  - name: Initialize the k3s cluster using /home/{{ ansible_user }}/k3s-install.sh
+    ansible.builtin.command:
+      argv:
+        - /home/{{ ansible_user }}/k3s-install.sh
+        - server
+        - --cluster-init
+        - --tls-san=127.0.0.1
+        - --tls-san={{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}
+        - --tls-san={{ ansible_hostname }}
+        - --tls-san={{ inventory_hostname }}
+        - --tls-san={{ k3s_cluster_vip }}
+        - --tls-san={{ k3s_cluster_url }}
+        - --disable=servicelb
+        - --disable=traefik
+        - --write-kubeconfig-mode=640
+        - --token={{ k3s_cluster_join_token }}
+      creates: /etc/rancher/k3s/k3s.yaml
+    become: true
+
+- hosts: 
+    - controlplane
+  tags:
+    - join_additional_conntrolplane_nodes
+  environment:
+    OP_CONNECT_HOST: "{{ op_connect_host }}"
+  tasks:
+  - name: Get k3s_url Field Info for k3s-join-token.
+    onepassword.connect.item_info:
+      vault: "{{ op_vault }}"
+      item: "{{ k3s_join_token_item_path }}"
+    no_log: "{{ enable_no_log }}"
+    delegate_to: localhost
+    register: k3s_cluster_join_info
+
+  - name: get fields from k3s_cluster_join_info
+    ansible.builtin.set_fact:
+      k3s_cluster_join_token: "{{ k3s_cluster_join_info.op_item.fields.password.value }}"
+      k3s_cluster_vip: '{{ k3s_cluster_join_info.op_item.fields["k8s-cluster-vip"].value }}'
+      k3s_cluster_url: "{{ (k3s_cluster_join_info.op_item.urls | first).href }}"
+
+  - name: Join controlplane nodes to the k3s cluster using /home/{{ ansible_user }}/k3s-install.sh
+    ansible.builtin.command:
+      argv:
+        - /home/{{ ansible_user }}/k3s-install.sh
+        - server
+        - --server=https://{{ k3s_cluster_url }}:6443
+        - --tls-san=127.0.0.1
+        - --tls-san={{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}
+        - --tls-san={{ ansible_hostname }}
+        - --tls-san={{ inventory_hostname }}
+        - --tls-san={{ k3s_cluster_vip }}
+        - --tls-san={{ k3s_cluster_url }}
+        - --disable=servicelb
+        - --disable=traefik
+        - --write-kubeconfig-mode=640
+        - --token={{ k3s_cluster_join_token }}
+      creates: /etc/rancher/k3s/k3s.yaml
+    become: true
+
+- hosts: 
+    - initial_controlplane
+  tags:
+    - taint_controlplane
+  tasks:
+  - name: Install prerequisite python packages
+    ansible.builtin.pip:
+      name:
+        - kubernetes
+        - openshift
+      state: present
+    become: true
+
+  - name: Retrieve Kubernetes controlplane nodes
+    k8s_info:
+      kubeconfig: /etc/rancher/k3s/k3s.yaml
+      kind: Node
+      label_selectors:
+        - node-role.kubernetes.io/control-plane
+    register: controlplane_nodes
+    become: true
+
+  - name: Print controlplane nodes
+    debug:
+      var: item
+    loop: "{{ controlplane_nodes.resources | map(attribute='metadata.name') | list }}"
+
+- hosts: 
+    - initial_controlplane
+  tags:
+    - taint_controlplane
+  tasks:
+  - name: Install prerequisite python packages
+    ansible.builtin.pip:
+      name:
+        - kubernetes
+        - openshift
+      state: present
+    become: true
+
+  - name: Retrieve Kubernetes controlplane nodes
+    k8s_info:
+      kubeconfig: /etc/rancher/k3s/k3s.yaml
+      kind: Node
+      label_selectors:
+        - node-role.kubernetes.io/control-plane
+    register: controlplane_nodes
+    become: true
+
+  - name: Taint controlplane nodes
+    k8s:
+      kubeconfig: /etc/rancher/k3s/k3s.yaml
+      kind: Node
+      name: "{{ item }}"
+      taints:
+        - key: node-role.kubernetes.io/control-plane
+          effect: NoSchedule
+    loop: "{{ controlplane_nodes.resources | map(attribute='metadata.name') | list }}"
+    become: true
+
+- hosts:
+    - localhost
+  tags:
+    - provision_workers
+  environment:
+    OP_CONNECT_HOST: "{{ op_connect_host }}"
+  tasks:
+    # - name: Clone Proxmox QEMU VM
+    #   proxmox_kvm:
+    #     node: proxmox_node_name
+    #     vmid: 9000
+    #     clone: true
+    #     name: cloned_vm_name
+    #     full: true
+    #   become: true
+
+  # - name: Get the Unifi Credentials
+  #   onepassword.connect.item_info:
+  #     vault: "{{ op_vault }}"
+  #     item: "{{ unifi_os_credentials_item_path }}"
+  #   no_log: "{{ enable_no_log }}"
+  #   delegate_to: localhost
+  #   register: unifi_os_credentials
+
+  # - name: display creds
+  #   debug:
+  #     var: unifi_os_credentials
+
+  # - name: Authenticate to the UDM Pro using the uri module
+  #   ansible.builtin.uri:
+  #     url: "{{ (unifi_os_credentials.op_item.urls | first).href }}/api/auth/login"
+  #     method: POST
+  #     body_format: json
+  #     body:
+  #       username: "{{ unifi_os_credentials.op_item.fields.username.value }}"
+  #       password: "{{ unifi_os_credentials.op_item.fields.password.value }}"
+  #     validate_certs: false
+  #     return_content: yes
+  #   register: udm_pro_auth
+  #   no_log: "{{ enable_no_log }}"
+
+  # - name: display creds
+  #   debug:
+  #     var: udm_pro_auth.cookies_string
+
+  # - name: Get a device record
+  #   ansible.builtin.uri:
+  #     url: "{{ (unifi_os_credentials.op_item.urls | first).href }}/proxy/network/api/s/default/rest/user"
+  #     method: GET
+  #     headers:
+  #       Cookie: "{{ udm_pro_auth.cookies_string }}"
+  #     validate_certs: false
+  #     return_content: yes
+  #   register: udm_pro_user
+
+  # - name: display user
+  #   debug:
+  #     var: udm_pro_user.json
+
+  # - name: post a device record
+  #   ansible.builtin.uri:
+  #     url: "{{ (unifi_os_credentials.op_item.urls | first).href }}/proxy/network/api/s/default/rest/user/659cccfb515a7666777b4436"
+  #     method: PUT
+  #     headers:
+  #       Cookie: "{{ udm_pro_auth.cookies_string }}"
+  #     body_format: json
+  #     body:
+  #       name: "foo.infra.usmnblm01.rye.ninja"
+  #       local_dns_record: foo.infra.usmnblm01.rye.ninja
+  #       local_dns_record_enabled: true
+  #       mac: "de:ad:dc:05:d8:0d"
+  #       fixed_ip: "10.5.216.13"
+  #       use_fixedip: true
+  #     validate_certs: false
+  #     return_content: yes
+  #   register: udm_pro_user
+
+  # - name: display user
+  #   debug:
+  #     var: udm_pro_user.json
+
+- hosts:
+  - nodes
+  tags:
+    - provision_nodes
+  environment:
+    OP_CONNECT_HOST: "{{ op_connect_host }}"
+  tasks:
+  - name: Get k3s_url Field Info for k3s-join-token.
+    onepassword.connect.item_info:
+      vault: "{{ op_vault }}"
+      item: "{{ k3s_join_token_item_path }}"
+    no_log: "{{ enable_no_log }}"
+    delegate_to: localhost
+    register: k3s_cluster_join_info
+
+  - name: get fields from k3s_cluster_join_info
+    ansible.builtin.set_fact:
+      k3s_cluster_join_token: "{{ k3s_cluster_join_info.op_item.fields.password.value }}"
+      k3s_cluster_vip: '{{ k3s_cluster_join_info.op_item.fields["k8s-cluster-vip"].value }}'
+      k3s_cluster_url: "{{ (k3s_cluster_join_info.op_item.urls | first).href }}"
+
+  - name: Join controlplane nodes to the k3s cluster using /home/{{ ansible_user }}/k3s-install.sh
+    ansible.builtin.command:
+      argv:
+        - /home/{{ ansible_user }}/k3s-install.sh
+        - agent
+        - --server=https://{{ k3s_cluster_url }}:6443
+        - --token={{ k3s_cluster_join_token }}
+      # creates: /etc/rancher/k3s/k3s.yaml
+    become: true

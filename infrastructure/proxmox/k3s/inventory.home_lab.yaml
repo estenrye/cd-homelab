@@ -1,0 +1,27 @@
+all:
+  children:
+    initial_controlplane:
+      hosts:
+        zbox-04.usmnblm01.rye.ninja:
+
+    controlplane:
+      hosts:
+        zbox-05.usmnblm01.rye.ninja:
+        zbox-06.usmnblm01.rye.ninja:
+
+    nodes:
+      vars:
+        ansible_user: ubuntu
+      hosts:
+        pvmk8s01.usmnblm01.rye.ninja:
+        pvmk8s02.usmnblm01.rye.ninja:
+        pvmk8s03.usmnblm01.rye.ninja:
+        # Add other hosts to the 'nodes' group if needed
+  vars:
+    ansible_user: automation-user
+    op_connect_host: http://op-connect-api.127-0-0-1.a.rye.ninja:8080
+    op_vault: jaou7gkrt6by3xnocca3rdyyii
+    k3s_join_token_item_path: k3s-join-token.home-lab.usmnblm01.rye.ninja
+    unifi_os_credentials_item_path: unifi-tf-admin.usmnblm01.rye.ninja
+    cloudflare_api_token_item_path: letsencrypt-dns01-credentials_cert-manager.rye.ninja
+    enable_no_log: false
