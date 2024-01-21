@@ -9,7 +9,7 @@ spec:
   generators:
   - list:
       elements:
-      - instanceName: arrendelle-winter-dev
+      - instanceName: mermaid-cove
         server: https://spot.rackspace.com/apis/ngpc.rxt.io/v1/namespaces/org-pduvfizupzbnb6dq/cloudspaces/rspot-wireguard/proxy
   template:
     metadata:
