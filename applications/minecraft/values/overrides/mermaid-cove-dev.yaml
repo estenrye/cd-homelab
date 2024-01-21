@@ -7,7 +7,7 @@ resources:
     cpu: 6000m
 minecraftServer:
   version: 1.20.2
-  type: "PAPER"
+  type: "FABRIC"
   difficulty: easy
   downloadWorldUrl: https://s3.us-west-1.wasabisys.com/minecraft-rye-ninja/underwater-wonderland.zip
   memory: 2048M
