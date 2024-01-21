@@ -29,6 +29,8 @@ minecraftServer:
       - P7dR8mSH
       # https://modrinth.com/mod/trinkets
       - 5aaWibi9
+      # https://modrinth.com/mod/mermod/versions
+      - ORiydwz3
       # https://modrinth.com/plugin/waypoints
       # - 1c2olKOU
       # https://modrinth.com/plugin/bluemap
@@ -37,8 +39,6 @@ minecraftServer:
       # - ExxvCi0y
       # https://modrinth.com/plugin/unifiedmetrics
       # - p1ewR5kV
-      # https://modrinth.com/mod/mermod/versions
-      # - ORiydwz3
     # Downloads Modrinth project dependencies marked as optional
     optionalDependencies: false
     # The version type is used to determine the newest version to use from each project. The allowed values are: release, beta, alpha
