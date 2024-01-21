@@ -33,10 +33,8 @@ minecraftServer:
       - ORiydwz3
       # https://modrinth.com/plugin/bluemap
       - swbUV1cr
-      # https://modrinth.com/plugin/commandapi
-      # - ExxvCi0y
-      # https://modrinth.com/plugin/unifiedmetrics
-      # - p1ewR5kV
+      # https://modrinth.com/mod/fabrictailor
+      - g8w1NapE
     # Downloads Modrinth project dependencies marked as optional
     optionalDependencies: false
     # The version type is used to determine the newest version to use from each project. The allowed values are: release, beta, alpha
