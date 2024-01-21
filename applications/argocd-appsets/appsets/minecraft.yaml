@@ -11,6 +11,8 @@ spec:
       elements:
       - instanceName: arrendelle-winter
         server: https://k8s.home-lab.usmnblm01.rye.ninja:6443
+      - instanceName: mermaid-cove-dev
+        server: https://k8s.home-lab.usmnblm01.rye.ninja:6443
   template:
     metadata:
       name: '{{.instanceName}}-minecraft' # 'name' field of the Secret

@@ -1,0 +1,43 @@
+resources:
+  requests:
+    memory: 4096Mi
+    cpu: 3000m
+  limits:
+    memory: 7168Mi
+    cpu: 6000m
+minecraftServer:
+  version: 1.20.2
+  type: "PAPER"
+  difficulty: easy
+  downloadWorldUrl: https://s3.us-west-1.wasabisys.com/minecraft-rye-ninja/underwater-wonderland.zip
+  memory: 2048M
+  jvmXXOpts: "-Xmx2048M"
+  spawnAnimals: true
+  # Determines if monsters will be spawned.
+  spawnMonsters: true
+  # Determines if villagers will be spawned.
+  spawnNPCs: true
+  # Sets the area that non-ops can not edit (0 to disable)
+  spawnProtection: 2
+  # Max view distance (in chunks).
+  viewDistance: 10
+  
+  # A list of Modrinth project slugs with optional version after colon
+  modrinth:
+    projects:
+      # https://modrinth.com/plugin/waypoints
+      - 1c2olKOU
+      # https://modrinth.com/plugin/bluemap
+      - swbUV1cr
+      # https://modrinth.com/plugin/commandapi
+      - ExxvCi0y
+      # https://modrinth.com/plugin/unifiedmetrics
+      # - p1ewR5kV
+      # https://modrinth.com/mod/trinkets
+      - 5aaWibi9
+      # https://modrinth.com/mod/mermod/versions
+      - ORiydwz3
+    # Downloads Modrinth project dependencies marked as optional
+    optionalDependencies: false
+    # The version type is used to determine the newest version to use from each project. The allowed values are: release, beta, alpha
+    allowedVersionType: release
