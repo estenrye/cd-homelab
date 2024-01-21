@@ -9,7 +9,7 @@ minecraftServer:
   version: 1.20.1
   type: "FABRIC"
   difficulty: easy
-  downloadWorldUrl: https://s3.us-west-1.wasabisys.com/minecraft-rye-ninja/underwater-wonderland.zip
+  downloadWorldUrl: https://s3.us-west-1.wasabisys.com/minecraft-rye-ninja/mermaid-cove.zip
   memory: 2048M
   jvmXXOpts: "-Xmx2048M"
   spawnAnimals: true
