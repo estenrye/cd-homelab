@@ -32,9 +32,9 @@ minecraftServer:
       # https://modrinth.com/mod/mermod/versions
       - ORiydwz3
       # https://modrinth.com/plugin/waypoints
-      # - 1c2olKOU
+      - 1c2olKOU
       # https://modrinth.com/plugin/bluemap
-      # - swbUV1cr
+      - swbUV1cr
       # https://modrinth.com/plugin/commandapi
       # - ExxvCi0y
       # https://modrinth.com/plugin/unifiedmetrics
