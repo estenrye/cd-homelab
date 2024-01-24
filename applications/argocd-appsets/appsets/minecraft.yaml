@@ -13,7 +13,7 @@ spec:
         server: https://k8s.home-lab.usmnblm01.rye.ninja:6443
       - instanceName: mermaid-cove-dev
         server: https://k8s.home-lab.usmnblm01.rye.ninja:6443
-      - instanceName: mermaid-cove
+      - instanceName: mermaid-cove-two
         server: https://vcp-7519eec1-d104-41dc-b2a2-c2789c8bba73.poseidon-1705437594.platform9.horse
   template:
     metadata:
