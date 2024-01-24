@@ -1,0 +1,41 @@
+resources:
+  requests:
+    memory: 4096Mi
+    cpu: 3000m
+  limits:
+    memory: 7168Mi
+    cpu: 6000m
+minecraftServer:
+  version: 1.20.1
+  type: "FABRIC"
+  difficulty: easy
+  downloadWorldUrl: https://s3.us-west-1.wasabisys.com/minecraft-rye-ninja/mermaid-cove.zip
+  memory: 2048M
+  jvmXXOpts: "-Xmx2048M"
+  spawnAnimals: true
+  # Determines if monsters will be spawned.
+  spawnMonsters: true
+  # Determines if villagers will be spawned.
+  spawnNPCs: true
+  # Sets the area that non-ops can not edit (0 to disable)
+  spawnProtection: 2
+  # Max view distance (in chunks).
+  viewDistance: 10
+  
+  # A list of Modrinth project slugs with optional version after colon
+  modrinth:
+    projects:
+      # https://modrinth.com/mod/fabric-api
+      - P7dR8mSH
+      # https://modrinth.com/mod/trinkets
+      - 5aaWibi9
+      # https://modrinth.com/mod/mermod/versions
+      - ORiydwz3
+      # https://modrinth.com/plugin/bluemap
+      - swbUV1cr
+      # https://modrinth.com/mod/fabrictailor
+      - g8w1NapE
+    # Downloads Modrinth project dependencies marked as optional
+    optionalDependencies: false
+    # The version type is used to determine the newest version to use from each project. The allowed values are: release, beta, alpha
+    allowedVersionType: release
