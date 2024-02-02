@@ -1,8 +1,0 @@
-- op: add
-  path: /spec/loadBalancerIP
-  value: 10.5.11.201
-- op: add
-  path: /metadata/annotations
-  value: 
-    external-dns.alpha.kubernetes.io/hostname: arrendelle.minecraft.rye.ninja
-   

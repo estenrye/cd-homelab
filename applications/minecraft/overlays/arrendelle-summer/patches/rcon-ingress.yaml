@@ -1,9 +1,0 @@
-- op: replace
-  path: /metadata/annotations/external-dns.alpha.kubernetes.io~1hostname
-  value: rcon.arrendelle.minecraft.rye.ninja
-- op: replace
-  path: /spec/rules/0/host
-  value: rcon.arrendelle.minecraft.rye.ninja
-- op: replace
-  path: /spec/tls/0/hosts/0
-  value: rcon.arrendelle.minecraft.rye.ninja
