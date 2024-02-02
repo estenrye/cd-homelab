@@ -10,7 +10,7 @@ spec:
   - list:
       elements:
       - instanceName: mermaid-cove
-        server: https://spot.rackspace.com/apis/ngpc.rxt.io/v1/namespaces/org-pduvfizupzbnb6dq/cloudspaces/rspot-wireguard/proxy
+        server: https://vcp-af0c7880-3b7b-4e14-a92c-d8417acf9c63.cloud-1703064191.spot.rackspace.com
   template:
     metadata:
       name: '{{.instanceName}}-minecraft' # 'name' field of the Secret
