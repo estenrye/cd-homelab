@@ -1,0 +1,35 @@
+
+minecraft_clients:
+  hosts:
+    localhost:
+      ansible_connection: local
+      fabric_install_dir: "~/Library/Application Support/minecraft"
+      minecraft_subpath: minecraft
+      owner: esten
+      group: staff
+    guest-pc-01.usmnblm01.rye.ninja:
+      ansible_user: esten
+      owner: esten
+      group: esten
+    iris-pc.usmnblm01.rye.ninja:
+      ansible_user: esten
+      fabric_install_dir: "/home/iris/.minecraft"
+      owner: iris
+      group: iris
+    esten-surface-book.usmnblm01.rye.ninja:
+      ansible_user: esten
+      fabric_install_dir: "/home/esten/.minecraft"
+      owner: esten
+      group: esten
+  vars:
+    fabric_install_dir: "~/.minecraft"
+    minecraft_subpath: .
+    modrinth:
+      - name: fabric-api-0.91.0+1.20.1.jar
+        url: https://cdn.modrinth.com/data/P7dR8mSH/versions/YblXfKtI/fabric-api-0.91.0%2B1.20.1.jar
+      - name: trinkets-3.7.1.jar
+        url: https://cdn.modrinth.com/data/5aaWibi9/versions/e563ycts/trinkets-3.7.1.jar
+      - name: mermod-fabric-2.41.jar
+        url: https://cdn.modrinth.com/data/ORiydwz3/versions/VBr1cow4/mermod-fabric-2.41.jar
+      - name: fabrictailor-2.1.2.jar
+        url: https://cdn.modrinth.com/data/g8w1NapE/versions/MNgY2xFj/fabrictailor-2.1.2.jar

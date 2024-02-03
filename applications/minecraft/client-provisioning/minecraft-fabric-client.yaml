@@ -1,0 +1,74 @@
+- hosts: minecraft_clients
+  tasks:
+    - name: Install OpenJDK using brew
+      community.general.homebrew:
+        name: openjdk
+        state: present
+      when: ansible_os_family == "Darwin"
+
+    - name: Install OpenJDK using apt
+      ansible.builtin.package:
+        name: default-jdk
+        state: present
+      become: true
+      when: ansible_os_family != "Darwin"
+
+    - name: Create symbolic link for OpenJDK
+      ansible.builtin.file:
+        src: /opt/homebrew/opt/openjdk/libexec/openjdk.jdk
+        path: /Library/Java/JavaVirtualMachines/openjdk.jdk
+        state: link
+        force: yes
+      become: yes
+      when: ansible_os_family == "Darwin"
+
+    - name: Get Java version
+      command: java -version
+      register: java_version_output
+      changed_when: false
+      failed_when: false
+    - name: Display Java version
+      debug:
+        msg: "{{ java_version_output.stderr }}"
+
+    - name: Download fabric-installer.jar
+      ansible.builtin.get_url:
+        url: "https://maven.fabricmc.net/net/fabricmc/fabric-installer/1.0.0/fabric-installer-1.0.0.jar"
+        dest: /tmp/fabric-installer.jar
+
+    - name: Run fabric-installer.jar
+      ansible.builtin.command:
+        argv:
+          - java
+          - -jar
+          - /tmp/fabric-installer.jar
+          - client
+          - -mcversion
+          - 1.20.1
+          - -downloadMinecraft
+          - -dir
+          - "{{ fabric_install_dir }}/{{minecraft_subpath}}"
+        chdir: "~/Downloads"
+      register: fabric_installer_output
+      changed_when: false
+      failed_when: false
+      become: true
+      become_user: "{{ owner | default(omit) }}"
+
+    - name: Create mods folder if not present
+      ansible.builtin.file:
+        path: "{{ fabric_install_dir }}/mods"
+        state: directory
+        owner: "{{ owner | default(omit) }}"
+        group: "{{ group | default(omit) }}"
+      become: true
+
+    - name: Download modrinth mod files
+      ansible.builtin.get_url:
+        url: "{{ item.url }}"
+        dest: "{{ fabric_install_dir }}/mods/{{ item.name }}"
+        owner: "{{ owner | default(omit) }}"
+        group: "{{ group | default(omit) }}"
+      become: true
+      loop: "{{ modrinth }}"
+
