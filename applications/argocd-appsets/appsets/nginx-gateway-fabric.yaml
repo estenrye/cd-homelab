@@ -19,8 +19,8 @@ spec:
     spec:
       project: "platform"
       source:
-        chart: ngf
-        repoURL: oci://ghcr.io/nginxinc/charts/nginx-gateway-fabric
+        chart: nginx-gateway-fabric
+        repoURL: oci://ghcr.io/nginxinc/charts
         targetRevision: 1.1.0
       destination:
         server: '{{server}}' # 'server' field of the secret
