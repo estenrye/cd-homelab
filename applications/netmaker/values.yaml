@@ -1,0 +1,142 @@
+# Default values for netmaker.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+baseDomain: "nm.example.com" # required value
+
+# -- override the name for netmaker objects
+nameOverride: ""
+
+# -- override the full name for netmaker objects
+fullnameOverride: ""
+
+serviceAccount:
+  # -- Specifies whether a service account should be created
+  create: true
+  # -- Annotations to add to the service account
+  annotations: {}
+  # -- Name of SA to use. If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# -- pod annotations to add
+podAnnotations: {}
+
+# -- pod security contect to add
+podSecurityContext: {}
+# fsGroup: 2000
+
+ui:
+  # -- how many UI replicas to create
+  replicas: 2
+  image:
+    # -- The image repo to pull Netmaker image from
+    repository: gravitl/netmaker-ui
+    # -- Pull Policy for images
+    pullPolicy: Always
+    # -- Override the image tag to pull
+    tag: "v0.21.2"
+
+mq:
+  # -- how many MQTT replicas to create
+  replicas: 2
+  username: netmaker
+  password: 3yyerWGdds43yegGR
+server:
+  # -- number of netmaker server replicas to create
+  replicas: 2
+  image:
+    # -- The image repo to pull Netmaker image from
+    repository: gravitl/netmaker
+    # -- Pull Policy for images
+    pullPolicy: Always
+    # -- Override the image tag to pull
+    tag: "v0.21.2"
+  RWX:
+    storageClassName: ""
+  storageSize: 128Mi
+  masterKey: "netmaker"
+  ee:
+    licensekey: ""
+    tenantId: ""
+   # Duration of JWT token validity in seconds
+  jwtDuration: 43200
+  # Auto disable a user's connecteds clients bassed on JWT token expiration
+  racAutoDisable: "true"
+   # "<azure-ad|github|google|oidc>"
+  authProvider: ""
+   # "<client id of your oauth provider>"
+  oAuthclientID: ""
+   # "<client secret of your oauth provider>"
+  oAuthClientSecret: ""
+   # "https://dashboard.<netmaker base domain>"
+  frontendURL: ""
+  # "<only for azure, you may optionally specify the tenant for the OAuth>"
+  azureTenant: ""
+  # https://oidc.yourprovider.com - URL of oidc provider
+  oidcIssuer: ""
+  turn:
+    enabled: false
+    turnHost: ""
+    turnApiHost: ""
+    turnUsername: ""
+    turnPassword: ""
+
+dns:
+  # -- whether or not to deploy coredns
+  enabled: false
+  storageSize: 128Mi
+  RWX:
+    storageClassName: ""
+
+setIpForwarding:
+  enabled: true
+
+service:
+  # -- type for netmaker server services
+  type: ClusterIP
+  # -- port for API service
+  restPort: 8081
+  # -- port for MQTT service
+  mqPort: 443
+  # -- port for UI service
+  uiPort: 80
+
+ingress:
+  # -- attempts to configure ingress if true
+  enabled: true
+  tls: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  hostPrefix:
+    ui: "dashboard"
+    broker: "broker"
+    rest: "api"
+db:
+  type: "postgres"
+  host: ""
+  port: 5432
+  username: postgres
+  # -- postgres pass to generate
+  password: password123 # set your own secure password
+  # -- postgress db to generate
+  database: netmaker
+
+postgresql-ha:
+  enabled: true
+  postgresql:
+    # -- postgres user to generate
+    username: postgres
+    # -- postgres pass to generate
+    password: password123  # set your own secure password
+    # -- postgress db to generate
+    database: netmaker
+    # -- postgress number of replicas to deploy
+    replicaCount: 2
+    repmgrUsername: postgres
+    repmgrPassword: password123  # set your own secure password
+    repmgrDatabase: repmgr
+  persistence:
+    # -- size of postgres DB
+    size: 1Gi
