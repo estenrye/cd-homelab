@@ -19,6 +19,7 @@ spec:
     spec:
       project: "platform"
       source:
+        chart: ngf
         repoURL: oci://ghcr.io/nginxinc/charts/nginx-gateway-fabric
         targetRevision: 1.1.0
       destination:
