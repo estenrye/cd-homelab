@@ -8,6 +8,11 @@ sources:
   - ingress
   - service
   - crd
+  - gateway-grpcroute
+  - gateway-httproute
+  - gateway-tlsroute
+  - gateway-udproute
+  - gateway-tcproute
 provider: aws
 policy: sync
 extraArgs:
