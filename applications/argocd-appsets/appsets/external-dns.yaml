@@ -7,27 +7,24 @@ spec:
   generators:
   - clusters:
       selector:
-        matchExpressions:
-          - key: rye.ninja/environment
-            operator: In
-            values:
-              - cd-cluster
-          - key: rye.ninja/egress-load-balancer
-            operator: NotIn
-            values:
-              - cloudflared
+        matchLabels:
+          rye.ninja/dns-provider: "route53"
       values:
         targetRevision: HEAD
-        valuesFile: examples/cloudflare.values.yaml
+        valuesFile: examples/route53.values.yaml
         onepassword_item_path: vaults/Home_Lab/items/letsencrypt-dns01-credentials_cert-manager.rye.ninja
-        clustername: argocd.aws.rye.ninja
+        clustername: '{{ name }}'
   - clusters:
       selector:
-        matchExpressions:
-          - key: rye.ninja/environment
-            operator: NotIn
-            values:
-              - cd-cluster
+        matchLabels:
+          rye.ninja/gateway-api-enabled: "true"
+      values:
+        targetRevision: HEAD
+        valuesFile: examples/cloudflare.gateway-api.values.yaml
+        onepassword_item_path: vaults/Home_Lab/items/letsencrypt-dns01-credentials_cert-manager.rye.ninja
+        clustername: '{{ name }}'
+  - clusters:
+      selector: {}
       values:
         targetRevision: HEAD
         valuesFile: examples/cloudflare.values.yaml

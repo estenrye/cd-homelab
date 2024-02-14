@@ -12,6 +12,11 @@ external-dns:
     - ingress
     - service
     - crd
+    - gateway-grpcroute
+    - gateway-httproute
+    - gateway-tlsroute
+    - gateway-udproute
+    - gateway-tcproute
   policy: sync
   provider: cloudflare
   env:
