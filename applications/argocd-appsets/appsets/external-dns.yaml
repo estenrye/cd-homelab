@@ -24,7 +24,16 @@ spec:
         onepassword_item_path: vaults/Home_Lab/items/letsencrypt-dns01-credentials_cert-manager.rye.ninja
         clustername: '{{ name }}'
   - clusters:
-      selector: {}
+      selector:
+        matchExpressions:
+          - key: rye.ninja/dns-provider
+            operator: NotIn
+            values:
+              - route53
+          - key: rye.ninja/gateway-api-enabled
+            operator: NotIn
+            values:
+              - "true"
       values:
         targetRevision: HEAD
         valuesFile: examples/cloudflare.values.yaml
