@@ -4,7 +4,9 @@ metadata:
   name: coffee
 spec:
   parentRefs:
-  - name: gateway
+  - group: gateway.networking.k8s.io	
+    kind: Gateway
+    name: gateway
     sectionName: http
   hostnames:
   - "cafe.example.{{ .Values.environment }}.{{ .Values.domain}}"
@@ -14,8 +16,11 @@ spec:
         type: PathPrefix
         value: /coffee
     backendRefs:
-    - name: coffee
+    - group: ''	
+      kind: Service
+      name: coffee
       port: 80
+      weight: 1
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -23,7 +28,9 @@ metadata:
   name: tea
 spec:
   parentRefs:
-  - name: gateway
+  - group: gateway.networking.k8s.io	
+    kind: Gateway
+    name: gateway
     sectionName: http
   hostnames:
   - "cafe.example.{{ .Values.environment }}.{{ .Values.domain}}"
@@ -33,5 +40,8 @@ spec:
         type: Exact
         value: /tea
     backendRefs:
-    - name: tea
+    - group: ''	
+      kind: Service
+      name: tea
       port: 80
+      weight: 1
