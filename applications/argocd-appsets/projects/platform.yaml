@@ -35,6 +35,8 @@ spec:
     server: '*'
   - namespace: kube-system
     server: '*'
+  - namespace: linkerd
+    server: '*'
   - namespace: metallb
     server: '*'
   - namespace: nginx-gateway
