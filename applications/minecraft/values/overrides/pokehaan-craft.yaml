@@ -23,5 +23,8 @@ minecraftServer:
   viewDistance: 10
 
   autoCurseForge:
+    apiKey:
+      existingSecret: "curse-forge-api-key"
+      secretKey: credential
     slug: pokehaan-craft
   modrinth: {}
