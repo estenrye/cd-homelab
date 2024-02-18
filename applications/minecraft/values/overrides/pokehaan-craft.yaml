@@ -10,8 +10,7 @@ minecraftServer:
   version: 1.12.2
   type: "AUTO_CURSEFORGE"
   forgeVersion: 14.23.5.2860
-  slug: pokehaan-craft
-  memory: 2048M
+  memory: 4096M
   jvmXXOpts: "-Xmx4096M"
   spawnAnimals: true
   # Determines if monsters will be spawned.
@@ -23,4 +22,6 @@ minecraftServer:
   # Max view distance (in chunks).
   viewDistance: 10
 
-modrinth: {}
+  autoCurseForge:
+    slug: pokehaan-craft
+  modrinth: {}
