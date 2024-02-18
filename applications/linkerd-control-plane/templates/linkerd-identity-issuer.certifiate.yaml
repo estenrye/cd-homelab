@@ -3,6 +3,8 @@ kind: Certificate
 metadata:
   name: linkerd-identity-issuer
   namespace: linkerd
+  labels:
+    {{- include "linkerd-control-plane.labels" . | nindent 4 }}
 spec:
   secretName: linkerd-identity-issuer
   duration: 48h
