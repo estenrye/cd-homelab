@@ -19,8 +19,8 @@ brew install linkerd
 CLUSTER_NAME='rspot-wireguard'
 
 # Create a new key pair for the controlplane certificates
-step certificate create webhook.linkerd.cluster.local ca.crt ca.key \
-  --profile root-ca --no-password --insecure --san webhook.linkerd.cluster.local
+step certificate create root.linkerd.cluster.local ca.crt ca.key \
+  --profile root-ca --no-password --insecure
 
 # Publish a new secret to 1password for the controlplane certificates
 op item create \
@@ -29,8 +29,8 @@ op item create \
   --category="API Credential" \
   --title=controlplane.linkerd.${CLUSTER_NAME}.rye.ninja \
   --tags=linkerd \
-  'certificate.cert[file]=./ca.crt' \
-  'certificate.key[file]=./ca.key'
+  'tls\.crt[file]=./ca.crt' \
+  'tls\.key[file]=./ca.key'
 
 # Remove the local copy of the controlplane certificates
 rm ./ca.crt ./ca.key
