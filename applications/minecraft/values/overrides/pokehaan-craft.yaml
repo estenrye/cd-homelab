@@ -26,8 +26,5 @@ minecraftServer:
     apiKey:
       existingSecret: "curse-forge-api-key"
       secretKey: credential
-    # slug: 
-    includeMods:
-      - ptrlib
-      - pokehaan-craft
+    slug: pokehaan-craft
   modrinth: {}
