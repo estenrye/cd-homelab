@@ -9,7 +9,7 @@ spec:
   generators:
   - list:
       elements:
-      - instanceName: mermaid-cove
+      - instanceName: pokehaan-craft
         server: https://vcp-af0c7880-3b7b-4e14-a92c-d8417acf9c63.cloud-1703064191.spot.rackspace.com
   template:
     metadata:

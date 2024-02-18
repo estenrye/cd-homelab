@@ -1,0 +1,26 @@
+resources:
+  requests:
+    memory: 4096Mi
+    cpu: 3000m
+  limits:
+    memory: 7168Mi
+    cpu: 6000m
+
+minecraftServer:
+  version: 1.12.2
+  type: "AUTO_CURSEFORGE"
+  forgeVersion: 14.23.5.2860
+  slug: pokehaan-craft
+  memory: 2048M
+  jvmXXOpts: "-Xmx4096M"
+  spawnAnimals: true
+  # Determines if monsters will be spawned.
+  spawnMonsters: true
+  # Determines if villagers will be spawned.
+  spawnNPCs: true
+  # Sets the area that non-ops can not edit (0 to disable)
+  spawnProtection: 2
+  # Max view distance (in chunks).
+  viewDistance: 10
+
+modrinth: {}
