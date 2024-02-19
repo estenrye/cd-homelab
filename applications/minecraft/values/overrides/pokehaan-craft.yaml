@@ -14,9 +14,6 @@ initContainers:
       - 'https://cdn.modrinth.com/data/tIKBCqVe/versions/1.0.5/PTRLib-1.0.5.jar'
       - '-o'
       - '/data/mods/PTRLib-1.0.5.jar'
-    volumesMounts:
-      - mountPath: /data
-        name: datadir
 minecraftServer:
   version: 1.12.2
   type: "AUTO_CURSEFORGE"
