@@ -15,7 +15,7 @@ initContainers:
       - '-o'
       - '/data/mods/PTRLib-1.0.5.jar'
     volumeMounts:
-      - name: data
+      - name: datadir
         mountPath: /data
 minecraftServer:
   version: 1.12.2
