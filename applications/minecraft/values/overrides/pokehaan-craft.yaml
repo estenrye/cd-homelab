@@ -12,7 +12,8 @@ initContainers:
     command:
       - 'sh'
       - '-c'
-      - 'mkdir -p /data/mods && wget https://cdn.modrinth.com/data/tIKBCqVe/versions/1.0.5/PTRLib-1.0.5.jar -o /data/mods/PTRLib-1.0.5.jar'
+      - 'echo "pod starting up" && mkdir -p /data/mods'
+#      - 'mkdir -p /data/mods && wget https://cdn.modrinth.com/data/tIKBCqVe/versions/1.0.5/PTRLib-1.0.5.jar -o /data/mods/PTRLib-1.0.5.jar'
     volumeMounts:
       - name: datadir
         mountPath: /data
