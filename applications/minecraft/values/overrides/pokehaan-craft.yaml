@@ -10,10 +10,9 @@ initContainers:
   - name: download-ptrlib
     image: busybox
     command:
-      - 'wget'
-      - 'https://cdn.modrinth.com/data/tIKBCqVe/versions/1.0.5/PTRLib-1.0.5.jar'
-      - '-o'
-      - '/data/mods/PTRLib-1.0.5.jar'
+      - 'sh'
+      - '-c'
+      - 'mkdir -p /data/mods && wget https://cdn.modrinth.com/data/tIKBCqVe/versions/1.0.5/PTRLib-1.0.5.jar -o /data/mods/PTRLib-1.0.5.jar'
     volumeMounts:
       - name: datadir
         mountPath: /data
