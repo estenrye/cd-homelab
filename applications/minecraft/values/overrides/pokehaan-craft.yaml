@@ -8,8 +8,7 @@ resources:
 
 minecraftServer:
   version: 1.12.2
-  type: "CURSEFORGE"
-  cfServerMod: pokehaan-craft
+  type: "AUTO_CURSEFORGE"
   forgeVersion: 14.23.5.2860
   memory: 4096M
   jvmXXOpts: "-Xmx4096M"
@@ -27,7 +26,7 @@ minecraftServer:
     apiKey:
       existingSecret: "curse-forge-api-key"
       secretKey: credential
-    # slug: pokehaan-craft
+    slug: pokehaan-craft
   modrinth:
     projects:
       # https://modrinth.com/mod/ptrlib/version/1.0.5
