@@ -7,7 +7,7 @@ resources:
     cpu: 6000m
 
 initContainers:
-  - name: download-PTRLib
+  - name: download-ptrlib
     image: busybox
     command:
       - 'wget'
