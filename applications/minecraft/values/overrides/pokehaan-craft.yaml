@@ -18,7 +18,6 @@ initContainers:
       - name: datadir
         mountPath: /data
     securityContext:
-      fsGroup: 1000
       runAsGroup: 1001
       runAsNonRoot: true
       runAsUser: 1001
