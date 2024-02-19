@@ -14,13 +14,6 @@ initContainers:
       - '-c'
       - 'echo "pod starting up" && mkdir -p /data/mods && ls -l /data/mods && echo "/data/mods directory created" && wget https://cdn.modrinth.com/data/tIKBCqVe/versions/1.0.5/PTRLib-1.0.5.jar -o /data/mods/PTRLib-1.0.5.jar && echo "PTRLib downloaded"'
 #      - 'mkdir -p /data/mods && wget https://cdn.modrinth.com/data/tIKBCqVe/versions/1.0.5/PTRLib-1.0.5.jar -o /data/mods/PTRLib-1.0.5.jar'
-    securityContext:
-      fsGroup: 1000
-      runAsGroup: 1001
-      runAsNonRoot: true
-      runAsUser: 1001
-      seccompProfile:
-        type: RuntimeDefault
     volumeMounts:
       - name: datadir
         mountPath: /data
