@@ -42,3 +42,5 @@ minecraftServer:
       existingSecret: "curse-forge-api-key"
       secretKey: credential
     slug: pokehaan-craft
+  modrinth:
+    projects: []
