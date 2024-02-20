@@ -6,20 +6,28 @@ resources:
     memory: 7168Mi
     cpu: 6000m
 
-# initContainers:
-#   - name: download-ptrlib
-#     image: busybox
-#     command:
-#       - 'sh'
-#       - '-c'
-#       - 'echo "id $(whoami) && pod starting up" && mkdir -p /data/mods && ls -l /data/mods && echo "/data/mods directory created" && wget https://cdn.modrinth.com/data/tIKBCqVe/versions/1.0.5/PTRLib-1.0.5.jar -O /data/mods/PTRLib-1.0.5.jar && echo "PTRLib downloaded"'
-#     volumeMounts:
-#       - name: datadir
-#         mountPath: /data
-#     securityContext:
-#       runAsGroup: 1001
-#       runAsNonRoot: true
-#       runAsUser: 1001
+initContainers:
+  - name: download-mods
+    image: busybox
+    command:
+      - 'sh'
+      - '-c'
+      - |
+          id $(whoami) \
+          && echo "pod starting up"\
+          && mkdir -p /data/mods \
+          && echo "/data/mods directory created" \
+          && wget https://www.curseforge.com/minecraft/mc-mods/pokeballreveal/download/4673931 -O /data/mods/PokeballReveal-1.16.5-1.0.0.jar \
+          && echo "PokeballReveal-1.16.5-1.0.0.jar downloaded" \
+          && wget https://www.curseforge.com/minecraft/mc-mods/disable-mob-replacement/download/4725489 -O /data/mods/DisableMobReplacement-1.0.0-ExceptVillagers.jar \
+          && echo "DisableMobReplacement-1.0.0-ExceptVillagers.jar downloaded"
+    volumeMounts:
+      - name: datadir
+        mountPath: /data
+    securityContext:
+      runAsGroup: 1001
+      runAsNonRoot: true
+      runAsUser: 1001
 minecraftServer:
   version: 1.16.5
   type: "AUTO_CURSEFORGE"
