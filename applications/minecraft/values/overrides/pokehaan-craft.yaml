@@ -6,23 +6,22 @@ resources:
     memory: 7168Mi
     cpu: 6000m
 
-initContainers:
-  - name: download-ptrlib
-    image: busybox
-    command:
-      - 'sh'
-      - '-c'
-      - 'echo "id $(whoami) && pod starting up" && mkdir -p /data/mods && ls -l /data/mods && echo "/data/mods directory created" && wget https://cdn.modrinth.com/data/tIKBCqVe/versions/1.0.5/PTRLib-1.0.5.jar -O /data/mods/PTRLib-1.0.5.jar && echo "PTRLib downloaded"'
-#      - 'mkdir -p /data/mods && wget https://cdn.modrinth.com/data/tIKBCqVe/versions/1.0.5/PTRLib-1.0.5.jar -o /data/mods/PTRLib-1.0.5.jar'
-    volumeMounts:
-      - name: datadir
-        mountPath: /data
-    securityContext:
-      runAsGroup: 1001
-      runAsNonRoot: true
-      runAsUser: 1001
+# initContainers:
+#   - name: download-ptrlib
+#     image: busybox
+#     command:
+#       - 'sh'
+#       - '-c'
+#       - 'echo "id $(whoami) && pod starting up" && mkdir -p /data/mods && ls -l /data/mods && echo "/data/mods directory created" && wget https://cdn.modrinth.com/data/tIKBCqVe/versions/1.0.5/PTRLib-1.0.5.jar -O /data/mods/PTRLib-1.0.5.jar && echo "PTRLib downloaded"'
+#     volumeMounts:
+#       - name: datadir
+#         mountPath: /data
+#     securityContext:
+#       runAsGroup: 1001
+#       runAsNonRoot: true
+#       runAsUser: 1001
 minecraftServer:
-  version: 1.12.2
+  version: 1.16.5
   type: "AUTO_CURSEFORGE"
   forgeVersion: 14.23.5.2860
   memory: 4096M
@@ -41,6 +40,6 @@ minecraftServer:
     apiKey:
       existingSecret: "curse-forge-api-key"
       secretKey: credential
-    slug: pokehaan-craft
+    slug: pokehaan-craft-2
   modrinth:
     projects: []
