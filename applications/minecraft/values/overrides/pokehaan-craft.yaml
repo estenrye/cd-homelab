@@ -17,9 +17,9 @@ initContainers:
           && echo "pod starting up"\
           && mkdir -p /data/mods \
           && echo "/data/mods directory created" \
-          && wget https://www.curseforge.com/minecraft/mc-mods/pokeballreveal/download/4673931 -O /data/mods/PokeballReveal-1.16.5-1.0.0.jar \
+          && wget https://s3.us-west-1.wasabisys.com/minecraft-rye-ninja/mods/PokeballReveal-1.16.5-1.0.0.jar -O /data/mods/PokeballReveal-1.16.5-1.0.0.jar \
           && echo "PokeballReveal-1.16.5-1.0.0.jar downloaded" \
-          && wget https://www.curseforge.com/minecraft/mc-mods/disable-mob-replacement/download/4725489 -O /data/mods/DisableMobReplacement-1.0.0-ExceptVillagers.jar \
+          && wget https://s3.us-west-1.wasabisys.com/minecraft-rye-ninja/mods/DisableMobReplacement-1.0.0-ExceptVillagers.jar -O /data/mods/DisableMobReplacement-1.0.0-ExceptVillagers.jar \
           && echo "DisableMobReplacement-1.0.0-ExceptVillagers.jar downloaded"
     volumeMounts:
       - name: datadir
