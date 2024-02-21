@@ -22,6 +22,8 @@ initContainers:
           && echo "pod starting up"\
           && mkdir -p /data/mods \
           && echo "/data/mods directory created" \
+          && wget https://cdn.modrinth.com/data/59ZceYlU/versions/Ro92Bd6N/Pixelmon-1.16.5-9.1.10-universal.jar -O /data/mods/Pixelmon-1.16.5-9.1.10-universal.jar \
+          && echo "Pixelmon downloaded" \
           && wget https://s3.us-west-1.wasabisys.com/minecraft-rye-ninja/mods/PokeballReveal-1.16.5-1.0.0.jar -O /data/mods/PokeballReveal-1.16.5-1.0.0.jar \
           && echo "PokeballReveal-1.16.5-1.0.0.jar downloaded" \
           && wget https://s3.us-west-1.wasabisys.com/minecraft-rye-ninja/mods/DisableMobReplacement-1.0.0-ExceptVillagers.jar -O /data/mods/DisableMobReplacement-1.0.0-ExceptVillagers.jar \
