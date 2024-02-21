@@ -5,6 +5,11 @@ resources:
   limits:
     memory: 7168Mi
     cpu: 6000m
+image:
+  repository: itzg/minecraft-server
+  tag: java8
+  pullPolicy: IfNotPresent
+  pullSecret: ""
 
 initContainers:
   - name: download-mods
