@@ -1,10 +1,10 @@
 resources:
   requests:
     memory: 4096Mi
-    cpu: 3000m
+    cpu: 10000m
   limits:
     memory: 7168Mi
-    cpu: 6000m
+    cpu: 15000m
 image:
   repository: itzg/minecraft-server
   tag: java8
