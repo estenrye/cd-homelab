@@ -11,6 +11,23 @@ image:
   pullPolicy: IfNotPresent
   pullSecret: ""
 
+livenessProbe:
+  command:
+    - mc-health
+  initialDelaySeconds: 60
+  periodSeconds: 5
+  failureThreshold: 20
+  successThreshold: 1
+  timeoutSeconds: 1
+readinessProbe:
+  command:
+    - mc-health
+  initialDelaySeconds: 60
+  periodSeconds: 5
+  failureThreshold: 20
+  successThreshold: 1
+  timeoutSeconds: 1
+
 initContainers:
   - name: download-mods
     image: busybox
