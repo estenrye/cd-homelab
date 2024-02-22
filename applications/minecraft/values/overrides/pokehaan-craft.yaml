@@ -35,6 +35,9 @@ initContainers:
       runAsGroup: 1001
       runAsNonRoot: true
       runAsUser: 1001
+mcbackup:
+  enabled: false
+
 minecraftServer:
   version: 1.16.5
   type: "AUTO_CURSEFORGE"
