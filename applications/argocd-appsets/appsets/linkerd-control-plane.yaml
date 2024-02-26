@@ -12,6 +12,7 @@ spec:
       values:
         targetRevision: HEAD
         linkerdTrustAnchorItemPath: vaults/Home_Lab/items/controlplane.linkerd.rspot-wireguard.rye.ninja
+        webhookTrustAnchorItemPath: vaults/Home_Lab/items/webhook.linkerd.rspot-wireguard.rye.ninja
   template:
     metadata:
       name: '{{name}}-linkerd-control-plane' # 'name' field of the Secret
