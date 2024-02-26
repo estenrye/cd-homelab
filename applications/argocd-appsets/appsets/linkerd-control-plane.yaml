@@ -27,6 +27,7 @@ spec:
         helm:
           valuesObject:
             linkerdTrustAnchorItemPath: '{{ values.linkerdTrustAnchorItemPath }}'
+            webhookTrustAnchorItemPath: '{{ values.webhookTrustAnchorItemPath }}'
       destination:
         server: '{{server}}' # 'server' field of the secret
         namespace: 'linkerd'
