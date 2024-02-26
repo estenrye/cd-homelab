@@ -3,6 +3,8 @@ kind: Certificate
 metadata:
   name: linkerd-policy-validator
   namespace: linkerd
+  labels:
+    {{- include "linkerd-control-plane.labels" . | nindent 4 }}
 spec:
   secretName: linkerd-policy-validator-k8s-tls
   duration: 24h
