@@ -15,9 +15,10 @@ linkerd-control-plane:
     vU2Hpx8cUQGvP2maZA7U5ib5s7Zm7IITjVUIsU2aqwIhALqLR07Yf59hWjwyOFvE
     ZszIxuy7QaFoPAlYds2RpGll
     -----END CERTIFICATE-----
+
   identity:
     issuer:
-      scheme: linkerd.io/tls
+      scheme: kubernetes.io/tls
 
   # proxy injector configuration
   proxyInjector:
