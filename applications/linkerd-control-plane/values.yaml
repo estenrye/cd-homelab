@@ -2,6 +2,9 @@ linkerdTrustAnchorItemPath: "vaults/vault_name_or_uuid/items/item_name_or_uuid"
 webhookTrustAnchorItemPath: "vaults/vault_name_or_uuid/items/item_name_or_uuid"
 
 linkerd-control-plane:
+  # -- Log level for the control plane components
+  controllerLogLevel: debug
+
   # -- Trust root certificate (ECDSA). It must be provided during install.
   identityTrustAnchorsPEM: |
     -----BEGIN CERTIFICATE-----
