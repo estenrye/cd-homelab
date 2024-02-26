@@ -18,9 +18,14 @@ brew install linkerd
 ```bash
 CLUSTER_NAME='rspot-wireguard'
 
+# Remove the local copy of the controlplane certificates
+rm ./ca.crt ./ca.key
+
 # Create a new key pair for the controlplane certificates
 step certificate create root.linkerd.cluster.local ca.crt ca.key \
   --profile root-ca --no-password --insecure
+
+export NOT_AFTER=`openssl x509 -enddate -noout -in "./ca.crt" -dateopt iso_8601|cut -d= -f 2`
 
 # Publish a new secret to 1password for the controlplane certificates
 op item create \
@@ -30,7 +35,8 @@ op item create \
   --title=controlplane.linkerd.${CLUSTER_NAME}.rye.ninja \
   --tags=linkerd \
   'tls\.crt[file]=./ca.crt' \
-  'tls\.key[file]=./ca.key'
+  'tls\.key[file]=./ca.key' \
+  "expires=$(echo $NOT_AFTER | cut -d\  -f 1)"
 
 # Remove the local copy of the controlplane certificates
 rm ./ca.crt ./ca.key
@@ -39,6 +45,8 @@ rm ./ca.crt ./ca.key
 step certificate create webhook.linkerd.cluster.local ca.crt ca.key \
   --profile root-ca --no-password --insecure --san webhook.linkerd.cluster.local
 
+export NOT_AFTER=`openssl x509 -enddate -noout -in "./ca.crt" -dateopt iso_8601|cut -d= -f 2`
+
 # Publish a new secret to 1password for the webhook certificates
 op item create \
   --account=ryefamily.1password.com \
@@ -46,8 +54,9 @@ op item create \
   --category="API Credential" \
   --title=webhook.linkerd.${CLUSTER_NAME}.rye.ninja \
   --tags=linkerd \
-  'certificate.cert[file]=./ca.crt' \
-  'certificate.key[file]=./ca.key'
+  'tls\.crt[file]=./ca.crt' \
+  'tls\.key[file]=./ca.key' \
+  "expires=$(echo $NOT_AFTER | cut -d\  -f 1)"
 
 # Remove the local copy of the webhook certificates
 rm ./ca.crt ./ca.key

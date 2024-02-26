@@ -15,7 +15,6 @@ spec:
   commonName: linkerd-proxy-injector.linkerd.svc
   dnsNames:
   - linkerd-proxy-injector.linkerd.svc
-  isCA: false
   privateKey:
     algorithm: ECDSA
   usages:

@@ -15,7 +15,6 @@ spec:
   commonName: linkerd-sp-validator.linkerd.svc
   dnsNames:
   - linkerd-sp-validator.linkerd.svc
-  isCA: false
   privateKey:
     algorithm: ECDSA
   usages:
