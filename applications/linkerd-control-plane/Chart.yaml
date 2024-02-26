@@ -2,9 +2,9 @@ apiVersion: v2
 name: linkerd-control-plane
 type: application
 description: A Helm chart for Kubernetes
-version: 0.1.1
+version: 0.2.0
 appVersion: "1.16.0"
-dependencies: []
-  # - name: external-dns
-  #   version: 1.13.1
-  #   repository: https://kubernetes-sigs.github.io/external-dns/
+dependencies:
+  - name: linkerd-control-plane
+    version: 1.16.10
+    repository: https://helm.linkerd.io/stable

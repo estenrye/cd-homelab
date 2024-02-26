@@ -1,3 +1,59 @@
 linkerdTrustAnchorItemPath: "vaults/vault_name_or_uuid/items/item_name_or_uuid"
 webhookTrustAnchorItemPath: "vaults/vault_name_or_uuid/items/item_name_or_uuid"
 
+linkerd-control-plane:
+  # -- Trust root certificate (ECDSA). It must be provided during install.
+  identityTrustAnchorsPEM: |
+    -----BEGIN CERTIFICATE-----
+    MIIBjjCCATOgAwIBAgIQcQLiXQmDaVi8/ohdyznujjAKBggqhkjOPQQDAjAlMSMw
+    IQYDVQQDExpyb290LmxpbmtlcmQuY2x1c3Rlci5sb2NhbDAeFw0yNDAyMjYwNTAx
+    MDJaFw0zNDAyMjMwNTAxMDJaMCUxIzAhBgNVBAMTGnJvb3QubGlua2VyZC5jbHVz
+    dGVyLmxvY2FsMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEAbO3YFtKSX88mV6u
+    LXQb/q6QeZbBeIk1V7hgUL/67SKPvDjkt61gu28JwnbTCnilYamTgCh2irhUF6vs
+    qu+xKqNFMEMwDgYDVR0PAQH/BAQDAgEGMBIGA1UdEwEB/wQIMAYBAf8CAQEwHQYD
+    VR0OBBYEFFuwSzcVpFU1e7wmaJjA1f3KiPdkMAoGCCqGSM49BAMCA0kAMEYCIQDO
+    vU2Hpx8cUQGvP2maZA7U5ib5s7Zm7IITjVUIsU2aqwIhALqLR07Yf59hWjwyOFvE
+    ZszIxuy7QaFoPAlYds2RpGll
+    -----END CERTIFICATE-----
+  identity:
+    issuer:
+      scheme: linkerd.io/tls
+
+  # proxy injector configuration
+  proxyInjector:
+    # -- Do not create a secret resource for the proxyInjector webhook.
+    # If this is set to `true`, the value `proxyInjector.caBundle` must be set
+    # or the ca bundle must injected with cert-manager ca injector using
+    # `proxyInjector.injectCaFrom` or `proxyInjector.injectCaFromSecret` (see below).
+    externalSecret: true
+
+    # -- Inject the CA bundle from a cert-manager Certificate.
+    # See the cert-manager [CA Injector Docs](https://cert-manager.io/docs/concepts/ca-injector/#injecting-ca-data-from-a-certificate-resource)
+    # for more information.
+    injectCaFrom: "linkerd-proxy-injector"
+
+  # service profile validator configuration
+  profileValidator:
+    # -- Do not create a secret resource for the profileValidator webhook.
+    # If this is set to `true`, the value `proxyInjector.caBundle` must be set
+    # or the ca bundle must injected with cert-manager ca injector using
+    # `proxyInjector.injectCaFrom` or `proxyInjector.injectCaFromSecret` (see below).
+    externalSecret: true
+
+    # -- Inject the CA bundle from a cert-manager Certificate.
+    # See the cert-manager [CA Injector Docs](https://cert-manager.io/docs/concepts/ca-injector/#injecting-ca-data-from-a-certificate-resource)
+    # for more information.
+    injectCaFrom: "linkerd-sp-validator"
+
+  # policy validator configuration
+  policyValidator:
+    # -- Do not create a secret resource for the policyValidator webhook.
+    # If this is set to `true`, the value `policyValidator.caBundle` must be set
+    # or the ca bundle must injected with cert-manager ca injector using
+    # `policyValidator.injectCaFrom` or `policyValidator.injectCaFromSecret` (see below).
+    externalSecret: true
+
+    # -- Inject the CA bundle from a cert-manager Certificate.
+    # See the cert-manager [CA Injector Docs](https://cert-manager.io/docs/concepts/ca-injector/#injecting-ca-data-from-a-certificate-resource)
+    # for more information.
+    injectCaFrom: "linkerd-policy-validator"
