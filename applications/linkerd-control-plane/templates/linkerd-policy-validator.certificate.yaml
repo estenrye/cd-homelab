@@ -18,6 +18,6 @@ spec:
   privateKey:
     algorithm: ECDSA
     encoding: PKCS8
-    rotationPolicy: Replace
+    rotationPolicy: Always
   usages:
   - server auth

@@ -18,7 +18,7 @@ spec:
   isCA: true
   privateKey:
     algorithm: ECDSA
-    rotationPolicy: Replace
+    rotationPolicy: Always
   usages:
   - cert sign
   - crl sign
