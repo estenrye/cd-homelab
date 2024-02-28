@@ -8,8 +8,8 @@ metadata:
     {{- include "linkerdviz.labels" . | nindent 4 }}
 spec:
   secretName: tap-k8s-tls
-  duration: 24h
-  renewBefore: 1h
+  duration: 24h0m0s
+  renewBefore: 1h0m0s
   issuerRef:
     name: webhook-issuer
     kind: Issuer
