@@ -80,6 +80,8 @@ spec:
     kind: IngressClassParams
   - group: gateway.networking.k8s.io
     kind: GatewayClass
+  - group: apiregistration.k8s.io
+    kind: APIService
 
   # Allow all namespaced-scoped resources to be created, except for ResourceQuota, LimitRange, NetworkPolicy
   namespaceResourceBlacklist:
