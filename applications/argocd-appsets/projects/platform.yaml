@@ -37,6 +37,8 @@ spec:
     server: '*'
   - namespace: linkerd
     server: '*'
+  - namespace: linkerd-viz
+    server: '*'
   - namespace: metallb
     server: '*'
   - namespace: nginx-gateway
