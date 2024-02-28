@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: linkerd-policy-validator
-  namespace: linkerd
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "linkerd-control-plane.labels" . | nindent 4 }}
 spec:
@@ -12,9 +12,9 @@ spec:
   issuerRef:
     name: webhook-issuer
     kind: Issuer
-  commonName: linkerd-policy-validator.linkerd.svc
+  commonName: linkerd-policy-validator.{{ .Release.Namespace }}.svc
   dnsNames:
-  - linkerd-policy-validator.linkerd.svc
+  - linkerd-policy-validator.{{ .Release.Namespace }}.svc
   privateKey:
     algorithm: ECDSA
     encoding: PKCS8
