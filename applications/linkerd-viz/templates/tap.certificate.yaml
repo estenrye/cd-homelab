@@ -19,5 +19,6 @@ spec:
   isCA: false
   privateKey:
     algorithm: ECDSA
+    rotationPolicy: Replace
   usages:
   - server auth

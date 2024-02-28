@@ -17,5 +17,6 @@ spec:
   - linkerd-proxy-injector.{{ .Release.Namespace }}.svc
   privateKey:
     algorithm: ECDSA
+    rotationPolicy: Replace
   usages:
   - server auth
