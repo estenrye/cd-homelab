@@ -1,0 +1,23 @@
+# ignore if not using the viz extension
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: tap
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "linkerdviz.labels" . | nindent 4 }}
+spec:
+  secretName: tap-k8s-tls
+  duration: 24h
+  renewBefore: 1h
+  issuerRef:
+    name: webhook-issuer
+    kind: Issuer
+  commonName: tap.{{ .Release.Namespace }}.svc
+  dnsNames:
+  - tap.{{ .Release.Namespace }}.svc
+  isCA: false
+  privateKey:
+    algorithm: ECDSA
+  usages:
+  - server auth
