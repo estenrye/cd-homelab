@@ -1,1 +1,34 @@
 webhookTrustAnchorItemPath: "vaults/vault_name_or_uuid/items/item_name_or_uuid"
+linkerd-viz:
+  tap:
+    external-secret: true
+
+    caBundle: |
+      -----BEGIN CERTIFICATE-----
+      MIIBlDCCATmgAwIBAgIQWfY4O1HX0/LxzHoWv2Z69jAKBggqhkjOPQQDAjAoMSYw
+      JAYDVQQDEx13ZWJob29rLmxpbmtlcmQuY2x1c3Rlci5sb2NhbDAeFw0yNDAyMjYw
+      NDM5MjBaFw0zNDAyMjMwNDM5MjBaMCgxJjAkBgNVBAMTHXdlYmhvb2subGlua2Vy
+      ZC5jbHVzdGVyLmxvY2FsMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAESrL3BiXn
+      2nQdzH6KK9M8+1EhWxGA0JNLh60A2n+QVdZFoHXs554jPTuMs+dlQcfCQHdPx6DE
+      mW8UFTX5hbRSKKNFMEMwDgYDVR0PAQH/BAQDAgEGMBIGA1UdEwEB/wQIMAYBAf8C
+      AQEwHQYDVR0OBBYEFEFU+TwoBoxdlHktO8oEnRa6ywnXMAoGCCqGSM49BAMCA0kA
+      MEYCIQDQToVbyG0hYN+BQMEdRXSXrHSIQyodM+eqqs2VErMsdgIhAIO+/to80feo
+      UQH469m0gI0zG1bAyfdhlpCfKwuDPR1T
+      -----END CERTIFICATE-----
+
+  tapInjector:
+    external-secret: true
+
+    caBundle: |
+      -----BEGIN CERTIFICATE-----
+      MIIBlDCCATmgAwIBAgIQWfY4O1HX0/LxzHoWv2Z69jAKBggqhkjOPQQDAjAoMSYw
+      JAYDVQQDEx13ZWJob29rLmxpbmtlcmQuY2x1c3Rlci5sb2NhbDAeFw0yNDAyMjYw
+      NDM5MjBaFw0zNDAyMjMwNDM5MjBaMCgxJjAkBgNVBAMTHXdlYmhvb2subGlua2Vy
+      ZC5jbHVzdGVyLmxvY2FsMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAESrL3BiXn
+      2nQdzH6KK9M8+1EhWxGA0JNLh60A2n+QVdZFoHXs554jPTuMs+dlQcfCQHdPx6DE
+      mW8UFTX5hbRSKKNFMEMwDgYDVR0PAQH/BAQDAgEGMBIGA1UdEwEB/wQIMAYBAf8C
+      AQEwHQYDVR0OBBYEFEFU+TwoBoxdlHktO8oEnRa6ywnXMAoGCCqGSM49BAMCA0kA
+      MEYCIQDQToVbyG0hYN+BQMEdRXSXrHSIQyodM+eqqs2VErMsdgIhAIO+/to80feo
+      UQH469m0gI0zG1bAyfdhlpCfKwuDPR1T
+      -----END CERTIFICATE-----
+      
