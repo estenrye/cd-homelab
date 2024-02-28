@@ -4,7 +4,7 @@ metadata:
   name: linkerd-policy-validator
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "linkerd-control-plane.labels" . | nindent 4 }}
+    {{- include "linkerdcontrolplane.labels" . | nindent 4 }}
 spec:
   secretName: linkerd-policy-validator-k8s-tls
   duration: 24h0m0s

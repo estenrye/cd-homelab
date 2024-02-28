@@ -4,7 +4,7 @@ metadata:
   name: linkerd-trust-anchor
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "linkerd-control-plane.labels" . | nindent 4 }}
+    {{- include "linkerdcontrolplane.labels" . | nindent 4 }}
 spec:
   ca:
     secretName: linkerd-trust-anchor
