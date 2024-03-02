@@ -15,7 +15,6 @@ spec:
   commonName: tap-injector.{{ .Release.Namespace }}.svc
   dnsNames:
   - tap-injector.{{ .Release.Namespace }}.svc
-  isCA: false
   privateKey:
     algorithm: ECDSA
     rotationPolicy: Always
