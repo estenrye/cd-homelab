@@ -1,0 +1,10 @@
+apiVersion: v2
+name: linkerdjaeger
+type: application
+description: A Helm chart for Kubernetes
+version: 0.2.0
+appVersion: "1.16.0"
+dependencies: []
+  # - name: linkerd-jaeger
+  #   version: 30.12.11
+  #   repository: https://helm.linkerd.io/stable
