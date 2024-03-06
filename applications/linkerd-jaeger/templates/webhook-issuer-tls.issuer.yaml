@@ -4,7 +4,7 @@ metadata:
   name: webhook-issuer
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "linkerdviz.labels" . | nindent 4 }}
+    {{- include "linkerdjaeger.labels" . | nindent 4 }}
 spec:
   ca:
     secretName: webhook-issuer-tls
