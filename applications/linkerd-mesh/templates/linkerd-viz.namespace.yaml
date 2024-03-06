@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: linkerd-viz
-  labels:
-    {{- include "linkerd-mesh.labels" . | nindent 4 }}
-    linkerd.io/extension: viz
