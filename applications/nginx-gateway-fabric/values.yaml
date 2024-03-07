@@ -12,7 +12,7 @@ nginxGateway:
   config:
     logging:
       ## Log level. Supported values "info", "debug", "error".
-      level: info
+      level: debug
   ## The number of replicas of the NGINX Gateway Fabric Deployment.
   replicaCount: 3
   ## The configuration for leader election.
