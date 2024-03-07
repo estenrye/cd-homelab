@@ -4,7 +4,7 @@ credentials:
 external-dns:
   logLevel: debug
   logFormat: json
-  interval: 1m
+  interval: 5m
   triggerLoopOnEvent: true
   registry: txt
   txtPrefix: edns.
