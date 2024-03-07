@@ -17,7 +17,7 @@ spec:
       labels:
         rye.ninja/appset: emojivoto
     spec:
-      project: "platform"
+      project: "default"
       source:
         path: applications/emojivoto
         repoURL: git@github.com:estenrye/cd-homelab.git
