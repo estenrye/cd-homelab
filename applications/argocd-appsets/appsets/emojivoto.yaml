@@ -9,8 +9,6 @@ spec:
       selector:
         matchLabels:
           rye.ninja/linkerd-enabled: "true"
-      values:
-        targetRevision: HEAD
   template:
     metadata:
       name: '{{name}}-emojivoto' # 'name' field of the Secret
@@ -21,7 +19,7 @@ spec:
       source:
         path: applications/emojivoto
         repoURL: git@github.com:estenrye/cd-homelab.git
-        targetRevision: '{{.Values.targetRevision}}'
+        targetRevision: HEAD
       destination:
         server: '{{server}}' # 'server' field of the secret
         namespace: 'emojivoto'
