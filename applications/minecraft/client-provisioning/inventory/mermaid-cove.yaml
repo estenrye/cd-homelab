@@ -16,6 +16,12 @@ minecraft_clients:
       fabric_install_dir: "/home/iris/.minecraft"
       owner: iris
       group: iris
+    tufbeast.usmnblm01.rye.ninja:
+      ansible_host: 10.0.2.13
+      ansible_user: esten
+      fabric_install_dir: "/home/tufbeast/.minecraft"
+      owner: iris
+      group: iris
     esten-surface-book.usmnblm01.rye.ninja:
       ansible_user: esten
       fabric_install_dir: "/home/esten/.minecraft"
