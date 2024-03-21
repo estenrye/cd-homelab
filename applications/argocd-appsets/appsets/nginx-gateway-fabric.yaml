@@ -31,20 +31,20 @@ spec:
               replicaCount: 3
               podAnnotations:
                 linkerd.io/inject: enabled
-              service:
-                ports:
-                  - port: 80
-                    targetPort: 80
-                    protocol: TCP
-                    name: http
-                  - port: 443
-                    targetPort: 443
-                    protocol: TCP
-                    name: https
-                  - port: 25565
-                    targetPort: 25565
-                    protocol: TCP
-                    name: minecraft
+            service:
+              ports:
+                - port: 80
+                  targetPort: 80
+                  protocol: TCP
+                  name: http
+                - port: 443
+                  targetPort: 443
+                  protocol: TCP
+                  name: https
+                - port: 25565
+                  targetPort: 25565
+                  protocol: TCP
+                  name: minecraft
       destination:
         server: '{{server}}' # 'server' field of the secret
         namespace: 'nginx-gateway'
