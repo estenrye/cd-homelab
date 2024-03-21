@@ -1,2 +1,6 @@
 domain: example.com
 environment: dev
+
+namespace:
+  annotations:
+    linkerd.io/inject: enabled
