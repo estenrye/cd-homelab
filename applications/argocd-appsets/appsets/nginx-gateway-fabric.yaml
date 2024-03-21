@@ -32,6 +32,8 @@ spec:
               podAnnotations:
                 linkerd.io/inject: enabled
             service:
+              annotations:
+                linkerd.io/inject: enabled
               ports:
                 - port: 80
                   targetPort: 80
