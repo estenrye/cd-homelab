@@ -1,3 +1,7 @@
+namespace:
+  annotations:
+    linkerd.io/inject: enabled
+
 nginx-gateway-fabric:
   nginxGateway:
     ## The kind of the NGINX Gateway Fabric installation - currently, only deployment is supported.
