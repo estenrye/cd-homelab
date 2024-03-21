@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: coffee-v1
-  annotations: 
-    linkerd.io/inject: enabled
 spec:
   replicas: 1
   selector:
@@ -13,6 +11,8 @@ spec:
     metadata:
       labels:
         app: coffee-v1
+      annotations: 
+        linkerd.io/inject: enabled
     spec:
       containers:
       - name: coffee-v1
@@ -37,8 +37,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: coffee-v2
-  annotations: 
-    linkerd.io/inject: enabled
 spec:
   replicas: 1
   selector:
@@ -48,6 +46,8 @@ spec:
     metadata:
       labels:
         app: coffee-v2
+      annotations: 
+        linkerd.io/inject: enabled
     spec:
       containers:
       - name: coffee-v2
@@ -72,8 +72,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: tea-post
-  annotations: 
-    linkerd.io/inject: enabled
 spec:
   replicas: 1
   selector:
@@ -83,6 +81,8 @@ spec:
     metadata:
       labels:
         app: tea-post
+      annotations: 
+        linkerd.io/inject: enabled
     spec:
       containers:
       - name: tea-post
@@ -107,8 +107,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: tea
-  annotations: 
-    linkerd.io/inject: enabled
 spec:
   replicas: 1
   selector:
@@ -118,6 +116,8 @@ spec:
     metadata:
       labels:
         app: tea
+      annotations: 
+        linkerd.io/inject: enabled
     spec:
       containers:
       - name: tea
