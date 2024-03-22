@@ -9,6 +9,7 @@ spec:
       selector:
         matchLabels:
           rye.ninja/gateway-api-enabled: "true"
+          rye.ninja/gateway-class: "nginx-gateway-fabric"
       values:
         targetRevision: HEAD
   template:
