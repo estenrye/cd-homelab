@@ -1,0 +1,75 @@
+version: '3'
+
+dotenv: 
+  - .env/.env
+  - .env/{{.ENV}}.env
+  - '{{.HOME}}/.env'
+
+env:
+  ENV: dev
+
+tasks:
+  op-connect:
+    desc: Run the 1Password Connect API.
+    dir: ${HOME}/.op-connect
+    cmds:
+      - task: init-op-connect
+      - open -a Docker
+      - docker compose up -d
+
+  init-op-connect:
+    desc: Initialize the 1Password Connect API credentials.
+    dir: ../../docker-compose/tools.rye.ninja
+    cmds:
+      - rm -rf ${HOME}/.op-connect ${HOME}/.haproxy ${HOME}/.uptimekuma
+      - mkdir -p ${HOME}/.op-connect ${HOME}/.haproxy ${HOME}/.uptimekuma
+      - chmod 700 ${HOME}/.op-connect
+      - chmod 777 ${HOME}/.uptimekuma
+      - cp haproxy/haproxy.cfg ${HOME}/.haproxy/haproxy.cfg
+      - export DOCKER_USER="esten:staff"
+      - envsubst < docker-compose.yaml > ${HOME}/.op-connect/docker-compose.yml
+      - op read "{{ .OP_CONNECT_CREDS_PATH }}" > ${HOME}/.op-connect/1password-credentials.json
+
+  remote-backend-init:
+    desc: Initialize the Terraform backend.
+    cmds:
+      - task: tf-init
+        vars:
+          PATH: remote-backend
+          ACTION: init
+
+  remote-backend-plan:
+    desc: Plan the Terraform backend.
+    cmds:
+      - task: tf
+        vars:
+          PATH: remote-backend
+          ACTION: plan
+
+  remote-backend-apply:
+    desc: Apply the Terraform backend.
+    cmds:
+      - task: tf
+        vars:
+          PATH: remote-backend
+          ACTION: apply
+
+  remote-backend-destroy:
+    desc: Destroy the Terraform backend.
+    cmds:
+      - task: tf
+        vars:
+          PATH: remote-backend
+          ACTION: destroy
+  
+  tf:
+    desc: Plan the Terraform workspace.
+    dir: "{{ .PATH }}"
+    internal: true
+    cmds:
+      - |
+        OP_CONNECT_TOKEN=`op read "{{ .OP_CONNECT_TOKEN_PATH }}"` \
+        AWS_ACCESS_KEY_ID=`op read "{{ .AWS_ACCESS_KEY_PATH }}"` \
+        AWS_SECRET_ACCESS_KEY=`op read "{{ .AWS_SECRET_KEY_PATH }}"` \
+        RXTSPOT_TOKEN=`op read "{{ .RXTSPOT_TOKEN_PATH }}"` \
+        {{ .OPENTF_BIN }} {{ .ACTION }} {{ .ARGS }}

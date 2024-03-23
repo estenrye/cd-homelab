@@ -1,0 +1,56 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'IAM user, policy and S3 bucket creation'
+
+Resources:
+  OpenTofuUser:
+    Type: 'AWS::IAM::User'
+    Properties:
+      UserName: 'open-tofu'
+      Tags:
+        - Key: 'costcenter'
+          Value: 'opex-opentofu'
+
+  OpenTofuAccessKey:
+    Type: 'AWS::IAM::AccessKey'
+    Properties:
+      UserName: !Ref OpenTofuUser
+
+  OpenTofuBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: 'open-tofu-remote'
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: 'AES256'
+      Tags:
+        - Key: 'costcenter'
+          Value: 'opex-opentofu'
+
+  OpenTofuBucketPolicy:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: 'allow-opentofu-remote-backend'
+      Users:
+        - !Ref OpenTofuUser
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: 'Allow'
+            Action:
+              - 's3:PutObject'
+              - 's3:GetObject'
+              - 's3:DeleteObject'
+              - 's3:ListBucket'
+            Resource: 
+              - !Sub 'arn:aws:s3:::${OpenTofuBucket}'
+              - !Sub 'arn:aws:s3:::${OpenTofuBucket}/*'
+              
+
+Outputs:
+  AccessKey:
+    Value: !Ref OpenTofuAccessKey
+    Description: 'IAM User Access Key'
+  SecretKey:
+    Value: !GetAtt OpenTofuAccessKey.SecretAccessKey
+    Description: 'IAM User Secret Key'

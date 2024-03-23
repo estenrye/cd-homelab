@@ -8,14 +8,14 @@ services:
       - "8080:8080"
       - "8081:8081"
     volumes:
-      - ./haproxy:/usr/local/etc/haproxy:ro
+      - ${HOME}/.haproxy:/usr/local/etc/haproxy:ro
     networks:
       - internal
   uptime:
     image: louislam/uptime-kuma:latest
     restart: always
     volumes:
-      - ./uptime-kuma:/app/data
+      - ${HOME}/.uptime-kuma:/app/data
     networks:
       - internal
   whoami:
@@ -27,20 +27,18 @@ services:
       - internal
   op-connect-api:
     image: 1password/connect-api:latest
-    user: "${UID}:${GID}"
     restart: always
+    user: root
     volumes:
-      - "${HOME}/.op-connect:/root/.op"
-      - "op-data:/home/opuser/.op/data"
+      - "${HOME}/.op-connect:/root/.op:rw"
     networks:
       - internal
   op-connect-sync:
     image: 1password/connect-sync:latest
-    user: "${UID}:${GID}"
     restart: always
+    user: root
     volumes:
-      - "${HOME}/.op-connect:/root/.op"
-      - "op-data:/home/opuser/.op/data"
+      - "${HOME}/.op-connect:/root/.op:rw"
     networks:
       - internal
   shoelaces:
@@ -50,8 +48,6 @@ services:
       BASE_URL: pxe.127-0-0-1.a.rye.ninja:8080
     networks:
       - internal
-volumes:
-  op-data:
 
 networks:
   internal:
