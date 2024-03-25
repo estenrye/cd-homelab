@@ -112,6 +112,7 @@ spec:
   privateKey:
     algorithm: RSA
     size: 2048
+    rotationPolicy: Always
   issuerRef:
     name: selfsigned-issuer
     kind: Issuer
@@ -150,6 +151,8 @@ spec:
   - "envoy-gateway.envoy-gateway-system"
   - "envoy-gateway.envoy-gateway-system.svc"
   - "envoy-gateway.envoy-gateway-system.svc.cluster.local"
+  privateKey:
+    rotationPolicy: Always
   issuerRef:
     kind: Issuer
     name: eg-issuer
@@ -176,6 +179,8 @@ spec:
   renewBefore: 1081h00m
   dnsNames:
   - "*.envoy-gateway-system"
+  privateKey:
+    rotationPolicy: Always
   issuerRef:
     kind: Issuer
     name: eg-issuer
@@ -202,6 +207,8 @@ spec:
   renewBefore: 1081h00m
   dnsNames:
   - "*.envoy-gateway-system"
+  privateKey:
+    rotationPolicy: Always
   issuerRef:
     kind: Issuer
     name: eg-issuer
@@ -296,6 +303,7 @@ spec:
   renewBefore: 8761h00m
   secretName: linkerd-trust-anchor
   privateKey:
+    rotationPolicy: Always
     algorithm: RSA
     size: 2048
   issuerRef:
@@ -335,6 +343,7 @@ spec:
   - identity.linkerd.cluster.local
   isCA: true
   privateKey:
+    rotationPolicy: Always
     algorithm: ECDSA
   usages:
   - cert sign
@@ -365,6 +374,7 @@ spec:
     annotations:
       replicator.v1.mittwald.de/replicate-to: "linkerd-viz,linkerd-jaeger"
   privateKey:
+    rotationPolicy: Always
     algorithm: RSA
     size: 2048
   issuerRef:
@@ -428,6 +438,7 @@ spec:
   - linkerd-policy-validator.linkerd.svc
   isCA: false
   privateKey:
+    rotationPolicy: Always
     algorithm: ECDSA
     encoding: PKCS8
   usages:
@@ -453,6 +464,7 @@ spec:
   - linkerd-proxy-injector.linkerd.svc
   isCA: false
   privateKey:
+    rotationPolicy: Always
     algorithm: ECDSA
   usages:
   - server auth
@@ -477,6 +489,7 @@ spec:
   - linkerd-sp-validator.linkerd.svc
   isCA: false
   privateKey:
+    rotationPolicy: Always
     algorithm: ECDSA
   usages:
   - server auth
@@ -501,6 +514,7 @@ spec:
   - tap.linkerd-viz.svc
   isCA: false
   privateKey:
+    rotationPolicy: Always
     algorithm: ECDSA
   usages:
   - server auth
@@ -525,6 +539,7 @@ spec:
   - tap-injector.linkerd-viz.svc
   isCA: false
   privateKey:
+    rotationPolicy: Always
     algorithm: ECDSA
   usages:
   - server auth
@@ -549,6 +564,7 @@ spec:
   - jaeger-injector.linkerd-jaeger.svc
   isCA: false
   privateKey:
+    rotationPolicy: Always
     algorithm: ECDSA
   usages:
   - server auth
