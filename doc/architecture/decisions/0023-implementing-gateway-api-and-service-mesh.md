@@ -6,6 +6,22 @@ Date: 2024-03-23
 
 In Design
 
+## ToDo
+
+[ ] Implement Cert-Manager automatic TLS for north-south TLS termination at the Gateway.
+[ ] Implement External-DNS to manage DNS records for the Gateway.
+[ ] Implement Default Deny for LinkerD
+[ ] Implement Server and Server Authorization resources for example applications.
+[ ] Implement a single kube-prometheus stack shared by Envoy Gateway and LinkerD
+[ ] Implement Loki for log aggregation
+[ ] Forward all logs to Loki
+[ ] Implement a single trace storage solution  (linkerd jaegar or grafana tempo)
+[ ] Implement the OpenTelemetry Collector for telemetry data collection
+[ ] Collect Gateway API Metrics using Prometheus
+  - [Envoy Gateway: Gateway API Metrics](https://gateway.envoyproxy.io/v1.0.0/user/observability/gateway-api-metrics/)
+  - [Gateway API State Metrics](https://github.com/Kuadrant/gateway-api-state-metrics)
+[ ] Install grafana
+
 ## References
 
 - [Gateway API](https://gateway-api.sigs.k8s.io/)
