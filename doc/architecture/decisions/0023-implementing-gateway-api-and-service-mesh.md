@@ -8,7 +8,6 @@ In Design
 
 ## ToDo
 
-[ ] Implement Cert-Manager automatic TLS for north-south TLS termination at the Gateway.
 [ ] Implement External-DNS to manage DNS records for the Gateway.
 [ ] Implement Default Deny for LinkerD
 [ ] Implement Server and Server Authorization resources for example applications.
@@ -33,6 +32,7 @@ In Design
 - [Automatically Rotating Webhook TLS Credentials](https://linkerd.io/2.15/tasks/automatically-rotating-webhook-tls-credentials/)
 - [Github Kubernetes Replicator](https://github.com/mittwald/kubernetes-replicator)
 - [Emojivoto](https://github.com/BuoyantIO/emojivoto)
+- [Envoy Gateway: Using cert-manager for TLS Termination](https://gateway.envoyproxy.io/v1.0.0/user/security/tls-cert-manager/)
 
 ## Implementation
 
@@ -78,11 +78,12 @@ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/
 helm repo add jetstack https://charts.jetstack.io --force-update
 
 # Install the Cert Manager Helm Chart
-helm install \
+helm upgrade --install \
   cert-manager jetstack/cert-manager \
   --namespace cert-manager \
   --create-namespace \
-  --version v1.14.4
+  --version v1.14.4 \
+  --set featureGates=ExperimentalGatewayAPISupport=true
 ```
 
 ### Deploy the Gateway API CRDs
@@ -684,6 +685,32 @@ spec:
     name: custom-proxy-config
     namespace: envoy-gateway-system
 EOF
+```
+
+### Deploy a Gateway that terminates Publicly Trusted TLS for North-South Traffic
+export CERT_MANAGER_CONTACT_EMAIL=$(git config user.email)
+
+```bash
+# Deploy a ClusterIssuer
+cat <<EOF | kubectl apply -f -
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: "$CERT_MANAGER_CONTACT_EMAIL"
+    privateKeySecretRef:
+      name: letsencrypt-account-key
+    solvers:
+    - http01:
+        gatewayHTTPRoute:
+          parentRefs:
+          - kind: Gateway
+            name: eg
+            namespace: emojivoto
+EOF
 
 # Deploy a Gateway and HttpRoute for the Emojivoto application
 cat <<EOF | kubectl apply -f -
@@ -692,13 +719,29 @@ kind: Gateway
 metadata:
   name: eg
   namespace: emojivoto
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    cert-manager.io/revision-history-limit: "3"
 spec:
   gatewayClassName: eg
   listeners:
     - name: http
       protocol: HTTP
       port: 80
----
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: "emojivoto.example.rye.ninja"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: emojivoto-example-rye-ninja-tls
+EOF
+```
+### Delploy a HttpRoute object to route traffic to the Emojivoto application
+
+```bash
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
