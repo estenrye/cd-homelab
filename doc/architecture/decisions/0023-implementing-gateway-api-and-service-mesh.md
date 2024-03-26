@@ -8,7 +8,8 @@ In Design
 
 ## ToDo
 
-[ ] Implement External-DNS to manage DNS records for the Gateway.
+[ ] Document how to configure the 1Password Secrets integration
+[ ] Document how to configure Cloudflare DNS
 [ ] Implement Default Deny for LinkerD
 [ ] Implement Server and Server Authorization resources for example applications.
 [ ] Implement a single kube-prometheus stack shared by Envoy Gateway and LinkerD
@@ -33,10 +34,11 @@ In Design
 - [Github Kubernetes Replicator](https://github.com/mittwald/kubernetes-replicator)
 - [Emojivoto](https://github.com/BuoyantIO/emojivoto)
 - [Envoy Gateway: Using cert-manager for TLS Termination](https://gateway.envoyproxy.io/v1.0.0/user/security/tls-cert-manager/)
+- [Envoy Gateway: Using ExteranlDNS](https://gateway.envoyproxy.io/v1.0.0/user/security/tls-cert-manager/#using-externaldns)
 
 ## Implementation
 
-### Prerequisites
+### Prerequisite Applications
 
 ```bash
 brew install helm
@@ -44,7 +46,14 @@ brew install yq
 brew install kubectl
 brew install linkerd
 brew install hey
+brew install op
 ```
+
+### Prerequisite Services
+
+- Rackspace SPOT Account
+- DNS Provider supported by External-DNS
+- 1Password Family Account (optional)
 
 ### Provision a Cloudspace on Rackspace SPOT
 
@@ -52,6 +61,100 @@ brew install hey
 # provision a cluster on Rackspace SPOT
 cd infrastructure/rackspace-spot/remote-backend
 task remote-backend-apply
+```
+
+### Configure 1Password Secrets Integration
+
+TODO: Document how to configure 1Password Secrets Integration
+
+### Deploy 1Password Operator
+
+I use 1Password to store my secrets. We're going to deploy the 1Password Operator to my cluster to deliver my secrets.
+to the cluster.  If you don't have a 1Password account, anywhere you see a OnePasswordItem object in the following guide,
+you can replace it with a Kubernetes Secret.
+
+```bash
+export OP_ACCOUNT="ryefamily.1password.com"
+export OP_CREDENTIALS_ITEM="op://Home_lab/1Password-Connect-Credentials-File-usmnblm01.rye.ninja/1password-credentials.json"
+export OP_TOKEN_ITEM="op://Home_Lab/1Password-Connect-Token-usmnblm01.rye.ninja/credential"
+
+# Create the 1Password namespace
+kubectl create namespace 1password
+
+# Deploy the 1Password Credentials Secret
+kubectl create secret generic op-credentials \
+  -n 1password \
+  --from-literal=1password-credentials.json=$(op read --account "${OP_ACCOUNT}" "${OP_CREDENTIALS_ITEM}" | base64)
+
+# Deploy the 1Password Token Secret
+kubectl create secret generic onepassword-token \
+  -n 1password \
+  --from-literal=token=$(op read --account "${OP_ACCOUNT}" "${OP_TOKEN_ITEM}")
+
+# Add the 1Password Helm Repository
+helm repo add 1password https://1password.github.io/connect-helm-charts
+
+# Install the 1Password Operator
+helm upgrade --install connect 1password/connect \
+  --namespace 1password \
+  --set operator.create=true \
+  --set operator.autoRestart=true \
+  --set connect.ingress.enabled=false
+```
+
+### Configure Cloudflare DNS
+
+TODO: Document how to configure Cloudflare DNS
+
+### Deploy External-DNS
+
+Next, we're going to deploy External-DNS to manage the DNS records for our Gateway.
+External-DNS is a Kubernetes controller that configures DNS records for Kubernetes resources.
+
+```bash
+# Create the External-DNS namespace
+kubectl create namespace external-dns
+
+# Add the Cloudflare API Token to the cluster
+export CLOUDFLARE_API_TOKEN_ITEM="vaults/Home_Lab/items/letsencrypt-dns01-credentials_cert-manager.rye.ninja"
+
+cat <<EOF | kubectl apply -f -
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  name: dns-credentials
+  namespace: external-dns
+spec:
+  itemPath: ${CLOUDFLARE_API_TOKEN_ITEM}
+EOF
+
+# Add the External-DNS Helm Repository
+helm repo add external-dns https://kubernetes-sigs.github.io/external-dns/
+
+# Deploy External-DNS
+export CLUSTER_NAME="example"
+export TOP_LEVEL_DOMAIN="rye.ninja"
+
+helm upgrade --install external-dns external-dns/external-dns \
+  --namespace external-dns \
+  --set logLevel=debug \
+  --set logFormat=json \
+  --set interval=5m \
+  --set triggerLoopOnEvent=true \
+  --set registry=txt \
+  --set txtPrefix=edns. \
+  --set txtOwnerId="${CLUSTER_NAME}" \
+  --set policy=sync \
+  --set sources="{gateway-httproute,gateway-grpcroute,gateway-tcproute,gateway-tlsroute,gateway-udproute}" \
+  --set provider.name=cloudflare \
+  --set extraArgs="{--cloudflare-proxied,--cloudflare-dns-records-per-page=5000}" \
+  --set "env[0].name=CF_API_TOKEN" \
+  --set "env[0].valueFrom.secretKeyRef.name=dns-credentials" \
+  --set "env[0].valueFrom.secretKeyRef.key=password" \
+  --set "env[1].name=EXTERNAL_DNS_ZONE_ID_FILTER" \
+  --set "env[1].valueFrom.secretKeyRef.name=dns-credentials" \
+  --set "env[1].valueFrom.secretKeyRef.key=zone_id" \
+  --set "domainFilters[0]=${CLUSTER_NAME}.${TOP_LEVEL_DOMAIN}"
 ```
 
 ### Deploy the Kubernetes Replicator
