@@ -67,6 +67,29 @@ task remote-backend-apply
 
 TODO: Document how to configure 1Password Secrets Integration
 
+### Deploy the Kube Prometheus stack.
+
+```bash
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack \
+  --namespace monitoring \
+  --create-namespace
+```
+
+### Viewing Grafana dashboards
+
+```bash
+# Get the Grafana admin user
+kubectl get -n monitoring secret kube-prometheus-stack-grafana -o jsonpath='{.data.admin-user}' | base64 -d
+
+# Get the Grafana admin password
+kubectl get -n monitoring secret kube-prometheus-stack-grafana -o jsonpath='{.data.admin-password}' | base64 -d
+
+# Forward the Grafana service to your local machine
+kubectl port-forward -n monitoring svc/grafana 3000:80
+```
+
 ### Deploy 1Password Operator
 
 I use 1Password to store my secrets. We're going to deploy the 1Password Operator to my cluster to deliver my secrets.
