@@ -17,7 +17,7 @@ minecraft_clients:
       owner: iris
       group: iris
     tufbeast.usmnblm01.rye.ninja:
-      ansible_host: 10.0.2.13
+      ansible_host: 10.0.2.33
       ansible_user: esten
       fabric_install_dir: "/home/tufbeast/.minecraft"
       owner: iris
