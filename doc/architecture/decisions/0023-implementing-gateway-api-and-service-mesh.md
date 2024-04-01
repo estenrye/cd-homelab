@@ -160,6 +160,7 @@ export TOP_LEVEL_DOMAIN="rye.ninja"
 
 helm upgrade --install external-dns external-dns/external-dns \
   --namespace external-dns \
+  --set serviceMonitor.enabled=true \
   --set logLevel=debug \
   --set logFormat=json \
   --set interval=5m \
