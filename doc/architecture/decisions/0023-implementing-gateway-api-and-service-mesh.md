@@ -75,6 +75,7 @@ helm repo update
 helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack \
   --namespace monitoring \
   --create-namespace
+  --values https://raw.githubusercontent.com/estenrye/cd-homelab/main/doc/architecture/decisions/0023-values/kube-prometheus-stack.yaml
 ```
 
 ### Viewing Grafana dashboards
@@ -87,7 +88,7 @@ kubectl get -n monitoring secret kube-prometheus-stack-grafana -o jsonpath='{.da
 kubectl get -n monitoring secret kube-prometheus-stack-grafana -o jsonpath='{.data.admin-password}' | base64 -d
 
 # Forward the Grafana service to your local machine
-kubectl port-forward -n monitoring svc/grafana 3000:80
+kubectl port-forward -n monitoring svc/kube-prometheus-stack-grafana 3000:80
 ```
 
 ### Deploy 1Password Operator
@@ -107,7 +108,7 @@ kubectl create namespace 1password
 # Deploy the 1Password Credentials Secret
 kubectl create secret generic op-credentials \
   -n 1password \
-  --from-literal=1password-credentials.json=$(op read --account "${OP_ACCOUNT}" "${OP_CREDENTIALS_ITEM}" | base64)
+  --from-literal=1password-credentials.json=$(op read --account "${OP_ACCOUNT}" "${OP_CREDENTIALS_ITEM}" | base64 -b0)
 
 # Deploy the 1Password Token Secret
 kubectl create secret generic onepassword-token \

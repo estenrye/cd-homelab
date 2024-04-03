@@ -33,7 +33,7 @@ tasks:
   remote-backend-init:
     desc: Initialize the Terraform backend.
     cmds:
-      - task: tf-init
+      - task: tf
         vars:
           PATH: remote-backend
           ACTION: init
