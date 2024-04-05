@@ -1,12 +1,9 @@
 version: '3'
 
-dotenv: 
-  - .env/.env
-  - .env/{{.ENV}}.env
-  - '{{.HOME}}/.env'
-
 env:
   ENV: dev
+
+dotenv: [ '.env/.env', '.env/{{.ENV}}.env', '{{.HOME}}/.env']
 
 tasks:
   op-connect:
@@ -30,44 +27,68 @@ tasks:
       - envsubst < docker-compose.yaml > ${HOME}/.op-connect/docker-compose.yml
       - op read "{{ .OP_CONNECT_CREDS_PATH }}" > ${HOME}/.op-connect/1password-credentials.json
 
-  remote-backend-init:
+  tf-crds:
+    desc: Generate Terraform resources from CRDs.
+    dir: remote-backend/tf-crds
+    cmds:
+      - curl https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/charts/crds/crds/crd-alertmanagerconfigs.yaml | tfk8s > crd_alertmanagerconfigs.tf
+      - curl https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/charts/crds/crds/crd-alertmanagers.yaml | tfk8s > crd_alertmanagers.tf
+      - curl https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/charts/crds/crds/crd-podmonitors.yaml | tfk8s > crd_podmonitors.tf
+      - curl https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/charts/crds/crds/crd-probes.yaml | tfk8s > crd_probes.tf
+      - curl https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/charts/crds/crds/crd-prometheusagents.yaml | tfk8s > crd_prometheusagents.tf
+      - curl https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/charts/crds/crds/crd-prometheuses.yaml | tfk8s > crd_prometheuses.tf
+      - curl https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/charts/crds/crds/crd-prometheusrules.yaml | tfk8s > crd_prometheusrules.tf
+      - curl https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/charts/crds/crds/crd-scrapeconfigs.yaml | tfk8s > crd_scrapeconfigs.tf
+      - curl https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/charts/crds/crds/crd-servicemonitors.yaml | tfk8s > crd_servicemonitors.tf
+      - curl https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/charts/crds/crds/crd-thanosrulers.yaml | tfk8s > crd_thanosrulers.tf
+      - curl https://raw.githubusercontent.com/1Password/connect-helm-charts/main/charts/connect/crds/onepassworditem-crd.yaml | tfk8s > crd_onepassworditem.tf
+      - curl https://raw.githubusercontent.com/kubernetes-sigs/external-dns/master/charts/external-dns/crds/dnsendpoint.yaml | tfk8s > crd_dnsendpoint.tf
+      
+  tf-init:
     desc: Initialize the Terraform backend.
     cmds:
       - task: tf
         vars:
-          PATH: remote-backend
+          PATH: "{{ .USER_ }}"
           ACTION: init
 
-  remote-backend-plan:
+  tf-init-upgrade:
+    desc: Upgrade the Terraform backend.
+    cmds:
+      - task: tf
+        vars:
+          ACTION: init
+          ARGS: -upgrade
+
+  tf-plan:
     desc: Plan the Terraform backend.
     cmds:
       - task: tf
         vars:
-          PATH: remote-backend
           ACTION: plan
 
-  remote-backend-apply:
+  tf-apply:
     desc: Apply the Terraform backend.
     cmds:
       - task: tf
         vars:
-          PATH: remote-backend
           ACTION: apply
 
-  remote-backend-destroy:
+  tf-destroy:
     desc: Destroy the Terraform backend.
     cmds:
       - task: tf
         vars:
-          PATH: remote-backend
           ACTION: destroy
   
+  # TODO: Figure out how to automate the renewal of the Rackspace SPOT token.
   tf:
     desc: Plan the Terraform workspace.
-    dir: "{{ .PATH }}"
+    dir: "{{ .USER_WORKING_DIR }}"
     internal: true
     cmds:
       - |
+        echo "path: {{ .USER_WORKING_DIR }}"
         OP_CONNECT_TOKEN=`op read "{{ .OP_CONNECT_TOKEN_PATH }}"` \
         AWS_ACCESS_KEY_ID=`op read "{{ .AWS_ACCESS_KEY_PATH }}"` \
         AWS_SECRET_ACCESS_KEY=`op read "{{ .AWS_SECRET_KEY_PATH }}"` \
