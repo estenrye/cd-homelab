@@ -5,9 +5,8 @@ resource "kubernetes_namespace" "onepassword" {
 }
 
 data "onepassword_item" "op_credentials" {
-  # TODO: parameterize the 1password op_credentials vault and title into variables.
-  vault = "Home_Lab"
-  title = "onepassword-connect.rye.ninja"
+  vault = var.opitem_connect_credentials_vault
+  title = var.opitem_connect_credentials_title
 }
 
 resource "kubernetes_secret_v1" "op_token" {
@@ -15,6 +14,8 @@ resource "kubernetes_secret_v1" "op_token" {
     name = "onepassword-token"
     namespace = "1password"
   }
+
+  # TODO: parameterize the section and field names into variables.
 
   data = {
     "token" = data.onepassword_item.op_credentials.section[
@@ -32,6 +33,7 @@ resource "kubernetes_secret_v1" "op_credentials" {
     name = "op-credentials"
     namespace = "1password"
   }
+  # TODO: parameterize the section and field names into variables.
 
   # TODO: This is a  hack.  Replace after this PR is merged: https://github.com/1Password/terraform-provider-onepassword/pull/161
   # TODO: Follow this issue for file support in 1Password tereraform provider: https://github.com/1Password/terraform-provider-onepassword/issues/51
@@ -47,8 +49,6 @@ resource "kubernetes_secret_v1" "op_credentials" {
 }
 
 resource "helm_release" "onepassword_connect" {
-  depends_on = [ helm_release.kube_prometheus_stack ]
-
   name = "connect"
   namespace = kubernetes_namespace.onepassword.metadata.0.name
   repository = "https://1password.github.io/connect-helm-charts"

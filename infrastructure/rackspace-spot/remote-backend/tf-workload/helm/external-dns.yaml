@@ -1,0 +1,38 @@
+logLevel: debug
+logFormat: json
+interval: 5m
+triggerLoopOnEvent: true
+registry: txt
+txtPrefix: edns.
+# txtOwnerId: "example"
+policy: sync
+
+sources:
+  - gateway-httproute
+  - gateway-grpcroute
+  - gateway-tcproute
+  - gateway-udproute
+  - gateway-tlsroute
+
+provider:
+  name: cloudflare
+
+extraArgs:
+  # - --cloudflare-proxied=true
+  - --cloudflare-dns-records-per-page=5000
+
+env:
+  - name: CF_API_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: dns-credentials
+        key: password
+
+  - name: EXTERNAL_DNS_ZONE_ID_FILTER
+    valueFrom:
+      secretKeyRef:
+        name: dns-credentials
+        key: zone_id
+
+serviceMonitor:
+  enabled: true
