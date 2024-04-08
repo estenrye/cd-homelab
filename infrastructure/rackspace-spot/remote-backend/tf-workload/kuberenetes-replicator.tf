@@ -5,4 +5,5 @@ resource "helm_release" "kubernetes_replicator" {
   chart     = "kubernetes-replicator"
   version   = "2.9.2"
   create_namespace = true
+  skip_crds = true
 }

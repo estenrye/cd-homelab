@@ -55,6 +55,8 @@ resource "helm_release" "onepassword_connect" {
   chart     = "connect"
   version   = "1.15.0"
   create_namespace = true
+  skip_crds = true
+  
   values = [
     file("${path.module}/helm/onepassword-connect.yaml")
   ]

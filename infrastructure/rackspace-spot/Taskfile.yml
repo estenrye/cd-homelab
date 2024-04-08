@@ -43,7 +43,8 @@ tasks:
       - curl https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/charts/crds/crds/crd-thanosrulers.yaml | tfk8s > crd_thanosrulers.tf
       - curl https://raw.githubusercontent.com/1Password/connect-helm-charts/main/charts/connect/crds/onepassworditem-crd.yaml | tfk8s > crd_onepassworditem.tf
       - curl https://raw.githubusercontent.com/kubernetes-sigs/external-dns/master/charts/external-dns/crds/dnsendpoint.yaml | tfk8s > crd_dnsendpoint.tf
-      
+      - curl -L https://github.com/cert-manager/cert-manager/releases/download/v1.14.4/cert-manager.crds.yaml | tfk8s > crd_certmanager.tf
+      - curl https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/experimental-install.yaml | tfk8s > crd_gatewayapi.tf
   tf-init:
     desc: Initialize the Terraform backend.
     cmds:

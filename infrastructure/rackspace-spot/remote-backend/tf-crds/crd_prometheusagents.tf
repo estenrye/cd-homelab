@@ -5,7 +5,7 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
     "metadata" = {
       "annotations" = {
         "controller-gen.kubebuilder.io/version" = "v0.13.0"
-        "operator.prometheus.io/version" = "0.72.0"
+        "operator.prometheus.io/version" = "0.73.0"
       }
       "name" = "prometheusagents.monitoring.coreos.com"
     }
@@ -2445,7 +2445,7 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     }
                     "enforcedSampleLimit" = {
                       "description" = <<-EOT
-                      When defined, enforcedSampleLimit specifies a global limit on the number of scraped samples that will be accepted. This overrides any `spec.sampleLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.sampleLimit` is greater than zero and less than than `spec.enforcedSampleLimit`. 
+                      When defined, enforcedSampleLimit specifies a global limit on the number of scraped samples that will be accepted. This overrides any `spec.sampleLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.sampleLimit` is greater than zero and less than `spec.enforcedSampleLimit`. 
                        It is meant to be used by admins to keep the overall number of samples/series under a desired limit.
                       EOT
                       "format" = "int64"
@@ -3981,7 +3981,7 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     }
                     "podMonitorSelector" = {
                       "description" = <<-EOT
-                      *Experimental* PodMonitors to be selected for target discovery. An empty label selector matches all objects. A null label selector matches no objects. 
+                      PodMonitors to be selected for target discovery. An empty label selector matches all objects. A null label selector matches no objects. 
                        If `spec.serviceMonitorSelector`, `spec.podMonitorSelector`, `spec.probeSelector` and `spec.scrapeConfigSelector` are null, the Prometheus configuration is unmanaged. The Prometheus operator will ensure that the Prometheus configuration's Secret exists, but it is the responsibility of the user to provide the raw gzipped Prometheus configuration under the `prometheus.yaml.gz` key. This behavior is *deprecated* and will be removed in the next major version of the custom resource definition. It is recommended to use `spec.additionalScrapeConfigs` instead.
                       EOT
                       "properties" = {
@@ -4042,7 +4042,7 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                       "type" = "string"
                     }
                     "probeNamespaceSelector" = {
-                      "description" = "*Experimental* Namespaces to match for Probe discovery. An empty label selector matches all namespaces. A null label selector matches the current namespace only."
+                      "description" = "Namespaces to match for Probe discovery. An empty label selector matches all namespaces. A null label selector matches the current namespace only."
                       "properties" = {
                         "matchExpressions" = {
                           "description" = "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -4086,7 +4086,7 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     }
                     "probeSelector" = {
                       "description" = <<-EOT
-                      *Experimental* Probes to be selected for target discovery. An empty label selector matches all objects. A null label selector matches no objects. 
+                      Probes to be selected for target discovery. An empty label selector matches all objects. A null label selector matches no objects. 
                        If `spec.serviceMonitorSelector`, `spec.podMonitorSelector`, `spec.probeSelector` and `spec.scrapeConfigSelector` are null, the Prometheus configuration is unmanaged. The Prometheus operator will ensure that the Prometheus configuration's Secret exists, but it is the responsibility of the user to provide the raw gzipped Prometheus configuration under the `prometheus.yaml.gz` key. This behavior is *deprecated* and will be removed in the next major version of the custom resource definition. It is recommended to use `spec.additionalScrapeConfigs` instead.
                       EOT
                       "properties" = {
@@ -4491,6 +4491,7 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "properties" = {
                               "batchSendDeadline" = {
                                 "description" = "BatchSendDeadline is the maximum time a sample will wait in buffer."
+                                "pattern" = "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
                                 "type" = "string"
                               }
                               "capacity" = {
@@ -4499,6 +4500,7 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                               }
                               "maxBackoff" = {
                                 "description" = "MaxBackoff is the maximum retry delay."
+                                "pattern" = "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
                                 "type" = "string"
                               }
                               "maxRetries" = {
@@ -4515,6 +4517,7 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                               }
                               "minBackoff" = {
                                 "description" = "MinBackoff is the initial retry delay. Gets doubled for every retry."
+                                "pattern" = "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
                                 "type" = "string"
                               }
                               "minShards" = {
@@ -4522,8 +4525,16 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "integer"
                               }
                               "retryOnRateLimit" = {
-                                "description" = "Retry upon receiving a 429 status code from the remote-write storage. This is experimental feature and might change in the future."
+                                "description" = <<-EOT
+                                Retry upon receiving a 429 status code from the remote-write storage. 
+                                 This is an *experimental feature*, it may change in any upcoming release in a breaking way.
+                                EOT
                                 "type" = "boolean"
+                              }
+                              "sampleAgeLimit" = {
+                                "description" = "SampleAgeLimit drops samples older than the limit. It requires Prometheus >= v2.50.0."
+                                "pattern" = "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+                                "type" = "string"
                               }
                             }
                             "type" = "object"
@@ -4950,7 +4961,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                       "type" = "integer"
                     }
                     "scrapeClasses" = {
-                      "description" = "EXPERIMENTAL List of scrape classes to expose to monitors and other scrape configs. This is experimental feature and might change in the future."
+                      "description" = <<-EOT
+                      List of scrape classes to expose to scraping objects such as PodMonitors, ServiceMonitors, Probes and ScrapeConfigs. 
+                       This is an *experimental feature*, it may change in any upcoming release in a breaking way.
+                      EOT
                       "items" = {
                         "properties" = {
                           "default" = {
@@ -4964,6 +4978,96 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "description" = "Name of the scrape class."
                             "minLength" = 1
                             "type" = "string"
+                          }
+                          "relabelings" = {
+                            "description" = <<-EOT
+                            Relabelings configures the relabeling rules to apply to all scrape targets. 
+                             The Operator automatically adds relabelings for a few standard Kubernetes fields like `__meta_kubernetes_namespace` and `__meta_kubernetes_service_name`. Then the Operator adds the scrape class relabelings defined here. Then the Operator adds the target-specific relabelings defined in the scrape object. 
+                             More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+                            EOT
+                            "items" = {
+                              "description" = <<-EOT
+                              RelabelConfig allows dynamic rewriting of the label set for targets, alerts, scraped samples and remote write samples. 
+                               More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+                              EOT
+                              "properties" = {
+                                "action" = {
+                                  "default" = "replace"
+                                  "description" = <<-EOT
+                                  Action to perform based on the regex matching. 
+                                   `Uppercase` and `Lowercase` actions require Prometheus >= v2.36.0. `DropEqual` and `KeepEqual` actions require Prometheus >= v2.41.0. 
+                                   Default: "Replace"
+                                  EOT
+                                  "enum" = [
+                                    "replace",
+                                    "Replace",
+                                    "keep",
+                                    "Keep",
+                                    "drop",
+                                    "Drop",
+                                    "hashmod",
+                                    "HashMod",
+                                    "labelmap",
+                                    "LabelMap",
+                                    "labeldrop",
+                                    "LabelDrop",
+                                    "labelkeep",
+                                    "LabelKeep",
+                                    "lowercase",
+                                    "Lowercase",
+                                    "uppercase",
+                                    "Uppercase",
+                                    "keepequal",
+                                    "KeepEqual",
+                                    "dropequal",
+                                    "DropEqual",
+                                  ]
+                                  "type" = "string"
+                                }
+                                "modulus" = {
+                                  "description" = <<-EOT
+                                  Modulus to take of the hash of the source label values. 
+                                   Only applicable when the action is `HashMod`.
+                                  EOT
+                                  "format" = "int64"
+                                  "type" = "integer"
+                                }
+                                "regex" = {
+                                  "description" = "Regular expression against which the extracted value is matched."
+                                  "type" = "string"
+                                }
+                                "replacement" = {
+                                  "description" = <<-EOT
+                                  Replacement value against which a Replace action is performed if the regular expression matches. 
+                                   Regex capture groups are available.
+                                  EOT
+                                  "type" = "string"
+                                }
+                                "separator" = {
+                                  "description" = "Separator is the string between concatenated SourceLabels."
+                                  "type" = "string"
+                                }
+                                "sourceLabels" = {
+                                  "description" = "The source labels select values from existing labels. Their content is concatenated using the configured Separator and matched against the configured regular expression."
+                                  "items" = {
+                                    "description" = "LabelName is a valid Prometheus label name which may only contain ASCII letters, numbers, as well as underscores."
+                                    "pattern" = "^[a-zA-Z_][a-zA-Z0-9_]*$"
+                                    "type" = "string"
+                                  }
+                                  "type" = "array"
+                                }
+                                "targetLabel" = {
+                                  "description" = <<-EOT
+                                  Label to which the resulting string is written in a replacement. 
+                                   It is mandatory for `Replace`, `HashMod`, `Lowercase`, `Uppercase`, `KeepEqual` and `DropEqual` actions. 
+                                   Regex capture groups are available.
+                                  EOT
+                                  "type" = "string"
+                                }
+                              }
+                              "type" = "object"
+                            }
+                            "type" = "array"
                           }
                           "tlsConfig" = {
                             "description" = "TLSConfig section for scrapes."
@@ -5126,7 +5230,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                       "x-kubernetes-list-type" = "map"
                     }
                     "scrapeConfigNamespaceSelector" = {
-                      "description" = "Namespaces to match for ScrapeConfig discovery. An empty label selector matches all namespaces. A null label selector matches the current current namespace only."
+                      "description" = <<-EOT
+                      Namespaces to match for ScrapeConfig discovery. An empty label selector matches all namespaces. A null label selector matches the current namespace only. 
+                       Note that the ScrapeConfig custom resource definition is currently at Alpha level.
+                      EOT
                       "properties" = {
                         "matchExpressions" = {
                           "description" = "matchExpressions is a list of label selector requirements. The requirements are ANDed."
@@ -5170,8 +5277,9 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     }
                     "scrapeConfigSelector" = {
                       "description" = <<-EOT
-                      *Experimental* ScrapeConfigs to be selected for target discovery. An empty label selector matches all objects. A null label selector matches no objects. 
-                       If `spec.serviceMonitorSelector`, `spec.podMonitorSelector`, `spec.probeSelector` and `spec.scrapeConfigSelector` are null, the Prometheus configuration is unmanaged. The Prometheus operator will ensure that the Prometheus configuration's Secret exists, but it is the responsibility of the user to provide the raw gzipped Prometheus configuration under the `prometheus.yaml.gz` key. This behavior is *deprecated* and will be removed in the next major version of the custom resource definition. It is recommended to use `spec.additionalScrapeConfigs` instead.
+                      ScrapeConfigs to be selected for target discovery. An empty label selector matches all objects. A null label selector matches no objects. 
+                       If `spec.serviceMonitorSelector`, `spec.podMonitorSelector`, `spec.probeSelector` and `spec.scrapeConfigSelector` are null, the Prometheus configuration is unmanaged. The Prometheus operator will ensure that the Prometheus configuration's Secret exists, but it is the responsibility of the user to provide the raw gzipped Prometheus configuration under the `prometheus.yaml.gz` key. This behavior is *deprecated* and will be removed in the next major version of the custom resource definition. It is recommended to use `spec.additionalScrapeConfigs` instead. 
+                       Note that the ScrapeConfig custom resource definition is currently at Alpha level.
                       EOT
                       "properties" = {
                         "matchExpressions" = {
@@ -5476,7 +5584,7 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     }
                     "shards" = {
                       "description" = <<-EOT
-                      EXPERIMENTAL: Number of shards to distribute targets onto. `spec.replicas` multiplied by `spec.shards` is the total number of Pods created. 
+                      Number of shards to distribute targets onto. `spec.replicas` multiplied by `spec.shards` is the total number of Pods created. 
                        Note that scaling down shards will not reshard data onto remaining instances, it must be manually moved. Increasing shards will not reshard data either but it will continue to be available from the same instances. To query globally, use Thanos sidecar and Thanos querier or remote write data to a central location. 
                        Sharding is performed on the content of the `__address__` target meta-label for PodMonitors and ServiceMonitors and `__param_target__` for Probes. 
                        Default: 1
@@ -6174,7 +6282,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                       "type" = "array"
                     }
                     "tracingConfig" = {
-                      "description" = "EXPERIMENTAL: TracingConfig configures tracing in Prometheus. This is an experimental feature, it may change in any upcoming release in a breaking way."
+                      "description" = <<-EOT
+                      TracingConfig configures tracing in Prometheus. 
+                       This is an *experimental feature*, it may change in any upcoming release in a breaking way.
+                      EOT
                       "properties" = {
                         "clientType" = {
                           "description" = "Client used to export the traces. Supported values are `http` or `grpc`."

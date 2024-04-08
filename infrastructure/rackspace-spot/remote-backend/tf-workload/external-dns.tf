@@ -25,6 +25,8 @@ resource "helm_release" "external_dns" {
   chart     = "external-dns"
   version   = "1.14.3"
   create_namespace = true
+  skip_crds = true
+  
   values = [
     file("${path.module}/helm/external-dns.yaml")
   ]

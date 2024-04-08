@@ -5,7 +5,7 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagers_monitorin
     "metadata" = {
       "annotations" = {
         "controller-gen.kubebuilder.io/version" = "v0.13.0"
-        "operator.prometheus.io/version" = "0.72.0"
+        "operator.prometheus.io/version" = "0.73.0"
       }
       "name" = "alertmanagers.monitoring.coreos.com"
     }
@@ -917,7 +917,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagers_monitorin
                       "x-kubernetes-map-type" = "atomic"
                     }
                     "alertmanagerConfiguration" = {
-                      "description" = "EXPERIMENTAL: alertmanagerConfiguration specifies the configuration of Alertmanager. If defined, it takes precedence over the `configSecret` field. This field may change in future releases."
+                      "description" = <<-EOT
+                      alertmanagerConfiguration specifies the configuration of Alertmanager. 
+                       If defined, it takes precedence over the `configSecret` field. 
+                       This is an *experimental feature*, it may change in any upcoming release in a breaking way.
+                      EOT
                       "properties" = {
                         "global" = {
                           "description" = "Defines the global parameters of the Alertmanager configuration."
@@ -2777,6 +2781,16 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagers_monitorin
                           "name",
                         ]
                         "type" = "object"
+                      }
+                      "type" = "array"
+                    }
+                    "enableFeatures" = {
+                      "description" = <<-EOT
+                      Enable access to Alertmanager feature flags. By default, no features are enabled. Enabling features which are disabled by default is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice. 
+                       It requires Alertmanager >= 0.27.0.
+                      EOT
+                      "items" = {
+                        "type" = "string"
                       }
                       "type" = "array"
                     }

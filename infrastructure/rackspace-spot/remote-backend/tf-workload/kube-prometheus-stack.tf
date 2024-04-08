@@ -5,6 +5,8 @@ resource "helm_release" "kube_prometheus_stack" {
   chart     = "kube-prometheus-stack"
   version   = "57.2.0"
   create_namespace = true
+  skip_crds = true
+  
   values = [
     file("${path.module}/helm/kube-prometheus-stack.yaml")
   ]

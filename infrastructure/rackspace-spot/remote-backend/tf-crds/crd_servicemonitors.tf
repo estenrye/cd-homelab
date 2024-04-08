@@ -5,7 +5,7 @@ resource "kubernetes_manifest" "customresourcedefinition_servicemonitors_monitor
     "metadata" = {
       "annotations" = {
         "controller-gen.kubebuilder.io/version" = "v0.13.0"
-        "operator.prometheus.io/version" = "0.72.0"
+        "operator.prometheus.io/version" = "0.73.0"
       }
       "name" = "servicemonitors.monitoring.coreos.com"
     }
@@ -57,6 +57,14 @@ resource "kubernetes_manifest" "customresourcedefinition_servicemonitors_monitor
                         }
                       }
                       "type" = "object"
+                    }
+                    "bodySizeLimit" = {
+                      "description" = <<-EOT
+                      When defined, bodySizeLimit specifies a job level limit on the size of uncompressed response body that will be accepted by Prometheus. 
+                       It requires Prometheus >= v2.28.0.
+                      EOT
+                      "pattern" = "(^0|([0-9]*[.])?[0-9]+((K|M|G|T|E|P)i?)?B)$"
+                      "type" = "string"
                     }
                     "endpoints" = {
                       "description" = "List of endpoints part of this ServiceMonitor."
