@@ -5,6 +5,8 @@ terraform {
         key = "rackspace-spot/example/terraform.tfstate"
     }
 
+    required_version = ">= 0.12"
+
     required_providers {
         helm = {
           source = "hashicorp/helm"
@@ -16,12 +18,21 @@ terraform {
           version = "2.27.0"
         }
 
+        # kustomize = {
+        #   source = "kbst/kustomize"
+        #   version = "0.2.0-beta.3"
+        # }
+
         onepassword = {
             source = "1Password/onepassword"
             version = "1.4.3"
         }
     }
 }
+
+# provider "kustomization" {
+#   kubeconfig_path = var.kubeconfig_path
+# }
 
 provider "onepassword" {
 }

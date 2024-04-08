@@ -55,10 +55,11 @@ tasks:
 
   tf-manifests:
     desc: Generate Terraform kubernetes manifests.
-    dir: remote-backend/tf-workload/yaml
+    dir: remote-backend/tf-workload/yaml/gatewayapi_state_metrics
     cmds:
-      - curl -L https://raw.githubusercontent.com/Kuadrant/gateway-api-state-metrics/main/config/default/custom-resource-state.yaml -o crd_gatewayapi_state_metrics.yaml
-
+      - curl -L https://raw.githubusercontent.com/Kuadrant/gateway-api-state-metrics/main/config/default/custom-resource-state.yaml -o custom-resource-state.yaml
+      - curl -L https://raw.githubusercontent.com/Kuadrant/gateway-api-state-metrics/main/config/default/kustomization.yaml -o kustomization.yaml
+      - kustomize build . | tfk8s > ../../gatewayapi_state_metrics.tf
   tf-init-upgrade:
     desc: Upgrade the Terraform backend.
     cmds:
