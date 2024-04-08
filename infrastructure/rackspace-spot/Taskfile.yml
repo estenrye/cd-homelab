@@ -53,6 +53,12 @@ tasks:
           PATH: "{{ .USER_ }}"
           ACTION: init
 
+  tf-manifests:
+    desc: Generate Terraform kubernetes manifests.
+    dir: remote-backend/tf-workload/yaml
+    cmds:
+      - curl -L https://raw.githubusercontent.com/Kuadrant/gateway-api-state-metrics/main/config/default/custom-resource-state.yaml -o crd_gatewayapi_state_metrics.yaml
+
   tf-init-upgrade:
     desc: Upgrade the Terraform backend.
     cmds:
