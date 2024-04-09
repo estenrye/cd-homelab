@@ -33,3 +33,15 @@ variable "opitem_dns_credentials" {
   type        = string
   default     = "vaults/jaou7gkrt6by3xnocca3rdyyii/items/bmiftmas3r36u3wbbfcyjxtx5a"
 }
+
+variable opitem_grafana_admin_credentials {
+  description = "1Password item path for the grafana admin credentials"
+  type        = string
+  default     = "vaults/jaou7gkrt6by3xnocca3rdyyii/items/grafana.rye.ninja"
+}
+
+variable "letsencrypt_email" {
+  description = "Email address for Let's Encrypt"
+  type        = string
+  default     = "esten.rye+letsencrypt@ryezone.com"
+}

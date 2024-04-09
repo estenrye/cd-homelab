@@ -197,7 +197,3 @@ resource "helm_release" "envoy_gateway_system" {
     file("${path.module}/helm/envoy-gateway.yaml")
   ]
 }
-
-# resource kubernetes_manifest gateway_api_state_metrics {
-#     manifest = yamldecode(file("${path.module}/yaml/gatewayapi_state_metrics.yaml"))
-# }

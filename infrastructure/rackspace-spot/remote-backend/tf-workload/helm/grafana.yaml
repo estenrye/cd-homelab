@@ -1,0 +1,78 @@
+serviceMonitor:
+  enabled: true
+
+rbac:
+  pspEnabled: false
+
+resources: {}
+
+admin:
+  existingSecret: grafana-admin
+  userKey: username
+  passwordKey: password
+
+plugins: []
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        url: http://kube-prometheus-stack-prometheus:9090
+
+alerting: {}
+
+notifiers: {}
+
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+    - name: 'default'
+      orgId: 1
+      folder: ''
+      type: file
+      disableDeletion: false
+      editable: true
+      options:
+        path: /var/lib/grafana/dashboards/default
+
+## Configure grafana dashboard to import
+## NOTE: To use dashboards you must also enable/configure dashboardProviders
+## ref: https://grafana.com/dashboards
+##
+## dashboards per provider, use provider name as key.
+##
+dashboards:
+  default:
+    # https://grafana.com/grafana/dashboards/19432-gateway-api-state-gatewayclasses/
+    gateway-api-state-metrics:
+      gnetId: 19432
+      revision: 2
+      datasource: Prometheus
+    # https://grafana.com/grafana/dashboards/11022-envoy-global/
+    envoy-global:
+      gnetId: 11022
+      revision: 1
+      datasource: Prometheus
+    # https://grafana.com/grafana/dashboards/6693-envoy-proxy/
+    envoy-proxy:
+      gnetId: 6693
+      revision: 1
+      datasource: Prometheus
+    # https://grafana.com/grafana/dashboards/11021-envoy-clusters/
+    envoy-clusters:
+      gnetId: 11021
+      revision: 1
+      datasource: Prometheus
+    # https://grafana.com/grafana/dashboards/20842-cert-manager-kubernetes/
+    cert-manager:
+      gnetId: 20842
+      revision: 2
+      datasource: Prometheus
+    # https://grafana.com/grafana/dashboards/15038-external-dns/
+    external-dns:
+      gnetId: 15038
+      revision: 3
+      datasource: Prometheus

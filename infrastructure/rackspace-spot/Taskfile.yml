@@ -102,3 +102,13 @@ tasks:
         AWS_SECRET_ACCESS_KEY=`op read "{{ .AWS_SECRET_KEY_PATH }}"` \
         RXTSPOT_TOKEN=`op read "{{ .RXTSPOT_TOKEN_PATH }}"` \
         {{ .OPENTF_BIN }} {{ .ACTION }} {{ .ARGS }}
+
+  k-logs-external-dns:
+    desc: Get the logs for the external-dns pod.
+    cmds:
+      - kubectl logs -n external-dns -l app.kubernetes.io/instance=external-dns -f
+
+  k-logs-envoy-gateway:
+    desc: Get the logs for the envoy-gateway pod.
+    cmds:
+      - kubectl logs -n envoy-gateway-system -l app.kubernetes.io/instance=envoy-gateway-system -f
