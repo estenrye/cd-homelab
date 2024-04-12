@@ -1,1 +1,8 @@
 featureGates: "ExperimentalGatewayAPISupport=true"
+
+prometheus:
+  enabled: true
+  servicemonitor:
+    enabled: true
+    labels: 
+      release: kube-prometheus-stack

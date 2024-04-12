@@ -112,13 +112,13 @@ resource kubernetes_manifest gateway_eg {
                     name = "https"
                     protocol = "HTTPS"
                     port = 443
-                    hostname = format("grafana.%s.%s", var.cluster_name, var.top_level_domain)
+                    hostname = format("*.%s.%s", var.cluster_name, var.top_level_domain)
                     tls = {
                         mode = "Terminate"
                         certificateRefs = [
                             {
                                 kind = "Secret"
-                                name = "grafana-tls"
+                                name = format("star-%s-%s-tls", var.cluster_name, replace(var.top_level_domain, ".", ""))
                             }
                         ]
                     }

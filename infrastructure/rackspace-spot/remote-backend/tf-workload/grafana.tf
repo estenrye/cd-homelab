@@ -96,3 +96,48 @@ resource "kubernetes_manifest" "http_route_grafana" {
     }
   }
 }
+
+resource "kubernetes_manifest" "http_route_prometheus" {
+  manifest = {
+    apiVersion = "gateway.networking.k8s.io/v1"
+    kind = "HTTPRoute"
+    metadata = {
+      name = "prometheus-example-rye-ninja"
+      namespace = "envoy-gateway-system"
+    }
+    spec = {
+        parentRefs = [
+            {
+                name = "eg"
+                namespace = "envoy-gateway-system"
+                kind = "Gateway"
+            }
+        ]
+        hostnames = [
+            format("prometheus.%s.%s", var.cluster_name, var.top_level_domain)
+        ]
+        rules = [
+            {
+                backendRefs = [
+                    {
+                        group = ""
+                        kind = "Service"
+                        name = "kube-prometheus-stack-prometheus"
+                        namespace = "monitoring"
+                        port = 9090
+                        weight = 1
+                    }
+                ]
+                matches = [
+                    {
+                        path = {
+                            type = "PathPrefix"
+                            value = "/"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+  }
+}
