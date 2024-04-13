@@ -112,3 +112,13 @@ tasks:
     desc: Get the logs for the envoy-gateway pod.
     cmds:
       - kubectl logs -n envoy-gateway-system -l app.kubernetes.io/instance=envoy-gateway-system -f
+
+  update-grafana-dashboards:
+    desc: Update the commit hash of the grafana dashboards.
+    dir: remote-backend/tf-workload
+    env:
+      DASHBOARD_REPO_PATH: "infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards"
+    cmds:
+      - yq -i ".dashboards.default."cert-manager".url = \"https://raw.githubusercontent.com/${GITHUB_ORG}/${GITHUB_REPO}/$(git rev-parse HEAD)/${DASHBOARD_REPO_PATH}/cert-manager.json\"" helm/grafana.yaml
+      - yq -i ".dashboards.default."external-dns".url = \"https://raw.githubusercontent.com/${GITHUB_ORG}/${GITHUB_REPO}/$(git rev-parse HEAD)/${DASHBOARD_REPO_PATH}/external-dns.json\"" helm/grafana.yaml
+      - yq -i ".dashboards.default."onepassword-operator".url = \"https://raw.githubusercontent.com/${GITHUB_ORG}/${GITHUB_REPO}/$(git rev-parse HEAD)/${DASHBOARD_REPO_PATH}/1password.json\"" helm/grafana.yaml
