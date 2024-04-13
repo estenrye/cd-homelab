@@ -59,7 +59,11 @@
           "target": {
             "limit": 100,
             "matchAny": false,
-            "tags": [],
+            "tags": [
+                "cert-manager",
+                "certificates",
+                "tls"
+            ],
             "type": "dashboard"
           },
           "type": "dashboard"
@@ -1978,6 +1982,6 @@
     },
     "timepicker": {},
     "timezone": "",
-    "title": "Cert-Manager (new)",
+    "title": "Cert-Manager",
     "version": 1
   }
