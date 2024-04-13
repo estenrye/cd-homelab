@@ -71,8 +71,9 @@ dashboards:
       gnetId: 20842
       revision: 2
       datasource: Prometheus
-    # https://grafana.com/grafana/dashboards/15038-external-dns/
     external-dns:
-      gnetId: 15038
-      revision: 3
+      url: https://raw.githubusercontent.com/estenrye/cd-homelab/main/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/external-dns.json
+      datasource: Prometheus
+    onepassword-operator:
+      url: https://raw.githubusercontent.com/estenrye/cd-homelab/main/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/1password.json
       datasource: Prometheus
