@@ -68,8 +68,7 @@ dashboards:
       datasource: Prometheus
     # https://grafana.com/grafana/dashboards/20842-cert-manager-kubernetes/
     cert-manager:
-      gnetId: 20842
-      revision: 2
+      url: https://raw.githubusercontent.com/estenrye/cd-homelab/main/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/cert-manager.json
       datasource: Prometheus
     external-dns:
       url: https://raw.githubusercontent.com/estenrye/cd-homelab/main/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/external-dns.json
