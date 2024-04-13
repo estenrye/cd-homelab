@@ -1,41 +1,85 @@
 {
+    "__inputs": [
+      {
+        "name": "DS_PROMETHEUS",
+        "label": "Prometheus",
+        "description": "",
+        "type": "datasource",
+        "pluginId": "prometheus",
+        "pluginName": "Prometheus"
+      }
+    ],
+    "__requires": [
+      {
+        "type": "panel",
+        "id": "bargauge",
+        "name": "Bar gauge",
+        "version": ""
+      },
+      {
+        "type": "grafana",
+        "id": "grafana",
+        "name": "Grafana",
+        "version": "8.1.2"
+      },
+      {
+        "type": "datasource",
+        "id": "prometheus",
+        "name": "Prometheus",
+        "version": "1.0.0"
+      },
+      {
+        "type": "panel",
+        "id": "stat",
+        "name": "Stat",
+        "version": ""
+      }
+    ],
     "annotations": {
       "list": [
         {
           "builtIn": 1,
-          "datasource": {
-            "type": "grafana",
-            "uid": "-- Grafana --"
-          },
+          "datasource": "-- Grafana --",
           "enable": true,
           "hide": true,
           "iconColor": "rgba(0, 211, 255, 1)",
           "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
           "type": "dashboard"
         }
       ]
     },
-    "description": "The dashboard gives an overview of the SSL certs managed by cert-manager in Kubernetes",
     "editable": true,
+    "gnetId": null,
     "graphTooltip": 0,
+    "id": null,
+    "iteration": 1713024691158,
     "links": [],
     "panels": [
       {
-        "datasource": "${datasource}",
-        "description": "The number if available certificates",
+        "datasource": "${DS_PROMETHEUS}",
+        "description": "The number of available certificates",
         "fieldConfig": {
           "defaults": {
             "color": {
               "mode": "thresholds"
             },
             "mappings": [],
-            "noValue": "0",
             "thresholds": {
               "mode": "absolute",
               "steps": [
                 {
                   "color": "green",
                   "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
                 }
               ]
             }
@@ -48,10 +92,10 @@
           "x": 0,
           "y": 0
         },
-        "id": 1,
+        "id": 8,
         "options": {
           "colorMode": "value",
-          "graphMode": "none",
+          "graphMode": "area",
           "justifyMode": "auto",
           "orientation": "auto",
           "reduceOptions": {
@@ -61,20 +105,17 @@
             "fields": "",
             "values": false
           },
-          "showPercentChange": false,
           "text": {},
-          "textMode": "value",
-          "wideLayout": true
+          "textMode": "auto"
         },
         "pluginVersion": "8.1.2",
         "targets": [
           {
             "exemplar": true,
             "expr": "count(certmanager_certificate_ready_status{condition=\"True\", exported_namespace=~\"$namespace\"})",
-            "hide": false,
-            "instant": true,
             "interval": "",
             "legendFormat": "",
+            "queryType": "randomWalk",
             "refId": "A"
           }
         ],
@@ -82,7 +123,7 @@
         "type": "stat"
       },
       {
-        "datasource": "${datasource}",
+        "datasource": "${DS_PROMETHEUS}",
         "description": "The number of certificates that will expire within the next 14 days",
         "fieldConfig": {
           "defaults": {
@@ -99,8 +140,8 @@
                   "value": null
                 },
                 {
-                  "color": "#EAB839",
-                  "value": 1
+                  "color": "red",
+                  "value": 80
                 }
               ]
             }
@@ -113,10 +154,10 @@
           "x": 8,
           "y": 0
         },
-        "id": 3,
+        "id": 10,
         "options": {
           "colorMode": "value",
-          "graphMode": "none",
+          "graphMode": "area",
           "justifyMode": "auto",
           "orientation": "auto",
           "reduceOptions": {
@@ -126,20 +167,18 @@
             "fields": "",
             "values": false
           },
-          "showPercentChange": false,
           "text": {},
-          "textMode": "auto",
-          "wideLayout": true
+          "textMode": "auto"
         },
         "pluginVersion": "8.1.2",
         "targets": [
           {
             "exemplar": true,
             "expr": "count(certmanager_certificate_expiration_timestamp_seconds{exported_namespace=~\"$namespace\"} < (time()+(14*24*3600)))",
-            "hide": false,
             "instant": true,
             "interval": "",
-            "legendFormat": "{{exported_namespace}}/{{name}}",
+            "legendFormat": "",
+            "queryType": "randomWalk",
             "refId": "A"
           }
         ],
@@ -147,12 +186,13 @@
         "type": "stat"
       },
       {
-        "datasource": "${datasource}",
+        "datasource": "${DS_PROMETHEUS}",
         "description": "Total number of HTTP requests",
         "fieldConfig": {
           "defaults": {
             "color": {
-              "mode": "thresholds"
+              "fixedColor": "text",
+              "mode": "fixed"
             },
             "mappings": [],
             "noValue": "0",
@@ -160,8 +200,12 @@
               "mode": "absolute",
               "steps": [
                 {
-                  "color": "text",
+                  "color": "green",
                   "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
                 }
               ]
             }
@@ -174,10 +218,10 @@
           "x": 16,
           "y": 0
         },
-        "id": 2,
+        "id": 12,
         "options": {
           "colorMode": "value",
-          "graphMode": "none",
+          "graphMode": "area",
           "justifyMode": "auto",
           "orientation": "auto",
           "reduceOptions": {
@@ -187,20 +231,18 @@
             "fields": "",
             "values": false
           },
-          "showPercentChange": false,
           "text": {},
-          "textMode": "auto",
-          "wideLayout": true
+          "textMode": "auto"
         },
         "pluginVersion": "8.1.2",
         "targets": [
           {
             "exemplar": true,
             "expr": "sum(certmanager_http_acme_client_request_count)",
-            "hide": false,
             "instant": true,
             "interval": "",
             "legendFormat": "",
+            "queryType": "randomWalk",
             "refId": "A"
           }
         ],
@@ -208,33 +250,25 @@
         "type": "stat"
       },
       {
-        "datasource": "${datasource}",
-        "description": "Time before the certificates expire",
+        "datasource": "${DS_PROMETHEUS}",
         "fieldConfig": {
           "defaults": {
             "color": {
-              "mode": "thresholds"
+              "mode": "continuous-RdYlGr"
             },
             "mappings": [],
+            "max": 90,
             "min": 0,
             "thresholds": {
               "mode": "absolute",
               "steps": [
                 {
-                  "color": "red",
+                  "color": "green",
                   "value": null
                 },
                 {
-                  "color": "orange",
-                  "value": 14
-                },
-                {
-                  "color": "green",
-                  "value": 30
-                },
-                {
-                  "color": "dark-green",
-                  "value": 60
+                  "color": "red",
+                  "value": 80
                 }
               ]
             },
@@ -243,18 +277,14 @@
           "overrides": []
         },
         "gridPos": {
-          "h": 10,
+          "h": 8,
           "w": 12,
           "x": 0,
           "y": 8
         },
-        "id": 5,
+        "id": 4,
         "options": {
           "displayMode": "gradient",
-          "maxVizHeight": 300,
-          "minVizHeight": 16,
-          "minVizWidth": 8,
-          "namePlacement": "left",
           "orientation": "horizontal",
           "reduceOptions": {
             "calcs": [
@@ -264,38 +294,34 @@
             "values": false
           },
           "showUnfilled": true,
-          "sizing": "auto",
-          "text": {},
-          "valueMode": "color"
+          "text": {}
         },
         "pluginVersion": "8.1.2",
         "targets": [
           {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "${datasource}"
-            },
-            "exemplar": false,
+            "exemplar": true,
             "expr": "sort_desc(certmanager_certificate_expiration_timestamp_seconds{exported_namespace=~\"$namespace\"} - time())/(24*3600)",
-            "format": "time_series",
             "instant": true,
+            "interval": "",
             "legendFormat": "{{name}}",
-            "range": false,
+            "queryType": "randomWalk",
             "refId": "A"
           }
         ],
         "title": "Time to Expiration",
+        "transformations": [],
         "type": "bargauge"
       },
       {
-        "datasource": "${datasource}",
+        "datasource": "${DS_PROMETHEUS}",
         "description": "Time before the certificates are automatically renewed",
         "fieldConfig": {
           "defaults": {
             "color": {
-              "mode": "thresholds"
+              "mode": "continuous-RdYlGr"
             },
             "mappings": [],
+            "max": 60,
             "min": 0,
             "thresholds": {
               "mode": "absolute",
@@ -303,6 +329,10 @@
                 {
                   "color": "green",
                   "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 20
                 }
               ]
             },
@@ -311,7 +341,7 @@
           "overrides": []
         },
         "gridPos": {
-          "h": 10,
+          "h": 8,
           "w": 12,
           "x": 12,
           "y": 8
@@ -319,10 +349,6 @@
         "id": 6,
         "options": {
           "displayMode": "gradient",
-          "maxVizHeight": 300,
-          "minVizHeight": 16,
-          "minVizWidth": 8,
-          "namePlacement": "left",
           "orientation": "horizontal",
           "reduceOptions": {
             "calcs": [
@@ -332,119 +358,28 @@
             "values": false
           },
           "showUnfilled": true,
-          "sizing": "auto",
-          "text": {},
-          "valueMode": "color"
+          "text": {}
         },
         "pluginVersion": "8.1.2",
         "targets": [
           {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "${datasource}"
-            },
-            "editorMode": "code",
-            "exemplar": false,
+            "exemplar": true,
             "expr": "sort(certmanager_certificate_renewal_timestamp_seconds{exported_namespace=~\"$namespace\"} - time())/(24*3600)",
-            "format": "time_series",
             "instant": true,
+            "interval": "",
             "legendFormat": "{{name}}",
-            "range": false,
+            "queryType": "randomWalk",
             "refId": "A"
           }
         ],
         "title": "Time to Automatic Renewal",
         "type": "bargauge"
-      },
-      {
-        "datasource": "${datasource}",
-        "description": "Time before the certificates expire",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "palette-classic"
-            },
-            "custom": {
-              "axisLabel": "",
-              "axisPlacement": "auto",
-              "barAlignment": 0,
-              "drawStyle": "line",
-              "fillOpacity": 0,
-              "gradientMode": "none",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "lineInterpolation": "linear",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            },
-            "unit": "d"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 9,
-          "w": 24,
-          "x": 0,
-          "y": 18
-        },
-        "id": 4,
-        "options": {
-          "legend": {
-            "calcs": [],
-            "displayMode": "list",
-            "placement": "right",
-            "showLegend": true
-          },
-          "tooltip": {
-            "mode": "single",
-            "sort": "none"
-          }
-        },
-        "targets": [
-          {
-            "exemplar": true,
-            "expr": "(certmanager_certificate_expiration_timestamp_seconds{exported_namespace=~\"$namespace\"} - time())/(24*3600)",
-            "hide": false,
-            "interval": "",
-            "legendFormat": "{{name}}",
-            "refId": "A"
-          }
-        ],
-        "title": "Time to Expiration",
-        "type": "timeseries"
       }
     ],
+    "refresh": "",
     "schemaVersion": 30,
     "style": "dark",
-    "tags": [
-      "k8s",
-      "cert-manager"
-    ],
+    "tags": [],
     "templating": {
       "list": [
         {
@@ -457,7 +392,7 @@
           "error": null,
           "hide": 0,
           "includeAll": false,
-          "label": null,
+          "label": "Data Source",
           "multi": false,
           "name": "datasource",
           "options": [],
@@ -470,25 +405,20 @@
         },
         {
           "allValue": ".*",
-          "current": {
-            "selected": false,
-            "text": "All",
-            "value": "$__all"
-          },
-          "datasource": "${datasource}",
-          "definition": "label_values(exported_namespace)",
+          "current": {},
+          "datasource": "${DS_PROMETHEUS}",
+          "definition": "label_values(exported_namespace)\n",
           "description": null,
           "error": null,
           "hide": 0,
           "includeAll": true,
-          "label": null,
+          "label": "Namespace",
           "multi": false,
           "name": "namespace",
           "options": [],
           "query": {
-            "qryType": 1,
-            "query": "label_values(exported_namespace)",
-            "refId": "PrometheusVariableQueryEditor-VariableQuery"
+            "query": "label_values(exported_namespace)\n",
+            "refId": "StandardVariableQuery"
           },
           "refresh": 1,
           "regex": "",
@@ -505,5 +435,5 @@
     "timepicker": {},
     "timezone": "",
     "title": "Cert-Manager",
-    "version": 1
+    "version": 3
   }
