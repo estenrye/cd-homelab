@@ -6,3 +6,120 @@ prometheus:
     enabled: true
     labels: 
       release: kube-prometheus-stack
+
+# The number of replicas of the cert-manager controller to run.
+#
+# The default is 1, but in production set this to 2 or 3 to provide high
+# availability.
+#
+# If `replicas > 1`, consider setting `podDisruptionBudget.enabled=true`.
+#
+# Note that cert-manager uses leader election to ensure that there can
+# only be a single instance active at a time.
+replicaCount: 1
+
+podDisruptionBudget:
+  # Enable or disable the PodDisruptionBudget resource.
+  #
+  # This prevents downtime during voluntary disruptions such as during a Node upgrade.
+  # For example, the PodDisruptionBudget will block `kubectl drain`
+  # if it is used on the Node where the only remaining cert-manager
+  # Pod is currently running.
+  enabled: false
+
+  # This configures the minimum available pods for disruptions. It can either be set to
+  # an integer (e.g. 1) or a percentage value (e.g. 25%).
+  # It cannot be used if `maxUnavailable` is set.
+  # +docs:property
+  # minAvailable: 1
+
+  # This configures the maximum unavailable pods for disruptions. It can either be set to
+  # an integer (e.g. 1) or a percentage value (e.g. 25%).
+  # it cannot be used if `minAvailable` is set.
+  # +docs:property
+  # maxUnavailable: 1
+
+# Resources to provide to the cert-manager controller pod.
+resources:
+  requests:
+    cpu: 2m
+    memory: 32Mi
+  limits:
+    cpu: 10m
+    memory: 40Mi
+
+webhook:
+  resources:
+    requests:
+      cpu: 1m
+      memory: 16Mi
+    limits:
+      cpu: 5m
+      memory: 20Mi
+
+  # Number of replicas of the cert-manager webhook to run.
+  #
+  # The default is 1, but in production set this to 2 or 3 to provide high
+  # availability.
+  #
+  # If `replicas > 1`, consider setting `webhook.podDisruptionBudget.enabled=true`.
+  replicaCount: 1
+
+  podDisruptionBudget:
+    # Enable or disable the PodDisruptionBudget resource.
+    #
+    # This prevents downtime during voluntary disruptions such as during a Node upgrade.
+    # For example, the PodDisruptionBudget will block `kubectl drain`
+    # if it is used on the Node where the only remaining cert-manager
+    # Pod is currently running.
+    enabled: false
+
+    # This configures the minimum available pods for disruptions. It can either be set to
+    # an integer (e.g. 1) or a percentage value (e.g. 25%).
+    # It cannot be used if `maxUnavailable` is set.
+    # +docs:property
+    # minAvailable: 1
+
+    # This configures the maximum unavailable pods for disruptions. It can either be set to
+    # an integer (e.g. 1) or a percentage value (e.g. 25%).
+    # it cannot be used if `minAvailable` is set.
+    # +docs:property
+    # maxUnavailable: 1
+
+cainjector:
+  resources:
+    requests:
+      cpu: 2m
+      memory: 40Mi
+    limits:
+      cpu: 10m
+      memory: 60Mi
+
+  # Number of replicas of the cert-manager cainjector to run.
+  #
+  # The default is 1, but in production set this to 2 or 3 to provide high
+  # availability.
+  #
+  # If `replicas > 1`, consider setting `cainjector.podDisruptionBudget.enabled=true`.
+  replicaCount: 1
+
+  podDisruptionBudget:
+    # Enable or disable the PodDisruptionBudget resource.
+    #
+    # This prevents downtime during voluntary disruptions such as during a Node upgrade.
+    # For example, the PodDisruptionBudget will block `kubectl drain`
+    # if it is used on the Node where the only remaining cert-manager
+    # Pod is currently running.
+    enabled: false
+
+    # This configures the minimum available pods for disruptions. It can either be set to
+    # an integer (e.g. 1) or a percentage value (e.g. 25%).
+    # It cannot be used if `maxUnavailable` is set.
+    # +docs:property
+    # minAvailable: 1
+
+    # This configures the maximum unavailable pods for disruptions. It can either be set to
+    # an integer (e.g. 1) or a percentage value (e.g. 25%).
+    # it cannot be used if `minAvailable` is set.
+    # +docs:property
+    # maxUnavailable: 1
