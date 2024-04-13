@@ -59,11 +59,7 @@
           "target": {
             "limit": 100,
             "matchAny": false,
-            "tags": [
-                "cert-manager",
-                "certificates",
-                "tls"
-            ],
+            "tags": [],
             "type": "dashboard"
           },
           "type": "dashboard"
@@ -1905,7 +1901,12 @@
     "refresh": "",
     "schemaVersion": 30,
     "style": "dark",
-    "tags": [],
+    "tags": [
+      "kubernetes",
+      "cert-manager",
+      "acme",
+      "tls"
+    ],
     "templating": {
       "list": [
         {

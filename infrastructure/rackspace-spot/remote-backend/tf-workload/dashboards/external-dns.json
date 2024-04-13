@@ -1926,6 +1926,7 @@
   "schemaVersion": 30,
   "style": "dark",
   "tags": [
+    "kubernetes",
     "external-dns",
     "dns"
   ],
