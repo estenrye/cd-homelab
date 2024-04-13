@@ -68,11 +68,11 @@ dashboards:
       datasource: Prometheus
     # https://grafana.com/grafana/dashboards/20842-cert-manager-kubernetes/
     cert-manager:
-      url: https://raw.githubusercontent.com/estenrye/cd-homelab/main/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/cert-manager.json
+      url: https://raw.githubusercontent.com/estenrye/cd-homelab/d33da2187c4ebdf645f45901304d7e3f5c8d6bdf/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/cert-manager.json
       datasource: Prometheus
     external-dns:
-      url: https://raw.githubusercontent.com/estenrye/cd-homelab/main/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/external-dns.json
+      url: https://raw.githubusercontent.com/estenrye/cd-homelab/d33da2187c4ebdf645f45901304d7e3f5c8d6bdf/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/external-dns.json
       datasource: Prometheus
     onepassword-operator:
-      url: https://raw.githubusercontent.com/estenrye/cd-homelab/main/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/1password.json
+      url: https://raw.githubusercontent.com/estenrye/cd-homelab/d33da2187c4ebdf645f45901304d7e3f5c8d6bdf/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/1password.json
       datasource: Prometheus
