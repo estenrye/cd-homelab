@@ -33,6 +33,18 @@
         "id": "stat",
         "name": "Stat",
         "version": ""
+      },
+      {
+        "type": "panel",
+        "id": "table",
+        "name": "Table",
+        "version": ""
+      },
+      {
+        "type": "panel",
+        "id": "timeseries",
+        "name": "Time series",
+        "version": ""
       }
     ],
     "annotations": {
@@ -58,9 +70,22 @@
     "gnetId": null,
     "graphTooltip": 0,
     "id": null,
-    "iteration": 1713024691158,
     "links": [],
     "panels": [
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 29,
+        "panels": [],
+        "title": "Certificates",
+        "type": "row"
+      },
       {
         "datasource": "${DS_PROMETHEUS}",
         "description": "The number of available certificates",
@@ -90,14 +115,14 @@
           "h": 8,
           "w": 8,
           "x": 0,
-          "y": 0
+          "y": 1
         },
-        "id": 8,
+        "id": 27,
         "options": {
           "colorMode": "value",
-          "graphMode": "area",
+          "graphMode": "none",
           "justifyMode": "auto",
-          "orientation": "auto",
+          "orientation": "horizontal",
           "reduceOptions": {
             "calcs": [
               "lastNotNull"
@@ -112,14 +137,14 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "count(certmanager_certificate_ready_status{condition=\"True\", exported_namespace=~\"$namespace\"})",
+            "expr": "count(certmanager_certificate_ready_status{condition=\"True\", exported_namespace=~\"$namespace\"}) by (issuer_name)",
             "interval": "",
-            "legendFormat": "",
+            "legendFormat": "{{issuer_name}}",
             "queryType": "randomWalk",
             "refId": "A"
           }
         ],
-        "title": "Valid Certificates",
+        "title": "Valid Certificates by Issuer",
         "type": "stat"
       },
       {
@@ -152,14 +177,14 @@
           "h": 8,
           "w": 8,
           "x": 8,
-          "y": 0
+          "y": 1
         },
         "id": 10,
         "options": {
           "colorMode": "value",
           "graphMode": "area",
           "justifyMode": "auto",
-          "orientation": "auto",
+          "orientation": "horizontal",
           "reduceOptions": {
             "calcs": [
               "lastNotNull"
@@ -174,15 +199,15 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "count(certmanager_certificate_expiration_timestamp_seconds{exported_namespace=~\"$namespace\"} < (time()+(14*24*3600)))",
+            "expr": "count(certmanager_certificate_expiration_timestamp_seconds{exported_namespace=~\"$namespace\"} < (time()+(14*24*3600))) by (issuer_name)",
             "instant": true,
             "interval": "",
-            "legendFormat": "",
+            "legendFormat": "{{issuer_name}}",
             "queryType": "randomWalk",
             "refId": "A"
           }
         ],
-        "title": "Expiring Certificates",
+        "title": "Expiring Certificates by Issuer",
         "type": "stat"
       },
       {
@@ -216,14 +241,14 @@
           "h": 8,
           "w": 8,
           "x": 16,
-          "y": 0
+          "y": 1
         },
         "id": 12,
         "options": {
           "colorMode": "value",
           "graphMode": "area",
           "justifyMode": "auto",
-          "orientation": "auto",
+          "orientation": "horizontal",
           "reduceOptions": {
             "calcs": [
               "lastNotNull"
@@ -238,15 +263,15 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "sum(certmanager_http_acme_client_request_count)",
+            "expr": "sum(certmanager_http_acme_client_request_count) by (issuer_name)",
             "instant": true,
             "interval": "",
-            "legendFormat": "",
+            "legendFormat": "{{issuer_name}}",
             "queryType": "randomWalk",
             "refId": "A"
           }
         ],
-        "title": "Total ACME Requests",
+        "title": "Total ACME Requests by Issuer",
         "type": "stat"
       },
       {
@@ -280,7 +305,7 @@
           "h": 8,
           "w": 12,
           "x": 0,
-          "y": 8
+          "y": 9
         },
         "id": 4,
         "options": {
@@ -344,7 +369,7 @@
           "h": 8,
           "w": 12,
           "x": 12,
-          "y": 8
+          "y": 9
         },
         "id": 6,
         "options": {
@@ -374,6 +399,1503 @@
         ],
         "title": "Time to Automatic Renewal",
         "type": "bargauge"
+      },
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 17
+        },
+        "id": 26,
+        "panels": [],
+        "title": "Pods",
+        "type": "row"
+      },
+      {
+        "datasource": "${DS_PROMETHEUS}",
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "green",
+              "mode": "fixed"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "quota - limits"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "red",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "custom.fillOpacity",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "quota - requests"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "yellow",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "custom.fillOpacity",
+                  "value": 0
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 8,
+          "x": 0,
+          "y": 18
+        },
+        "id": 18,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "tooltip": {
+            "mode": "multi"
+          }
+        },
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace=\"$cm_namespace\",container=\"cert-manager-cainjector\"}) by (pod)",
+            "interval": "",
+            "legendFormat": "{{pod}}",
+            "queryType": "randomWalk",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "scalar(kube_pod_container_resource_requests{namespace=\"$cm_namespace\",container=\"cert-manager-cainjector\",resource=\"cpu\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "quota - requests",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "scalar(kube_pod_container_resource_limits{namespace=\"$cm_namespace\",container=\"cert-manager-cainjector\",resource=\"cpu\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "quota - limits",
+            "refId": "C"
+          }
+        ],
+        "title": "cert-manager-cainjector CPU Usage",
+        "type": "timeseries"
+      },
+      {
+        "datasource": "${DS_PROMETHEUS}",
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "green",
+              "mode": "fixed"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "quota - limits"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "red",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "custom.fillOpacity",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "quota - requests"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "yellow",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "custom.fillOpacity",
+                  "value": 0
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 8,
+          "x": 8,
+          "y": 18
+        },
+        "id": 19,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "tooltip": {
+            "mode": "multi"
+          }
+        },
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace=\"$cm_namespace\",container=\"cert-manager-webhook\"}) by (pod)",
+            "interval": "",
+            "legendFormat": "{{pod}}",
+            "queryType": "randomWalk",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "scalar(kube_pod_container_resource_requests{namespace=\"$cm_namespace\",container=\"cert-manager-webhook\",resource=\"cpu\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "quota - requests",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "scalar(kube_pod_container_resource_limits{namespace=\"$cm_namespace\",container=\"cert-manager-webhook\",resource=\"cpu\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "quota - limits",
+            "refId": "C"
+          }
+        ],
+        "title": "cert-manager-webhook CPU Usage",
+        "type": "timeseries"
+      },
+      {
+        "datasource": "${DS_PROMETHEUS}",
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "green",
+              "mode": "fixed"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "quota - limits"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "red",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "custom.fillOpacity",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "quota - requests"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "yellow",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "custom.fillOpacity",
+                  "value": 0
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 8,
+          "x": 16,
+          "y": 18
+        },
+        "id": 20,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "tooltip": {
+            "mode": "multi"
+          }
+        },
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace=\"$cm_namespace\",container=\"cert-manager-controller\"}) by (pod)",
+            "interval": "",
+            "legendFormat": "{{pod}}",
+            "queryType": "randomWalk",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "scalar(kube_pod_container_resource_requests{namespace=\"$cm_namespace\",container=\"cert-manager-controller\",resource=\"cpu\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "quota - requests",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "scalar(kube_pod_container_resource_limits{namespace=\"$cm_namespace\",container=\"cert-manager-controller\",resource=\"cpu\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "quota - limits",
+            "refId": "C"
+          }
+        ],
+        "title": "cert-manager-controller CPU Usage",
+        "type": "timeseries"
+      },
+      {
+        "datasource": "${DS_PROMETHEUS}",
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "green",
+              "mode": "fixed"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "bytes"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "quota - limits"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "red",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "quota - requests"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "yellow",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 8,
+          "x": 0,
+          "y": 27
+        },
+        "id": 22,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "tooltip": {
+            "mode": "multi"
+          }
+        },
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(container_memory_working_set_bytes{namespace=\"$cm_namespace\",container=\"cert-manager-cainjector\"}) by (pod)",
+            "interval": "",
+            "legendFormat": "{{pod}}",
+            "queryType": "randomWalk",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "scalar(kube_pod_container_resource_requests{namespace=\"$cm_namespace\",container=\"cert-manager-cainjector\",resource=\"memory\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "quota - requests",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "scalar(kube_pod_container_resource_limits{namespace=\"$cm_namespace\",container=\"cert-manager-cainjector\",resource=\"memory\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "quota - limits",
+            "refId": "C"
+          }
+        ],
+        "title": "cert-manager-cainjector Memory Usage (w/o cache)",
+        "type": "timeseries"
+      },
+      {
+        "datasource": "${DS_PROMETHEUS}",
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "green",
+              "mode": "fixed"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "bytes"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "quota - limits"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "red",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "quota - requests"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "yellow",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 8,
+          "x": 8,
+          "y": 27
+        },
+        "id": 23,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "tooltip": {
+            "mode": "multi"
+          }
+        },
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(container_memory_working_set_bytes{namespace=\"$cm_namespace\",container=\"cert-manager-webhook\"}) by (pod)",
+            "interval": "",
+            "legendFormat": "{{pod}}",
+            "queryType": "randomWalk",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "scalar(kube_pod_container_resource_requests{namespace=\"$cm_namespace\",container=\"cert-manager-webhook\",resource=\"memory\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "quota - requests",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "scalar(kube_pod_container_resource_limits{namespace=\"$cm_namespace\",container=\"cert-manager-webhook\",resource=\"memory\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "quota - limits",
+            "refId": "C"
+          }
+        ],
+        "title": "cert-manager-cainjector Memory Usage (w/o cache)",
+        "type": "timeseries"
+      },
+      {
+        "datasource": "${DS_PROMETHEUS}",
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "green",
+              "mode": "fixed"
+            },
+            "custom": {
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "bytes"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "quota - limits"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "red",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "quota - requests"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "yellow",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 8,
+          "x": 16,
+          "y": 27
+        },
+        "id": 24,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom"
+          },
+          "tooltip": {
+            "mode": "multi"
+          }
+        },
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(container_memory_working_set_bytes{namespace=\"$cm_namespace\",container=\"cert-manager-controller\"}) by (pod)",
+            "interval": "",
+            "legendFormat": "{{pod}}",
+            "queryType": "randomWalk",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "scalar(kube_pod_container_resource_requests{namespace=\"$cm_namespace\",container=\"cert-manager-controller\",resource=\"memory\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "quota - requests",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "scalar(kube_pod_container_resource_limits{namespace=\"$cm_namespace\",container=\"cert-manager-controller\",resource=\"memory\"})",
+            "hide": false,
+            "interval": "",
+            "legendFormat": "quota - limits",
+            "refId": "C"
+          }
+        ],
+        "title": "cert-manager-controller Memory Usage (w/o cache)",
+        "type": "timeseries"
+      },
+      {
+        "datasource": "${DS_PROMETHEUS}",
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "displayMode": "auto",
+              "filterable": false
+            },
+            "mappings": [],
+            "noValue": "-",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #A"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "CPU Usage"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #B"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "CPU Requests"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #C"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "CPU Request Utilization"
+                },
+                {
+                  "id": "custom.displayMode",
+                  "value": "lcd-gauge"
+                },
+                {
+                  "id": "min",
+                  "value": 0
+                },
+                {
+                  "id": "max",
+                  "value": 1
+                },
+                {
+                  "id": "unit",
+                  "value": "percentunit"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #D"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "CPU Limits"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #E"
+              },
+              "properties": [
+                {
+                  "id": "custom.displayMode",
+                  "value": "lcd-gauge"
+                },
+                {
+                  "id": "unit",
+                  "value": "percentunit"
+                },
+                {
+                  "id": "min",
+                  "value": 0
+                },
+                {
+                  "id": "max",
+                  "value": 1
+                },
+                {
+                  "id": "displayName",
+                  "value": "CPU Limit Utilization"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "container"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 190
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "CPU Limits"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 100
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "CPU Requests"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 111
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "CPU Usage"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 101
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "pod"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 507
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 36
+        },
+        "id": 14,
+        "options": {
+          "showHeader": true,
+          "sortBy": []
+        },
+        "pluginVersion": "8.1.2",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace=\"$cm_namespace\",container!=\"\"}) by (pod,container)",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "queryType": "randomWalk",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(kube_pod_container_resource_requests{namespace=\"$cm_namespace\",container!=\"\",resource=\"cpu\"}) by (pod,container)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace=\"$cm_namespace\",container!=\"\"}) by (pod,container) / sum(kube_pod_container_resource_requests{namespace=\"$cm_namespace\",container!=\"\",resource=\"cpu\"}) by (pod,container)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "C"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(kube_pod_container_resource_limits{namespace=\"$cm_namespace\",container!=\"\",resource=\"cpu\"}) by (pod,container)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "D"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace=\"$cm_namespace\",container!=\"\"}) by (pod,container) / sum(kube_pod_container_resource_limits{namespace=\"$cm_namespace\",container!=\"\",resource=\"cpu\"}) by (pod,container)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "E"
+          }
+        ],
+        "title": "CPU Quota",
+        "transformations": [
+          {
+            "id": "merge",
+            "options": {}
+          },
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "Time": true
+              },
+              "indexByName": {},
+              "renameByName": {}
+            }
+          }
+        ],
+        "type": "table"
+      },
+      {
+        "datasource": "${DS_PROMETHEUS}",
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "displayMode": "auto"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #A"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "bytes"
+                },
+                {
+                  "id": "displayName",
+                  "value": "Memory Usage"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #B"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "bytes"
+                },
+                {
+                  "id": "displayName",
+                  "value": "Memory Requests"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #C"
+              },
+              "properties": [
+                {
+                  "id": "custom.displayMode",
+                  "value": "lcd-gauge"
+                },
+                {
+                  "id": "min",
+                  "value": 0
+                },
+                {
+                  "id": "max",
+                  "value": 1
+                },
+                {
+                  "id": "unit",
+                  "value": "percentunit"
+                },
+                {
+                  "id": "displayName",
+                  "value": "Memory Requests %"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #D"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "bytes"
+                },
+                {
+                  "id": "displayName",
+                  "value": "Memory Limits"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #E"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "percentunit"
+                },
+                {
+                  "id": "min",
+                  "value": 0
+                },
+                {
+                  "id": "max",
+                  "value": 1
+                },
+                {
+                  "id": "custom.displayMode",
+                  "value": "lcd-gauge"
+                },
+                {
+                  "id": "displayName",
+                  "value": "Memory Limits %"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #F"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "bytes"
+                },
+                {
+                  "id": "displayName",
+                  "value": "Memory Usage (RSS)"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Value #G"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "bytes"
+                },
+                {
+                  "id": "displayName",
+                  "value": "Memory Usage (Cache)"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Memory Usage"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 121
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Memory Requests"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 133
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Memory Limits"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 115
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Memory Usage (RSS)"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 163
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Memory Usage (Cache)"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 168
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "container"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 103
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "pod"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 212
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Memory Requests %"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 183
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Memory Limits %"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 185
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 42
+        },
+        "id": 16,
+        "options": {
+          "showHeader": true,
+          "sortBy": [
+            {
+              "desc": false,
+              "displayName": "container"
+            }
+          ]
+        },
+        "pluginVersion": "8.1.2",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "sum(container_memory_working_set_bytes{namespace=\"$cm_namespace\",container!=\"\", image!=\"\"}) by (pod,container)",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "pod",
+            "queryType": "randomWalk",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(kube_pod_container_resource_requests{namespace=\"$cm_namespace\",container!=\"\",resource=\"memory\"}) by (pod,container)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(container_memory_working_set_bytes{namespace=\"$cm_namespace\",container!=\"\", image!=\"\"}) by (pod,container) / sum(kube_pod_container_resource_requests{namespace=\"$cm_namespace\",container!=\"\",resource=\"memory\"}) by (pod,container)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "C"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(kube_pod_container_resource_limits{namespace=\"$cm_namespace\",container!=\"\", resource=\"memory\"}) by (pod,container)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "D"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(container_memory_working_set_bytes{namespace=\"$cm_namespace\",container!=\"\", image!=\"\"}) by (pod,container) / sum(kube_pod_container_resource_limits{namespace=\"$cm_namespace\",container!=\"\",resource=\"memory\"}) by (pod,container)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "E"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(container_memory_rss{namespace=\"$cm_namespace\",container!=\"\",container!=\"\"}) by (pod,container)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "F"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(container_memory_cache{namespace=\"$cm_namespace\",container!=\"\",container!=\"\"}) by (pod,container)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "G"
+          },
+          {
+            "exemplar": true,
+            "expr": "sum(container_memory_swap{namespace=\"$cm_namespace\",container!=\"\"}) by (pod,container)",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "H"
+          }
+        ],
+        "title": "Memory Quota",
+        "transformations": [
+          {
+            "id": "merge",
+            "options": {}
+          },
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "Time": true
+              },
+              "indexByName": {
+                "Time": 0,
+                "Value #A": 3,
+                "Value #B": 4,
+                "Value #C": 8,
+                "Value #D": 5,
+                "Value #E": 9,
+                "Value #F": 6,
+                "Value #G": 7,
+                "container": 1,
+                "pod": 2
+              },
+              "renameByName": {}
+            }
+          }
+        ],
+        "type": "table"
       }
     ],
     "refresh": "",
@@ -425,6 +1947,28 @@
           "skipUrlSync": false,
           "sort": 0,
           "type": "query"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "cert-manager",
+            "value": "cert-manager"
+          },
+          "description": null,
+          "error": null,
+          "hide": 2,
+          "label": "Cert-Manager Namespace",
+          "name": "cm_namespace",
+          "options": [
+            {
+              "selected": true,
+              "text": "cert-manager",
+              "value": "cert-manager"
+            }
+          ],
+          "query": "cert-manager",
+          "skipUrlSync": false,
+          "type": "textbox"
         }
       ]
     },
@@ -434,6 +1978,6 @@
     },
     "timepicker": {},
     "timezone": "",
-    "title": "Cert-Manager",
-    "version": 3
+    "title": "Cert-Manager (new)",
+    "version": 1
   }
