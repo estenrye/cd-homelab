@@ -47,8 +47,10 @@ dashboards:
   gatewayapistate:
     gatewayclasses:
       url: https://raw.githubusercontent.com/estenrye/cd-homelab/2ce9dc50bcaa396429d96994384edadd03961632/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/gateway-api-state/gatewayclasses.json
+      datasource: Prometheus
     gateways:
       url: https://raw.githubusercontent.com/estenrye/cd-homelab/2ce9dc50bcaa396429d96994384edadd03961632/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/gateway-api-state/gateways.json
+      datasource: Prometheus
   default:
     # https://grafana.com/grafana/dashboards/19432
     gateway-api-gateway-classes:
