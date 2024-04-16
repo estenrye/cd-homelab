@@ -11,3 +11,17 @@ resource "helm_release" "kube_prometheus_stack" {
     file("${path.module}/helm/kube-prometheus-stack.yaml")
   ]
 }
+
+resource "helm_release" "gateway_api_metrics" {
+  name = "gateway-api-metrics"
+  namespace = "monitoring"
+  repository = "https://prometheus-community.github.io/helm-charts"
+  chart     = "kube-state-metrics"
+  version   = "5.18.0"
+  create_namespace = true
+  skip_crds = true
+  
+  values = [
+    file("${path.module}/helm/gateway-api-state-metrics.yaml")
+  ]
+}

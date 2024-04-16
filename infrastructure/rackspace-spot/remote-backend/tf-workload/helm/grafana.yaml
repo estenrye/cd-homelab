@@ -37,10 +37,40 @@ dashboardProviders:
 ##
 dashboards:
   default:
-    # https://grafana.com/grafana/dashboards/19432-gateway-api-state-gatewayclasses/
-    gateway-api-state-metrics:
+    # https://grafana.com/grafana/dashboards/19432
+    gateway-api-gateway-classes:
       gnetId: 19432
       revision: 2
+      datasource: Prometheus
+    # https://grafana.com/grafana/dashboards/19433
+    gateway-api-gateways:
+      gnetId: 19433
+      revision: 2
+      datasource: Prometheus
+    # https://grafana.com/grafana/dashboards/19434
+    gateway-api-httproutes:
+      gnetId: 19434
+      revision: 2
+      datasource: Prometheus
+    # https://grafana.com/grafana/dashboards/19570
+    gateway-api-grpcroutes:
+      gnetId: 19570
+      revision: 1
+      datasource: Prometheus
+    # https://grafana.com/grafana/dashboards/19572
+    gateway-api-tlsroutes:
+      gnetId: 19572
+      revision: 1
+      datasource: Prometheus
+    # https://grafana.com/grafana/dashboards/19571
+    gateway-api-tcproutes:
+      gnetId: 19571
+      revision: 1
+      datasource: Prometheus
+    # https://grafana.com/grafana/dashboards/19573
+    gateway-api-udproutes:
+      gnetId: 19573
+      revision: 1
       datasource: Prometheus
     # https://grafana.com/grafana/dashboards/11022-envoy-global/
     envoy-global:
