@@ -259,6 +259,18 @@ resource "kubernetes_manifest" "example_gateway" {
               }
             ]
           }
+        },
+        {
+          name = "bar"
+          protocol = "UDP"
+          port = 5300
+          allowedRoutes = {
+            kinds = [
+              {
+                kind = "UDPRoute"
+              }
+            ]
+          }
         }
       ]
     }
@@ -292,6 +304,149 @@ resource "kubernetes_manifest" "tcproute_echo_basic" {
               kind = "Service"
               name = "echo-basic"
               port = 3000
+              weight = 1
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+
+resource "kubernetes_config_map" "coredns" {
+  count = var.deploy_gateway_api_examples ? 1 : 0
+
+  metadata {
+    name = "coredns"
+    namespace = resource.kubernetes_namespace.gateway_api_examples.0.metadata.0.name
+  }
+  data = {
+    Corefile = <<-EOF
+    .:53 {
+        forward . 1.1.1.1 8.8.8.8
+        log
+        errors
+    }
+
+    foo.bar.com:53 {
+      whoami
+    }
+    EOF
+  }
+}
+
+resource "kubernetes_deployment_v1" "coredns" {
+  count = var.deploy_gateway_api_examples ? 1 : 0
+
+  metadata {
+    name = "coredns"
+    namespace = resource.kubernetes_namespace.gateway_api_examples.0.metadata.0.name
+    labels = {
+      gateway-k8s-app = "coredns"
+    }
+  }
+
+  spec {
+    replicas = 1
+
+    selector {
+      match_labels = {
+        gateway-k8s-app = "coredns"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          gateway-k8s-app = "coredns"
+        }
+      }
+
+      spec {
+        container {
+          name = "coredns"
+          image = "coredns/coredns"
+          port {
+            name = "dns"
+            container_port = 53
+            protocol = "UDP"
+          }
+          args = [
+            "-conf",
+            "/etc/coredns/Corefile"
+          ]
+          volume_mount {
+            name = "config-volume"
+            mount_path = "/etc/coredns"
+          }
+        }
+
+        volume {
+          name = "config-volume"
+          config_map {
+            name = "coredns"
+          }
+        }
+          
+      }
+    }
+  }
+}
+
+resource "kubernetes_service_v1" "coredns" {
+  count = var.deploy_gateway_api_examples ? 1 : 0
+
+  metadata {
+    name = "coredns"
+    namespace = resource.kubernetes_namespace.gateway_api_examples.0.metadata.0.name
+    labels = {
+      gateway-k8s-app = "coredns"
+    }
+  }
+
+  spec {
+    selector = {
+      gateway-k8s-app = "coredns"
+    }
+
+    type = "ClusterIP"
+
+    port {
+      name = "dns"
+      port = 53
+      protocol = "UDP"
+      target_port = "dns"
+    }
+  }
+}
+
+resource "kubernetes_manifest" "coredns" {
+  count = var.deploy_gateway_api_examples ? 1 : 0
+
+  manifest = {
+    apiVersion = "gateway.networking.k8s.io/v1alpha2"
+    kind = "UDPRoute"
+    metadata = {
+      name = "coredns"
+      namespace = resource.kubernetes_namespace.gateway_api_examples.0.metadata.0.name
+    }
+    spec = {
+      parentRefs = [
+        {
+          name = "example-gateway"
+          group = "gateway.networking.k8s.io"
+          kind = "Gateway"
+          sectionName = "bar"
+        }
+      ]
+      rules = [
+        {
+          backendRefs = [
+            {
+              group = ""
+              kind = "Service"
+              name = "coredns"
+              port = 53
               weight = 1
             }
           ]
