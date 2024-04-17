@@ -58,7 +58,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "links": [],
+   "links": [],
   "panels": [
     {
       "collapsed": false,
@@ -1325,7 +1325,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "gatewayapi_tcproute_parent_info{parent_kind=\"Gateway\",parent_name=~\"$gateway\"}",
+          "expr": "gatewayapi_udproute_parent_info{parent_kind=\"Gateway\",parent_name=~\"$gateway\"}",
           "format": "table",
           "instant": true,
           "interval": "",
