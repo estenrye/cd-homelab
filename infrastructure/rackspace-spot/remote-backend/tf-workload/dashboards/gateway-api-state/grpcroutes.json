@@ -1,0 +1,547 @@
+{
+    "__inputs": [
+      {
+        "name": "DS_PROMETHEUS",
+        "label": "Prometheus",
+        "description": "",
+        "type": "datasource",
+        "pluginId": "prometheus",
+        "pluginName": "Prometheus"
+      }
+    ],
+    "__requires": [
+      {
+        "type": "grafana",
+        "id": "grafana",
+        "name": "Grafana",
+        "version": "8.1.2"
+      },
+      {
+        "type": "datasource",
+        "id": "prometheus",
+        "name": "Prometheus",
+        "version": "1.0.0"
+      },
+      {
+        "type": "panel",
+        "id": "stat",
+        "name": "Stat",
+        "version": ""
+      },
+      {
+        "type": "panel",
+        "id": "table",
+        "name": "Table",
+        "version": ""
+      }
+    ],
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": null,
+    "links": [],
+    "panels": [
+      {
+        "datasource": "${DS_PROMETHEUS}",
+        "description": "Total number of GRPCRoutes across all namespaces",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 3,
+          "x": 0,
+          "y": 0
+        },
+        "id": 2,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "auto"
+        },
+        "pluginVersion": "8.1.2",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "count(gatewayapi_grpcroute_created{name=~\"$grpcroute\"})",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "queryType": "randomWalk",
+            "refId": "A"
+          }
+        ],
+        "title": "Total",
+        "type": "stat"
+      },
+      {
+        "datasource": "${DS_PROMETHEUS}",
+        "description": "Total number of parents (e.g. Gateways) targeted by GRPCRoutes",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 3,
+          "x": 3,
+          "y": 0
+        },
+        "id": 3,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "auto"
+        },
+        "pluginVersion": "8.1.2",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "count(gatewayapi_grpcroute_parent_info{name=~\"$grpcroute\"})",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "queryType": "randomWalk",
+            "refId": "A"
+          }
+        ],
+        "title": "Targeted Parents",
+        "type": "stat"
+      },
+      {
+        "datasource": "${DS_PROMETHEUS}",
+        "description": "Total number of parents (e.g. Gateways) attached to GRPCRoutes",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 3,
+          "w": 3,
+          "x": 6,
+          "y": 0
+        },
+        "id": 4,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "auto"
+        },
+        "pluginVersion": "8.1.2",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "count(gatewayapi_grpcroute_status_parent_info{name=~\"$grpcroute\"})",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "queryType": "randomWalk",
+            "refId": "A"
+          }
+        ],
+        "title": "Attached Parents",
+        "type": "stat"
+      },
+      {
+        "datasource": "${DS_PROMETHEUS}",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "displayMode": "auto"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Created At"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "dateTimeAsIso"
+                },
+                {
+                  "id": "custom.width",
+                  "value": 187
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Version"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 116
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Namespace"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 298
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Name"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 278
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Parent Name"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 204
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Parent Namespace"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 271
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Attached"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "bool_yes_no"
+                },
+                {
+                  "id": "noValue",
+                  "value": "0"
+                },
+                {
+                  "id": "custom.width",
+                  "value": 90
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 24,
+          "x": 0,
+          "y": 3
+        },
+        "id": 6,
+        "options": {
+          "showHeader": true,
+          "sortBy": []
+        },
+        "pluginVersion": "8.1.2",
+        "targets": [
+          {
+            "exemplar": true,
+            "expr": "gatewayapi_grpcroute_created{name=~\"$grpcroute\"}",
+            "format": "table",
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "queryType": "randomWalk",
+            "refId": "A"
+          },
+          {
+            "exemplar": true,
+            "expr": "gatewayapi_grpcroute_parent_info{name=~\"$grpcroute\"}",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "B"
+          },
+          {
+            "exemplar": true,
+            "expr": "gatewayapi_grpcroute_status_parent_info{name=~\"$grpcroute\"}",
+            "format": "table",
+            "hide": false,
+            "instant": true,
+            "interval": "",
+            "legendFormat": "",
+            "refId": "C"
+          }
+        ],
+        "title": "GRPC Routes",
+        "transformations": [
+          {
+            "id": "filterFieldsByName",
+            "options": {
+              "include": {
+                "names": [
+                  "customresource_version",
+                  "exported_namespace",
+                  "name",
+                  "Value #A",
+                  "parent_name",
+                  "parent_namespace",
+                  "Value #C"
+                ]
+              }
+            }
+          },
+          {
+            "id": "merge",
+            "options": {}
+          },
+          {
+            "id": "calculateField",
+            "options": {
+              "alias": "Created At",
+              "binary": {
+                "left": "Value #A",
+                "operator": "*",
+                "reducer": "sum",
+                "right": "1000"
+              },
+              "mode": "binary",
+              "reduce": {
+                "reducer": "sum"
+              }
+            }
+          },
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "Value": true,
+                "Value #A": true
+              },
+              "indexByName": {
+                "Created At": 4,
+                "Value": 3,
+                "customresource_version": 0,
+                "exported_namespace": 2,
+                "name": 1
+              },
+              "renameByName": {
+                "Created At": "",
+                "Value": "Created",
+                "Value #C": "Attached",
+                "customresource_version": "Version",
+                "exported_namespace": "Namespace",
+                "name": "Name",
+                "parent_name": "Parent Name",
+                "parent_namespace": "Parent Namespace"
+              }
+            }
+          }
+        ],
+        "type": "table"
+      }
+    ],
+    "schemaVersion": 30,
+    "style": "dark",
+    "tags": [
+      "gateway-api",
+      "gateway-api-state"
+    ],
+      "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "Prometheus",
+            "value": "Prometheus"
+          },
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": false,
+          "label": "Data Source",
+          "multi": false,
+          "name": "datasource",
+          "options": [],
+          "query": "prometheus",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "type": "datasource"
+        },
+        {
+          "allValue": ".*",
+          "current": {},
+          "datasource": "${DS_PROMETHEUS}",
+          "definition": "label_values(gatewayapi_grpcroute_created, name)",
+          "description": null,
+          "error": null,
+          "hide": 0,
+          "includeAll": true,
+          "label": "GRPCRoute",
+          "multi": false,
+          "name": "grpcroute",
+          "options": [],
+          "query": {
+            "query": "label_values(gatewayapi_grpcroute_created, name)",
+            "refId": "StandardVariableQuery"
+          },
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "GRPCRoutes",
+    "version": 2
+  }

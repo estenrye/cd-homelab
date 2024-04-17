@@ -45,3 +45,9 @@ variable "letsencrypt_email" {
   type        = string
   default     = "esten.rye+letsencrypt@ryezone.com"
 }
+
+variable "deploy_gateway_api_examples" {
+  description = "Deploy the gateway API examples"
+  type        = bool
+  default     = true
+}

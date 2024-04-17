@@ -1376,7 +1376,10 @@
   "refresh": "",
   "schemaVersion": 30,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "gateway-api",
+    "gateway-api-state"
+  ],
   "templating": {
     "list": [
       {

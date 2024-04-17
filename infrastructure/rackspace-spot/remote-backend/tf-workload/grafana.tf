@@ -39,7 +39,7 @@ resource "kubernetes_manifest" "reference_grant_grafana" {
                 {
                     group = "gateway.networking.k8s.io"
                     kind = "HTTPRoute"
-                    namespace = "envoy-gateway-system"
+                    namespace = resource.kubernetes_manifest.gateway_eg.manifest.metadata.namespace
                 }
             ]
             to = [
@@ -57,14 +57,14 @@ resource "kubernetes_manifest" "http_route_grafana" {
     apiVersion = "gateway.networking.k8s.io/v1"
     kind = "HTTPRoute"
     metadata = {
-      name = "grafana-example-rye-ninja"
-      namespace = "envoy-gateway-system"
+      name = format("grafana-%s-%s", var.cluster_name, replace(var.top_level_domain, ".", "-"))
+      namespace = resource.kubernetes_manifest.gateway_eg.manifest.metadata.namespace
     }
     spec = {
         parentRefs = [
             {
-                name = "eg"
-                namespace = "envoy-gateway-system"
+                name = resource.kubernetes_manifest.gateway_eg.manifest.metadata.name
+                namespace = resource.kubernetes_manifest.gateway_eg.manifest.metadata.namespace
                 kind = "Gateway"
             }
         ]
@@ -102,14 +102,14 @@ resource "kubernetes_manifest" "http_route_prometheus" {
     apiVersion = "gateway.networking.k8s.io/v1"
     kind = "HTTPRoute"
     metadata = {
-      name = "prometheus-example-rye-ninja"
-      namespace = "envoy-gateway-system"
+      name = format("prometheus-%s-%s", var.cluster_name, replace(var.top_level_domain, ".", "-"))
+      namespace = resource.kubernetes_manifest.gateway_eg.manifest.metadata.namespace
     }
     spec = {
         parentRefs = [
             {
-                name = "eg"
-                namespace = "envoy-gateway-system"
+                name = resource.kubernetes_manifest.gateway_eg.manifest.metadata.name
+                namespace = resource.kubernetes_manifest.gateway_eg.manifest.metadata.namespace
                 kind = "Gateway"
             }
         ]
