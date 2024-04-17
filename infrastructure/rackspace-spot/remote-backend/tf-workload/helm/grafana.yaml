@@ -46,13 +46,16 @@ dashboardProviders:
 dashboards:
   gatewayapistate:
     gatewayclasses:
-      url: https://raw.githubusercontent.com/estenrye/cd-homelab/d95648744bb7b7e73228b6968481c8957dda9c36/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/gateway-api-state/gatewayclasses.json
+      url: https://raw.githubusercontent.com/estenrye/cd-homelab/5fa22a9b8dc326ac5510d3e05f3c5ac7505a19a8/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/gateway-api-state/gatewayclasses.json
       datasource: Prometheus
     gateways:
-      url: https://raw.githubusercontent.com/estenrye/cd-homelab/d95648744bb7b7e73228b6968481c8957dda9c36/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/gateway-api-state/gateways.json
+      url: https://raw.githubusercontent.com/estenrye/cd-homelab/5fa22a9b8dc326ac5510d3e05f3c5ac7505a19a8/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/gateway-api-state/gateways.json
       datasource: Prometheus
     grpcroutes:
-      url: https://raw.githubusercontent.com/estenrye/cd-homelab/d95648744bb7b7e73228b6968481c8957dda9c36/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/gateway-api-state/grpcroutes.json
+      url: https://raw.githubusercontent.com/estenrye/cd-homelab/5fa22a9b8dc326ac5510d3e05f3c5ac7505a19a8/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/gateway-api-state/grpcroutes.json
+      datasource: Prometheus
+    httproutes:
+      url: https://raw.githubusercontent.com/estenrye/cd-homelab/5fa22a9b8dc326ac5510d3e05f3c5ac7505a19a8/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/gateway-api-state/httproutes.json
       datasource: Prometheus
   default:
     # https://grafana.com/grafana/dashboards/19432
@@ -107,11 +110,11 @@ dashboards:
       datasource: Prometheus
     # https://grafana.com/grafana/dashboards/20842-cert-manager-kubernetes/
     cert-manager:
-      url: https://raw.githubusercontent.com/estenrye/cd-homelab/d95648744bb7b7e73228b6968481c8957dda9c36/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/cert-manager.json
+      url: https://raw.githubusercontent.com/estenrye/cd-homelab/5fa22a9b8dc326ac5510d3e05f3c5ac7505a19a8/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/cert-manager.json
       datasource: Prometheus
     external-dns:
-      url: https://raw.githubusercontent.com/estenrye/cd-homelab/d95648744bb7b7e73228b6968481c8957dda9c36/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/external-dns.json
+      url: https://raw.githubusercontent.com/estenrye/cd-homelab/5fa22a9b8dc326ac5510d3e05f3c5ac7505a19a8/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/external-dns.json
       datasource: Prometheus
     onepassword-operator:
-      url: https://raw.githubusercontent.com/estenrye/cd-homelab/d95648744bb7b7e73228b6968481c8957dda9c36/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/1password.json
+      url: https://raw.githubusercontent.com/estenrye/cd-homelab/5fa22a9b8dc326ac5510d3e05f3c5ac7505a19a8/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/1password.json
       datasource: Prometheus
