@@ -124,3 +124,4 @@ tasks:
       - yq -i ".dashboards.default."onepassword-operator".url = \"https://raw.githubusercontent.com/${GITHUB_ORG}/${GITHUB_REPO}/$(git rev-parse HEAD)/${DASHBOARD_REPO_PATH}/1password.json\"" helm/grafana.yaml
       - yq -i ".dashboards.gatewayapistate.gatewayclasses.url = \"https://raw.githubusercontent.com/${GITHUB_ORG}/${GITHUB_REPO}/$(git rev-parse HEAD)/${DASHBOARD_REPO_PATH}/gateway-api-state/gatewayclasses.json\"" helm/grafana.yaml
       - yq -i ".dashboards.gatewayapistate.gateways.url = \"https://raw.githubusercontent.com/${GITHUB_ORG}/${GITHUB_REPO}/$(git rev-parse HEAD)/${DASHBOARD_REPO_PATH}/gateway-api-state/gateways.json\"" helm/grafana.yaml
+      - yq -i ".dashboards.gatewayapistate.grpcroutes.url = \"https://raw.githubusercontent.com/${GITHUB_ORG}/${GITHUB_REPO}/$(git rev-parse HEAD)/${DASHBOARD_REPO_PATH}/gateway-api-state/grpcroutes.json\"" helm/grafana.yaml
