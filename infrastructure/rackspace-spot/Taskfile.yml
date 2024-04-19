@@ -128,3 +128,4 @@ tasks:
       - yq -i ".dashboards.gatewayapistate.httproutes.url = \"https://raw.githubusercontent.com/${GITHUB_ORG}/${GITHUB_REPO}/$(git rev-parse HEAD)/${DASHBOARD_REPO_PATH}/gateway-api-state/httproutes.json\"" helm/grafana.yaml
       - yq -i ".dashboards.gatewayapistate.tcproutes.url = \"https://raw.githubusercontent.com/${GITHUB_ORG}/${GITHUB_REPO}/$(git rev-parse HEAD)/${DASHBOARD_REPO_PATH}/gateway-api-state/tcproutes.json\"" helm/grafana.yaml
       - yq -i ".dashboards.gatewayapistate.udproutes.url = \"https://raw.githubusercontent.com/${GITHUB_ORG}/${GITHUB_REPO}/$(git rev-parse HEAD)/${DASHBOARD_REPO_PATH}/gateway-api-state/udproutes.json\"" helm/grafana.yaml
+      - yq -i ".dashboards.gatewayapistate.tlsroutes.url = \"https://raw.githubusercontent.com/${GITHUB_ORG}/${GITHUB_REPO}/$(git rev-parse HEAD)/${DASHBOARD_REPO_PATH}/gateway-api-state/tlsroutes.json\"" helm/grafana.yaml
