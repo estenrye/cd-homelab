@@ -455,3 +455,203 @@ resource "kubernetes_manifest" "coredns" {
     }
   }
 }
+
+resource "kubernetes_deployment_v1" "tls_passthrough" {
+  count = var.deploy_gateway_api_examples ? 1 : 0
+
+  metadata {
+    name = "tls-passthrough"
+    namespace = resource.kubernetes_namespace.gateway_api_examples.0.metadata.0.name
+    labels = {
+      app = "tls-passthrough"
+      example = "tls-routing"
+    }
+  }
+
+  spec {
+    replicas = 1
+
+    selector {
+      match_labels = {
+        app = "tls-passthrough"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          app = "tls-passthrough"
+        }
+      }
+
+      spec {
+        container {
+          name = "tls-passthrough"
+          image = "gcr.io/k8s-staging-gateway-api/echo-basic:v20231214-v1.0.0-140-gf544a46e"
+          port {
+            name = "tls"
+            container_port = 8443
+            protocol = "TCP"
+          }
+          env {
+            name = "POD_NAME"
+            value_from {
+              field_ref {
+                field_path = "metadata.name"
+              }
+            }
+          }
+          env {
+            name = "POD_NAMESPACE"
+            value_from {
+              field_ref {
+                field_path = "metadata.namespace"
+              }
+            }
+          }
+          env {
+            name = "HTTPS_PORT"
+            value = "8443"
+          }
+          env {
+            name = "TLS_SERVER_CERT"
+            value = "/etc/server-certs/tls.crt"
+          }
+          env {
+            name = "TLS_SERVER_KEY"
+            value = "/etc/server-certs/tls.key"
+          }
+          volume_mount {
+            name = "server-certs"
+            mount_path = "/etc/server-certs"
+            read_only = true
+          }
+        }
+        volume {
+          name = "server-certs"
+          secret {
+            secret_name = "server-certs"
+          }
+        }
+      }
+    }
+  }
+}
+
+resource kubernetes_manifest "issuer_selfsigned" {
+    count = var.deploy_gateway_api_examples ? 1 : 0
+    
+    manifest = {
+        apiVersion = "cert-manager.io/v1"
+        kind       = "Issuer"
+        metadata = {
+            name = "selfsigned-issuer"
+            namespace = resource.kubernetes_namespace.gateway_api_examples.0.metadata.0.name
+        }
+        spec = {
+            selfSigned = {}
+        }
+    }
+}
+
+
+resource kubernetes_manifest "server_certs" {
+    count = var.deploy_gateway_api_examples ? 1 : 0
+
+    manifest = {
+        apiVersion = "cert-manager.io/v1"
+        kind       = "Certificate"
+        metadata = {
+            name = "server-certs"
+            namespace = resource.kubernetes_namespace.gateway_api_examples.0.metadata.0.name
+        }
+        spec = {
+            isCA = true
+            commonName = format("tls-passthrough.%s.%s", var.cluster_name, var.top_level_domain)
+            secretName = "server-certs"
+            duration = "120h00m"
+            renewBefore = "60h00m"
+            privateKey = {
+                algorithm = "RSA"
+                rotationPolicy = "Always"
+                size = 2048
+            }
+            issuerRef = {
+                name = "selfsigned-issuer"
+                kind = "Issuer"
+                group = "cert-manager.io"
+            }
+            usages = [
+                "digital signature",
+                "key encipherment",
+            ]
+            dnsNames = [
+                format("tls-passthrough.%s.%s", var.cluster_name, var.top_level_domain)
+            ]
+        }
+    }
+}
+
+resource kubernetes_service_v1 "tls_passthrough" {
+    count = var.deploy_gateway_api_examples ? 1 : 0
+
+    metadata {
+        name = "tls-passthrough"
+        namespace = resource.kubernetes_namespace.gateway_api_examples.0.metadata.0.name
+        labels = {
+            app = "tls-passthrough"
+            example = "tls-routing"
+        }
+    }
+
+    spec {
+        selector = {
+            app = "tls-passthrough"
+        }
+
+        type = "ClusterIP"
+
+        port {
+            name = "tls"
+            port = 8443
+            protocol = "TCP"
+            target_port = "tls"
+        }
+    }
+}
+
+resource kubernetes_manifest "tlsroute_tls_passthrough" {
+    count = var.deploy_gateway_api_examples ? 1 : 0
+
+    manifest = {
+        apiVersion = "gateway.networking.k8s.io/v1alpha2"
+        kind = "TLSRoute"
+        metadata = {
+            name = "tls-passthrough"
+            namespace = resource.kubernetes_namespace.gateway_api_examples.0.metadata.0.name
+        }
+        spec = {
+            parentRefs = [
+                {
+                    name = "example-gateway"
+                    group = "gateway.networking.k8s.io"
+                    kind = "Gateway"
+                    sectionName = "foo"
+                }
+            ]
+            rules = [
+                {
+                    backendRefs = [
+                        {
+                            group = ""
+                            kind = "Service"
+                            name = "tls-passthrough"
+                            port = 8443
+                            weight = 1
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
