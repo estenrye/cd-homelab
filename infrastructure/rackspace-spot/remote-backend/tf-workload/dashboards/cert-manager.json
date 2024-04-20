@@ -1984,5 +1984,6 @@
     "timepicker": {},
     "timezone": "",
     "title": "Cert-Manager",
+    "uid": "cert-manager",
     "version": 1
   }

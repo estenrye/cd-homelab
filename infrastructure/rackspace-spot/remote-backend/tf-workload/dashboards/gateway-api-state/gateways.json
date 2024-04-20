@@ -1435,5 +1435,6 @@
   "timepicker": {},
   "timezone": "",
   "title": "Gateways",
+  "uid": "gateway-api-state-gateways",
   "version": 1
 }

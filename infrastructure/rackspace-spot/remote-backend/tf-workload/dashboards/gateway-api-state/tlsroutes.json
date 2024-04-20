@@ -472,5 +472,6 @@
     "timepicker": {},
     "timezone": "",
     "title": "TLSRoutes",
+    "uid": "gateway-api-tlsroutes",
     "version": 1
   }

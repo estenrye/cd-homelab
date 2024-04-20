@@ -1983,5 +1983,6 @@
   "timepicker": {},
   "timezone": "",
   "title": "External DNS",
+  "uid": "external-dns",
   "version": 27
 }

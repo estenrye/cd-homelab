@@ -476,5 +476,6 @@
     "timepicker": {},
     "timezone": "",
     "title": "TCPRoutes",
+    "uid": "gateway-api-tcproutes",
     "version": 1
   }

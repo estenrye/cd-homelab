@@ -538,5 +538,6 @@
   "timepicker": {},
   "timezone": "",
   "title": "GatewayClasses",
+  "uid": "gateway-api-state-gatewayclasses",
   "version": 1
 }

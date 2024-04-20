@@ -59,7 +59,6 @@
     "gnetId": null,
     "graphTooltip": 0,
     "id": null,
-    "iteration": 1713372497759,
     "links": [],
     "panels": [
       {
@@ -478,6 +477,6 @@
     "timepicker": {},
     "timezone": "",
     "title": "UDPRoutes",
-    "uid": "IXdaIQ-Sk",
+    "uid": "gateway-api-udproutes",
     "version": 1
   }

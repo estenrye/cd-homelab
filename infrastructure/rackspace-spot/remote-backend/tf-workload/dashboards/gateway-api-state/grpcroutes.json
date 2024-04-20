@@ -543,5 +543,6 @@
   "timepicker": {},
   "timezone": "",
   "title": "GRPCRoutes",
+  "uid": "gateway-api-state-grpcroutes",
   "version": 1
 }
