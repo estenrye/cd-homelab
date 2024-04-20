@@ -7,41 +7,6 @@
       "type": "datasource",
       "pluginId": "prometheus",
       "pluginName": "Prometheus"
-    },
-    {
-      "name": "VAR_DASHBOARD_HTTPROUTES_UID",
-      "type": "constant",
-      "label": "dashboard_httproutes_uid",
-      "value": "gateway-api-state-httproutes",
-      "description": ""
-    },
-    {
-      "name": "VAR_DASHBOARD_GRPCROUTES_UID",
-      "type": "constant",
-      "label": "dashboard_grpcroutes_uid",
-      "value": "gateway-api-state-grpcroutes",
-      "description": ""
-    },
-    {
-      "name": "VAR_DASHBOARD_TLSROUTES_UID",
-      "type": "constant",
-      "label": "dashboard_tlsroutes_uid",
-      "value": "gateway-api-state-tlsroutes",
-      "description": ""
-    },
-    {
-      "name": "VAR_DASHBOARD_TCPROUTES_UID",
-      "type": "constant",
-      "label": "dashboard_tcproutes_uid",
-      "value": "gateway-api-state-tcproutes",
-      "description": ""
-    },
-    {
-      "name": "VAR_DASHBOARD_UDPROUTES_UID",
-      "type": "constant",
-      "label": "dashboard_udproutes_uid",
-      "value": "gateway-api-state-udproutes",
-      "description": ""
     }
   ],
   "__requires": [
@@ -895,7 +860,7 @@
                 "value": [
                   {
                     "title": "HTTPRoute Details",
-                    "url": "/d/${dashboard_httproutes_uid}?var-httproute=${__value.text}"
+                    "url": "/d/gateway-api-state-httproutes?var-httproute=${__value.text}"
                   }
                 ]
               }
@@ -1006,7 +971,7 @@
                 "value": [
                   {
                     "title": "GRPCRoute Details",
-                    "url": "/d/${dashboard_grpcroutes_uid}?var-grpcroute=${__value.text}"
+                    "url": "/d/gateway-api-state-grpcroutes?var-grpcroute=${__value.text}"
                   }
                 ]
               }
@@ -1117,7 +1082,7 @@
                 "value": [
                   {
                     "title": "TLSRoute Details",
-                    "url": "/d/${dashboard_tlsroutes_uid}?var-tlsroute=${__value.text}"
+                    "url": "/d/gateway-api-state-tlsroutes?var-tlsroute=${__value.text}"
                   }
                 ]
               }
@@ -1228,7 +1193,7 @@
                 "value": [
                   {
                     "title": "TLSRoute Details",
-                    "url": "/d/${dashboard_tcproutes_uid}?var-tcproute=${__value.text}"
+                    "url": "/d/gateway-api-state-tcproutes?var-tcproute=${__value.text}"
                   }
                 ]
               }
@@ -1339,7 +1304,7 @@
                 "value": [
                   {
                     "title": "UDPRoute Details",
-                    "url": "/d/${dashboard_udproutes_uid}?var-udproute=${__value.text}"
+                    "url": "/d/gateway-api-state-udproutes?var-udproute=${__value.text}"
                   }
                 ]
               }
@@ -1461,116 +1426,6 @@
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
-      },
-      {
-        "description": null,
-        "error": null,
-        "hide": 2,
-        "label": null,
-        "name": "dashboard_httproutes_uid",
-        "query": "${VAR_DASHBOARD_HTTPROUTES_UID}",
-        "skipUrlSync": false,
-        "type": "constant",
-        "current": {
-          "value": "${VAR_DASHBOARD_HTTPROUTES_UID}",
-          "text": "${VAR_DASHBOARD_HTTPROUTES_UID}",
-          "selected": false
-        },
-        "options": [
-          {
-            "value": "${VAR_DASHBOARD_HTTPROUTES_UID}",
-            "text": "${VAR_DASHBOARD_HTTPROUTES_UID}",
-            "selected": false
-          }
-        ]
-      },
-      {
-        "description": null,
-        "error": null,
-        "hide": 2,
-        "label": null,
-        "name": "dashboard_grpcroutes_uid",
-        "query": "${VAR_DASHBOARD_GRPCROUTES_UID}",
-        "skipUrlSync": false,
-        "type": "constant",
-        "current": {
-          "value": "${VAR_DASHBOARD_GRPCROUTES_UID}",
-          "text": "${VAR_DASHBOARD_GRPCROUTES_UID}",
-          "selected": false
-        },
-        "options": [
-          {
-            "value": "${VAR_DASHBOARD_GRPCROUTES_UID}",
-            "text": "${VAR_DASHBOARD_GRPCROUTES_UID}",
-            "selected": false
-          }
-        ]
-      },
-      {
-        "description": null,
-        "error": null,
-        "hide": 2,
-        "label": null,
-        "name": "dashboard_tlsroutes_uid",
-        "query": "${VAR_DASHBOARD_TLSROUTES_UID}",
-        "skipUrlSync": false,
-        "type": "constant",
-        "current": {
-          "value": "${VAR_DASHBOARD_TLSROUTES_UID}",
-          "text": "${VAR_DASHBOARD_TLSROUTES_UID}",
-          "selected": false
-        },
-        "options": [
-          {
-            "value": "${VAR_DASHBOARD_TLSROUTES_UID}",
-            "text": "${VAR_DASHBOARD_TLSROUTES_UID}",
-            "selected": false
-          }
-        ]
-      },
-      {
-        "description": null,
-        "error": null,
-        "hide": 2,
-        "label": null,
-        "name": "dashboard_tcproutes_uid",
-        "query": "${VAR_DASHBOARD_TCPROUTES_UID}",
-        "skipUrlSync": false,
-        "type": "constant",
-        "current": {
-          "value": "${VAR_DASHBOARD_TCPROUTES_UID}",
-          "text": "${VAR_DASHBOARD_TCPROUTES_UID}",
-          "selected": false
-        },
-        "options": [
-          {
-            "value": "${VAR_DASHBOARD_TCPROUTES_UID}",
-            "text": "${VAR_DASHBOARD_TCPROUTES_UID}",
-            "selected": false
-          }
-        ]
-      },
-      {
-        "description": null,
-        "error": null,
-        "hide": 2,
-        "label": null,
-        "name": "dashboard_udproutes_uid",
-        "query": "${VAR_DASHBOARD_UDPROUTES_UID}",
-        "skipUrlSync": false,
-        "type": "constant",
-        "current": {
-          "value": "${VAR_DASHBOARD_UDPROUTES_UID}",
-          "text": "${VAR_DASHBOARD_UDPROUTES_UID}",
-          "selected": false
-        },
-        "options": [
-          {
-            "value": "${VAR_DASHBOARD_UDPROUTES_UID}",
-            "text": "${VAR_DASHBOARD_UDPROUTES_UID}",
-            "selected": false
-          }
-        ]
       }
     ]
   },

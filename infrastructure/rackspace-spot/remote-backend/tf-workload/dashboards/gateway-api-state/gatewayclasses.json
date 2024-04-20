@@ -7,13 +7,6 @@
       "type": "datasource",
       "pluginId": "prometheus",
       "pluginName": "Prometheus"
-    },
-    {
-      "name": "VAR_DASHBOARD_GATEWAYS_UID",
-      "type": "constant",
-      "label": "dashboard_gateways_uid",
-      "value": "gateway-api-state-gateways",
-      "description": ""
     }
   ],
   "__requires": [
@@ -418,7 +411,7 @@
                 "value": [
                   {
                     "title": "Gateway Details",
-                    "url": "/d/${dashboard_gateways_uid}?var-gateway=${__value.text}"
+                    "url": "/d/gateway-api-state-gateways?var-gateway=${__value.text}"
                   }
                 ]
               }
@@ -535,28 +528,6 @@
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
-      },
-      {
-        "description": null,
-        "error": null,
-        "hide": 2,
-        "label": null,
-        "name": "dashboard_gateways_uid",
-        "query": "${VAR_DASHBOARD_GATEWAYS_UID}",
-        "skipUrlSync": false,
-        "type": "constant",
-        "current": {
-          "value": "${VAR_DASHBOARD_GATEWAYS_UID}",
-          "text": "${VAR_DASHBOARD_GATEWAYS_UID}",
-          "selected": false
-        },
-        "options": [
-          {
-            "value": "${VAR_DASHBOARD_GATEWAYS_UID}",
-            "text": "${VAR_DASHBOARD_GATEWAYS_UID}",
-            "selected": false
-          }
-        ]
       }
     ]
   },
