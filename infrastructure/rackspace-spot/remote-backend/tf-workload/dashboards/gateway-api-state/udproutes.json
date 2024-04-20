@@ -477,6 +477,6 @@
     "timepicker": {},
     "timezone": "",
     "title": "UDPRoutes",
-    "uid": "gateway-api-udproutes",
+    "uid": "gateway-api-state-udproutes",
     "version": 1
   }

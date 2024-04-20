@@ -465,6 +465,6 @@
     "timepicker": {},
     "timezone": "",
     "title": "HTTPRoutes",
-    "uid": "gateway-api-httproutes",
+    "uid": "gateway-api-state-httproutes",
     "version": 1
   }
