@@ -49,5 +49,11 @@ variable "letsencrypt_email" {
 variable "deploy_gateway_api_examples" {
   description = "Deploy the gateway API examples"
   type        = bool
-  default     = true
+  default     = false
+}
+
+variable opitem_lgtm_s3_credentials_path {
+  description = "1Password item path for the LGTM S3 credentials"
+  type        = string
+  default     = "vaults/Home_Lab/items/cortex-rye-ninja-s3-creds"
 }

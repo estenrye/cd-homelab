@@ -108,6 +108,8 @@ resource "kubernetes_manifest" "reference_grant_yages" {
 
 
 resource "kubernetes_manifest" "grpcroute_yages" {
+  count = var.deploy_gateway_api_examples ? 1 : 0
+
   manifest = {
     apiVersion = "gateway.networking.k8s.io/v1alpha2"
     kind = "GRPCRoute"
@@ -137,7 +139,7 @@ resource "kubernetes_manifest" "grpcroute_yages" {
               group = ""
               kind = "Service"
               name = "yages"
-              namespace = resource.kubernetes_namespace.gateway_api_examples.0.metadata.0.name
+              namespace = coalesce(resource.kubernetes_namespace.gateway_api_examples.0.metadata.0.name, "default")
               port = 9000
               weight = 1
             },

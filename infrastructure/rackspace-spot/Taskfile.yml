@@ -89,6 +89,21 @@ tasks:
         vars:
           ACTION: destroy
   
+  tf-state-list:
+    desc: List the Terraform state.
+    cmds:
+      - task: tf
+        vars:
+          ACTION: state list
+  
+  tf-state-mv:
+    desc: Move the Terraform state.
+    cmds:
+      - task: tf
+        vars:
+          ACTION: state mv
+          ARGS: "'{{ .SRC }}' '{{ .DST }}'"
+  
   # TODO: Figure out how to automate the renewal of the Rackspace SPOT token.
   tf:
     desc: Plan the Terraform workspace.
