@@ -5,7 +5,7 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusrules_monitor
     "metadata" = {
       "annotations" = {
         "controller-gen.kubebuilder.io/version" = "v0.13.0"
-        "operator.prometheus.io/version" = "0.73.0"
+        "operator.prometheus.io/version" = "0.73.2"
       }
       "name" = "prometheusrules.monitoring.coreos.com"
     }
