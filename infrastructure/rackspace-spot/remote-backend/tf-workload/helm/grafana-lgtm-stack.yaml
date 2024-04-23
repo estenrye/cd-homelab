@@ -40,19 +40,67 @@ grafana:
 loki:
   # -- Deploy Loki if enabled. See [upstream readme](https://github.com/grafana/helm-charts/tree/main/charts/loki-distributed#values) for full values reference.
   enabled: true
+  global:
+    extraEnvFrom:
+      - secretRef:
+          name: s3-bucket-credentials
 
+  storage:
+    bucket_names:
+      chunks:  rye-ninja-loki-chunks
+      ruler:   rye-ninja-loki-ruler
+      admin:   rye-ninja-loki-admin
+    type: s3
+    s3:
+      endpoint: s3.us-central-1.wasabisys.com
+      region: us-central-1
 # -- Mimir chart values. Resources are set to a minimum by default.
 mimir:
   # -- Deploy Mimir if enabled. See [upstream values.yaml](https://github.com/grafana/mimir/blob/main/operations/helm/charts/mimir-distributed/values.yaml) for full values reference.
   enabled: true
+  global:
+    extraEnvFrom:
+      - secretRef:
+          name: s3-bucket-credentials
+  structuredConfig:
+    admin_client:
+      type: s3
+      s3:
+        endpoint: s3.us-central-1.wasabisys.com
+        region: us-central-1
+        bucket_name: rye-ninja-mimir-admin-client
+    alertmanager_storage:
+      backend: s3
+      s3:
+        endpoint: s3.us-central-1.wasabisys.com
+        region: us-central-1
+        bucket_name: rye-ninja-mimir-alert-manager
+    blocks_storage:
+      backend: s3
+      s3:
+        endpoint: s3.us-central-1.wasabisys.com
+        region: us-central-1
+        bucket_name: rye-ninja-mimir-blocks-storage
+    ruler_storage:
+      backend: s3
+      s3:
+        endpoint: s3.us-central-1.wasabisys.com
+        region: us-central-1
+        bucket_name: rye-ninja-mimir-ruler-storage
   alertmanager:
     resources:
       requests:
         cpu: 20m
+    persistentVolume:
+      enabled: true
+      size: 5Gi
   compactor:
     resources:
       requests:
         cpu: 20m
+    persistentVolume:
+      enabled: true
+      size: 5Gi
   distributor:
     resources:
       requests:
@@ -64,6 +112,9 @@ mimir:
     resources:
       requests:
         cpu: 20m
+    persistentVolume:
+      enabled: true
+      size: 5Gi
   overrides_exporter:
     resources:
       requests:
@@ -92,10 +143,11 @@ mimir:
     resources:
       requests:
         cpu: 20m
+    persistentVolume:
+      enabled: true
+      size: 5Gi
   minio:
-    resources:
-      requests:
-        cpu: 20m
+    enabled: false
   rollout_operator:
     resources:
       requests:
@@ -104,5 +156,15 @@ mimir:
 tempo:
   # -- Deploy Tempo if enabled.  See [upstream readme](https://github.com/grafana/helm-charts/blob/main/charts/tempo-distributed/README.md#values) for full values reference.
   enabled: true
+  extraEnvFrom:
+    - secretRef:
+        name: s3-bucket-credentials
+  storage:
+    backend: s3
+    s3:
+      endpoint: s3.us-central-1.wasabisys.com
+      region: us-central-1
+      bucket_name: rye-ninja-tempo
+
   ingester:
     replicas: 1

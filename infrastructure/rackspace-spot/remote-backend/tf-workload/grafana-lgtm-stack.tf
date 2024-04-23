@@ -17,3 +17,17 @@ resource "kubernetes_manifest" "lgtm-s3-bucket" {
     }
   }
 }
+
+resource "helm_release" "grafana_lgtm" {
+  name = "lgtm"
+  namespace = kubernetes_namespace.grafana_lgtm.metadata.0.name
+  repository = "https://grafana.github.io/helm-charts"
+  chart     = "lgtm-distributed"
+  version   = "1.0.1"
+  create_namespace = true
+  skip_crds = true
+  
+  values = [
+    file("${path.module}/helm/grafana-lgtm-stack.yaml")
+  ]
+}
