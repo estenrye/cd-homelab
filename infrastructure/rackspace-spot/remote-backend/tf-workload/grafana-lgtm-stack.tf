@@ -31,3 +31,17 @@ resource "helm_release" "grafana_lgtm" {
     file("${path.module}/helm/grafana-lgtm-stack.yaml")
   ]
 }
+
+resource "helm_release" "grafana_pyroscope" {
+  name = "pyroscope"
+  namespace = kubernetes_namespace.grafana_lgtm.metadata.0.name
+  repository = "https://grafana.github.io/helm-charts"
+  chart     = "pyroscope"
+  version   = "1.5.1"
+  create_namespace = true
+  skip_crds = true
+  
+  values = [
+    file("${path.module}/helm/grafana-pyroscope.yaml")
+  ]
+}
