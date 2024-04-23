@@ -1,0 +1,28 @@
+sidecarConfiguration:
+  providerArgs: ""
+  probesEnabled: true
+  debugLogging: false
+  otelCollectorUri: ""
+  resources: {}
+
+flagdProxyConfiguration:
+  debugLogging: false
+
+controllerManager:
+  replicas: 1
+  kubeRbacProxy:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 128Mi
+      requests:
+        cpu: 5m
+        memory: 64Mi
+  manager:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 128Mi
+      requests:
+        cpu: 10m
+        memory: 64Mi
