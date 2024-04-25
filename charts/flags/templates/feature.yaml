@@ -1,0 +1,27 @@
+apiVersion: core.openfeature.dev/v1beta1
+kind: FeatureFlag
+metadata:
+  name: my-feature-flag
+  namespace: default
+spec:
+  flagSpec:
+    flags:
+      my-flag:
+        defaultVariant: "on"
+        state: ENABLED
+        variants:
+          on: true
+          off: false
+        targeting:
+          if:
+            - "$ref": "my-flag-override"
+            - "off"
+            - "on"
+    "$evaluators":
+      my-flag-override:
+        in:
+          - var: id
+          - [
+            "org_1234",
+            "org_5678"
+          ]

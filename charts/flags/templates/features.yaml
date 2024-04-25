@@ -1,0 +1,26 @@
+---
+apiVersion: core.openfeature.dev/v1beta1
+kind: FeatureFlag
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  flagSpec:
+    flags:
+      {{- range $flagKey, $flag := .Values.flags }}
+      {{ $flagKey }}:
+        {{- with $flag }}
+        {{- $default := .default | default false }}
+        {{- $enabled := .enabled | default true }}
+        defaultVariant: {{ if $default }}"on"{{ else }}"off"{{ end }}
+        state: {{ if $enabled }}"ENABLED"{{ else }}"DISABLED"{{ end }}
+        variants:
+          on: true
+          off: false
+        targeting:
+          if:
+            - $ref": {{ $flagKey }}
+            - {{ if $default }}"off"{{ else }}"on"{{ end }}
+            - {{ if $default }}"on"{{ else }}"off"{{ end }}
+        {{- end }}
+      {{- end }}

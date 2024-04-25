@@ -1,0 +1,9 @@
+flags:
+  foo: {}
+  bar:
+    enabled: false
+  baz:
+    default: true
+    overrides:
+      - org_1234
+      - org_5678
