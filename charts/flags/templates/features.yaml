@@ -39,8 +39,15 @@ spec:
       {{- end }}
     "$evaluators":
       {{- range $flagKey, $flag := .Values.flags }}
-        {{- if $flag }}
-        {{- with $flag }}
+      {{ $flagKey }}:
+        {{- if and $flag $flag.overrides}}
         in:
           - var: id
-          - 
+          - {{ $flag.overrides | toJson }}
+        {{- else }}
+        in:
+          - var: id
+          - []
+        {{- end }}
+      {{- end }}
+
