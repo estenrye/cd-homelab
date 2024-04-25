@@ -9,6 +9,7 @@ spec:
     flags:
       {{- range $flagKey, $flag := .Values.flags }}
       {{ $flagKey }}:
+        {{- if $flag }}
         {{- with $flag }}
         {{- $default := .default | default false }}
         {{- $enabled := .enabled | default true }}
@@ -23,4 +24,23 @@ spec:
             - {{ if $default }}"off"{{ else }}"on"{{ end }}
             - {{ if $default }}"on"{{ else }}"off"{{ end }}
         {{- end }}
+        {{- else }}
+        defaultVariant: "off"
+        state: "ENABLED"
+        variants:
+          on: true
+          off: false
+        targeting:
+          if:
+            - "$ref": {{ $flagKey }}
+            - "on"
+            - "off"
+        {{- end }}
       {{- end }}
+    "$evaluators":
+      {{- range $flagKey, $flag := .Values.flags }}
+        {{- if $flag }}
+        {{- with $flag }}
+        in:
+          - var: id
+          - 

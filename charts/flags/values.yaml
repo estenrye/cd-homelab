@@ -1,5 +1,5 @@
 flags:
-  foo: {}
+  foo:
   bar:
     enabled: false
   baz:
