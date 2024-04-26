@@ -1,2 +1,64 @@
 crds:
   create: false
+
+alloy:
+  configMap:
+    create: true
+    content: |
+      # Configuration for the Grafana Alloy
+      
+      otelcol.receiver.otlp "example" {
+        grpc {
+          endpoint = "127.0.0.1:4317"
+        }
+
+        http {
+          endpoint = "127.0.0.1:4318"
+        }
+
+        output {
+          metrics = [otelcol.processor.batch.example.input]
+          logs    = [otelcol.processor.batch.example.input]
+          traces  = [otelcol.processor.batch.example.input]
+        }
+      }
+
+      otelcol.processor.batch "example" {
+        output {
+          metrics = [otelcol.exporter.otlp.default.input]
+          logs    = [otelcol.exporter.otlp.default.input]
+          traces  = [otelcol.exporter.otlp.default.input]
+        }
+      }
+
+      otelcol.exporter.otlp "default" {
+        client {
+          endpoint = "my-otlp-grpc-server:4317"
+        }
+      }
+
+      otelcol.exporter.loki "default" {
+        forward_to = [loki.write.default.receiver]
+      }
+
+      loki.write "default" {
+        endpoint {
+          url = "http://loki-endpoint:8080/loki/api/v1/push"
+              }
+      }
+
+      otelcol.exporter.otlp "default" {
+        client {
+          endpoint = "tempo-server:4317"
+        }
+      }
+
+      otelcol.exporter.prometheus "default" {
+        forward_to = [prometheus.remote_write.default.receiver]
+      }
+
+      prometheus.remote_write "default" {
+        endpoint {
+          url = "http://prometheus:9090/api/v1/write"
+        }
+      }
