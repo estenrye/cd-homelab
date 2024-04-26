@@ -11,7 +11,7 @@ RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} GODEBUG=netdns=go \
 FROM scratch
 COPY --from=build-env /tmp/example /example
 
-EXPOSE 8081
+EXPOSE 8080
 
 ENTRYPOINT ["/example"]
 CMD []
