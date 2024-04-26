@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-app
+  namespace: default
+  labels:
+    app: example-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example-app
+  template:
+    metadata:
+      labels:
+        app: example-app
+      annotations:
+        openfeature.dev/enabled: "true"
+        openfeature.dev/featureflagsource: "example-app"
+    spec:
+      containers:
+      - name: example-app
+        image: estenrye/flags-example:latest
+        ports:
+        - name: http
+          containerPort: 8080
