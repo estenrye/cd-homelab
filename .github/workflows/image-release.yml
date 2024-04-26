@@ -1,0 +1,15 @@
+name: Go Release
+on:
+  workflow_dispatch:
+  release:
+    types: [created]
+jobs:
+  docker:
+    uses: estenrye/.github/.github/workflows/docker-multiarch-build-and-push.yml@v0.1.7
+    with:
+      push: true
+      image_name: flags-example
+      context: charts/flags/example-app
+    secrets:
+      registry_username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+      registry_password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
