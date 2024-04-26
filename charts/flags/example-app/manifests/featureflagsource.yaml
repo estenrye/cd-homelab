@@ -7,5 +7,4 @@ spec:
   sources:
     - source: default/foo
       provider: kubernetes
-  port: 8013
   evaluator: json

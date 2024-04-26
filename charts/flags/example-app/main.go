@@ -16,7 +16,7 @@ func main() {
 	featureProvider := flagd.NewProvider(
 		flagd.WithInProcessResolver(),
 		flagd.WithHost("localhost"),
-		flagd.WithPort(8013),
+		flagd.WithPort(8014),
 	)
 	openfeature.SetProvider(featureProvider)
 	of_client := openfeature.NewClient("example-app")
@@ -59,7 +59,7 @@ func main() {
 			"fooMessage": fooMessage,
 		}
 
-		jsonValues, err := json.Marshal(values)
+		jsonValues, err := json.MarshaIndent(values)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
