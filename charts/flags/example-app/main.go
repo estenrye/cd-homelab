@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 	flagd "github.com/open-feature/go-sdk-contrib/providers/flagd/pkg"
@@ -32,30 +33,30 @@ func main() {
 		)
 
 		barValue, err := of_client.BooleanValue(context.Background(), "bar", false, evalCtx)
-
+		barMessage := "Feature `bar` exists"
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
+			barMessage = err.Error()
 		}
 
 		bazValue, err := of_client.BooleanValue(context.Background(), "baz", false, evalCtx)
-
+		bazMessage := "Feature `baz` exists"
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
+			bazMessage = err.Error()
 		}
 
 		fooValue, err := of_client.BooleanValue(context.Background(), "foo", false, evalCtx)
-
+		fooMessage := "Feature `foo` exists"
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
+			fooMessage = err.Error()
 		}
 
-		values := map[string]bool{
-			"bar": barValue,
-			"baz": bazValue,
-			"foo": fooValue,
+		values := map[string]string{
+			"bar":        strconv.FormatBool(barValue),
+			"barMessage": barMessage,
+			"baz":        strconv.FormatBool(bazValue),
+			"bazMessage": bazMessage,
+			"foo":        strconv.FormatBool(fooValue),
+			"fooMessage": fooMessage,
 		}
 
 		jsonValues, err := json.Marshal(values)
