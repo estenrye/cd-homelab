@@ -59,7 +59,7 @@ func main() {
 			"fooMessage": fooMessage,
 		}
 
-		jsonValues, err := json.MarshaIndent(values)
+		jsonValues, err := json.MarshalIndent(values, "", "    ")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
