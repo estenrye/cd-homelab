@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"flag"
 	"net/http"
 	"strconv"
 
@@ -12,12 +13,17 @@ import (
 )
 
 func main() {
+	host := flag.String("host", "localhost", "the host to connect to")
+	port := flag.Uint("port", 8013, "the port to connect to")
+	flag.Parse()
+
 	r := mux.NewRouter()
 	featureProvider := flagd.NewProvider(
 		flagd.WithInProcessResolver(),
-		flagd.WithHost("localhost"),
-		flagd.WithPort(8014),
+		flagd.WithHost(*host),
+		flagd.WithPort(uint16(*port)),
 	)
+
 	openfeature.SetProvider(featureProvider)
 	of_client := openfeature.NewClient("example-app")
 

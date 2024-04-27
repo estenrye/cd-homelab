@@ -8,3 +8,5 @@ spec:
     - source: default/foo
       provider: kubernetes
   evaluator: json
+  port: 8090
+  probesEnabled: true
