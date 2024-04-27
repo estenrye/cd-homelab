@@ -9,47 +9,32 @@ metadata:
 spec:
   flagSpec:
     flags:
-      {{- range $flagKey, $flag := .Values.flags }}
+    {{- range $flagKey, $flag := .Values.flags }}
       {{ $flagKey }}:
-        {{- if $flag }}
-        {{- with $flag }}
+      {{- if not $flag }}
+        state: ENABLED
+        variants:
+          "on": false
+          "off": true
+        defaultVariant: "off"
+      {{- else }}
+      {{- with $flag }}
         {{- $default := .default | default false }}
         {{- $enabled := .enabled | default true }}
         defaultVariant: {{ if $default }}"on"{{ else }}"off"{{ end }}
         state: {{ if $enabled }}"ENABLED"{{ else }}"DISABLED"{{ end }}
         variants:
-          on: true
-          off: false
+          "on": true
+          "off"                                                                                       : false
+        {{- if .overrides}}
         targeting:
           if:
-            - $ref": {{ $flagKey }}
+            - in:
+              - var: id
+              - {{ $flag.overrides | toJson }}
             - {{ if $default }}"off"{{ else }}"on"{{ end }}
             - {{ if $default }}"on"{{ else }}"off"{{ end }}
         {{- end }}
-        {{- else }}
-        defaultVariant: "off"
-        state: "ENABLED"
-        variants:
-          on: true
-          off: false
-        targeting:
-          if:
-            - "$ref": {{ $flagKey }}
-            - "on"
-            - "off"
-        {{- end }}
       {{- end }}
-    "$evaluators":
-      {{- range $flagKey, $flag := .Values.flags }}
-      {{ $flagKey }}:
-        {{- if and $flag $flag.overrides}}
-        in:
-          - var: id
-          - {{ $flag.overrides | toJson }}
-        {{- else }}
-        in:
-          - var: id
-          - []
-        {{- end }}
-      {{- end }}
-
+    {{- end }}
+    {{- end }}
