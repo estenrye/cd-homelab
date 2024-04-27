@@ -19,7 +19,6 @@ func main() {
 
 	r := mux.NewRouter()
 	featureProvider := flagd.NewProvider(
-		flagd.WithInProcessResolver(),
 		flagd.WithHost(*host),
 		flagd.WithPort(uint16(*port)),
 	)

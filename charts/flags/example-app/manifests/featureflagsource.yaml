@@ -10,3 +10,4 @@ spec:
   evaluator: json
   port: 8090
   probesEnabled: true
+  debugLogging: true
