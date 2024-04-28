@@ -22,9 +22,6 @@ spec:
       - name: example-app
         image: estenrye/flags-example:latest
         imagePullPolicy: Always
-        args:
-          - --port=8090
-          - --host=localhost
         ports:
         - name: http
           containerPort: 8080

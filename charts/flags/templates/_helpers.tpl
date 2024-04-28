@@ -60,3 +60,46 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{- define "flags.targeting" -}}
+{{- $targeting := index . 0 -}}
+{{- $defaultValue := index . 1 -}}
+targeting:
+  if:
+    {{- include "flags.targetingRules" (list $targeting $defaultValue) | nindent 4 -}}
+{{- end }}
+
+{{- define "flags.targetingRuleCondition" -}}
+{{- $targetingRule := index . 0 -}}
+in:
+  - var: {{ $targetingRule.contextKey | quote }}
+  - {{ $targetingRule.contextValues | toYaml | nindent 4 }}
+{{- end }}
+
+{{- define "flags.targetingRuleIfStatement" -}}
+{{- $targetingRule := index . 0 }}
+{{- $defaultValue := index . 1 }}
+{{- if $defaultValue -}}
+- {{ $defaultValue | quote }}
+{{- else }}
+- {{- include "flags.targetingRuleCondition" (list $targetingRule) | nindent 2 -}}
+- {{ $targetingRule.variantName }}
+{{- end }}
+{{- end }}
+
+{{- define "flags.targetingRules" -}}
+{{- $targetingRules := index . 0 }}
+{{- $defaultValue := index . 1 }}
+{{- $rule := index $targetingRules 0 }}
+{{- $sliceLength := (sub (len $targetingRules) 1) -}}
+- in:
+    - var: {{ $rule.contextKey | quote }}
+    - {{ $rule.contextValues | toJson }}
+- {{ $rule.variantName | quote }}
+{{- if gt $sliceLength 0 }}
+- if:
+    {{- include "flags.targetingRules" (list (slice $targetingRules 1) $defaultValue) | nindent 4 }}
+{{- else }}
+- {{ $defaultValue | quote }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,44 @@
+---
+apiVersion: core.openfeature.dev/v1beta1
+kind: FeatureFlag
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "flags.labels" . | nindent 4 }}
+spec:
+  flagSpec:
+    flags:
+    {{- range $flagKey, $flag := .Values.flags }}
+      {{ $flagKey }}:
+        {{- if and $flag $flag.enabled}}
+        state: ENABLED
+        {{- else if and $flag (eq false $flag.enabled) }}
+        state: DISABLED
+        {{- else }}
+        state: ENABLED
+        {{- end }}
+        {{- if and (and $flag $flag.variants) (not $flag.default) }}
+        defaultVariant: {{ (index $flag.variants 0).name | quote}}
+        {{- else if and $flag (not $flag.default) }}
+        defaultVariant: "off"
+        {{- else if not $flag }}
+        defaultVariant: "off"
+        {{- else }}
+        defaultVariant: {{ $flag.default | quote }}
+        {{- end }}
+        variants:
+        {{- if and $flag $flag.variants }}
+          {{- with $flag.variants }}
+          {{- range . }}
+          {{ .name | quote }}: {{ .value }}
+          {{- end }}
+          {{- end }}
+        {{- else }}
+          "off": false
+          "on": true
+        {{- end -}}
+        {{- if and $flag $flag.targeting }}
+        {{- include "flags.targeting" (list $flag.targeting $flag.default) | nindent 8 }}
+        {{- end }}
+    {{- end }}

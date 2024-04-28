@@ -3,7 +3,39 @@ flags:
   bar:
     enabled: false
   baz:
-    default: true
-    overrides:
-      - org_1234
-      - org_5678
+    default: "off"
+    targeting:
+      - variantName: "on"
+        contextKey: id
+        contextValues:
+          - org_1234
+          - org_5678
+  fun:
+    variants:
+      - name: one
+        value: 1
+      - name: two
+        value: 2
+      - name: three
+        value: 3
+    default: three
+    enabled: true
+    targeting:
+      - variantName: one
+        contextKey: id
+        contextValues:
+          - org_1234
+          - org_5678
+      - variantName: two
+        contextKey: id
+        contextValues:
+          - org_4321
+          - org_8765
+  fancy:
+    variants:
+      - name: one
+        value: 1
+      - name: two
+        value: 2
+      - name: three
+        value: 3
