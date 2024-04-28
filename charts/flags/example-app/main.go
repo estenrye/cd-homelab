@@ -55,13 +55,29 @@ func main() {
 			fooMessage = err.Error()
 		}
 
+		funValue, err := of_client.IntValue(context.Background(), "fun", 4, evalCtx)
+		funMessage := "Feature `funn` exists"
+		if err != nil {
+			funMessage = err.Error()
+		}
+
+		fancyValue, err := of_client.IntValue(context.Background(), "fancy", 4, evalCtx)
+		fancyMessage := "Feature `fancy` exists"
+		if err != nil {
+			funMessage = err.Error()
+		}
+
 		values := map[string]string{
-			"bar":        strconv.FormatBool(barValue),
-			"barMessage": barMessage,
-			"baz":        strconv.FormatBool(bazValue),
-			"bazMessage": bazMessage,
-			"foo":        strconv.FormatBool(fooValue),
-			"fooMessage": fooMessage,
+			"bar":          strconv.FormatBool(barValue),
+			"barMessage":   barMessage,
+			"baz":          strconv.FormatBool(bazValue),
+			"bazMessage":   bazMessage,
+			"foo":          strconv.FormatBool(fooValue),
+			"fooMessage":   fooMessage,
+			"fun":          strconv.Itoa(int(funValue)),
+			"funMessage":   funMessage,
+			"fancy":        strconv.Itoa(int(fancyValue)),
+			"fancyMessage": fancyMessage,
 		}
 
 		jsonValues, err := json.MarshalIndent(values, "", "    ")
