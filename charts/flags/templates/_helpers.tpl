@@ -92,9 +92,16 @@ in:
 {{- $defaultValue := index . 1 }}
 {{- $rule := index $targetingRules 0 }}
 {{- $sliceLength := (sub (len $targetingRules) 1) -}}
+{{- if $rule.in }}
 - in:
-    - var: {{ $rule.contextKey | quote }}
-    - {{ $rule.contextValues | toJson }}
+    - var: {{ $rule.var | quote }}
+    - {{ $rule.in | toJson }}
+{{- else if $rule.sem_ver }}
+- sem_ver:
+    - var: {{ $rule.var | quote }}
+    - {{ $rule.sem_ver.op | quote }}
+    - {{ $rule.sem_ver.version | quote }}
+{{- end }}
 - {{ $rule.variantName | quote }}
 {{- if gt $sliceLength 0 }}
 - if:

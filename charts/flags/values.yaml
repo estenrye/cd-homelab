@@ -6,8 +6,8 @@ flags:
     default: "off"
     targeting:
       - variantName: "on"
-        contextKey: id
-        contextValues:
+        var: id
+        in:
           - org_1234
           - org_5678
   fun:
@@ -22,13 +22,13 @@ flags:
     enabled: true
     targeting:
       - variantName: one
-        contextKey: id
-        contextValues:
+        var: id
+        in:
           - org_1234
           - org_5678
       - variantName: two
-        contextKey: id
-        contextValues:
+        var: id
+        in:
           - org_4321
           - org_8765
   fancy:
@@ -39,3 +39,15 @@ flags:
         value: 2
       - name: three
         value: 3
+    default: three
+    targeting:
+      - variantName: one
+        var: version
+        sem_ver:
+          op: ">="
+          version: 1.0.3
+      - variantName: two
+        var: version
+        sem_ver:
+          op: ">="
+          version: 1.0.0
