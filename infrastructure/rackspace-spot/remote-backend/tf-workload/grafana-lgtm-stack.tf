@@ -51,7 +51,7 @@ resource "helm_release" "grafana_alloy" {
   namespace = kubernetes_namespace.grafana_lgtm.metadata.0.name
   repository = "https://grafana.github.io/helm-charts"
   chart     = "alloy"
-  version   = "0.1.1"
+  version   = "0.2.0"
   create_namespace = true
   skip_crds = true
   
