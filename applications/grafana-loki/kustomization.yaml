@@ -16,12 +16,12 @@ resources:
 helmCharts:
 - name: memcached
   repo: https://charts.bitnami.com/bitnami
-  version: 6.3.13
+  version: 6.14.0
   releaseName: chunk-cache
   valuesFile: memcached.chunk-cache.values.yaml
 - name: memcached
   repo: https://charts.bitnami.com/bitnami
-  version: 6.3.13
+  version: 6.14.0
   releaseName: results-cache
   valuesFile: memcached.results-cache.values.yaml
 - name: loki
