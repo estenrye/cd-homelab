@@ -5,7 +5,7 @@ on:
     types: [created]
 jobs:
   docker:
-    uses: estenrye/.github/.github/workflows/docker-multiarch-build-and-push.yml@v0.1.7
+    uses: estenrye/.github/.github/workflows/docker-multiarch-build-and-push.yml@v0.1.25
     with:
       push: true
       image_name: flags-example
