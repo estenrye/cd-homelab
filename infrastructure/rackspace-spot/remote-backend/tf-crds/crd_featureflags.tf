@@ -1,4 +1,8 @@
 resource "kubernetes_manifest" "customresourcedefinition_featureflags_core_openfeature_dev" {
+  field_manager {
+    force_conflicts = true
+  }
+
   manifest = {
     "apiVersion" = "apiextensions.k8s.io/v1"
     "kind" = "CustomResourceDefinition"

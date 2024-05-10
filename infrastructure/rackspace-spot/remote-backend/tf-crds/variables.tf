@@ -1,5 +1,5 @@
-variable "kubeconfig_path" {
-  description = "Path to the kubeconfig file"
-  type        = string
-  default     = "~/.kube/org-pduvfizupzbnb6dq/example-kubeconfig.yaml"
+variable "cloudspace_name" {
+    description = "Name of the Rackspace Spot Cloudspace"
+    type        = string
+    default     = "example"
 }

@@ -31,7 +31,7 @@ terraform {
 }
 
 # provider "kustomization" {
-#   kubeconfig_path = var.kubeconfig_path
+#   kubeconfig_path = pathexpand("~/.kube/${var.cloudspace_name}-kubeconfig.yaml")
 # }
 
 provider "onepassword" {
@@ -39,11 +39,11 @@ provider "onepassword" {
 
 
 provider "kubernetes" {
-  config_path = var.kubeconfig_path
+  config_path = pathexpand("~/.kube/${var.cloudspace_name}-kubeconfig.yaml")
 }
 
 provider "helm" {
   kubernetes {
-    config_path = var.kubeconfig_path
+    config_path = pathexpand("~/.kube/${var.cloudspace_name}-kubeconfig.yaml")
   }
 }

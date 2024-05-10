@@ -14,5 +14,5 @@ terraform {
 }
 
 provider "kubernetes" {
-  config_path = var.kubeconfig_path
+  config_path = pathexpand("~/.kube/${var.cloudspace_name}-kubeconfig.yaml")
 }
