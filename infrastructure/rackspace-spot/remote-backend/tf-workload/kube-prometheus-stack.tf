@@ -17,7 +17,7 @@ resource "helm_release" "gateway_api_metrics" {
   namespace = "monitoring"
   repository = "https://prometheus-community.github.io/helm-charts"
   chart     = "kube-state-metrics"
-  version   = "5.18.0"
+  version   = "5.19.0"
   create_namespace = true
   skip_crds = true
   
