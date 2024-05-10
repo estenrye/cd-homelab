@@ -3,7 +3,7 @@ name: external-dns
 description: A Helm chart for Kubernetes
 dependencies:
   - name: external-dns
-    version: 1.13.1
+    version: 1.14.4
     repository: https://kubernetes-sigs.github.io/external-dns/
 # A chart can be either an 'application' or a 'library' chart.
 #
