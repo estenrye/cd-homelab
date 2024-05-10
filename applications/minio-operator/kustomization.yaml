@@ -16,4 +16,4 @@ helmCharts:
   releaseName: minio-operator
   repo: https://operator.min.io/
   valuesFile: values.yaml
-  version: 5.0.6
+  version: 5.0.15
