@@ -4,8 +4,8 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
     "kind" = "CustomResourceDefinition"
     "metadata" = {
       "annotations" = {
-        "controller-gen.kubebuilder.io/version" = "v0.13.0"
-        "operator.prometheus.io/version" = "0.73.2"
+        "controller-gen.kubebuilder.io/version" = "v0.14.0"
+        "operator.prometheus.io/version" = "0.74.0"
       }
       "name" = "alertmanagerconfigs.monitoring.coreos.com"
     }
@@ -29,41 +29,76 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
           "name" = "v1alpha1"
           "schema" = {
             "openAPIV3Schema" = {
-              "description" = "AlertmanagerConfig configures the Prometheus Alertmanager, specifying how alerts should be grouped, inhibited and notified to external systems."
+              "description" = <<-EOT
+              AlertmanagerConfig configures the Prometheus Alertmanager,
+              specifying how alerts should be grouped, inhibited and notified to external systems.
+              EOT
               "properties" = {
                 "apiVersion" = {
-                  "description" = "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+                  "description" = <<-EOT
+                  APIVersion defines the versioned schema of this representation of an object.
+                  Servers should convert recognized schemas to the latest internal value, and
+                  may reject unrecognized values.
+                  More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+                  EOT
                   "type" = "string"
                 }
                 "kind" = {
-                  "description" = "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+                  "description" = <<-EOT
+                  Kind is a string value representing the REST resource this object represents.
+                  Servers may infer this from the endpoint the client submits requests to.
+                  Cannot be updated.
+                  In CamelCase.
+                  More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+                  EOT
                   "type" = "string"
                 }
                 "metadata" = {
                   "type" = "object"
                 }
                 "spec" = {
-                  "description" = "AlertmanagerConfigSpec is a specification of the desired behavior of the Alertmanager configuration. By definition, the Alertmanager configuration only applies to alerts for which the `namespace` label is equal to the namespace of the AlertmanagerConfig resource."
+                  "description" = <<-EOT
+                  AlertmanagerConfigSpec is a specification of the desired behavior of the Alertmanager configuration.
+                  By definition, the Alertmanager configuration only applies to alerts for which
+                  the `namespace` label is equal to the namespace of the AlertmanagerConfig resource.
+                  EOT
                   "properties" = {
                     "inhibitRules" = {
-                      "description" = "List of inhibition rules. The rules will only apply to alerts matching the resource's namespace."
+                      "description" = <<-EOT
+                      List of inhibition rules. The rules will only apply to alerts matching
+                      the resource's namespace.
+                      EOT
                       "items" = {
-                        "description" = "InhibitRule defines an inhibition rule that allows to mute alerts when other alerts are already firing. See https://prometheus.io/docs/alerting/latest/configuration/#inhibit_rule"
+                        "description" = <<-EOT
+                        InhibitRule defines an inhibition rule that allows to mute alerts when other
+                        alerts are already firing.
+                        See https://prometheus.io/docs/alerting/latest/configuration/#inhibit_rule
+                        EOT
                         "properties" = {
                           "equal" = {
-                            "description" = "Labels that must have an equal value in the source and target alert for the inhibition to take effect."
+                            "description" = <<-EOT
+                            Labels that must have an equal value in the source and target alert for
+                            the inhibition to take effect.
+                            EOT
                             "items" = {
                               "type" = "string"
                             }
                             "type" = "array"
                           }
                           "sourceMatch" = {
-                            "description" = "Matchers for which one or more alerts have to exist for the inhibition to take effect. The operator enforces that the alert matches the resource's namespace."
+                            "description" = <<-EOT
+                            Matchers for which one or more alerts have to exist for the inhibition
+                            to take effect. The operator enforces that the alert matches the
+                            resource's namespace.
+                            EOT
                             "items" = {
                               "description" = "Matcher defines how to match on alert's labels."
                               "properties" = {
                                 "matchType" = {
-                                  "description" = "Match operation available with AlertManager >= v0.22.0 and takes precedence over Regex (deprecated) if non-empty."
+                                  "description" = <<-EOT
+                                  Match operation available with AlertManager >= v0.22.0 and
+                                  takes precedence over Regex (deprecated) if non-empty.
+                                  EOT
                                   "enum" = [
                                     "!=",
                                     "=",
@@ -78,7 +113,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "type" = "string"
                                 }
                                 "regex" = {
-                                  "description" = "Whether to match on equality (false) or regular-expression (true). Deprecated: for AlertManager >= v0.22.0, `matchType` should be used instead."
+                                  "description" = <<-EOT
+                                  Whether to match on equality (false) or regular-expression (true).
+                                  Deprecated: for AlertManager >= v0.22.0, `matchType` should be used instead.
+                                  EOT
                                   "type" = "boolean"
                                 }
                                 "value" = {
@@ -94,12 +132,18 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                             "type" = "array"
                           }
                           "targetMatch" = {
-                            "description" = "Matchers that have to be fulfilled in the alerts to be muted. The operator enforces that the alert matches the resource's namespace."
+                            "description" = <<-EOT
+                            Matchers that have to be fulfilled in the alerts to be muted. The
+                            operator enforces that the alert matches the resource's namespace.
+                            EOT
                             "items" = {
                               "description" = "Matcher defines how to match on alert's labels."
                               "properties" = {
                                 "matchType" = {
-                                  "description" = "Match operation available with AlertManager >= v0.22.0 and takes precedence over Regex (deprecated) if non-empty."
+                                  "description" = <<-EOT
+                                  Match operation available with AlertManager >= v0.22.0 and
+                                  takes precedence over Regex (deprecated) if non-empty.
+                                  EOT
                                   "enum" = [
                                     "!=",
                                     "=",
@@ -114,7 +158,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "type" = "string"
                                 }
                                 "regex" = {
-                                  "description" = "Whether to match on equality (false) or regular-expression (true). Deprecated: for AlertManager >= v0.22.0, `matchType` should be used instead."
+                                  "description" = <<-EOT
+                                  Whether to match on equality (false) or regular-expression (true).
+                                  Deprecated: for AlertManager >= v0.22.0, `matchType` should be used instead.
+                                  EOT
                                   "type" = "boolean"
                                 }
                                 "value" = {
@@ -173,7 +220,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                 "months" = {
                                   "description" = "Months is a list of MonthRange"
                                   "items" = {
-                                    "description" = "MonthRange is an inclusive range of months of the year beginning in January Months can be specified by name (e.g 'January') by numerical month (e.g '1') or as an inclusive range (e.g 'January:March', '1:3', '1:March')"
+                                    "description" = <<-EOT
+                                    MonthRange is an inclusive range of months of the year beginning in January
+                                    Months can be specified by name (e.g 'January') by numerical month (e.g '1') or as an inclusive range (e.g 'January:March', '1:3', '1:March')
+                                    EOT
                                     "pattern" = "^((?i)january|february|march|april|may|june|july|august|september|october|november|december|1[0-2]|[1-9])(?:((:((?i)january|february|march|april|may|june|july|august|september|october|november|december|1[0-2]|[1-9]))$)|$)"
                                     "type" = "string"
                                   }
@@ -202,7 +252,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                 "weekdays" = {
                                   "description" = "Weekdays is a list of WeekdayRange"
                                   "items" = {
-                                    "description" = "WeekdayRange is an inclusive range of days of the week beginning on Sunday Days can be specified by name (e.g 'Sunday') or as an inclusive range (e.g 'Monday:Friday')"
+                                    "description" = <<-EOT
+                                    WeekdayRange is an inclusive range of days of the week beginning on Sunday
+                                    Days can be specified by name (e.g 'Sunday') or as an inclusive range (e.g 'Monday:Friday')
+                                    EOT
                                     "pattern" = "^((?i)sun|mon|tues|wednes|thurs|fri|satur)day(?:((:(sun|mon|tues|wednes|thurs|fri|satur)day)$)|$)"
                                     "type" = "string"
                                   }
@@ -235,17 +288,28 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                           "discordConfigs" = {
                             "description" = "List of Discord configurations."
                             "items" = {
-                              "description" = "DiscordConfig configures notifications via Discord. See https://prometheus.io/docs/alerting/latest/configuration/#discord_config"
+                              "description" = <<-EOT
+                              DiscordConfig configures notifications via Discord.
+                              See https://prometheus.io/docs/alerting/latest/configuration/#discord_config
+                              EOT
                               "properties" = {
                                 "apiURL" = {
-                                  "description" = "The secret's key that contains the Discord webhook URL. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+                                  "description" = <<-EOT
+                                  The secret's key that contains the Discord webhook URL.
+                                  The secret needs to be in the same namespace as the AlertmanagerConfig
+                                  object and accessible by the Prometheus Operator.
+                                  EOT
                                   "properties" = {
                                     "key" = {
                                       "description" = "The key of the secret to select from.  Must be a valid secret key."
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -263,7 +327,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "description" = "HTTP client configuration."
                                   "properties" = {
                                     "authorization" = {
-                                      "description" = "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
+                                      "description" = <<-EOT
+                                      Authorization header configuration for the client.
+                                      This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.
+                                      EOT
                                       "properties" = {
                                         "credentials" = {
                                           "description" = "Selects a key of a Secret in the namespace that contains the credentials for authentication."
@@ -273,7 +340,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -289,9 +360,13 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                         }
                                         "type" = {
                                           "description" = <<-EOT
-                                          Defines the authentication type. The value is case-insensitive. 
-                                           "Basic" is not a supported value. 
-                                           Default: "Bearer"
+                                          Defines the authentication type. The value is case-insensitive.
+                                          
+                                          
+                                          "Basic" is not a supported value.
+                                          
+                                          
+                                          Default: "Bearer"
                                           EOT
                                           "type" = "string"
                                         }
@@ -299,17 +374,27 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "object"
                                     }
                                     "basicAuth" = {
-                                      "description" = "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
+                                      "description" = <<-EOT
+                                      BasicAuth for the client.
+                                      This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.
+                                      EOT
                                       "properties" = {
                                         "password" = {
-                                          "description" = "`password` specifies a key of a Secret containing the password for authentication."
+                                          "description" = <<-EOT
+                                          `password` specifies a key of a Secret containing the password for
+                                          authentication.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -324,14 +409,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "x-kubernetes-map-type" = "atomic"
                                         }
                                         "username" = {
-                                          "description" = "`username` specifies a key of a Secret containing the username for authentication."
+                                          "description" = <<-EOT
+                                          `username` specifies a key of a Secret containing the username for
+                                          authentication.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -349,14 +441,23 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "object"
                                     }
                                     "bearerTokenSecret" = {
-                                      "description" = "The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+                                      "description" = <<-EOT
+                                      The secret's key that contains the bearer token to be used by the client
+                                      for authentication.
+                                      The secret needs to be in the same namespace as the AlertmanagerConfig
+                                      object and accessible by the Prometheus Operator.
+                                      EOT
                                       "properties" = {
                                         "key" = {
                                           "description" = "The key of the secret to select from.  Must be a valid secret key."
                                           "type" = "string"
                                         }
                                         "name" = {
-                                          "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                          "description" = <<-EOT
+                                          Name of the referent.
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion, kind, uid?
+                                          EOT
                                           "type" = "string"
                                         }
                                         "optional" = {
@@ -378,7 +479,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "description" = "OAuth2 client credentials used to fetch a token for the targets."
                                       "properties" = {
                                         "clientId" = {
-                                          "description" = "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
+                                          "description" = <<-EOT
+                                          `clientId` specifies a key of a Secret or ConfigMap containing the
+                                          OAuth2 client's ID.
+                                          EOT
                                           "properties" = {
                                             "configMap" = {
                                               "description" = "ConfigMap containing data to use for the targets."
@@ -388,7 +492,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -410,7 +518,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -428,14 +540,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "type" = "object"
                                         }
                                         "clientSecret" = {
-                                          "description" = "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
+                                          "description" = <<-EOT
+                                          `clientSecret` specifies a key of a Secret containing the OAuth2
+                                          client's secret.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -453,7 +572,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "additionalProperties" = {
                                             "type" = "string"
                                           }
-                                          "description" = "`endpointParams` configures the HTTP parameters to append to the token URL."
+                                          "description" = <<-EOT
+                                          `endpointParams` configures the HTTP parameters to append to the token
+                                          URL.
+                                          EOT
                                           "type" = "object"
                                         }
                                         "scopes" = {
@@ -494,7 +616,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -516,7 +642,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -544,7 +674,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -566,7 +700,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -595,7 +733,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -649,14 +791,22 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "type" = "string"
                                 }
                                 "authPassword" = {
-                                  "description" = "The secret's key that contains the password to use for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+                                  "description" = <<-EOT
+                                  The secret's key that contains the password to use for authentication.
+                                  The secret needs to be in the same namespace as the AlertmanagerConfig
+                                  object and accessible by the Prometheus Operator.
+                                  EOT
                                   "properties" = {
                                     "key" = {
                                       "description" = "The key of the secret to select from.  Must be a valid secret key."
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -671,14 +821,22 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "x-kubernetes-map-type" = "atomic"
                                 }
                                 "authSecret" = {
-                                  "description" = "The secret's key that contains the CRAM-MD5 secret. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+                                  "description" = <<-EOT
+                                  The secret's key that contains the CRAM-MD5 secret.
+                                  The secret needs to be in the same namespace as the AlertmanagerConfig
+                                  object and accessible by the Prometheus Operator.
+                                  EOT
                                   "properties" = {
                                     "key" = {
                                       "description" = "The key of the secret to select from.  Must be a valid secret key."
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -701,7 +859,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "type" = "string"
                                 }
                                 "headers" = {
-                                  "description" = "Further headers email header key/value pairs. Overrides any headers previously set by the notification implementation."
+                                  "description" = <<-EOT
+                                  Further headers email header key/value pairs. Overrides any headers
+                                  previously set by the notification implementation.
+                                  EOT
                                   "items" = {
                                     "description" = "KeyValue defines a (key, value) tuple."
                                     "properties" = {
@@ -732,7 +893,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "type" = "string"
                                 }
                                 "requireTLS" = {
-                                  "description" = "The SMTP TLS requirement. Note that Go does not support unencrypted connections to remote SMTP endpoints."
+                                  "description" = <<-EOT
+                                  The SMTP TLS requirement.
+                                  Note that Go does not support unencrypted connections to remote SMTP endpoints.
+                                  EOT
                                   "type" = "boolean"
                                 }
                                 "sendResolved" = {
@@ -761,7 +925,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -783,7 +951,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -811,7 +983,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -833,7 +1009,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -862,7 +1042,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "type" = "string"
                                         }
                                         "name" = {
-                                          "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                          "description" = <<-EOT
+                                          Name of the referent.
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion, kind, uid?
+                                          EOT
                                           "type" = "string"
                                         }
                                         "optional" = {
@@ -893,15 +1077,24 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                             "type" = "array"
                           }
                           "msteamsConfigs" = {
-                            "description" = "List of MSTeams configurations. It requires Alertmanager >= 0.26.0."
+                            "description" = <<-EOT
+                            List of MSTeams configurations.
+                            It requires Alertmanager >= 0.26.0.
+                            EOT
                             "items" = {
-                              "description" = "MSTeamsConfig configures notifications via Microsoft Teams. It requires Alertmanager >= 0.26.0."
+                              "description" = <<-EOT
+                              MSTeamsConfig configures notifications via Microsoft Teams.
+                              It requires Alertmanager >= 0.26.0.
+                              EOT
                               "properties" = {
                                 "httpConfig" = {
                                   "description" = "HTTP client configuration."
                                   "properties" = {
                                     "authorization" = {
-                                      "description" = "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
+                                      "description" = <<-EOT
+                                      Authorization header configuration for the client.
+                                      This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.
+                                      EOT
                                       "properties" = {
                                         "credentials" = {
                                           "description" = "Selects a key of a Secret in the namespace that contains the credentials for authentication."
@@ -911,7 +1104,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -927,9 +1124,13 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                         }
                                         "type" = {
                                           "description" = <<-EOT
-                                          Defines the authentication type. The value is case-insensitive. 
-                                           "Basic" is not a supported value. 
-                                           Default: "Bearer"
+                                          Defines the authentication type. The value is case-insensitive.
+                                          
+                                          
+                                          "Basic" is not a supported value.
+                                          
+                                          
+                                          Default: "Bearer"
                                           EOT
                                           "type" = "string"
                                         }
@@ -937,17 +1138,27 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "object"
                                     }
                                     "basicAuth" = {
-                                      "description" = "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
+                                      "description" = <<-EOT
+                                      BasicAuth for the client.
+                                      This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.
+                                      EOT
                                       "properties" = {
                                         "password" = {
-                                          "description" = "`password` specifies a key of a Secret containing the password for authentication."
+                                          "description" = <<-EOT
+                                          `password` specifies a key of a Secret containing the password for
+                                          authentication.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -962,14 +1173,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "x-kubernetes-map-type" = "atomic"
                                         }
                                         "username" = {
-                                          "description" = "`username` specifies a key of a Secret containing the username for authentication."
+                                          "description" = <<-EOT
+                                          `username` specifies a key of a Secret containing the username for
+                                          authentication.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -987,14 +1205,23 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "object"
                                     }
                                     "bearerTokenSecret" = {
-                                      "description" = "The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+                                      "description" = <<-EOT
+                                      The secret's key that contains the bearer token to be used by the client
+                                      for authentication.
+                                      The secret needs to be in the same namespace as the AlertmanagerConfig
+                                      object and accessible by the Prometheus Operator.
+                                      EOT
                                       "properties" = {
                                         "key" = {
                                           "description" = "The key of the secret to select from.  Must be a valid secret key."
                                           "type" = "string"
                                         }
                                         "name" = {
-                                          "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                          "description" = <<-EOT
+                                          Name of the referent.
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion, kind, uid?
+                                          EOT
                                           "type" = "string"
                                         }
                                         "optional" = {
@@ -1016,7 +1243,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "description" = "OAuth2 client credentials used to fetch a token for the targets."
                                       "properties" = {
                                         "clientId" = {
-                                          "description" = "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
+                                          "description" = <<-EOT
+                                          `clientId` specifies a key of a Secret or ConfigMap containing the
+                                          OAuth2 client's ID.
+                                          EOT
                                           "properties" = {
                                             "configMap" = {
                                               "description" = "ConfigMap containing data to use for the targets."
@@ -1026,7 +1256,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -1048,7 +1282,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -1066,14 +1304,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "type" = "object"
                                         }
                                         "clientSecret" = {
-                                          "description" = "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
+                                          "description" = <<-EOT
+                                          `clientSecret` specifies a key of a Secret containing the OAuth2
+                                          client's secret.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -1091,7 +1336,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "additionalProperties" = {
                                             "type" = "string"
                                           }
-                                          "description" = "`endpointParams` configures the HTTP parameters to append to the token URL."
+                                          "description" = <<-EOT
+                                          `endpointParams` configures the HTTP parameters to append to the token
+                                          URL.
+                                          EOT
                                           "type" = "object"
                                         }
                                         "scopes" = {
@@ -1132,7 +1380,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -1154,7 +1406,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -1182,7 +1438,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -1204,7 +1464,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -1233,7 +1497,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -1262,7 +1530,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "type" = "boolean"
                                 }
                                 "summary" = {
-                                  "description" = "Message summary template. It requires Alertmanager >= 0.27.0."
+                                  "description" = <<-EOT
+                                  Message summary template.
+                                  It requires Alertmanager >= 0.27.0.
+                                  EOT
                                   "type" = "string"
                                 }
                                 "text" = {
@@ -1281,7 +1552,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -1311,21 +1586,32 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                           "opsgenieConfigs" = {
                             "description" = "List of OpsGenie configurations."
                             "items" = {
-                              "description" = "OpsGenieConfig configures notifications via OpsGenie. See https://prometheus.io/docs/alerting/latest/configuration/#opsgenie_config"
+                              "description" = <<-EOT
+                              OpsGenieConfig configures notifications via OpsGenie.
+                              See https://prometheus.io/docs/alerting/latest/configuration/#opsgenie_config
+                              EOT
                               "properties" = {
                                 "actions" = {
                                   "description" = "Comma separated list of actions that will be available for the alert."
                                   "type" = "string"
                                 }
                                 "apiKey" = {
-                                  "description" = "The secret's key that contains the OpsGenie API key. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+                                  "description" = <<-EOT
+                                  The secret's key that contains the OpsGenie API key.
+                                  The secret needs to be in the same namespace as the AlertmanagerConfig
+                                  object and accessible by the Prometheus Operator.
+                                  EOT
                                   "properties" = {
                                     "key" = {
                                       "description" = "The key of the secret to select from.  Must be a valid secret key."
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -1378,7 +1664,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "description" = "HTTP client configuration."
                                   "properties" = {
                                     "authorization" = {
-                                      "description" = "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
+                                      "description" = <<-EOT
+                                      Authorization header configuration for the client.
+                                      This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.
+                                      EOT
                                       "properties" = {
                                         "credentials" = {
                                           "description" = "Selects a key of a Secret in the namespace that contains the credentials for authentication."
@@ -1388,7 +1677,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -1404,9 +1697,13 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                         }
                                         "type" = {
                                           "description" = <<-EOT
-                                          Defines the authentication type. The value is case-insensitive. 
-                                           "Basic" is not a supported value. 
-                                           Default: "Bearer"
+                                          Defines the authentication type. The value is case-insensitive.
+                                          
+                                          
+                                          "Basic" is not a supported value.
+                                          
+                                          
+                                          Default: "Bearer"
                                           EOT
                                           "type" = "string"
                                         }
@@ -1414,17 +1711,27 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "object"
                                     }
                                     "basicAuth" = {
-                                      "description" = "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
+                                      "description" = <<-EOT
+                                      BasicAuth for the client.
+                                      This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.
+                                      EOT
                                       "properties" = {
                                         "password" = {
-                                          "description" = "`password` specifies a key of a Secret containing the password for authentication."
+                                          "description" = <<-EOT
+                                          `password` specifies a key of a Secret containing the password for
+                                          authentication.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -1439,14 +1746,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "x-kubernetes-map-type" = "atomic"
                                         }
                                         "username" = {
-                                          "description" = "`username` specifies a key of a Secret containing the username for authentication."
+                                          "description" = <<-EOT
+                                          `username` specifies a key of a Secret containing the username for
+                                          authentication.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -1464,14 +1778,23 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "object"
                                     }
                                     "bearerTokenSecret" = {
-                                      "description" = "The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+                                      "description" = <<-EOT
+                                      The secret's key that contains the bearer token to be used by the client
+                                      for authentication.
+                                      The secret needs to be in the same namespace as the AlertmanagerConfig
+                                      object and accessible by the Prometheus Operator.
+                                      EOT
                                       "properties" = {
                                         "key" = {
                                           "description" = "The key of the secret to select from.  Must be a valid secret key."
                                           "type" = "string"
                                         }
                                         "name" = {
-                                          "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                          "description" = <<-EOT
+                                          Name of the referent.
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion, kind, uid?
+                                          EOT
                                           "type" = "string"
                                         }
                                         "optional" = {
@@ -1493,7 +1816,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "description" = "OAuth2 client credentials used to fetch a token for the targets."
                                       "properties" = {
                                         "clientId" = {
-                                          "description" = "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
+                                          "description" = <<-EOT
+                                          `clientId` specifies a key of a Secret or ConfigMap containing the
+                                          OAuth2 client's ID.
+                                          EOT
                                           "properties" = {
                                             "configMap" = {
                                               "description" = "ConfigMap containing data to use for the targets."
@@ -1503,7 +1829,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -1525,7 +1855,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -1543,14 +1877,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "type" = "object"
                                         }
                                         "clientSecret" = {
-                                          "description" = "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
+                                          "description" = <<-EOT
+                                          `clientSecret` specifies a key of a Secret containing the OAuth2
+                                          client's secret.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -1568,7 +1909,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "additionalProperties" = {
                                             "type" = "string"
                                           }
-                                          "description" = "`endpointParams` configures the HTTP parameters to append to the token URL."
+                                          "description" = <<-EOT
+                                          `endpointParams` configures the HTTP parameters to append to the token
+                                          URL.
+                                          EOT
                                           "type" = "object"
                                         }
                                         "scopes" = {
@@ -1609,7 +1953,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -1631,7 +1979,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -1659,7 +2011,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -1681,7 +2037,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -1710,7 +2070,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -1749,7 +2113,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                 "responders" = {
                                   "description" = "List of responders responsible for notifications."
                                   "items" = {
-                                    "description" = "OpsGenieConfigResponder defines a responder to an incident. One of `id`, `name` or `username` has to be defined."
+                                    "description" = <<-EOT
+                                    OpsGenieConfigResponder defines a responder to an incident.
+                                    One of `id`, `name` or `username` has to be defined.
+                                    EOT
                                     "properties" = {
                                       "id" = {
                                         "description" = "ID of the responder."
@@ -1761,13 +2128,6 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       }
                                       "type" = {
                                         "description" = "Type of responder."
-                                        "enum" = [
-                                          "team",
-                                          "teams",
-                                          "user",
-                                          "escalation",
-                                          "schedule",
-                                        ]
                                         "minLength" = 1
                                         "type" = "string"
                                       }
@@ -1796,7 +2156,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "type" = "string"
                                 }
                                 "updateAlerts" = {
-                                  "description" = "Whether to update message and description of the alert in OpsGenie if it already exists By default, the alert is never updated in OpsGenie, the new message only appears in activity log."
+                                  "description" = <<-EOT
+                                  Whether to update message and description of the alert in OpsGenie if it already exists
+                                  By default, the alert is never updated in OpsGenie, the new message only appears in activity log.
+                                  EOT
                                   "type" = "boolean"
                                 }
                               }
@@ -1807,7 +2170,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                           "pagerdutyConfigs" = {
                             "description" = "List of PagerDuty configurations."
                             "items" = {
-                              "description" = "PagerDutyConfig configures notifications via PagerDuty. See https://prometheus.io/docs/alerting/latest/configuration/#pagerduty_config"
+                              "description" = <<-EOT
+                              PagerDutyConfig configures notifications via PagerDuty.
+                              See https://prometheus.io/docs/alerting/latest/configuration/#pagerduty_config
+                              EOT
                               "properties" = {
                                 "class" = {
                                   "description" = "The class/type of the event."
@@ -1860,7 +2226,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "description" = "HTTP client configuration."
                                   "properties" = {
                                     "authorization" = {
-                                      "description" = "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
+                                      "description" = <<-EOT
+                                      Authorization header configuration for the client.
+                                      This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.
+                                      EOT
                                       "properties" = {
                                         "credentials" = {
                                           "description" = "Selects a key of a Secret in the namespace that contains the credentials for authentication."
@@ -1870,7 +2239,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -1886,9 +2259,13 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                         }
                                         "type" = {
                                           "description" = <<-EOT
-                                          Defines the authentication type. The value is case-insensitive. 
-                                           "Basic" is not a supported value. 
-                                           Default: "Bearer"
+                                          Defines the authentication type. The value is case-insensitive.
+                                          
+                                          
+                                          "Basic" is not a supported value.
+                                          
+                                          
+                                          Default: "Bearer"
                                           EOT
                                           "type" = "string"
                                         }
@@ -1896,17 +2273,27 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "object"
                                     }
                                     "basicAuth" = {
-                                      "description" = "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
+                                      "description" = <<-EOT
+                                      BasicAuth for the client.
+                                      This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.
+                                      EOT
                                       "properties" = {
                                         "password" = {
-                                          "description" = "`password` specifies a key of a Secret containing the password for authentication."
+                                          "description" = <<-EOT
+                                          `password` specifies a key of a Secret containing the password for
+                                          authentication.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -1921,14 +2308,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "x-kubernetes-map-type" = "atomic"
                                         }
                                         "username" = {
-                                          "description" = "`username` specifies a key of a Secret containing the username for authentication."
+                                          "description" = <<-EOT
+                                          `username` specifies a key of a Secret containing the username for
+                                          authentication.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -1946,14 +2340,23 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "object"
                                     }
                                     "bearerTokenSecret" = {
-                                      "description" = "The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+                                      "description" = <<-EOT
+                                      The secret's key that contains the bearer token to be used by the client
+                                      for authentication.
+                                      The secret needs to be in the same namespace as the AlertmanagerConfig
+                                      object and accessible by the Prometheus Operator.
+                                      EOT
                                       "properties" = {
                                         "key" = {
                                           "description" = "The key of the secret to select from.  Must be a valid secret key."
                                           "type" = "string"
                                         }
                                         "name" = {
-                                          "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                          "description" = <<-EOT
+                                          Name of the referent.
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion, kind, uid?
+                                          EOT
                                           "type" = "string"
                                         }
                                         "optional" = {
@@ -1975,7 +2378,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "description" = "OAuth2 client credentials used to fetch a token for the targets."
                                       "properties" = {
                                         "clientId" = {
-                                          "description" = "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
+                                          "description" = <<-EOT
+                                          `clientId` specifies a key of a Secret or ConfigMap containing the
+                                          OAuth2 client's ID.
+                                          EOT
                                           "properties" = {
                                             "configMap" = {
                                               "description" = "ConfigMap containing data to use for the targets."
@@ -1985,7 +2391,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -2007,7 +2417,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -2025,14 +2439,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "type" = "object"
                                         }
                                         "clientSecret" = {
-                                          "description" = "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
+                                          "description" = <<-EOT
+                                          `clientSecret` specifies a key of a Secret containing the OAuth2
+                                          client's secret.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -2050,7 +2471,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "additionalProperties" = {
                                             "type" = "string"
                                           }
-                                          "description" = "`endpointParams` configures the HTTP parameters to append to the token URL."
+                                          "description" = <<-EOT
+                                          `endpointParams` configures the HTTP parameters to append to the token
+                                          URL.
+                                          EOT
                                           "type" = "object"
                                         }
                                         "scopes" = {
@@ -2091,7 +2515,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -2113,7 +2541,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -2141,7 +2573,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -2163,7 +2599,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -2192,7 +2632,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -2257,14 +2701,23 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "type" = "array"
                                 }
                                 "routingKey" = {
-                                  "description" = "The secret's key that contains the PagerDuty integration key (when using Events API v2). Either this field or `serviceKey` needs to be defined. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+                                  "description" = <<-EOT
+                                  The secret's key that contains the PagerDuty integration key (when using
+                                  Events API v2). Either this field or `serviceKey` needs to be defined.
+                                  The secret needs to be in the same namespace as the AlertmanagerConfig
+                                  object and accessible by the Prometheus Operator.
+                                  EOT
                                   "properties" = {
                                     "key" = {
                                       "description" = "The key of the secret to select from.  Must be a valid secret key."
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -2283,14 +2736,24 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "type" = "boolean"
                                 }
                                 "serviceKey" = {
-                                  "description" = "The secret's key that contains the PagerDuty service key (when using integration type \"Prometheus\"). Either this field or `routingKey` needs to be defined. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+                                  "description" = <<-EOT
+                                  The secret's key that contains the PagerDuty service key (when using
+                                  integration type "Prometheus"). Either this field or `routingKey` needs to
+                                  be defined.
+                                  The secret needs to be in the same namespace as the AlertmanagerConfig
+                                  object and accessible by the Prometheus Operator.
+                                  EOT
                                   "properties" = {
                                     "key" = {
                                       "description" = "The key of the secret to select from.  Must be a valid secret key."
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -2320,14 +2783,20 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                           "pushoverConfigs" = {
                             "description" = "List of Pushover configurations."
                             "items" = {
-                              "description" = "PushoverConfig configures notifications via Pushover. See https://prometheus.io/docs/alerting/latest/configuration/#pushover_config"
+                              "description" = <<-EOT
+                              PushoverConfig configures notifications via Pushover.
+                              See https://prometheus.io/docs/alerting/latest/configuration/#pushover_config
+                              EOT
                               "properties" = {
                                 "device" = {
                                   "description" = "The name of a device to send the notification to"
                                   "type" = "string"
                                 }
                                 "expire" = {
-                                  "description" = "How long your notification will continue to be retried for, unless the user acknowledges the notification."
+                                  "description" = <<-EOT
+                                  How long your notification will continue to be retried for, unless the user
+                                  acknowledges the notification.
+                                  EOT
                                   "pattern" = "^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$"
                                   "type" = "string"
                                 }
@@ -2339,7 +2808,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "description" = "HTTP client configuration."
                                   "properties" = {
                                     "authorization" = {
-                                      "description" = "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
+                                      "description" = <<-EOT
+                                      Authorization header configuration for the client.
+                                      This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.
+                                      EOT
                                       "properties" = {
                                         "credentials" = {
                                           "description" = "Selects a key of a Secret in the namespace that contains the credentials for authentication."
@@ -2349,7 +2821,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -2365,9 +2841,13 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                         }
                                         "type" = {
                                           "description" = <<-EOT
-                                          Defines the authentication type. The value is case-insensitive. 
-                                           "Basic" is not a supported value. 
-                                           Default: "Bearer"
+                                          Defines the authentication type. The value is case-insensitive.
+                                          
+                                          
+                                          "Basic" is not a supported value.
+                                          
+                                          
+                                          Default: "Bearer"
                                           EOT
                                           "type" = "string"
                                         }
@@ -2375,17 +2855,27 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "object"
                                     }
                                     "basicAuth" = {
-                                      "description" = "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
+                                      "description" = <<-EOT
+                                      BasicAuth for the client.
+                                      This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.
+                                      EOT
                                       "properties" = {
                                         "password" = {
-                                          "description" = "`password` specifies a key of a Secret containing the password for authentication."
+                                          "description" = <<-EOT
+                                          `password` specifies a key of a Secret containing the password for
+                                          authentication.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -2400,14 +2890,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "x-kubernetes-map-type" = "atomic"
                                         }
                                         "username" = {
-                                          "description" = "`username` specifies a key of a Secret containing the username for authentication."
+                                          "description" = <<-EOT
+                                          `username` specifies a key of a Secret containing the username for
+                                          authentication.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -2425,14 +2922,23 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "object"
                                     }
                                     "bearerTokenSecret" = {
-                                      "description" = "The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+                                      "description" = <<-EOT
+                                      The secret's key that contains the bearer token to be used by the client
+                                      for authentication.
+                                      The secret needs to be in the same namespace as the AlertmanagerConfig
+                                      object and accessible by the Prometheus Operator.
+                                      EOT
                                       "properties" = {
                                         "key" = {
                                           "description" = "The key of the secret to select from.  Must be a valid secret key."
                                           "type" = "string"
                                         }
                                         "name" = {
-                                          "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                          "description" = <<-EOT
+                                          Name of the referent.
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion, kind, uid?
+                                          EOT
                                           "type" = "string"
                                         }
                                         "optional" = {
@@ -2454,7 +2960,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "description" = "OAuth2 client credentials used to fetch a token for the targets."
                                       "properties" = {
                                         "clientId" = {
-                                          "description" = "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
+                                          "description" = <<-EOT
+                                          `clientId` specifies a key of a Secret or ConfigMap containing the
+                                          OAuth2 client's ID.
+                                          EOT
                                           "properties" = {
                                             "configMap" = {
                                               "description" = "ConfigMap containing data to use for the targets."
@@ -2464,7 +2973,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -2486,7 +2999,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -2504,14 +3021,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "type" = "object"
                                         }
                                         "clientSecret" = {
-                                          "description" = "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
+                                          "description" = <<-EOT
+                                          `clientSecret` specifies a key of a Secret containing the OAuth2
+                                          client's secret.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -2529,7 +3053,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "additionalProperties" = {
                                             "type" = "string"
                                           }
-                                          "description" = "`endpointParams` configures the HTTP parameters to append to the token URL."
+                                          "description" = <<-EOT
+                                          `endpointParams` configures the HTTP parameters to append to the token
+                                          URL.
+                                          EOT
                                           "type" = "object"
                                         }
                                         "scopes" = {
@@ -2570,7 +3097,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -2592,7 +3123,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -2620,7 +3155,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -2642,7 +3181,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -2671,7 +3214,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -2704,7 +3251,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "type" = "string"
                                 }
                                 "retry" = {
-                                  "description" = "How often the Pushover servers will send the same notification to the user. Must be at least 30 seconds."
+                                  "description" = <<-EOT
+                                  How often the Pushover servers will send the same notification to the user.
+                                  Must be at least 30 seconds.
+                                  EOT
                                   "pattern" = "^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$"
                                   "type" = "string"
                                 }
@@ -2721,14 +3271,23 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "type" = "string"
                                 }
                                 "token" = {
-                                  "description" = "The secret's key that contains the registered application's API token, see https://pushover.net/apps. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. Either `token` or `tokenFile` is required."
+                                  "description" = <<-EOT
+                                  The secret's key that contains the registered application's API token, see https://pushover.net/apps.
+                                  The secret needs to be in the same namespace as the AlertmanagerConfig
+                                  object and accessible by the Prometheus Operator.
+                                  Either `token` or `tokenFile` is required.
+                                  EOT
                                   "properties" = {
                                     "key" = {
                                       "description" = "The key of the secret to select from.  Must be a valid secret key."
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -2743,7 +3302,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "x-kubernetes-map-type" = "atomic"
                                 }
                                 "tokenFile" = {
-                                  "description" = "The token file that contains the registered application's API token, see https://pushover.net/apps. Either `token` or `tokenFile` is required. It requires Alertmanager >= v0.26.0."
+                                  "description" = <<-EOT
+                                  The token file that contains the registered application's API token, see https://pushover.net/apps.
+                                  Either `token` or `tokenFile` is required.
+                                  It requires Alertmanager >= v0.26.0.
+                                  EOT
                                   "type" = "string"
                                 }
                                 "url" = {
@@ -2755,14 +3318,23 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "type" = "string"
                                 }
                                 "userKey" = {
-                                  "description" = "The secret's key that contains the recipient user's user key. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. Either `userKey` or `userKeyFile` is required."
+                                  "description" = <<-EOT
+                                  The secret's key that contains the recipient user's user key.
+                                  The secret needs to be in the same namespace as the AlertmanagerConfig
+                                  object and accessible by the Prometheus Operator.
+                                  Either `userKey` or `userKeyFile` is required.
+                                  EOT
                                   "properties" = {
                                     "key" = {
                                       "description" = "The key of the secret to select from.  Must be a valid secret key."
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -2777,7 +3349,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "x-kubernetes-map-type" = "atomic"
                                 }
                                 "userKeyFile" = {
-                                  "description" = "The user key file that contains the recipient user's user key. Either `userKey` or `userKeyFile` is required. It requires Alertmanager >= v0.26.0."
+                                  "description" = <<-EOT
+                                  The user key file that contains the recipient user's user key.
+                                  Either `userKey` or `userKeyFile` is required.
+                                  It requires Alertmanager >= v0.26.0.
+                                  EOT
                                   "type" = "string"
                                 }
                               }
@@ -2788,15 +3364,29 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                           "slackConfigs" = {
                             "description" = "List of Slack configurations."
                             "items" = {
-                              "description" = "SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config"
+                              "description" = <<-EOT
+                              SlackConfig configures notifications via Slack.
+                              See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
+                              EOT
                               "properties" = {
                                 "actions" = {
                                   "description" = "A list of Slack actions that are sent with each notification."
                                   "items" = {
-                                    "description" = "SlackAction configures a single Slack action that is sent with each notification. See https://api.slack.com/docs/message-attachments#action_fields and https://api.slack.com/docs/message-buttons for more information."
+                                    "description" = <<-EOT
+                                    SlackAction configures a single Slack action that is sent with each
+                                    notification.
+                                    See https://api.slack.com/docs/message-attachments#action_fields and
+                                    https://api.slack.com/docs/message-buttons for more information.
+                                    EOT
                                     "properties" = {
                                       "confirm" = {
-                                        "description" = "SlackConfirmationField protect users from destructive actions or particularly distinguished decisions by asking them to confirm their button click one more time. See https://api.slack.com/docs/interactive-message-field-guide#confirmation_fields for more information."
+                                        "description" = <<-EOT
+                                        SlackConfirmationField protect users from destructive actions or
+                                        particularly distinguished decisions by asking them to confirm their button
+                                        click one more time.
+                                        See https://api.slack.com/docs/interactive-message-field-guide#confirmation_fields
+                                        for more information.
+                                        EOT
                                         "properties" = {
                                           "dismissText" = {
                                             "type" = "string"
@@ -2847,14 +3437,22 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "type" = "array"
                                 }
                                 "apiURL" = {
-                                  "description" = "The secret's key that contains the Slack webhook URL. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+                                  "description" = <<-EOT
+                                  The secret's key that contains the Slack webhook URL.
+                                  The secret needs to be in the same namespace as the AlertmanagerConfig
+                                  object and accessible by the Prometheus Operator.
+                                  EOT
                                   "properties" = {
                                     "key" = {
                                       "description" = "The key of the secret to select from.  Must be a valid secret key."
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -2884,7 +3482,12 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                 "fields" = {
                                   "description" = "A list of Slack fields that are sent with each notification."
                                   "items" = {
-                                    "description" = "SlackField configures a single Slack field that is sent with each notification. Each field must contain a title, value, and optionally, a boolean value to indicate if the field is short enough to be displayed next to other fields designated as short. See https://api.slack.com/docs/message-attachments#fields for more information."
+                                    "description" = <<-EOT
+                                    SlackField configures a single Slack field that is sent with each notification.
+                                    Each field must contain a title, value, and optionally, a boolean value to indicate if the field
+                                    is short enough to be displayed next to other fields designated as short.
+                                    See https://api.slack.com/docs/message-attachments#fields for more information.
+                                    EOT
                                     "properties" = {
                                       "short" = {
                                         "type" = "boolean"
@@ -2913,7 +3516,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "description" = "HTTP client configuration."
                                   "properties" = {
                                     "authorization" = {
-                                      "description" = "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
+                                      "description" = <<-EOT
+                                      Authorization header configuration for the client.
+                                      This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.
+                                      EOT
                                       "properties" = {
                                         "credentials" = {
                                           "description" = "Selects a key of a Secret in the namespace that contains the credentials for authentication."
@@ -2923,7 +3529,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -2939,9 +3549,13 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                         }
                                         "type" = {
                                           "description" = <<-EOT
-                                          Defines the authentication type. The value is case-insensitive. 
-                                           "Basic" is not a supported value. 
-                                           Default: "Bearer"
+                                          Defines the authentication type. The value is case-insensitive.
+                                          
+                                          
+                                          "Basic" is not a supported value.
+                                          
+                                          
+                                          Default: "Bearer"
                                           EOT
                                           "type" = "string"
                                         }
@@ -2949,17 +3563,27 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "object"
                                     }
                                     "basicAuth" = {
-                                      "description" = "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
+                                      "description" = <<-EOT
+                                      BasicAuth for the client.
+                                      This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.
+                                      EOT
                                       "properties" = {
                                         "password" = {
-                                          "description" = "`password` specifies a key of a Secret containing the password for authentication."
+                                          "description" = <<-EOT
+                                          `password` specifies a key of a Secret containing the password for
+                                          authentication.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -2974,14 +3598,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "x-kubernetes-map-type" = "atomic"
                                         }
                                         "username" = {
-                                          "description" = "`username` specifies a key of a Secret containing the username for authentication."
+                                          "description" = <<-EOT
+                                          `username` specifies a key of a Secret containing the username for
+                                          authentication.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -2999,14 +3630,23 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "object"
                                     }
                                     "bearerTokenSecret" = {
-                                      "description" = "The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+                                      "description" = <<-EOT
+                                      The secret's key that contains the bearer token to be used by the client
+                                      for authentication.
+                                      The secret needs to be in the same namespace as the AlertmanagerConfig
+                                      object and accessible by the Prometheus Operator.
+                                      EOT
                                       "properties" = {
                                         "key" = {
                                           "description" = "The key of the secret to select from.  Must be a valid secret key."
                                           "type" = "string"
                                         }
                                         "name" = {
-                                          "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                          "description" = <<-EOT
+                                          Name of the referent.
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion, kind, uid?
+                                          EOT
                                           "type" = "string"
                                         }
                                         "optional" = {
@@ -3028,7 +3668,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "description" = "OAuth2 client credentials used to fetch a token for the targets."
                                       "properties" = {
                                         "clientId" = {
-                                          "description" = "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
+                                          "description" = <<-EOT
+                                          `clientId` specifies a key of a Secret or ConfigMap containing the
+                                          OAuth2 client's ID.
+                                          EOT
                                           "properties" = {
                                             "configMap" = {
                                               "description" = "ConfigMap containing data to use for the targets."
@@ -3038,7 +3681,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -3060,7 +3707,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -3078,14 +3729,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "type" = "object"
                                         }
                                         "clientSecret" = {
-                                          "description" = "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
+                                          "description" = <<-EOT
+                                          `clientSecret` specifies a key of a Secret containing the OAuth2
+                                          client's secret.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -3103,7 +3761,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "additionalProperties" = {
                                             "type" = "string"
                                           }
-                                          "description" = "`endpointParams` configures the HTTP parameters to append to the token URL."
+                                          "description" = <<-EOT
+                                          `endpointParams` configures the HTTP parameters to append to the token
+                                          URL.
+                                          EOT
                                           "type" = "object"
                                         }
                                         "scopes" = {
@@ -3144,7 +3805,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -3166,7 +3831,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -3194,7 +3863,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -3216,7 +3889,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -3245,7 +3922,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -3320,10 +4001,16 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                           "snsConfigs" = {
                             "description" = "List of SNS configurations"
                             "items" = {
-                              "description" = "SNSConfig configures notifications via AWS SNS. See https://prometheus.io/docs/alerting/latest/configuration/#sns_configs"
+                              "description" = <<-EOT
+                              SNSConfig configures notifications via AWS SNS.
+                              See https://prometheus.io/docs/alerting/latest/configuration/#sns_configs
+                              EOT
                               "properties" = {
                                 "apiURL" = {
-                                  "description" = "The SNS API URL i.e. https://sns.us-east-2.amazonaws.com. If not specified, the SNS API URL from the SNS SDK will be used."
+                                  "description" = <<-EOT
+                                  The SNS API URL i.e. https://sns.us-east-2.amazonaws.com.
+                                  If not specified, the SNS API URL from the SNS SDK will be used.
+                                  EOT
                                   "type" = "string"
                                 }
                                 "attributes" = {
@@ -3337,7 +4024,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "description" = "HTTP client configuration."
                                   "properties" = {
                                     "authorization" = {
-                                      "description" = "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
+                                      "description" = <<-EOT
+                                      Authorization header configuration for the client.
+                                      This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.
+                                      EOT
                                       "properties" = {
                                         "credentials" = {
                                           "description" = "Selects a key of a Secret in the namespace that contains the credentials for authentication."
@@ -3347,7 +4037,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -3363,9 +4057,13 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                         }
                                         "type" = {
                                           "description" = <<-EOT
-                                          Defines the authentication type. The value is case-insensitive. 
-                                           "Basic" is not a supported value. 
-                                           Default: "Bearer"
+                                          Defines the authentication type. The value is case-insensitive.
+                                          
+                                          
+                                          "Basic" is not a supported value.
+                                          
+                                          
+                                          Default: "Bearer"
                                           EOT
                                           "type" = "string"
                                         }
@@ -3373,17 +4071,27 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "object"
                                     }
                                     "basicAuth" = {
-                                      "description" = "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
+                                      "description" = <<-EOT
+                                      BasicAuth for the client.
+                                      This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.
+                                      EOT
                                       "properties" = {
                                         "password" = {
-                                          "description" = "`password` specifies a key of a Secret containing the password for authentication."
+                                          "description" = <<-EOT
+                                          `password` specifies a key of a Secret containing the password for
+                                          authentication.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -3398,14 +4106,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "x-kubernetes-map-type" = "atomic"
                                         }
                                         "username" = {
-                                          "description" = "`username` specifies a key of a Secret containing the username for authentication."
+                                          "description" = <<-EOT
+                                          `username` specifies a key of a Secret containing the username for
+                                          authentication.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -3423,14 +4138,23 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "object"
                                     }
                                     "bearerTokenSecret" = {
-                                      "description" = "The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+                                      "description" = <<-EOT
+                                      The secret's key that contains the bearer token to be used by the client
+                                      for authentication.
+                                      The secret needs to be in the same namespace as the AlertmanagerConfig
+                                      object and accessible by the Prometheus Operator.
+                                      EOT
                                       "properties" = {
                                         "key" = {
                                           "description" = "The key of the secret to select from.  Must be a valid secret key."
                                           "type" = "string"
                                         }
                                         "name" = {
-                                          "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                          "description" = <<-EOT
+                                          Name of the referent.
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion, kind, uid?
+                                          EOT
                                           "type" = "string"
                                         }
                                         "optional" = {
@@ -3452,7 +4176,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "description" = "OAuth2 client credentials used to fetch a token for the targets."
                                       "properties" = {
                                         "clientId" = {
-                                          "description" = "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
+                                          "description" = <<-EOT
+                                          `clientId` specifies a key of a Secret or ConfigMap containing the
+                                          OAuth2 client's ID.
+                                          EOT
                                           "properties" = {
                                             "configMap" = {
                                               "description" = "ConfigMap containing data to use for the targets."
@@ -3462,7 +4189,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -3484,7 +4215,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -3502,14 +4237,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "type" = "object"
                                         }
                                         "clientSecret" = {
-                                          "description" = "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
+                                          "description" = <<-EOT
+                                          `clientSecret` specifies a key of a Secret containing the OAuth2
+                                          client's secret.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -3527,7 +4269,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "additionalProperties" = {
                                             "type" = "string"
                                           }
-                                          "description" = "`endpointParams` configures the HTTP parameters to append to the token URL."
+                                          "description" = <<-EOT
+                                          `endpointParams` configures the HTTP parameters to append to the token
+                                          URL.
+                                          EOT
                                           "type" = "object"
                                         }
                                         "scopes" = {
@@ -3568,7 +4313,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -3590,7 +4339,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -3618,7 +4371,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -3640,7 +4397,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -3669,7 +4430,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -3698,7 +4463,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "type" = "string"
                                 }
                                 "phoneNumber" = {
-                                  "description" = "Phone number if message is delivered via SMS in E.164 format. If you don't specify this value, you must specify a value for the TopicARN or TargetARN."
+                                  "description" = <<-EOT
+                                  Phone number if message is delivered via SMS in E.164 format.
+                                  If you don't specify this value, you must specify a value for the TopicARN or TargetARN.
+                                  EOT
                                   "type" = "string"
                                 }
                                 "sendResolved" = {
@@ -3709,14 +4477,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "description" = "Configures AWS's Signature Verification 4 signing process to sign requests."
                                   "properties" = {
                                     "accessKey" = {
-                                      "description" = "AccessKey is the AWS API key. If not specified, the environment variable `AWS_ACCESS_KEY_ID` is used."
+                                      "description" = <<-EOT
+                                      AccessKey is the AWS API key. If not specified, the environment variable
+                                      `AWS_ACCESS_KEY_ID` is used.
+                                      EOT
                                       "properties" = {
                                         "key" = {
                                           "description" = "The key of the secret to select from.  Must be a valid secret key."
                                           "type" = "string"
                                         }
                                         "name" = {
-                                          "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                          "description" = <<-EOT
+                                          Name of the referent.
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion, kind, uid?
+                                          EOT
                                           "type" = "string"
                                         }
                                         "optional" = {
@@ -3743,14 +4518,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "string"
                                     }
                                     "secretKey" = {
-                                      "description" = "SecretKey is the AWS API secret. If not specified, the environment variable `AWS_SECRET_ACCESS_KEY` is used."
+                                      "description" = <<-EOT
+                                      SecretKey is the AWS API secret. If not specified, the environment
+                                      variable `AWS_SECRET_ACCESS_KEY` is used.
+                                      EOT
                                       "properties" = {
                                         "key" = {
                                           "description" = "The key of the secret to select from.  Must be a valid secret key."
                                           "type" = "string"
                                         }
                                         "name" = {
-                                          "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                          "description" = <<-EOT
+                                          Name of the referent.
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion, kind, uid?
+                                          EOT
                                           "type" = "string"
                                         }
                                         "optional" = {
@@ -3772,11 +4554,17 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "type" = "string"
                                 }
                                 "targetARN" = {
-                                  "description" = "The  mobile platform endpoint ARN if message is delivered via mobile notifications. If you don't specify this value, you must specify a value for the topic_arn or PhoneNumber."
+                                  "description" = <<-EOT
+                                  The  mobile platform endpoint ARN if message is delivered via mobile notifications.
+                                  If you don't specify this value, you must specify a value for the topic_arn or PhoneNumber.
+                                  EOT
                                   "type" = "string"
                                 }
                                 "topicARN" = {
-                                  "description" = "SNS topic ARN, i.e. arn:aws:sns:us-east-2:698519295917:My-Topic If you don't specify this value, you must specify a value for the PhoneNumber or TargetARN."
+                                  "description" = <<-EOT
+                                  SNS topic ARN, i.e. arn:aws:sns:us-east-2:698519295917:My-Topic
+                                  If you don't specify this value, you must specify a value for the PhoneNumber or TargetARN.
+                                  EOT
                                   "type" = "string"
                                 }
                               }
@@ -3787,16 +4575,26 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                           "telegramConfigs" = {
                             "description" = "List of Telegram configurations."
                             "items" = {
-                              "description" = "TelegramConfig configures notifications via Telegram. See https://prometheus.io/docs/alerting/latest/configuration/#telegram_config"
+                              "description" = <<-EOT
+                              TelegramConfig configures notifications via Telegram.
+                              See https://prometheus.io/docs/alerting/latest/configuration/#telegram_config
+                              EOT
                               "properties" = {
                                 "apiURL" = {
-                                  "description" = "The Telegram API URL i.e. https://api.telegram.org. If not specified, default API URL will be used."
+                                  "description" = <<-EOT
+                                  The Telegram API URL i.e. https://api.telegram.org.
+                                  If not specified, default API URL will be used.
+                                  EOT
                                   "type" = "string"
                                 }
                                 "botToken" = {
                                   "description" = <<-EOT
-                                  Telegram bot token. It is mutually exclusive with `botTokenFile`. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator. 
-                                   Either `botToken` or `botTokenFile` is required.
+                                  Telegram bot token. It is mutually exclusive with `botTokenFile`.
+                                  The secret needs to be in the same namespace as the AlertmanagerConfig
+                                  object and accessible by the Prometheus Operator.
+                                  
+                                  
+                                  Either `botToken` or `botTokenFile` is required.
                                   EOT
                                   "properties" = {
                                     "key" = {
@@ -3804,7 +4602,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -3820,8 +4622,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                 }
                                 "botTokenFile" = {
                                   "description" = <<-EOT
-                                  File to read the Telegram bot token from. It is mutually exclusive with `botToken`. Either `botToken` or `botTokenFile` is required. 
-                                   It requires Alertmanager >= v0.26.0.
+                                  File to read the Telegram bot token from. It is mutually exclusive with `botToken`.
+                                  Either `botToken` or `botTokenFile` is required.
+                                  
+                                  
+                                  It requires Alertmanager >= v0.26.0.
                                   EOT
                                   "type" = "string"
                                 }
@@ -3838,7 +4643,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "description" = "HTTP client configuration."
                                   "properties" = {
                                     "authorization" = {
-                                      "description" = "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
+                                      "description" = <<-EOT
+                                      Authorization header configuration for the client.
+                                      This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.
+                                      EOT
                                       "properties" = {
                                         "credentials" = {
                                           "description" = "Selects a key of a Secret in the namespace that contains the credentials for authentication."
@@ -3848,7 +4656,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -3864,9 +4676,13 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                         }
                                         "type" = {
                                           "description" = <<-EOT
-                                          Defines the authentication type. The value is case-insensitive. 
-                                           "Basic" is not a supported value. 
-                                           Default: "Bearer"
+                                          Defines the authentication type. The value is case-insensitive.
+                                          
+                                          
+                                          "Basic" is not a supported value.
+                                          
+                                          
+                                          Default: "Bearer"
                                           EOT
                                           "type" = "string"
                                         }
@@ -3874,17 +4690,27 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "object"
                                     }
                                     "basicAuth" = {
-                                      "description" = "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
+                                      "description" = <<-EOT
+                                      BasicAuth for the client.
+                                      This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.
+                                      EOT
                                       "properties" = {
                                         "password" = {
-                                          "description" = "`password` specifies a key of a Secret containing the password for authentication."
+                                          "description" = <<-EOT
+                                          `password` specifies a key of a Secret containing the password for
+                                          authentication.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -3899,14 +4725,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "x-kubernetes-map-type" = "atomic"
                                         }
                                         "username" = {
-                                          "description" = "`username` specifies a key of a Secret containing the username for authentication."
+                                          "description" = <<-EOT
+                                          `username` specifies a key of a Secret containing the username for
+                                          authentication.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -3924,14 +4757,23 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "object"
                                     }
                                     "bearerTokenSecret" = {
-                                      "description" = "The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+                                      "description" = <<-EOT
+                                      The secret's key that contains the bearer token to be used by the client
+                                      for authentication.
+                                      The secret needs to be in the same namespace as the AlertmanagerConfig
+                                      object and accessible by the Prometheus Operator.
+                                      EOT
                                       "properties" = {
                                         "key" = {
                                           "description" = "The key of the secret to select from.  Must be a valid secret key."
                                           "type" = "string"
                                         }
                                         "name" = {
-                                          "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                          "description" = <<-EOT
+                                          Name of the referent.
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion, kind, uid?
+                                          EOT
                                           "type" = "string"
                                         }
                                         "optional" = {
@@ -3953,7 +4795,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "description" = "OAuth2 client credentials used to fetch a token for the targets."
                                       "properties" = {
                                         "clientId" = {
-                                          "description" = "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
+                                          "description" = <<-EOT
+                                          `clientId` specifies a key of a Secret or ConfigMap containing the
+                                          OAuth2 client's ID.
+                                          EOT
                                           "properties" = {
                                             "configMap" = {
                                               "description" = "ConfigMap containing data to use for the targets."
@@ -3963,7 +4808,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -3985,7 +4834,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -4003,14 +4856,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "type" = "object"
                                         }
                                         "clientSecret" = {
-                                          "description" = "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
+                                          "description" = <<-EOT
+                                          `clientSecret` specifies a key of a Secret containing the OAuth2
+                                          client's secret.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -4028,7 +4888,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "additionalProperties" = {
                                             "type" = "string"
                                           }
-                                          "description" = "`endpointParams` configures the HTTP parameters to append to the token URL."
+                                          "description" = <<-EOT
+                                          `endpointParams` configures the HTTP parameters to append to the token
+                                          URL.
+                                          EOT
                                           "type" = "object"
                                         }
                                         "scopes" = {
@@ -4069,7 +4932,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -4091,7 +4958,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -4119,7 +4990,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -4141,7 +5016,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -4170,7 +5049,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -4219,17 +5102,28 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                           "victoropsConfigs" = {
                             "description" = "List of VictorOps configurations."
                             "items" = {
-                              "description" = "VictorOpsConfig configures notifications via VictorOps. See https://prometheus.io/docs/alerting/latest/configuration/#victorops_config"
+                              "description" = <<-EOT
+                              VictorOpsConfig configures notifications via VictorOps.
+                              See https://prometheus.io/docs/alerting/latest/configuration/#victorops_config
+                              EOT
                               "properties" = {
                                 "apiKey" = {
-                                  "description" = "The secret's key that contains the API key to use when talking to the VictorOps API. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+                                  "description" = <<-EOT
+                                  The secret's key that contains the API key to use when talking to the VictorOps API.
+                                  The secret needs to be in the same namespace as the AlertmanagerConfig
+                                  object and accessible by the Prometheus Operator.
+                                  EOT
                                   "properties" = {
                                     "key" = {
                                       "description" = "The key of the secret to select from.  Must be a valid secret key."
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -4278,7 +5172,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "description" = "The HTTP client's configuration."
                                   "properties" = {
                                     "authorization" = {
-                                      "description" = "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
+                                      "description" = <<-EOT
+                                      Authorization header configuration for the client.
+                                      This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.
+                                      EOT
                                       "properties" = {
                                         "credentials" = {
                                           "description" = "Selects a key of a Secret in the namespace that contains the credentials for authentication."
@@ -4288,7 +5185,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -4304,9 +5205,13 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                         }
                                         "type" = {
                                           "description" = <<-EOT
-                                          Defines the authentication type. The value is case-insensitive. 
-                                           "Basic" is not a supported value. 
-                                           Default: "Bearer"
+                                          Defines the authentication type. The value is case-insensitive.
+                                          
+                                          
+                                          "Basic" is not a supported value.
+                                          
+                                          
+                                          Default: "Bearer"
                                           EOT
                                           "type" = "string"
                                         }
@@ -4314,17 +5219,27 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "object"
                                     }
                                     "basicAuth" = {
-                                      "description" = "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
+                                      "description" = <<-EOT
+                                      BasicAuth for the client.
+                                      This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.
+                                      EOT
                                       "properties" = {
                                         "password" = {
-                                          "description" = "`password` specifies a key of a Secret containing the password for authentication."
+                                          "description" = <<-EOT
+                                          `password` specifies a key of a Secret containing the password for
+                                          authentication.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -4339,14 +5254,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "x-kubernetes-map-type" = "atomic"
                                         }
                                         "username" = {
-                                          "description" = "`username` specifies a key of a Secret containing the username for authentication."
+                                          "description" = <<-EOT
+                                          `username` specifies a key of a Secret containing the username for
+                                          authentication.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -4364,14 +5286,23 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "object"
                                     }
                                     "bearerTokenSecret" = {
-                                      "description" = "The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+                                      "description" = <<-EOT
+                                      The secret's key that contains the bearer token to be used by the client
+                                      for authentication.
+                                      The secret needs to be in the same namespace as the AlertmanagerConfig
+                                      object and accessible by the Prometheus Operator.
+                                      EOT
                                       "properties" = {
                                         "key" = {
                                           "description" = "The key of the secret to select from.  Must be a valid secret key."
                                           "type" = "string"
                                         }
                                         "name" = {
-                                          "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                          "description" = <<-EOT
+                                          Name of the referent.
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion, kind, uid?
+                                          EOT
                                           "type" = "string"
                                         }
                                         "optional" = {
@@ -4393,7 +5324,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "description" = "OAuth2 client credentials used to fetch a token for the targets."
                                       "properties" = {
                                         "clientId" = {
-                                          "description" = "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
+                                          "description" = <<-EOT
+                                          `clientId` specifies a key of a Secret or ConfigMap containing the
+                                          OAuth2 client's ID.
+                                          EOT
                                           "properties" = {
                                             "configMap" = {
                                               "description" = "ConfigMap containing data to use for the targets."
@@ -4403,7 +5337,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -4425,7 +5363,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -4443,14 +5385,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "type" = "object"
                                         }
                                         "clientSecret" = {
-                                          "description" = "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
+                                          "description" = <<-EOT
+                                          `clientSecret` specifies a key of a Secret containing the OAuth2
+                                          client's secret.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -4468,7 +5417,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "additionalProperties" = {
                                             "type" = "string"
                                           }
-                                          "description" = "`endpointParams` configures the HTTP parameters to append to the token URL."
+                                          "description" = <<-EOT
+                                          `endpointParams` configures the HTTP parameters to append to the token
+                                          URL.
+                                          EOT
                                           "type" = "object"
                                         }
                                         "scopes" = {
@@ -4509,7 +5461,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -4531,7 +5487,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -4559,7 +5519,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -4581,7 +5545,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -4610,7 +5578,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -4662,18 +5634,30 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                           "webexConfigs" = {
                             "description" = "List of Webex configurations."
                             "items" = {
-                              "description" = "WebexConfig configures notification via Cisco Webex See https://prometheus.io/docs/alerting/latest/configuration/#webex_config"
+                              "description" = <<-EOT
+                              WebexConfig configures notification via Cisco Webex
+                              See https://prometheus.io/docs/alerting/latest/configuration/#webex_config
+                              EOT
                               "properties" = {
                                 "apiURL" = {
-                                  "description" = "The Webex Teams API URL i.e. https://webexapis.com/v1/messages Provide if different from the default API URL."
+                                  "description" = <<-EOT
+                                  The Webex Teams API URL i.e. https://webexapis.com/v1/messages
+                                  Provide if different from the default API URL.
+                                  EOT
                                   "pattern" = "^https?://.+$"
                                   "type" = "string"
                                 }
                                 "httpConfig" = {
-                                  "description" = "The HTTP client's configuration. You must supply the bot token via the `httpConfig.authorization` field."
+                                  "description" = <<-EOT
+                                  The HTTP client's configuration.
+                                  You must supply the bot token via the `httpConfig.authorization` field.
+                                  EOT
                                   "properties" = {
                                     "authorization" = {
-                                      "description" = "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
+                                      "description" = <<-EOT
+                                      Authorization header configuration for the client.
+                                      This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.
+                                      EOT
                                       "properties" = {
                                         "credentials" = {
                                           "description" = "Selects a key of a Secret in the namespace that contains the credentials for authentication."
@@ -4683,7 +5667,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -4699,9 +5687,13 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                         }
                                         "type" = {
                                           "description" = <<-EOT
-                                          Defines the authentication type. The value is case-insensitive. 
-                                           "Basic" is not a supported value. 
-                                           Default: "Bearer"
+                                          Defines the authentication type. The value is case-insensitive.
+                                          
+                                          
+                                          "Basic" is not a supported value.
+                                          
+                                          
+                                          Default: "Bearer"
                                           EOT
                                           "type" = "string"
                                         }
@@ -4709,17 +5701,27 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "object"
                                     }
                                     "basicAuth" = {
-                                      "description" = "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
+                                      "description" = <<-EOT
+                                      BasicAuth for the client.
+                                      This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.
+                                      EOT
                                       "properties" = {
                                         "password" = {
-                                          "description" = "`password` specifies a key of a Secret containing the password for authentication."
+                                          "description" = <<-EOT
+                                          `password` specifies a key of a Secret containing the password for
+                                          authentication.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -4734,14 +5736,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "x-kubernetes-map-type" = "atomic"
                                         }
                                         "username" = {
-                                          "description" = "`username` specifies a key of a Secret containing the username for authentication."
+                                          "description" = <<-EOT
+                                          `username` specifies a key of a Secret containing the username for
+                                          authentication.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -4759,14 +5768,23 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "object"
                                     }
                                     "bearerTokenSecret" = {
-                                      "description" = "The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+                                      "description" = <<-EOT
+                                      The secret's key that contains the bearer token to be used by the client
+                                      for authentication.
+                                      The secret needs to be in the same namespace as the AlertmanagerConfig
+                                      object and accessible by the Prometheus Operator.
+                                      EOT
                                       "properties" = {
                                         "key" = {
                                           "description" = "The key of the secret to select from.  Must be a valid secret key."
                                           "type" = "string"
                                         }
                                         "name" = {
-                                          "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                          "description" = <<-EOT
+                                          Name of the referent.
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion, kind, uid?
+                                          EOT
                                           "type" = "string"
                                         }
                                         "optional" = {
@@ -4788,7 +5806,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "description" = "OAuth2 client credentials used to fetch a token for the targets."
                                       "properties" = {
                                         "clientId" = {
-                                          "description" = "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
+                                          "description" = <<-EOT
+                                          `clientId` specifies a key of a Secret or ConfigMap containing the
+                                          OAuth2 client's ID.
+                                          EOT
                                           "properties" = {
                                             "configMap" = {
                                               "description" = "ConfigMap containing data to use for the targets."
@@ -4798,7 +5819,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -4820,7 +5845,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -4838,14 +5867,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "type" = "object"
                                         }
                                         "clientSecret" = {
-                                          "description" = "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
+                                          "description" = <<-EOT
+                                          `clientSecret` specifies a key of a Secret containing the OAuth2
+                                          client's secret.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -4863,7 +5899,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "additionalProperties" = {
                                             "type" = "string"
                                           }
-                                          "description" = "`endpointParams` configures the HTTP parameters to append to the token URL."
+                                          "description" = <<-EOT
+                                          `endpointParams` configures the HTTP parameters to append to the token
+                                          URL.
+                                          EOT
                                           "type" = "object"
                                         }
                                         "scopes" = {
@@ -4904,7 +5943,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -4926,7 +5969,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -4954,7 +6001,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -4976,7 +6027,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -5005,7 +6060,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -5053,13 +6112,19 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                           "webhookConfigs" = {
                             "description" = "List of webhook configurations."
                             "items" = {
-                              "description" = "WebhookConfig configures notifications via a generic receiver supporting the webhook payload. See https://prometheus.io/docs/alerting/latest/configuration/#webhook_config"
+                              "description" = <<-EOT
+                              WebhookConfig configures notifications via a generic receiver supporting the webhook payload.
+                              See https://prometheus.io/docs/alerting/latest/configuration/#webhook_config
+                              EOT
                               "properties" = {
                                 "httpConfig" = {
                                   "description" = "HTTP client configuration."
                                   "properties" = {
                                     "authorization" = {
-                                      "description" = "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
+                                      "description" = <<-EOT
+                                      Authorization header configuration for the client.
+                                      This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.
+                                      EOT
                                       "properties" = {
                                         "credentials" = {
                                           "description" = "Selects a key of a Secret in the namespace that contains the credentials for authentication."
@@ -5069,7 +6134,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -5085,9 +6154,13 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                         }
                                         "type" = {
                                           "description" = <<-EOT
-                                          Defines the authentication type. The value is case-insensitive. 
-                                           "Basic" is not a supported value. 
-                                           Default: "Bearer"
+                                          Defines the authentication type. The value is case-insensitive.
+                                          
+                                          
+                                          "Basic" is not a supported value.
+                                          
+                                          
+                                          Default: "Bearer"
                                           EOT
                                           "type" = "string"
                                         }
@@ -5095,17 +6168,27 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "object"
                                     }
                                     "basicAuth" = {
-                                      "description" = "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
+                                      "description" = <<-EOT
+                                      BasicAuth for the client.
+                                      This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.
+                                      EOT
                                       "properties" = {
                                         "password" = {
-                                          "description" = "`password` specifies a key of a Secret containing the password for authentication."
+                                          "description" = <<-EOT
+                                          `password` specifies a key of a Secret containing the password for
+                                          authentication.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -5120,14 +6203,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "x-kubernetes-map-type" = "atomic"
                                         }
                                         "username" = {
-                                          "description" = "`username` specifies a key of a Secret containing the username for authentication."
+                                          "description" = <<-EOT
+                                          `username` specifies a key of a Secret containing the username for
+                                          authentication.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -5145,14 +6235,23 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "object"
                                     }
                                     "bearerTokenSecret" = {
-                                      "description" = "The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+                                      "description" = <<-EOT
+                                      The secret's key that contains the bearer token to be used by the client
+                                      for authentication.
+                                      The secret needs to be in the same namespace as the AlertmanagerConfig
+                                      object and accessible by the Prometheus Operator.
+                                      EOT
                                       "properties" = {
                                         "key" = {
                                           "description" = "The key of the secret to select from.  Must be a valid secret key."
                                           "type" = "string"
                                         }
                                         "name" = {
-                                          "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                          "description" = <<-EOT
+                                          Name of the referent.
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion, kind, uid?
+                                          EOT
                                           "type" = "string"
                                         }
                                         "optional" = {
@@ -5174,7 +6273,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "description" = "OAuth2 client credentials used to fetch a token for the targets."
                                       "properties" = {
                                         "clientId" = {
-                                          "description" = "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
+                                          "description" = <<-EOT
+                                          `clientId` specifies a key of a Secret or ConfigMap containing the
+                                          OAuth2 client's ID.
+                                          EOT
                                           "properties" = {
                                             "configMap" = {
                                               "description" = "ConfigMap containing data to use for the targets."
@@ -5184,7 +6286,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -5206,7 +6312,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -5224,14 +6334,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "type" = "object"
                                         }
                                         "clientSecret" = {
-                                          "description" = "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
+                                          "description" = <<-EOT
+                                          `clientSecret` specifies a key of a Secret containing the OAuth2
+                                          client's secret.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -5249,7 +6366,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "additionalProperties" = {
                                             "type" = "string"
                                           }
-                                          "description" = "`endpointParams` configures the HTTP parameters to append to the token URL."
+                                          "description" = <<-EOT
+                                          `endpointParams` configures the HTTP parameters to append to the token
+                                          URL.
+                                          EOT
                                           "type" = "object"
                                         }
                                         "scopes" = {
@@ -5290,7 +6410,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -5312,7 +6436,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -5340,7 +6468,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -5362,7 +6494,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -5391,7 +6527,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -5426,18 +6566,31 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "type" = "boolean"
                                 }
                                 "url" = {
-                                  "description" = "The URL to send HTTP POST requests to. `urlSecret` takes precedence over `url`. One of `urlSecret` and `url` should be defined."
+                                  "description" = <<-EOT
+                                  The URL to send HTTP POST requests to. `urlSecret` takes precedence over
+                                  `url`. One of `urlSecret` and `url` should be defined.
+                                  EOT
                                   "type" = "string"
                                 }
                                 "urlSecret" = {
-                                  "description" = "The secret's key that contains the webhook URL to send HTTP requests to. `urlSecret` takes precedence over `url`. One of `urlSecret` and `url` should be defined. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+                                  "description" = <<-EOT
+                                  The secret's key that contains the webhook URL to send HTTP requests to.
+                                  `urlSecret` takes precedence over `url`. One of `urlSecret` and `url`
+                                  should be defined.
+                                  The secret needs to be in the same namespace as the AlertmanagerConfig
+                                  object and accessible by the Prometheus Operator.
+                                  EOT
                                   "properties" = {
                                     "key" = {
                                       "description" = "The key of the secret to select from.  Must be a valid secret key."
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -5459,20 +6612,31 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                           "wechatConfigs" = {
                             "description" = "List of WeChat configurations."
                             "items" = {
-                              "description" = "WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config"
+                              "description" = <<-EOT
+                              WeChatConfig configures notifications via WeChat.
+                              See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config
+                              EOT
                               "properties" = {
                                 "agentID" = {
                                   "type" = "string"
                                 }
                                 "apiSecret" = {
-                                  "description" = "The secret's key that contains the WeChat API key. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+                                  "description" = <<-EOT
+                                  The secret's key that contains the WeChat API key.
+                                  The secret needs to be in the same namespace as the AlertmanagerConfig
+                                  object and accessible by the Prometheus Operator.
+                                  EOT
                                   "properties" = {
                                     "key" = {
                                       "description" = "The key of the secret to select from.  Must be a valid secret key."
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -5498,7 +6662,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                   "description" = "HTTP client configuration."
                                   "properties" = {
                                     "authorization" = {
-                                      "description" = "Authorization header configuration for the client. This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+."
+                                      "description" = <<-EOT
+                                      Authorization header configuration for the client.
+                                      This is mutually exclusive with BasicAuth and is only available starting from Alertmanager v0.22+.
+                                      EOT
                                       "properties" = {
                                         "credentials" = {
                                           "description" = "Selects a key of a Secret in the namespace that contains the credentials for authentication."
@@ -5508,7 +6675,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -5524,9 +6695,13 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                         }
                                         "type" = {
                                           "description" = <<-EOT
-                                          Defines the authentication type. The value is case-insensitive. 
-                                           "Basic" is not a supported value. 
-                                           Default: "Bearer"
+                                          Defines the authentication type. The value is case-insensitive.
+                                          
+                                          
+                                          "Basic" is not a supported value.
+                                          
+                                          
+                                          Default: "Bearer"
                                           EOT
                                           "type" = "string"
                                         }
@@ -5534,17 +6709,27 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "object"
                                     }
                                     "basicAuth" = {
-                                      "description" = "BasicAuth for the client. This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence."
+                                      "description" = <<-EOT
+                                      BasicAuth for the client.
+                                      This is mutually exclusive with Authorization. If both are defined, BasicAuth takes precedence.
+                                      EOT
                                       "properties" = {
                                         "password" = {
-                                          "description" = "`password` specifies a key of a Secret containing the password for authentication."
+                                          "description" = <<-EOT
+                                          `password` specifies a key of a Secret containing the password for
+                                          authentication.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -5559,14 +6744,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "x-kubernetes-map-type" = "atomic"
                                         }
                                         "username" = {
-                                          "description" = "`username` specifies a key of a Secret containing the username for authentication."
+                                          "description" = <<-EOT
+                                          `username` specifies a key of a Secret containing the username for
+                                          authentication.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -5584,14 +6776,23 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "type" = "object"
                                     }
                                     "bearerTokenSecret" = {
-                                      "description" = "The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator."
+                                      "description" = <<-EOT
+                                      The secret's key that contains the bearer token to be used by the client
+                                      for authentication.
+                                      The secret needs to be in the same namespace as the AlertmanagerConfig
+                                      object and accessible by the Prometheus Operator.
+                                      EOT
                                       "properties" = {
                                         "key" = {
                                           "description" = "The key of the secret to select from.  Must be a valid secret key."
                                           "type" = "string"
                                         }
                                         "name" = {
-                                          "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                          "description" = <<-EOT
+                                          Name of the referent.
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion, kind, uid?
+                                          EOT
                                           "type" = "string"
                                         }
                                         "optional" = {
@@ -5613,7 +6814,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                       "description" = "OAuth2 client credentials used to fetch a token for the targets."
                                       "properties" = {
                                         "clientId" = {
-                                          "description" = "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
+                                          "description" = <<-EOT
+                                          `clientId` specifies a key of a Secret or ConfigMap containing the
+                                          OAuth2 client's ID.
+                                          EOT
                                           "properties" = {
                                             "configMap" = {
                                               "description" = "ConfigMap containing data to use for the targets."
@@ -5623,7 +6827,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -5645,7 +6853,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -5663,14 +6875,21 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "type" = "object"
                                         }
                                         "clientSecret" = {
-                                          "description" = "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
+                                          "description" = <<-EOT
+                                          `clientSecret` specifies a key of a Secret containing the OAuth2
+                                          client's secret.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -5688,7 +6907,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                           "additionalProperties" = {
                                             "type" = "string"
                                           }
-                                          "description" = "`endpointParams` configures the HTTP parameters to append to the token URL."
+                                          "description" = <<-EOT
+                                          `endpointParams` configures the HTTP parameters to append to the token
+                                          URL.
+                                          EOT
                                           "type" = "object"
                                         }
                                         "scopes" = {
@@ -5729,7 +6951,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -5751,7 +6977,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -5779,7 +7009,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -5801,7 +7035,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                                   "type" = "string"
                                                 }
                                                 "name" = {
-                                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                                  "description" = <<-EOT
+                                                  Name of the referent.
+                                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "optional" = {
@@ -5830,7 +7068,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                               "type" = "string"
                                             }
                                             "name" = {
-                                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                              "description" = <<-EOT
+                                              Name of the referent.
+                                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                              TODO: Add other useful fields. apiVersion, kind, uid?
+                                              EOT
                                               "type" = "string"
                                             }
                                             "optional" = {
@@ -5888,7 +7130,11 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                       "type" = "array"
                     }
                     "route" = {
-                      "description" = "The Alertmanager route definition for alerts matching the resource's namespace. If present, it will be added to the generated Alertmanager configuration as a first-level route."
+                      "description" = <<-EOT
+                      The Alertmanager route definition for alerts matching the resource's
+                      namespace. If present, it will be added to the generated Alertmanager
+                      configuration as a first-level route.
+                      EOT
                       "properties" = {
                         "activeTimeIntervals" = {
                           "description" = "ActiveTimeIntervals is a list of MuteTimeInterval names when this route should be active."
@@ -5898,31 +7144,55 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                           "type" = "array"
                         }
                         "continue" = {
-                          "description" = "Boolean indicating whether an alert should continue matching subsequent sibling nodes. It will always be overridden to true for the first-level route by the Prometheus operator."
+                          "description" = <<-EOT
+                          Boolean indicating whether an alert should continue matching subsequent
+                          sibling nodes. It will always be overridden to true for the first-level
+                          route by the Prometheus operator.
+                          EOT
                           "type" = "boolean"
                         }
                         "groupBy" = {
-                          "description" = "List of labels to group by. Labels must not be repeated (unique list). Special label \"...\" (aggregate by all possible labels), if provided, must be the only element in the list."
+                          "description" = <<-EOT
+                          List of labels to group by.
+                          Labels must not be repeated (unique list).
+                          Special label "..." (aggregate by all possible labels), if provided, must be the only element in the list.
+                          EOT
                           "items" = {
                             "type" = "string"
                           }
                           "type" = "array"
                         }
                         "groupInterval" = {
-                          "description" = "How long to wait before sending an updated notification. Must match the regular expression`^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$` Example: \"5m\""
+                          "description" = <<-EOT
+                          How long to wait before sending an updated notification.
+                          Must match the regular expression`^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$`
+                          Example: "5m"
+                          EOT
                           "type" = "string"
                         }
                         "groupWait" = {
-                          "description" = "How long to wait before sending the initial notification. Must match the regular expression`^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$` Example: \"30s\""
+                          "description" = <<-EOT
+                          How long to wait before sending the initial notification.
+                          Must match the regular expression`^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$`
+                          Example: "30s"
+                          EOT
                           "type" = "string"
                         }
                         "matchers" = {
-                          "description" = "List of matchers that the alert's labels should match. For the first level route, the operator removes any existing equality and regexp matcher on the `namespace` label and adds a `namespace: <object namespace>` matcher."
+                          "description" = <<-EOT
+                          List of matchers that the alert's labels should match. For the first
+                          level route, the operator removes any existing equality and regexp
+                          matcher on the `namespace` label and adds a `namespace: <object
+                          namespace>` matcher.
+                          EOT
                           "items" = {
                             "description" = "Matcher defines how to match on alert's labels."
                             "properties" = {
                               "matchType" = {
-                                "description" = "Match operation available with AlertManager >= v0.22.0 and takes precedence over Regex (deprecated) if non-empty."
+                                "description" = <<-EOT
+                                Match operation available with AlertManager >= v0.22.0 and
+                                takes precedence over Regex (deprecated) if non-empty.
+                                EOT
                                 "enum" = [
                                   "!=",
                                   "=",
@@ -5937,7 +7207,10 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                                 "type" = "string"
                               }
                               "regex" = {
-                                "description" = "Whether to match on equality (false) or regular-expression (true). Deprecated: for AlertManager >= v0.22.0, `matchType` should be used instead."
+                                "description" = <<-EOT
+                                Whether to match on equality (false) or regular-expression (true).
+                                Deprecated: for AlertManager >= v0.22.0, `matchType` should be used instead.
+                                EOT
                                 "type" = "boolean"
                               }
                               "value" = {
@@ -5953,18 +7226,34 @@ resource "kubernetes_manifest" "customresourcedefinition_alertmanagerconfigs_mon
                           "type" = "array"
                         }
                         "muteTimeIntervals" = {
-                          "description" = "Note: this comment applies to the field definition above but appears below otherwise it gets included in the generated manifest. CRD schema doesn't support self-referential types for now (see https://github.com/kubernetes/kubernetes/issues/62872). We have to use an alternative type to circumvent the limitation. The downside is that the Kube API can't validate the data beyond the fact that it is a valid JSON representation. MuteTimeIntervals is a list of MuteTimeInterval names that will mute this route when matched,"
+                          "description" = <<-EOT
+                          Note: this comment applies to the field definition above but appears
+                          below otherwise it gets included in the generated manifest.
+                          CRD schema doesn't support self-referential types for now (see
+                          https://github.com/kubernetes/kubernetes/issues/62872). We have to use
+                          an alternative type to circumvent the limitation. The downside is that
+                          the Kube API can't validate the data beyond the fact that it is a valid
+                          JSON representation.
+                          MuteTimeIntervals is a list of MuteTimeInterval names that will mute this route when matched,
+                          EOT
                           "items" = {
                             "type" = "string"
                           }
                           "type" = "array"
                         }
                         "receiver" = {
-                          "description" = "Name of the receiver for this route. If not empty, it should be listed in the `receivers` field."
+                          "description" = <<-EOT
+                          Name of the receiver for this route. If not empty, it should be listed in
+                          the `receivers` field.
+                          EOT
                           "type" = "string"
                         }
                         "repeatInterval" = {
-                          "description" = "How long to wait before repeating the last notification. Must match the regular expression`^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$` Example: \"4h\""
+                          "description" = <<-EOT
+                          How long to wait before repeating the last notification.
+                          Must match the regular expression`^(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?$`
+                          Example: "4h"
+                          EOT
                           "type" = "string"
                         }
                         "routes" = {

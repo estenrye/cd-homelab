@@ -8,9 +8,8 @@ resource "kubernetes_manifest" "customresourcedefinition_featureflags_core_openf
     "kind" = "CustomResourceDefinition"
     "metadata" = {
       "annotations" = {
-        "controller-gen.kubebuilder.io/version" = "v0.10.0"
+        "controller-gen.kubebuilder.io/version" = "v0.15.0"
       }
-      "creationTimestamp" = null
       "name" = "featureflags.core.openfeature.dev"
     }
     "spec" = {
@@ -33,11 +32,22 @@ resource "kubernetes_manifest" "customresourcedefinition_featureflags_core_openf
               "description" = "FeatureFlag is the Schema for the featureflags API"
               "properties" = {
                 "apiVersion" = {
-                  "description" = "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+                  "description" = <<-EOT
+                  APIVersion defines the versioned schema of this representation of an object.
+                  Servers should convert recognized schemas to the latest internal value, and
+                  may reject unrecognized values.
+                  More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+                  EOT
                   "type" = "string"
                 }
                 "kind" = {
-                  "description" = "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+                  "description" = <<-EOT
+                  Kind is a string value representing the REST resource this object represents.
+                  Servers may infer this from the endpoint the client submits requests to.
+                  Cannot be updated.
+                  In CamelCase.
+                  More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+                  EOT
                   "type" = "string"
                 }
                 "metadata" = {

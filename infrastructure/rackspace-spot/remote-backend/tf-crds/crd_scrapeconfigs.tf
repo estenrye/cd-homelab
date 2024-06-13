@@ -4,8 +4,8 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
     "kind" = "CustomResourceDefinition"
     "metadata" = {
       "annotations" = {
-        "controller-gen.kubebuilder.io/version" = "v0.13.0"
-        "operator.prometheus.io/version" = "0.73.2"
+        "controller-gen.kubebuilder.io/version" = "v0.14.0"
+        "operator.prometheus.io/version" = "0.74.0"
       }
       "name" = "scrapeconfigs.monitoring.coreos.com"
     }
@@ -29,14 +29,28 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
           "name" = "v1alpha1"
           "schema" = {
             "openAPIV3Schema" = {
-              "description" = "ScrapeConfig defines a namespaced Prometheus scrape_config to be aggregated across multiple namespaces into the Prometheus configuration."
+              "description" = <<-EOT
+              ScrapeConfig defines a namespaced Prometheus scrape_config to be aggregated across
+              multiple namespaces into the Prometheus configuration.
+              EOT
               "properties" = {
                 "apiVersion" = {
-                  "description" = "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+                  "description" = <<-EOT
+                  APIVersion defines the versioned schema of this representation of an object.
+                  Servers should convert recognized schemas to the latest internal value, and
+                  may reject unrecognized values.
+                  More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+                  EOT
                   "type" = "string"
                 }
                 "kind" = {
-                  "description" = "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+                  "description" = <<-EOT
+                  Kind is a string value representing the REST resource this object represents.
+                  Servers may infer this from the endpoint the client submits requests to.
+                  Cannot be updated.
+                  In CamelCase.
+                  More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+                  EOT
                   "type" = "string"
                 }
                 "metadata" = {
@@ -45,6 +59,520 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                 "spec" = {
                   "description" = "ScrapeConfigSpec is a specification of the desired configuration for a scrape configuration."
                   "properties" = {
+                    "NomadSDConfigs" = {
+                      "description" = "NomadSDConfigs defines a list of Nomad service discovery configurations."
+                      "items" = {
+                        "description" = <<-EOT
+                        NomadSDConfig configurations allow retrieving scrape targets from Nomad's Service API.
+                        See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#nomad_sd_config
+                        EOT
+                        "properties" = {
+                          "allowStale" = {
+                            "description" = <<-EOT
+                            The information to access the Nomad API. It is to be defined
+                            as the Nomad documentation requires.
+                            EOT
+                            "type" = "boolean"
+                          }
+                          "authorization" = {
+                            "description" = "Authorization header to use on every scrape request."
+                            "properties" = {
+                              "credentials" = {
+                                "description" = "Selects a key of a Secret in the namespace that contains the credentials for authentication."
+                                "properties" = {
+                                  "key" = {
+                                    "description" = "The key of the secret to select from.  Must be a valid secret key."
+                                    "type" = "string"
+                                  }
+                                  "name" = {
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
+                                    "type" = "string"
+                                  }
+                                  "optional" = {
+                                    "description" = "Specify whether the Secret or its key must be defined"
+                                    "type" = "boolean"
+                                  }
+                                }
+                                "required" = [
+                                  "key",
+                                ]
+                                "type" = "object"
+                                "x-kubernetes-map-type" = "atomic"
+                              }
+                              "type" = {
+                                "description" = <<-EOT
+                                Defines the authentication type. The value is case-insensitive.
+                                
+                                
+                                "Basic" is not a supported value.
+                                
+                                
+                                Default: "Bearer"
+                                EOT
+                                "type" = "string"
+                              }
+                            }
+                            "type" = "object"
+                          }
+                          "basicAuth" = {
+                            "description" = "BasicAuth information to use on every scrape request."
+                            "properties" = {
+                              "password" = {
+                                "description" = <<-EOT
+                                `password` specifies a key of a Secret containing the password for
+                                authentication.
+                                EOT
+                                "properties" = {
+                                  "key" = {
+                                    "description" = "The key of the secret to select from.  Must be a valid secret key."
+                                    "type" = "string"
+                                  }
+                                  "name" = {
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
+                                    "type" = "string"
+                                  }
+                                  "optional" = {
+                                    "description" = "Specify whether the Secret or its key must be defined"
+                                    "type" = "boolean"
+                                  }
+                                }
+                                "required" = [
+                                  "key",
+                                ]
+                                "type" = "object"
+                                "x-kubernetes-map-type" = "atomic"
+                              }
+                              "username" = {
+                                "description" = <<-EOT
+                                `username` specifies a key of a Secret containing the username for
+                                authentication.
+                                EOT
+                                "properties" = {
+                                  "key" = {
+                                    "description" = "The key of the secret to select from.  Must be a valid secret key."
+                                    "type" = "string"
+                                  }
+                                  "name" = {
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
+                                    "type" = "string"
+                                  }
+                                  "optional" = {
+                                    "description" = "Specify whether the Secret or its key must be defined"
+                                    "type" = "boolean"
+                                  }
+                                }
+                                "required" = [
+                                  "key",
+                                ]
+                                "type" = "object"
+                                "x-kubernetes-map-type" = "atomic"
+                              }
+                            }
+                            "type" = "object"
+                          }
+                          "enableHTTP2" = {
+                            "description" = "Whether to enable HTTP2."
+                            "type" = "boolean"
+                          }
+                          "followRedirects" = {
+                            "description" = "Configure whether HTTP requests follow HTTP 3xx redirects."
+                            "type" = "boolean"
+                          }
+                          "namespace" = {
+                            "type" = "string"
+                          }
+                          "noProxy" = {
+                            "description" = <<-EOT
+                            `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+                            that should be excluded from proxying. IP and domain names can
+                            contain port numbers.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
+                            EOT
+                            "type" = "string"
+                          }
+                          "oauth2" = {
+                            "description" = <<-EOT
+                            Optional OAuth 2.0 configuration.
+                            Cannot be set at the same time as `authorization` or `basic_auth`.
+                            EOT
+                            "properties" = {
+                              "clientId" = {
+                                "description" = <<-EOT
+                                `clientId` specifies a key of a Secret or ConfigMap containing the
+                                OAuth2 client's ID.
+                                EOT
+                                "properties" = {
+                                  "configMap" = {
+                                    "description" = "ConfigMap containing data to use for the targets."
+                                    "properties" = {
+                                      "key" = {
+                                        "description" = "The key to select."
+                                        "type" = "string"
+                                      }
+                                      "name" = {
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
+                                        "type" = "string"
+                                      }
+                                      "optional" = {
+                                        "description" = "Specify whether the ConfigMap or its key must be defined"
+                                        "type" = "boolean"
+                                      }
+                                    }
+                                    "required" = [
+                                      "key",
+                                    ]
+                                    "type" = "object"
+                                    "x-kubernetes-map-type" = "atomic"
+                                  }
+                                  "secret" = {
+                                    "description" = "Secret containing data to use for the targets."
+                                    "properties" = {
+                                      "key" = {
+                                        "description" = "The key of the secret to select from.  Must be a valid secret key."
+                                        "type" = "string"
+                                      }
+                                      "name" = {
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
+                                        "type" = "string"
+                                      }
+                                      "optional" = {
+                                        "description" = "Specify whether the Secret or its key must be defined"
+                                        "type" = "boolean"
+                                      }
+                                    }
+                                    "required" = [
+                                      "key",
+                                    ]
+                                    "type" = "object"
+                                    "x-kubernetes-map-type" = "atomic"
+                                  }
+                                }
+                                "type" = "object"
+                              }
+                              "clientSecret" = {
+                                "description" = <<-EOT
+                                `clientSecret` specifies a key of a Secret containing the OAuth2
+                                client's secret.
+                                EOT
+                                "properties" = {
+                                  "key" = {
+                                    "description" = "The key of the secret to select from.  Must be a valid secret key."
+                                    "type" = "string"
+                                  }
+                                  "name" = {
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
+                                    "type" = "string"
+                                  }
+                                  "optional" = {
+                                    "description" = "Specify whether the Secret or its key must be defined"
+                                    "type" = "boolean"
+                                  }
+                                }
+                                "required" = [
+                                  "key",
+                                ]
+                                "type" = "object"
+                                "x-kubernetes-map-type" = "atomic"
+                              }
+                              "endpointParams" = {
+                                "additionalProperties" = {
+                                  "type" = "string"
+                                }
+                                "description" = <<-EOT
+                                `endpointParams` configures the HTTP parameters to append to the token
+                                URL.
+                                EOT
+                                "type" = "object"
+                              }
+                              "scopes" = {
+                                "description" = "`scopes` defines the OAuth2 scopes used for the token request."
+                                "items" = {
+                                  "type" = "string"
+                                }
+                                "type" = "array"
+                              }
+                              "tokenUrl" = {
+                                "description" = "`tokenURL` configures the URL to fetch the token from."
+                                "minLength" = 1
+                                "type" = "string"
+                              }
+                            }
+                            "required" = [
+                              "clientId",
+                              "clientSecret",
+                              "tokenUrl",
+                            ]
+                            "type" = "object"
+                          }
+                          "proxyConnectHeader" = {
+                            "additionalProperties" = {
+                              "items" = {
+                                "description" = "SecretKeySelector selects a key of a Secret."
+                                "properties" = {
+                                  "key" = {
+                                    "description" = "The key of the secret to select from.  Must be a valid secret key."
+                                    "type" = "string"
+                                  }
+                                  "name" = {
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
+                                    "type" = "string"
+                                  }
+                                  "optional" = {
+                                    "description" = "Specify whether the Secret or its key must be defined"
+                                    "type" = "boolean"
+                                  }
+                                }
+                                "required" = [
+                                  "key",
+                                ]
+                                "type" = "object"
+                                "x-kubernetes-map-type" = "atomic"
+                              }
+                              "type" = "array"
+                            }
+                            "description" = <<-EOT
+                            ProxyConnectHeader optionally specifies headers to send to
+                            proxies during CONNECT requests.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
+                            EOT
+                            "type" = "object"
+                            "x-kubernetes-map-type" = "atomic"
+                          }
+                          "proxyFromEnvironment" = {
+                            "description" = <<-EOT
+                            Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+                            If unset, Prometheus uses its default value.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
+                            EOT
+                            "type" = "boolean"
+                          }
+                          "proxyUrl" = {
+                            "description" = <<-EOT
+                            `proxyURL` defines the HTTP proxy server to use.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
+                            EOT
+                            "pattern" = "^http(s)?://.+$"
+                            "type" = "string"
+                          }
+                          "refreshInterval" = {
+                            "description" = <<-EOT
+                            Duration is a valid time duration that can be parsed by Prometheus model.ParseDuration() function.
+                            Supported units: y, w, d, h, m, s, ms
+                            Examples: `30s`, `1m`, `1h20m15s`, `15d`
+                            EOT
+                            "pattern" = "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
+                            "type" = "string"
+                          }
+                          "region" = {
+                            "type" = "string"
+                          }
+                          "server" = {
+                            "minLength" = 1
+                            "type" = "string"
+                          }
+                          "tagSeparator" = {
+                            "type" = "string"
+                          }
+                          "tlsConfig" = {
+                            "description" = "TLS configuration applying to the target HTTP endpoint."
+                            "properties" = {
+                              "ca" = {
+                                "description" = "Certificate authority used when verifying server certificates."
+                                "properties" = {
+                                  "configMap" = {
+                                    "description" = "ConfigMap containing data to use for the targets."
+                                    "properties" = {
+                                      "key" = {
+                                        "description" = "The key to select."
+                                        "type" = "string"
+                                      }
+                                      "name" = {
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
+                                        "type" = "string"
+                                      }
+                                      "optional" = {
+                                        "description" = "Specify whether the ConfigMap or its key must be defined"
+                                        "type" = "boolean"
+                                      }
+                                    }
+                                    "required" = [
+                                      "key",
+                                    ]
+                                    "type" = "object"
+                                    "x-kubernetes-map-type" = "atomic"
+                                  }
+                                  "secret" = {
+                                    "description" = "Secret containing data to use for the targets."
+                                    "properties" = {
+                                      "key" = {
+                                        "description" = "The key of the secret to select from.  Must be a valid secret key."
+                                        "type" = "string"
+                                      }
+                                      "name" = {
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
+                                        "type" = "string"
+                                      }
+                                      "optional" = {
+                                        "description" = "Specify whether the Secret or its key must be defined"
+                                        "type" = "boolean"
+                                      }
+                                    }
+                                    "required" = [
+                                      "key",
+                                    ]
+                                    "type" = "object"
+                                    "x-kubernetes-map-type" = "atomic"
+                                  }
+                                }
+                                "type" = "object"
+                              }
+                              "cert" = {
+                                "description" = "Client certificate to present when doing client-authentication."
+                                "properties" = {
+                                  "configMap" = {
+                                    "description" = "ConfigMap containing data to use for the targets."
+                                    "properties" = {
+                                      "key" = {
+                                        "description" = "The key to select."
+                                        "type" = "string"
+                                      }
+                                      "name" = {
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
+                                        "type" = "string"
+                                      }
+                                      "optional" = {
+                                        "description" = "Specify whether the ConfigMap or its key must be defined"
+                                        "type" = "boolean"
+                                      }
+                                    }
+                                    "required" = [
+                                      "key",
+                                    ]
+                                    "type" = "object"
+                                    "x-kubernetes-map-type" = "atomic"
+                                  }
+                                  "secret" = {
+                                    "description" = "Secret containing data to use for the targets."
+                                    "properties" = {
+                                      "key" = {
+                                        "description" = "The key of the secret to select from.  Must be a valid secret key."
+                                        "type" = "string"
+                                      }
+                                      "name" = {
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
+                                        "type" = "string"
+                                      }
+                                      "optional" = {
+                                        "description" = "Specify whether the Secret or its key must be defined"
+                                        "type" = "boolean"
+                                      }
+                                    }
+                                    "required" = [
+                                      "key",
+                                    ]
+                                    "type" = "object"
+                                    "x-kubernetes-map-type" = "atomic"
+                                  }
+                                }
+                                "type" = "object"
+                              }
+                              "insecureSkipVerify" = {
+                                "description" = "Disable target certificate validation."
+                                "type" = "boolean"
+                              }
+                              "keySecret" = {
+                                "description" = "Secret containing the client key file for the targets."
+                                "properties" = {
+                                  "key" = {
+                                    "description" = "The key of the secret to select from.  Must be a valid secret key."
+                                    "type" = "string"
+                                  }
+                                  "name" = {
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
+                                    "type" = "string"
+                                  }
+                                  "optional" = {
+                                    "description" = "Specify whether the Secret or its key must be defined"
+                                    "type" = "boolean"
+                                  }
+                                }
+                                "required" = [
+                                  "key",
+                                ]
+                                "type" = "object"
+                                "x-kubernetes-map-type" = "atomic"
+                              }
+                              "serverName" = {
+                                "description" = "Used to verify the hostname for the targets."
+                                "type" = "string"
+                              }
+                            }
+                            "type" = "object"
+                          }
+                        }
+                        "required" = [
+                          "server",
+                        ]
+                        "type" = "object"
+                      }
+                      "type" = "array"
+                    }
                     "authorization" = {
                       "description" = "Authorization header to use on every scrape request."
                       "properties" = {
@@ -56,7 +584,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                               "type" = "string"
                             }
                             "name" = {
-                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                              "description" = <<-EOT
+                              Name of the referent.
+                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                              TODO: Add other useful fields. apiVersion, kind, uid?
+                              EOT
                               "type" = "string"
                             }
                             "optional" = {
@@ -72,9 +604,13 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                         }
                         "type" = {
                           "description" = <<-EOT
-                          Defines the authentication type. The value is case-insensitive. 
-                           "Basic" is not a supported value. 
-                           Default: "Bearer"
+                          Defines the authentication type. The value is case-insensitive.
+                          
+                          
+                          "Basic" is not a supported value.
+                          
+                          
+                          Default: "Bearer"
                           EOT
                           "type" = "string"
                         }
@@ -84,13 +620,22 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                     "azureSDConfigs" = {
                       "description" = "AzureSDConfigs defines a list of Azure service discovery configurations."
                       "items" = {
-                        "description" = "AzureSDConfig allow retrieving scrape targets from Azure VMs. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#azure_sd_config"
+                        "description" = <<-EOT
+                        AzureSDConfig allow retrieving scrape targets from Azure VMs.
+                        See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#azure_sd_config
+                        EOT
                         "properties" = {
                           "authenticationMethod" = {
-                            "description" = "# The authentication method, either OAuth or ManagedIdentity. See https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview"
+                            "description" = <<-EOT
+                            # The authentication method, either `OAuth` or `ManagedIdentity` or `SDK`.
+                            See https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview
+                            SDK authentication method uses environment variables by default.
+                            See https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication
+                            EOT
                             "enum" = [
                               "OAuth",
                               "ManagedIdentity",
+                              "SDK",
                             ]
                             "type" = "string"
                           }
@@ -106,7 +651,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "type" = "string"
                               }
                               "name" = {
-                                "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                "description" = <<-EOT
+                                Name of the referent.
+                                More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                TODO: Add other useful fields. apiVersion, kind, uid?
+                                EOT
                                 "type" = "string"
                               }
                               "optional" = {
@@ -125,7 +674,10 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                             "type" = "string"
                           }
                           "port" = {
-                            "description" = "The port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule."
+                            "description" = <<-EOT
+                            The port to scrape metrics from. If using the public IP address, this must
+                            instead be specified in the relabeling rule.
+                            EOT
                             "type" = "integer"
                           }
                           "refreshInterval" = {
@@ -158,14 +710,21 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                       "description" = "BasicAuth information to use on every scrape request."
                       "properties" = {
                         "password" = {
-                          "description" = "`password` specifies a key of a Secret containing the password for authentication."
+                          "description" = <<-EOT
+                          `password` specifies a key of a Secret containing the password for
+                          authentication.
+                          EOT
                           "properties" = {
                             "key" = {
                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                               "type" = "string"
                             }
                             "name" = {
-                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                              "description" = <<-EOT
+                              Name of the referent.
+                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                              TODO: Add other useful fields. apiVersion, kind, uid?
+                              EOT
                               "type" = "string"
                             }
                             "optional" = {
@@ -180,14 +739,21 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                           "x-kubernetes-map-type" = "atomic"
                         }
                         "username" = {
-                          "description" = "`username` specifies a key of a Secret containing the username for authentication."
+                          "description" = <<-EOT
+                          `username` specifies a key of a Secret containing the username for
+                          authentication.
+                          EOT
                           "properties" = {
                             "key" = {
                               "description" = "The key of the secret to select from.  Must be a valid secret key."
                               "type" = "string"
                             }
                             "name" = {
-                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                              "description" = <<-EOT
+                              Name of the referent.
+                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                              TODO: Add other useful fields. apiVersion, kind, uid?
+                              EOT
                               "type" = "string"
                             }
                             "optional" = {
@@ -207,10 +773,16 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                     "consulSDConfigs" = {
                       "description" = "ConsulSDConfigs defines a list of Consul service discovery configurations."
                       "items" = {
-                        "description" = "ConsulSDConfig defines a Consul service discovery configuration See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#consul_sd_config"
+                        "description" = <<-EOT
+                        ConsulSDConfig defines a Consul service discovery configuration
+                        See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#consul_sd_config
+                        EOT
                         "properties" = {
                           "allowStale" = {
-                            "description" = "Allow stale Consul results (see https://www.consul.io/api/features/consistency.html). Will reduce load on Consul. If unset, Prometheus uses its default value."
+                            "description" = <<-EOT
+                            Allow stale Consul results (see https://www.consul.io/api/features/consistency.html). Will reduce load on Consul.
+                            If unset, Prometheus uses its default value.
+                            EOT
                             "type" = "boolean"
                           }
                           "authorization" = {
@@ -224,7 +796,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -240,9 +816,13 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                               }
                               "type" = {
                                 "description" = <<-EOT
-                                Defines the authentication type. The value is case-insensitive. 
-                                 "Basic" is not a supported value. 
-                                 Default: "Bearer"
+                                Defines the authentication type. The value is case-insensitive.
+                                
+                                
+                                "Basic" is not a supported value.
+                                
+                                
+                                Default: "Bearer"
                                 EOT
                                 "type" = "string"
                               }
@@ -250,17 +830,27 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                             "type" = "object"
                           }
                           "basicAuth" = {
-                            "description" = "BasicAuth information to authenticate against the Consul Server. More info: https://prometheus.io/docs/operating/configuration/#endpoints"
+                            "description" = <<-EOT
+                            BasicAuth information to authenticate against the Consul Server.
+                            More info: https://prometheus.io/docs/operating/configuration/#endpoints
+                            EOT
                             "properties" = {
                               "password" = {
-                                "description" = "`password` specifies a key of a Secret containing the password for authentication."
+                                "description" = <<-EOT
+                                `password` specifies a key of a Secret containing the password for
+                                authentication.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -275,14 +865,21 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "x-kubernetes-map-type" = "atomic"
                               }
                               "username" = {
-                                "description" = "`username` specifies a key of a Secret containing the username for authentication."
+                                "description" = <<-EOT
+                                `username` specifies a key of a Secret containing the username for
+                                authentication.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -304,11 +901,17 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                             "type" = "string"
                           }
                           "enableHTTP2" = {
-                            "description" = "Whether to enable HTTP2. If unset, Prometheus uses its default value."
+                            "description" = <<-EOT
+                            Whether to enable HTTP2.
+                            If unset, Prometheus uses its default value.
+                            EOT
                             "type" = "boolean"
                           }
                           "followRedirects" = {
-                            "description" = "Configure whether HTTP requests follow HTTP 3xx redirects. If unset, Prometheus uses its default value."
+                            "description" = <<-EOT
+                            Configure whether HTTP requests follow HTTP 3xx redirects.
+                            If unset, Prometheus uses its default value.
+                            EOT
                             "type" = "boolean"
                           }
                           "namespace" = {
@@ -317,8 +920,12 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                           }
                           "noProxy" = {
                             "description" = <<-EOT
-                            `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers. 
-                             It requires Prometheus >= v2.43.0.
+                            `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+                            that should be excluded from proxying. IP and domain names can
+                            contain port numbers.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "type" = "string"
                           }
@@ -334,7 +941,10 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                             "description" = "Optional OAuth 2.0 configuration."
                             "properties" = {
                               "clientId" = {
-                                "description" = "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
+                                "description" = <<-EOT
+                                `clientId` specifies a key of a Secret or ConfigMap containing the
+                                OAuth2 client's ID.
+                                EOT
                                 "properties" = {
                                   "configMap" = {
                                     "description" = "ConfigMap containing data to use for the targets."
@@ -344,7 +954,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -366,7 +980,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -384,14 +1002,21 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "type" = "object"
                               }
                               "clientSecret" = {
-                                "description" = "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
+                                "description" = <<-EOT
+                                `clientSecret` specifies a key of a Secret containing the OAuth2
+                                client's secret.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -409,7 +1034,10 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "additionalProperties" = {
                                   "type" = "string"
                                 }
-                                "description" = "`endpointParams` configures the HTTP parameters to append to the token URL."
+                                "description" = <<-EOT
+                                `endpointParams` configures the HTTP parameters to append to the token
+                                URL.
+                                EOT
                                 "type" = "object"
                               }
                               "scopes" = {
@@ -438,51 +1066,70 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                           }
                           "proxyConnectHeader" = {
                             "additionalProperties" = {
-                              "description" = "SecretKeySelector selects a key of a Secret."
-                              "properties" = {
-                                "key" = {
-                                  "description" = "The key of the secret to select from.  Must be a valid secret key."
-                                  "type" = "string"
+                              "items" = {
+                                "description" = "SecretKeySelector selects a key of a Secret."
+                                "properties" = {
+                                  "key" = {
+                                    "description" = "The key of the secret to select from.  Must be a valid secret key."
+                                    "type" = "string"
+                                  }
+                                  "name" = {
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
+                                    "type" = "string"
+                                  }
+                                  "optional" = {
+                                    "description" = "Specify whether the Secret or its key must be defined"
+                                    "type" = "boolean"
+                                  }
                                 }
-                                "name" = {
-                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
-                                  "type" = "string"
-                                }
-                                "optional" = {
-                                  "description" = "Specify whether the Secret or its key must be defined"
-                                  "type" = "boolean"
-                                }
+                                "required" = [
+                                  "key",
+                                ]
+                                "type" = "object"
+                                "x-kubernetes-map-type" = "atomic"
                               }
-                              "required" = [
-                                "key",
-                              ]
-                              "type" = "object"
-                              "x-kubernetes-map-type" = "atomic"
+                              "type" = "array"
                             }
                             "description" = <<-EOT
-                            ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests. 
-                             It requires Prometheus >= v2.43.0.
+                            ProxyConnectHeader optionally specifies headers to send to
+                            proxies during CONNECT requests.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "type" = "object"
                             "x-kubernetes-map-type" = "atomic"
                           }
                           "proxyFromEnvironment" = {
                             "description" = <<-EOT
-                            Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY). If unset, Prometheus uses its default value. 
-                             It requires Prometheus >= v2.43.0.
+                            Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+                            If unset, Prometheus uses its default value.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "type" = "boolean"
                           }
                           "proxyUrl" = {
                             "description" = <<-EOT
-                            `proxyURL` defines the HTTP proxy server to use. 
-                             It requires Prometheus >= v2.43.0.
+                            `proxyURL` defines the HTTP proxy server to use.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "pattern" = "^http(s)?://.+$"
                             "type" = "string"
                           }
                           "refreshInterval" = {
-                            "description" = "The time after which the provided names are refreshed. On large setup it might be a good idea to increase this value because the catalog will change all the time. If unset, Prometheus uses its default value."
+                            "description" = <<-EOT
+                            The time after which the provided names are refreshed.
+                            On large setup it might be a good idea to increase this value because the catalog will change all the time.
+                            If unset, Prometheus uses its default value.
+                            EOT
                             "pattern" = "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
                             "type" = "string"
                           }
@@ -508,7 +1155,10 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                             "x-kubernetes-list-type" = "atomic"
                           }
                           "tagSeparator" = {
-                            "description" = "The string by which Consul tags are joined into the tag label. If unset, Prometheus uses its default value."
+                            "description" = <<-EOT
+                            The string by which Consul tags are joined into the tag label.
+                            If unset, Prometheus uses its default value.
+                            EOT
                             "type" = "string"
                           }
                           "tags" = {
@@ -533,7 +1183,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -555,7 +1209,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -583,7 +1241,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -605,7 +1267,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -634,7 +1300,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -663,7 +1333,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "type" = "string"
                               }
                               "name" = {
-                                "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                "description" = <<-EOT
+                                Name of the referent.
+                                More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                TODO: Add other useful fields. apiVersion, kind, uid?
+                                EOT
                                 "type" = "string"
                               }
                               "optional" = {
@@ -688,10 +1362,17 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                     "digitalOceanSDConfigs" = {
                       "description" = "DigitalOceanSDConfigs defines a list of DigitalOcean service discovery configurations."
                       "items" = {
-                        "description" = "DigitalOceanSDConfig allow retrieving scrape targets from DigitalOcean's Droplets API. This service discovery uses the public IPv4 address by default, by that can be changed with relabeling See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#digitalocean_sd_config"
+                        "description" = <<-EOT
+                        DigitalOceanSDConfig allow retrieving scrape targets from DigitalOcean's Droplets API.
+                        This service discovery uses the public IPv4 address by default, by that can be changed with relabeling
+                        See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#digitalocean_sd_config
+                        EOT
                         "properties" = {
                           "authorization" = {
-                            "description" = "Authorization header configuration to authenticate against the DigitalOcean API. Cannot be set at the same time as `oauth2`."
+                            "description" = <<-EOT
+                            Authorization header configuration to authenticate against the DigitalOcean API.
+                            Cannot be set at the same time as `oauth2`.
+                            EOT
                             "properties" = {
                               "credentials" = {
                                 "description" = "Selects a key of a Secret in the namespace that contains the credentials for authentication."
@@ -701,7 +1382,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -717,9 +1402,13 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                               }
                               "type" = {
                                 "description" = <<-EOT
-                                Defines the authentication type. The value is case-insensitive. 
-                                 "Basic" is not a supported value. 
-                                 Default: "Bearer"
+                                Defines the authentication type. The value is case-insensitive.
+                                
+                                
+                                "Basic" is not a supported value.
+                                
+                                
+                                Default: "Bearer"
                                 EOT
                                 "type" = "string"
                               }
@@ -736,16 +1425,26 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                           }
                           "noProxy" = {
                             "description" = <<-EOT
-                            `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers. 
-                             It requires Prometheus >= v2.43.0.
+                            `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+                            that should be excluded from proxying. IP and domain names can
+                            contain port numbers.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "type" = "string"
                           }
                           "oauth2" = {
-                            "description" = "Optional OAuth 2.0 configuration. Cannot be set at the same time as `authorization`."
+                            "description" = <<-EOT
+                            Optional OAuth 2.0 configuration.
+                            Cannot be set at the same time as `authorization`.
+                            EOT
                             "properties" = {
                               "clientId" = {
-                                "description" = "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
+                                "description" = <<-EOT
+                                `clientId` specifies a key of a Secret or ConfigMap containing the
+                                OAuth2 client's ID.
+                                EOT
                                 "properties" = {
                                   "configMap" = {
                                     "description" = "ConfigMap containing data to use for the targets."
@@ -755,7 +1454,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -777,7 +1480,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -795,14 +1502,21 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "type" = "object"
                               }
                               "clientSecret" = {
-                                "description" = "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
+                                "description" = <<-EOT
+                                `clientSecret` specifies a key of a Secret containing the OAuth2
+                                client's secret.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -820,7 +1534,10 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "additionalProperties" = {
                                   "type" = "string"
                                 }
-                                "description" = "`endpointParams` configures the HTTP parameters to append to the token URL."
+                                "description" = <<-EOT
+                                `endpointParams` configures the HTTP parameters to append to the token
+                                URL.
+                                EOT
                                 "type" = "object"
                               }
                               "scopes" = {
@@ -849,45 +1566,60 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                           }
                           "proxyConnectHeader" = {
                             "additionalProperties" = {
-                              "description" = "SecretKeySelector selects a key of a Secret."
-                              "properties" = {
-                                "key" = {
-                                  "description" = "The key of the secret to select from.  Must be a valid secret key."
-                                  "type" = "string"
+                              "items" = {
+                                "description" = "SecretKeySelector selects a key of a Secret."
+                                "properties" = {
+                                  "key" = {
+                                    "description" = "The key of the secret to select from.  Must be a valid secret key."
+                                    "type" = "string"
+                                  }
+                                  "name" = {
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
+                                    "type" = "string"
+                                  }
+                                  "optional" = {
+                                    "description" = "Specify whether the Secret or its key must be defined"
+                                    "type" = "boolean"
+                                  }
                                 }
-                                "name" = {
-                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
-                                  "type" = "string"
-                                }
-                                "optional" = {
-                                  "description" = "Specify whether the Secret or its key must be defined"
-                                  "type" = "boolean"
-                                }
+                                "required" = [
+                                  "key",
+                                ]
+                                "type" = "object"
+                                "x-kubernetes-map-type" = "atomic"
                               }
-                              "required" = [
-                                "key",
-                              ]
-                              "type" = "object"
-                              "x-kubernetes-map-type" = "atomic"
+                              "type" = "array"
                             }
                             "description" = <<-EOT
-                            ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests. 
-                             It requires Prometheus >= v2.43.0.
+                            ProxyConnectHeader optionally specifies headers to send to
+                            proxies during CONNECT requests.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "type" = "object"
                             "x-kubernetes-map-type" = "atomic"
                           }
                           "proxyFromEnvironment" = {
                             "description" = <<-EOT
-                            Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY). If unset, Prometheus uses its default value. 
-                             It requires Prometheus >= v2.43.0.
+                            Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+                            If unset, Prometheus uses its default value.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "type" = "boolean"
                           }
                           "proxyUrl" = {
                             "description" = <<-EOT
-                            `proxyURL` defines the HTTP proxy server to use. 
-                             It requires Prometheus >= v2.43.0.
+                            `proxyURL` defines the HTTP proxy server to use.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "pattern" = "^http(s)?://.+$"
                             "type" = "string"
@@ -911,7 +1643,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -933,7 +1669,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -961,7 +1701,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -983,7 +1727,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -1012,7 +1760,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -1041,7 +1793,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                     "dnsSDConfigs" = {
                       "description" = "DNSSDConfigs defines a list of DNS service discovery configurations."
                       "items" = {
-                        "description" = "DNSSDConfig allows specifying a set of DNS domain names which are periodically queried to discover a list of targets. The DNS servers to be contacted are read from /etc/resolv.conf. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#dns_sd_config"
+                        "description" = <<-EOT
+                        DNSSDConfig allows specifying a set of DNS domain names which are periodically queried to discover a list of targets.
+                        The DNS servers to be contacted are read from /etc/resolv.conf.
+                        See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#dns_sd_config
+                        EOT
                         "properties" = {
                           "names" = {
                             "description" = "A list of DNS domain names to be queried."
@@ -1052,18 +1808,27 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                             "type" = "array"
                           }
                           "port" = {
-                            "description" = "The port number used if the query type is not SRV Ignored for SRV records"
+                            "description" = <<-EOT
+                            The port number used if the query type is not SRV
+                            Ignored for SRV records
+                            EOT
                             "type" = "integer"
                           }
                           "refreshInterval" = {
-                            "description" = "RefreshInterval configures the time after which the provided names are refreshed. If not set, Prometheus uses its default value."
+                            "description" = <<-EOT
+                            RefreshInterval configures the time after which the provided names are refreshed.
+                            If not set, Prometheus uses its default value.
+                            EOT
                             "pattern" = "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
                             "type" = "string"
                           }
                           "type" = {
                             "description" = <<-EOT
-                            The type of DNS query to perform. One of SRV, A, AAAA, MX or NS. If not set, Prometheus uses its default value. 
-                             When set to NS, It requires Prometheus >= 2.49.0.
+                            The type of DNS query to perform. One of SRV, A, AAAA, MX or NS.
+                            If not set, Prometheus uses its default value.
+                            
+                            
+                            When set to NS, It requires Prometheus >= 2.49.0.
                             EOT
                             "enum" = [
                               "SRV",
@@ -1085,10 +1850,18 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                     "dockerSDConfigs" = {
                       "description" = "DockerSDConfigs defines a list of Docker service discovery configurations."
                       "items" = {
-                        "description" = "Docker SD configurations allow retrieving scrape targets from Docker Engine hosts. This SD discovers \"containers\" and will create a target for each network IP and port the container is configured to expose. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#docker_sd_config"
+                        "description" = <<-EOT
+                        Docker SD configurations allow retrieving scrape targets from Docker Engine hosts.
+                        This SD discovers "containers" and will create a target for each network IP and
+                        port the container is configured to expose.
+                        See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#docker_sd_config
+                        EOT
                         "properties" = {
                           "authorization" = {
-                            "description" = "Authorization header configuration to authenticate against the Docker API. Cannot be set at the same time as `oauth2`."
+                            "description" = <<-EOT
+                            Authorization header configuration to authenticate against the Docker API.
+                            Cannot be set at the same time as `oauth2`.
+                            EOT
                             "properties" = {
                               "credentials" = {
                                 "description" = "Selects a key of a Secret in the namespace that contains the credentials for authentication."
@@ -1098,7 +1871,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -1114,9 +1891,13 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                               }
                               "type" = {
                                 "description" = <<-EOT
-                                Defines the authentication type. The value is case-insensitive. 
-                                 "Basic" is not a supported value. 
-                                 Default: "Bearer"
+                                Defines the authentication type. The value is case-insensitive.
+                                
+                                
+                                "Basic" is not a supported value.
+                                
+                                
+                                Default: "Bearer"
                                 EOT
                                 "type" = "string"
                               }
@@ -1127,14 +1908,21 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                             "description" = "BasicAuth information to use on every scrape request."
                             "properties" = {
                               "password" = {
-                                "description" = "`password` specifies a key of a Secret containing the password for authentication."
+                                "description" = <<-EOT
+                                `password` specifies a key of a Secret containing the password for
+                                authentication.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -1149,14 +1937,21 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "x-kubernetes-map-type" = "atomic"
                               }
                               "username" = {
-                                "description" = "`username` specifies a key of a Secret containing the username for authentication."
+                                "description" = <<-EOT
+                                `username` specifies a key of a Secret containing the username for
+                                authentication.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -1215,16 +2010,26 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                           }
                           "noProxy" = {
                             "description" = <<-EOT
-                            `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers. 
-                             It requires Prometheus >= v2.43.0.
+                            `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+                            that should be excluded from proxying. IP and domain names can
+                            contain port numbers.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "type" = "string"
                           }
                           "oauth2" = {
-                            "description" = "Optional OAuth 2.0 configuration. Cannot be set at the same time as `authorization`."
+                            "description" = <<-EOT
+                            Optional OAuth 2.0 configuration.
+                            Cannot be set at the same time as `authorization`.
+                            EOT
                             "properties" = {
                               "clientId" = {
-                                "description" = "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
+                                "description" = <<-EOT
+                                `clientId` specifies a key of a Secret or ConfigMap containing the
+                                OAuth2 client's ID.
+                                EOT
                                 "properties" = {
                                   "configMap" = {
                                     "description" = "ConfigMap containing data to use for the targets."
@@ -1234,7 +2039,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -1256,7 +2065,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -1274,14 +2087,21 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "type" = "object"
                               }
                               "clientSecret" = {
-                                "description" = "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
+                                "description" = <<-EOT
+                                `clientSecret` specifies a key of a Secret containing the OAuth2
+                                client's secret.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -1299,7 +2119,10 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "additionalProperties" = {
                                   "type" = "string"
                                 }
-                                "description" = "`endpointParams` configures the HTTP parameters to append to the token URL."
+                                "description" = <<-EOT
+                                `endpointParams` configures the HTTP parameters to append to the token
+                                URL.
+                                EOT
                                 "type" = "object"
                               }
                               "scopes" = {
@@ -1328,45 +2151,60 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                           }
                           "proxyConnectHeader" = {
                             "additionalProperties" = {
-                              "description" = "SecretKeySelector selects a key of a Secret."
-                              "properties" = {
-                                "key" = {
-                                  "description" = "The key of the secret to select from.  Must be a valid secret key."
-                                  "type" = "string"
+                              "items" = {
+                                "description" = "SecretKeySelector selects a key of a Secret."
+                                "properties" = {
+                                  "key" = {
+                                    "description" = "The key of the secret to select from.  Must be a valid secret key."
+                                    "type" = "string"
+                                  }
+                                  "name" = {
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
+                                    "type" = "string"
+                                  }
+                                  "optional" = {
+                                    "description" = "Specify whether the Secret or its key must be defined"
+                                    "type" = "boolean"
+                                  }
                                 }
-                                "name" = {
-                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
-                                  "type" = "string"
-                                }
-                                "optional" = {
-                                  "description" = "Specify whether the Secret or its key must be defined"
-                                  "type" = "boolean"
-                                }
+                                "required" = [
+                                  "key",
+                                ]
+                                "type" = "object"
+                                "x-kubernetes-map-type" = "atomic"
                               }
-                              "required" = [
-                                "key",
-                              ]
-                              "type" = "object"
-                              "x-kubernetes-map-type" = "atomic"
+                              "type" = "array"
                             }
                             "description" = <<-EOT
-                            ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests. 
-                             It requires Prometheus >= v2.43.0.
+                            ProxyConnectHeader optionally specifies headers to send to
+                            proxies during CONNECT requests.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "type" = "object"
                             "x-kubernetes-map-type" = "atomic"
                           }
                           "proxyFromEnvironment" = {
                             "description" = <<-EOT
-                            Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY). If unset, Prometheus uses its default value. 
-                             It requires Prometheus >= v2.43.0.
+                            Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+                            If unset, Prometheus uses its default value.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "type" = "boolean"
                           }
                           "proxyUrl" = {
                             "description" = <<-EOT
-                            `proxyURL` defines the HTTP proxy server to use. 
-                             It requires Prometheus >= v2.43.0.
+                            `proxyURL` defines the HTTP proxy server to use.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "pattern" = "^http(s)?://.+$"
                             "type" = "string"
@@ -1390,7 +2228,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -1412,7 +2254,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -1440,7 +2286,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -1462,7 +2312,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -1491,7 +2345,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -1523,7 +2381,12 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                     "ec2SDConfigs" = {
                       "description" = "EC2SDConfigs defines a list of EC2 service discovery configurations."
                       "items" = {
-                        "description" = "EC2SDConfig allow retrieving scrape targets from AWS EC2 instances. The private IP address is used by default, but may be changed to the public IP address with relabeling. The IAM credentials used must have the ec2:DescribeInstances permission to discover scrape targets See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#ec2_sd_config"
+                        "description" = <<-EOT
+                        EC2SDConfig allow retrieving scrape targets from AWS EC2 instances.
+                        The private IP address is used by default, but may be changed to the public IP address with relabeling.
+                        The IAM credentials used must have the ec2:DescribeInstances permission to discover scrape targets
+                        See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#ec2_sd_config
+                        EOT
                         "properties" = {
                           "accessKey" = {
                             "description" = "AccessKey is the AWS API key."
@@ -1533,7 +2396,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "type" = "string"
                               }
                               "name" = {
-                                "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                "description" = <<-EOT
+                                Name of the referent.
+                                More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                TODO: Add other useful fields. apiVersion, kind, uid?
+                                EOT
                                 "type" = "string"
                               }
                               "optional" = {
@@ -1548,7 +2415,12 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                             "x-kubernetes-map-type" = "atomic"
                           }
                           "filters" = {
-                            "description" = "Filters can be used optionally to filter the instance list by other criteria. Available filter criteria can be found here: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeInstances.html Filter API documentation: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Filter.html"
+                            "description" = <<-EOT
+                            Filters can be used optionally to filter the instance list by other criteria.
+                            Available filter criteria can be found here:
+                            https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeInstances.html
+                            Filter API documentation: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Filter.html
+                            EOT
                             "items" = {
                               "description" = "EC2Filter is the configuration for filtering EC2 instances."
                               "properties" = {
@@ -1571,7 +2443,10 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                             "type" = "array"
                           }
                           "port" = {
-                            "description" = "The port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule."
+                            "description" = <<-EOT
+                            The port to scrape metrics from. If using the public IP address, this must
+                            instead be specified in the relabeling rule.
+                            EOT
                             "type" = "integer"
                           }
                           "refreshInterval" = {
@@ -1595,7 +2470,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "type" = "string"
                               }
                               "name" = {
-                                "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                "description" = <<-EOT
+                                Name of the referent.
+                                More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                TODO: Add other useful fields. apiVersion, kind, uid?
+                                EOT
                                 "type" = "string"
                               }
                               "optional" = {
@@ -1616,16 +2495,24 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                     }
                     "enableCompression" = {
                       "description" = <<-EOT
-                      When false, Prometheus will request uncompressed response from the scraped target. 
-                       It requires Prometheus >= v2.49.0. 
-                       If unset, Prometheus uses true by default.
+                      When false, Prometheus will request uncompressed response from the scraped target.
+                      
+                      
+                      It requires Prometheus >= v2.49.0.
+                      
+                      
+                      If unset, Prometheus uses true by default.
                       EOT
                       "type" = "boolean"
                     }
                     "eurekaSDConfigs" = {
                       "description" = "EurekaSDConfigs defines a list of Eureka service discovery configurations."
                       "items" = {
-                        "description" = "Eureka SD configurations allow retrieving scrape targets using the Eureka REST API. Prometheus will periodically check the REST endpoint and create a target for every app instance. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#eureka_sd_config"
+                        "description" = <<-EOT
+                        Eureka SD configurations allow retrieving scrape targets using the Eureka REST API.
+                        Prometheus will periodically check the REST endpoint and create a target for every app instance.
+                        See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#eureka_sd_config
+                        EOT
                         "properties" = {
                           "authorization" = {
                             "description" = "Authorization header to use on every scrape request."
@@ -1638,7 +2525,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -1654,9 +2545,13 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                               }
                               "type" = {
                                 "description" = <<-EOT
-                                Defines the authentication type. The value is case-insensitive. 
-                                 "Basic" is not a supported value. 
-                                 Default: "Bearer"
+                                Defines the authentication type. The value is case-insensitive.
+                                
+                                
+                                "Basic" is not a supported value.
+                                
+                                
+                                Default: "Bearer"
                                 EOT
                                 "type" = "string"
                               }
@@ -1667,14 +2562,21 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                             "description" = "BasicAuth information to use on every scrape request."
                             "properties" = {
                               "password" = {
-                                "description" = "`password` specifies a key of a Secret containing the password for authentication."
+                                "description" = <<-EOT
+                                `password` specifies a key of a Secret containing the password for
+                                authentication.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -1689,14 +2591,21 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "x-kubernetes-map-type" = "atomic"
                               }
                               "username" = {
-                                "description" = "`username` specifies a key of a Secret containing the username for authentication."
+                                "description" = <<-EOT
+                                `username` specifies a key of a Secret containing the username for
+                                authentication.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -1723,16 +2632,26 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                           }
                           "noProxy" = {
                             "description" = <<-EOT
-                            `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers. 
-                             It requires Prometheus >= v2.43.0.
+                            `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+                            that should be excluded from proxying. IP and domain names can
+                            contain port numbers.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "type" = "string"
                           }
                           "oauth2" = {
-                            "description" = "Optional OAuth 2.0 configuration. Cannot be set at the same time as `authorization` or `basic_auth`."
+                            "description" = <<-EOT
+                            Optional OAuth 2.0 configuration.
+                            Cannot be set at the same time as `authorization` or `basic_auth`.
+                            EOT
                             "properties" = {
                               "clientId" = {
-                                "description" = "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
+                                "description" = <<-EOT
+                                `clientId` specifies a key of a Secret or ConfigMap containing the
+                                OAuth2 client's ID.
+                                EOT
                                 "properties" = {
                                   "configMap" = {
                                     "description" = "ConfigMap containing data to use for the targets."
@@ -1742,7 +2661,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -1764,7 +2687,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -1782,14 +2709,21 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "type" = "object"
                               }
                               "clientSecret" = {
-                                "description" = "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
+                                "description" = <<-EOT
+                                `clientSecret` specifies a key of a Secret containing the OAuth2
+                                client's secret.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -1807,7 +2741,10 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "additionalProperties" = {
                                   "type" = "string"
                                 }
-                                "description" = "`endpointParams` configures the HTTP parameters to append to the token URL."
+                                "description" = <<-EOT
+                                `endpointParams` configures the HTTP parameters to append to the token
+                                URL.
+                                EOT
                                 "type" = "object"
                               }
                               "scopes" = {
@@ -1832,45 +2769,60 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                           }
                           "proxyConnectHeader" = {
                             "additionalProperties" = {
-                              "description" = "SecretKeySelector selects a key of a Secret."
-                              "properties" = {
-                                "key" = {
-                                  "description" = "The key of the secret to select from.  Must be a valid secret key."
-                                  "type" = "string"
+                              "items" = {
+                                "description" = "SecretKeySelector selects a key of a Secret."
+                                "properties" = {
+                                  "key" = {
+                                    "description" = "The key of the secret to select from.  Must be a valid secret key."
+                                    "type" = "string"
+                                  }
+                                  "name" = {
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
+                                    "type" = "string"
+                                  }
+                                  "optional" = {
+                                    "description" = "Specify whether the Secret or its key must be defined"
+                                    "type" = "boolean"
+                                  }
                                 }
-                                "name" = {
-                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
-                                  "type" = "string"
-                                }
-                                "optional" = {
-                                  "description" = "Specify whether the Secret or its key must be defined"
-                                  "type" = "boolean"
-                                }
+                                "required" = [
+                                  "key",
+                                ]
+                                "type" = "object"
+                                "x-kubernetes-map-type" = "atomic"
                               }
-                              "required" = [
-                                "key",
-                              ]
-                              "type" = "object"
-                              "x-kubernetes-map-type" = "atomic"
+                              "type" = "array"
                             }
                             "description" = <<-EOT
-                            ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests. 
-                             It requires Prometheus >= v2.43.0.
+                            ProxyConnectHeader optionally specifies headers to send to
+                            proxies during CONNECT requests.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "type" = "object"
                             "x-kubernetes-map-type" = "atomic"
                           }
                           "proxyFromEnvironment" = {
                             "description" = <<-EOT
-                            Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY). If unset, Prometheus uses its default value. 
-                             It requires Prometheus >= v2.43.0.
+                            Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+                            If unset, Prometheus uses its default value.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "type" = "boolean"
                           }
                           "proxyUrl" = {
                             "description" = <<-EOT
-                            `proxyURL` defines the HTTP proxy server to use. 
-                             It requires Prometheus >= v2.43.0.
+                            `proxyURL` defines the HTTP proxy server to use.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "pattern" = "^http(s)?://.+$"
                             "type" = "string"
@@ -1899,7 +2851,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -1921,7 +2877,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -1949,7 +2909,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -1971,7 +2935,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -2000,7 +2968,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -2032,10 +3004,18 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                     "fileSDConfigs" = {
                       "description" = "FileSDConfigs defines a list of file service discovery configurations."
                       "items" = {
-                        "description" = "FileSDConfig defines a Prometheus file service discovery configuration See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#file_sd_config"
+                        "description" = <<-EOT
+                        FileSDConfig defines a Prometheus file service discovery configuration
+                        See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#file_sd_config
+                        EOT
                         "properties" = {
                           "files" = {
-                            "description" = "List of files to be used for file discovery. Recommendation: use absolute paths. While relative paths work, the prometheus-operator project makes no guarantees about the working directory where the configuration file is stored. Files must be mounted using Prometheus.ConfigMaps or Prometheus.Secrets."
+                            "description" = <<-EOT
+                            List of files to be used for file discovery. Recommendation: use absolute paths. While relative paths work, the
+                            prometheus-operator project makes no guarantees about the working directory where the configuration file is
+                            stored.
+                            Files must be mounted using Prometheus.ConfigMaps or Prometheus.Secrets.
+                            EOT
                             "items" = {
                               "description" = "SDFile represents a file used for service discovery"
                               "pattern" = "^[^*]*(\\*[^/]*)?\\.(json|yml|yaml|JSON|YML|YAML)$"
@@ -2061,17 +3041,36 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                       "description" = "GCESDConfigs defines a list of GCE service discovery configurations."
                       "items" = {
                         "description" = <<-EOT
-                        GCESDConfig configures scrape targets from GCP GCE instances. The private IP address is used by default, but may be changed to the public IP address with relabeling. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#gce_sd_config 
-                         The GCE service discovery will load the Google Cloud credentials from the file specified by the GOOGLE_APPLICATION_CREDENTIALS environment variable. See https://cloud.google.com/kubernetes-engine/docs/tutorials/authenticating-to-cloud-platform 
-                         A pre-requisite for using GCESDConfig is that a Secret containing valid Google Cloud credentials is mounted into the Prometheus or PrometheusAgent pod via the `.spec.secrets` field and that the GOOGLE_APPLICATION_CREDENTIALS environment variable is set to /etc/prometheus/secrets/<secret-name>/<credentials-filename.json>.
+                        GCESDConfig configures scrape targets from GCP GCE instances.
+                        The private IP address is used by default, but may be changed to
+                        the public IP address with relabeling.
+                        See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#gce_sd_config
+                        
+                        
+                        The GCE service discovery will load the Google Cloud credentials
+                        from the file specified by the GOOGLE_APPLICATION_CREDENTIALS environment variable.
+                        See https://cloud.google.com/kubernetes-engine/docs/tutorials/authenticating-to-cloud-platform
+                        
+                        
+                        A pre-requisite for using GCESDConfig is that a Secret containing valid
+                        Google Cloud credentials is mounted into the Prometheus or PrometheusAgent
+                        pod via the `.spec.secrets` field and that the GOOGLE_APPLICATION_CREDENTIALS
+                        environment variable is set to /etc/prometheus/secrets/<secret-name>/<credentials-filename.json>.
                         EOT
                         "properties" = {
                           "filter" = {
-                            "description" = "Filter can be used optionally to filter the instance list by other criteria Syntax of this filter is described in the filter query parameter section: https://cloud.google.com/compute/docs/reference/latest/instances/list"
+                            "description" = <<-EOT
+                            Filter can be used optionally to filter the instance list by other criteria
+                            Syntax of this filter is described in the filter query parameter section:
+                            https://cloud.google.com/compute/docs/reference/latest/instances/list
+                            EOT
                             "type" = "string"
                           }
                           "port" = {
-                            "description" = "The port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule."
+                            "description" = <<-EOT
+                            The port to scrape metrics from. If using the public IP address, this must
+                            instead be specified in the relabeling rule.
+                            EOT
                             "type" = "integer"
                           }
                           "project" = {
@@ -2105,10 +3104,17 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                     "hetznerSDConfigs" = {
                       "description" = "HetznerSDConfigs defines a list of Hetzner service discovery configurations."
                       "items" = {
-                        "description" = "HetznerSDConfig allow retrieving scrape targets from Hetzner Cloud API and Robot API. This service discovery uses the public IPv4 address by default, but that can be changed with relabeling See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#hetzner_sd_config"
+                        "description" = <<-EOT
+                        HetznerSDConfig allow retrieving scrape targets from Hetzner Cloud API and Robot API.
+                        This service discovery uses the public IPv4 address by default, but that can be changed with relabeling
+                        See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#hetzner_sd_config
+                        EOT
                         "properties" = {
                           "authorization" = {
-                            "description" = "Authorization header configuration, required when role is hcloud. Role robot does not support bearer token authentication."
+                            "description" = <<-EOT
+                            Authorization header configuration, required when role is hcloud.
+                            Role robot does not support bearer token authentication.
+                            EOT
                             "properties" = {
                               "credentials" = {
                                 "description" = "Selects a key of a Secret in the namespace that contains the credentials for authentication."
@@ -2118,7 +3124,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -2134,9 +3144,13 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                               }
                               "type" = {
                                 "description" = <<-EOT
-                                Defines the authentication type. The value is case-insensitive. 
-                                 "Basic" is not a supported value. 
-                                 Default: "Bearer"
+                                Defines the authentication type. The value is case-insensitive.
+                                
+                                
+                                "Basic" is not a supported value.
+                                
+                                
+                                Default: "Bearer"
                                 EOT
                                 "type" = "string"
                               }
@@ -2144,17 +3158,27 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                             "type" = "object"
                           }
                           "basicAuth" = {
-                            "description" = "BasicAuth information to use on every scrape request, required when role is robot. Role hcloud does not support basic auth."
+                            "description" = <<-EOT
+                            BasicAuth information to use on every scrape request, required when role is robot.
+                            Role hcloud does not support basic auth.
+                            EOT
                             "properties" = {
                               "password" = {
-                                "description" = "`password` specifies a key of a Secret containing the password for authentication."
+                                "description" = <<-EOT
+                                `password` specifies a key of a Secret containing the password for
+                                authentication.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -2169,14 +3193,21 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "x-kubernetes-map-type" = "atomic"
                               }
                               "username" = {
-                                "description" = "`username` specifies a key of a Secret containing the username for authentication."
+                                "description" = <<-EOT
+                                `username` specifies a key of a Secret containing the username for
+                                authentication.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -2203,16 +3234,26 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                           }
                           "noProxy" = {
                             "description" = <<-EOT
-                            `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers. 
-                             It requires Prometheus >= v2.43.0.
+                            `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+                            that should be excluded from proxying. IP and domain names can
+                            contain port numbers.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "type" = "string"
                           }
                           "oauth2" = {
-                            "description" = "Optional OAuth 2.0 configuration. Cannot be used at the same time as `basic_auth` or `authorization`."
+                            "description" = <<-EOT
+                            Optional OAuth 2.0 configuration.
+                            Cannot be used at the same time as `basic_auth` or `authorization`.
+                            EOT
                             "properties" = {
                               "clientId" = {
-                                "description" = "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
+                                "description" = <<-EOT
+                                `clientId` specifies a key of a Secret or ConfigMap containing the
+                                OAuth2 client's ID.
+                                EOT
                                 "properties" = {
                                   "configMap" = {
                                     "description" = "ConfigMap containing data to use for the targets."
@@ -2222,7 +3263,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -2244,7 +3289,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -2262,14 +3311,21 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "type" = "object"
                               }
                               "clientSecret" = {
-                                "description" = "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
+                                "description" = <<-EOT
+                                `clientSecret` specifies a key of a Secret containing the OAuth2
+                                client's secret.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -2287,7 +3343,10 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "additionalProperties" = {
                                   "type" = "string"
                                 }
-                                "description" = "`endpointParams` configures the HTTP parameters to append to the token URL."
+                                "description" = <<-EOT
+                                `endpointParams` configures the HTTP parameters to append to the token
+                                URL.
+                                EOT
                                 "type" = "object"
                               }
                               "scopes" = {
@@ -2316,45 +3375,60 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                           }
                           "proxyConnectHeader" = {
                             "additionalProperties" = {
-                              "description" = "SecretKeySelector selects a key of a Secret."
-                              "properties" = {
-                                "key" = {
-                                  "description" = "The key of the secret to select from.  Must be a valid secret key."
-                                  "type" = "string"
+                              "items" = {
+                                "description" = "SecretKeySelector selects a key of a Secret."
+                                "properties" = {
+                                  "key" = {
+                                    "description" = "The key of the secret to select from.  Must be a valid secret key."
+                                    "type" = "string"
+                                  }
+                                  "name" = {
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
+                                    "type" = "string"
+                                  }
+                                  "optional" = {
+                                    "description" = "Specify whether the Secret or its key must be defined"
+                                    "type" = "boolean"
+                                  }
                                 }
-                                "name" = {
-                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
-                                  "type" = "string"
-                                }
-                                "optional" = {
-                                  "description" = "Specify whether the Secret or its key must be defined"
-                                  "type" = "boolean"
-                                }
+                                "required" = [
+                                  "key",
+                                ]
+                                "type" = "object"
+                                "x-kubernetes-map-type" = "atomic"
                               }
-                              "required" = [
-                                "key",
-                              ]
-                              "type" = "object"
-                              "x-kubernetes-map-type" = "atomic"
+                              "type" = "array"
                             }
                             "description" = <<-EOT
-                            ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests. 
-                             It requires Prometheus >= v2.43.0.
+                            ProxyConnectHeader optionally specifies headers to send to
+                            proxies during CONNECT requests.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "type" = "object"
                             "x-kubernetes-map-type" = "atomic"
                           }
                           "proxyFromEnvironment" = {
                             "description" = <<-EOT
-                            Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY). If unset, Prometheus uses its default value. 
-                             It requires Prometheus >= v2.43.0.
+                            Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+                            If unset, Prometheus uses its default value.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "type" = "boolean"
                           }
                           "proxyUrl" = {
                             "description" = <<-EOT
-                            `proxyURL` defines the HTTP proxy server to use. 
-                             It requires Prometheus >= v2.43.0.
+                            `proxyURL` defines the HTTP proxy server to use.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "pattern" = "^http(s)?://.+$"
                             "type" = "string"
@@ -2388,7 +3462,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -2410,7 +3488,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -2438,7 +3520,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -2460,7 +3546,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -2489,7 +3579,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -2529,7 +3623,10 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                     "httpSDConfigs" = {
                       "description" = "HTTPSDConfigs defines a list of HTTP service discovery configurations."
                       "items" = {
-                        "description" = "HTTPSDConfig defines a prometheus HTTP service discovery configuration See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#http_sd_config"
+                        "description" = <<-EOT
+                        HTTPSDConfig defines a prometheus HTTP service discovery configuration
+                        See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#http_sd_config
+                        EOT
                         "properties" = {
                           "authorization" = {
                             "description" = "Authorization header configuration to authenticate against the target HTTP endpoint."
@@ -2542,7 +3639,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -2558,9 +3659,13 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                               }
                               "type" = {
                                 "description" = <<-EOT
-                                Defines the authentication type. The value is case-insensitive. 
-                                 "Basic" is not a supported value. 
-                                 Default: "Bearer"
+                                Defines the authentication type. The value is case-insensitive.
+                                
+                                
+                                "Basic" is not a supported value.
+                                
+                                
+                                Default: "Bearer"
                                 EOT
                                 "type" = "string"
                               }
@@ -2568,17 +3673,27 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                             "type" = "object"
                           }
                           "basicAuth" = {
-                            "description" = "BasicAuth information to authenticate against the target HTTP endpoint. More info: https://prometheus.io/docs/operating/configuration/#endpoints"
+                            "description" = <<-EOT
+                            BasicAuth information to authenticate against the target HTTP endpoint.
+                            More info: https://prometheus.io/docs/operating/configuration/#endpoints
+                            EOT
                             "properties" = {
                               "password" = {
-                                "description" = "`password` specifies a key of a Secret containing the password for authentication."
+                                "description" = <<-EOT
+                                `password` specifies a key of a Secret containing the password for
+                                authentication.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -2593,14 +3708,21 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "x-kubernetes-map-type" = "atomic"
                               }
                               "username" = {
-                                "description" = "`username` specifies a key of a Secret containing the username for authentication."
+                                "description" = <<-EOT
+                                `username` specifies a key of a Secret containing the username for
+                                authentication.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -2619,58 +3741,80 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                           }
                           "noProxy" = {
                             "description" = <<-EOT
-                            `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers. 
-                             It requires Prometheus >= v2.43.0.
+                            `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+                            that should be excluded from proxying. IP and domain names can
+                            contain port numbers.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "type" = "string"
                           }
                           "proxyConnectHeader" = {
                             "additionalProperties" = {
-                              "description" = "SecretKeySelector selects a key of a Secret."
-                              "properties" = {
-                                "key" = {
-                                  "description" = "The key of the secret to select from.  Must be a valid secret key."
-                                  "type" = "string"
+                              "items" = {
+                                "description" = "SecretKeySelector selects a key of a Secret."
+                                "properties" = {
+                                  "key" = {
+                                    "description" = "The key of the secret to select from.  Must be a valid secret key."
+                                    "type" = "string"
+                                  }
+                                  "name" = {
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
+                                    "type" = "string"
+                                  }
+                                  "optional" = {
+                                    "description" = "Specify whether the Secret or its key must be defined"
+                                    "type" = "boolean"
+                                  }
                                 }
-                                "name" = {
-                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
-                                  "type" = "string"
-                                }
-                                "optional" = {
-                                  "description" = "Specify whether the Secret or its key must be defined"
-                                  "type" = "boolean"
-                                }
+                                "required" = [
+                                  "key",
+                                ]
+                                "type" = "object"
+                                "x-kubernetes-map-type" = "atomic"
                               }
-                              "required" = [
-                                "key",
-                              ]
-                              "type" = "object"
-                              "x-kubernetes-map-type" = "atomic"
+                              "type" = "array"
                             }
                             "description" = <<-EOT
-                            ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests. 
-                             It requires Prometheus >= v2.43.0.
+                            ProxyConnectHeader optionally specifies headers to send to
+                            proxies during CONNECT requests.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "type" = "object"
                             "x-kubernetes-map-type" = "atomic"
                           }
                           "proxyFromEnvironment" = {
                             "description" = <<-EOT
-                            Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY). If unset, Prometheus uses its default value. 
-                             It requires Prometheus >= v2.43.0.
+                            Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+                            If unset, Prometheus uses its default value.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "type" = "boolean"
                           }
                           "proxyUrl" = {
                             "description" = <<-EOT
-                            `proxyURL` defines the HTTP proxy server to use. 
-                             It requires Prometheus >= v2.43.0.
+                            `proxyURL` defines the HTTP proxy server to use.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "pattern" = "^http(s)?://.+$"
                             "type" = "string"
                           }
                           "refreshInterval" = {
-                            "description" = "RefreshInterval configures the refresh interval at which Prometheus will re-query the endpoint to update the target list."
+                            "description" = <<-EOT
+                            RefreshInterval configures the refresh interval at which Prometheus will re-query the
+                            endpoint to update the target list.
+                            EOT
                             "pattern" = "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
                             "type" = "string"
                           }
@@ -2688,7 +3832,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -2710,7 +3858,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -2738,7 +3890,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -2760,7 +3916,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -2789,7 +3949,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -2826,8 +3990,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                     }
                     "keepDroppedTargets" = {
                       "description" = <<-EOT
-                      Per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit. 
-                       It requires Prometheus >= v2.47.0.
+                      Per-scrape limit on the number of targets dropped by relabeling
+                      that will be kept in memory. 0 means no limit.
+                      
+                      
+                      It requires Prometheus >= v2.47.0.
                       EOT
                       "format" = "int64"
                       "type" = "integer"
@@ -2835,24 +4002,45 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                     "kubernetesSDConfigs" = {
                       "description" = "KubernetesSDConfigs defines a list of Kubernetes service discovery configurations."
                       "items" = {
-                        "description" = "KubernetesSDConfig allows retrieving scrape targets from Kubernetes' REST API. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config"
+                        "description" = <<-EOT
+                        KubernetesSDConfig allows retrieving scrape targets from Kubernetes' REST API.
+                        See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config
+                        EOT
                         "properties" = {
                           "apiServer" = {
-                            "description" = "The API server address consisting of a hostname or IP address followed by an optional port number. If left empty, Prometheus is assumed to run inside of the cluster. It will discover API servers automatically and use the pod's CA certificate and bearer token file at /var/run/secrets/kubernetes.io/serviceaccount/."
+                            "description" = <<-EOT
+                            The API server address consisting of a hostname or IP address followed
+                            by an optional port number.
+                            If left empty, Prometheus is assumed to run inside
+                            of the cluster. It will discover API servers automatically and use the pod's
+                            CA certificate and bearer token file at /var/run/secrets/kubernetes.io/serviceaccount/.
+                            EOT
                             "type" = "string"
                           }
                           "attachMetadata" = {
-                            "description" = "Optional metadata to attach to discovered targets. It requires Prometheus >= v2.35.0 for `pod` role and Prometheus >= v2.37.0 for `endpoints` and `endpointslice` roles."
+                            "description" = <<-EOT
+                            Optional metadata to attach to discovered targets.
+                            It requires Prometheus >= v2.35.0 for `pod` role and
+                            Prometheus >= v2.37.0 for `endpoints` and `endpointslice` roles.
+                            EOT
                             "properties" = {
                               "node" = {
-                                "description" = "Attaches node metadata to discovered targets. When set to true, Prometheus must have the `get` permission on the `Nodes` objects. Only valid for Pod, Endpoint and Endpointslice roles."
+                                "description" = <<-EOT
+                                Attaches node metadata to discovered targets.
+                                When set to true, Prometheus must have the `get` permission on the
+                                `Nodes` objects.
+                                Only valid for Pod, Endpoint and Endpointslice roles.
+                                EOT
                                 "type" = "boolean"
                               }
                             }
                             "type" = "object"
                           }
                           "authorization" = {
-                            "description" = "Authorization header to use on every scrape request. Cannot be set at the same time as `basicAuth`, or `oauth2`."
+                            "description" = <<-EOT
+                            Authorization header to use on every scrape request.
+                            Cannot be set at the same time as `basicAuth`, or `oauth2`.
+                            EOT
                             "properties" = {
                               "credentials" = {
                                 "description" = "Selects a key of a Secret in the namespace that contains the credentials for authentication."
@@ -2862,7 +4050,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -2878,9 +4070,13 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                               }
                               "type" = {
                                 "description" = <<-EOT
-                                Defines the authentication type. The value is case-insensitive. 
-                                 "Basic" is not a supported value. 
-                                 Default: "Bearer"
+                                Defines the authentication type. The value is case-insensitive.
+                                
+                                
+                                "Basic" is not a supported value.
+                                
+                                
+                                Default: "Bearer"
                                 EOT
                                 "type" = "string"
                               }
@@ -2888,17 +4084,27 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                             "type" = "object"
                           }
                           "basicAuth" = {
-                            "description" = "BasicAuth information to use on every scrape request. Cannot be set at the same time as `authorization`, or `oauth2`."
+                            "description" = <<-EOT
+                            BasicAuth information to use on every scrape request.
+                            Cannot be set at the same time as `authorization`, or `oauth2`.
+                            EOT
                             "properties" = {
                               "password" = {
-                                "description" = "`password` specifies a key of a Secret containing the password for authentication."
+                                "description" = <<-EOT
+                                `password` specifies a key of a Secret containing the password for
+                                authentication.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -2913,14 +4119,21 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "x-kubernetes-map-type" = "atomic"
                               }
                               "username" = {
-                                "description" = "`username` specifies a key of a Secret containing the username for authentication."
+                                "description" = <<-EOT
+                                `username` specifies a key of a Secret containing the username for
+                                authentication.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -2949,7 +4162,10 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                             "description" = "Optional namespace discovery. If omitted, Prometheus discovers targets across all namespaces."
                             "properties" = {
                               "names" = {
-                                "description" = "List of namespaces where to watch for resources. If empty and `ownNamespace` isn't true, Prometheus watches for resources in all namespaces."
+                                "description" = <<-EOT
+                                List of namespaces where to watch for resources.
+                                If empty and `ownNamespace` isn't true, Prometheus watches for resources in all namespaces.
+                                EOT
                                 "items" = {
                                   "type" = "string"
                                 }
@@ -2964,16 +4180,26 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                           }
                           "noProxy" = {
                             "description" = <<-EOT
-                            `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers. 
-                             It requires Prometheus >= v2.43.0.
+                            `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+                            that should be excluded from proxying. IP and domain names can
+                            contain port numbers.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "type" = "string"
                           }
                           "oauth2" = {
-                            "description" = "Optional OAuth 2.0 configuration. Cannot be set at the same time as `authorization`, or `basicAuth`."
+                            "description" = <<-EOT
+                            Optional OAuth 2.0 configuration.
+                            Cannot be set at the same time as `authorization`, or `basicAuth`.
+                            EOT
                             "properties" = {
                               "clientId" = {
-                                "description" = "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
+                                "description" = <<-EOT
+                                `clientId` specifies a key of a Secret or ConfigMap containing the
+                                OAuth2 client's ID.
+                                EOT
                                 "properties" = {
                                   "configMap" = {
                                     "description" = "ConfigMap containing data to use for the targets."
@@ -2983,7 +4209,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -3005,7 +4235,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -3023,14 +4257,21 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "type" = "object"
                               }
                               "clientSecret" = {
-                                "description" = "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
+                                "description" = <<-EOT
+                                `clientSecret` specifies a key of a Secret containing the OAuth2
+                                client's secret.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -3048,7 +4289,10 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "additionalProperties" = {
                                   "type" = "string"
                                 }
-                                "description" = "`endpointParams` configures the HTTP parameters to append to the token URL."
+                                "description" = <<-EOT
+                                `endpointParams` configures the HTTP parameters to append to the token
+                                URL.
+                                EOT
                                 "type" = "object"
                               }
                               "scopes" = {
@@ -3073,45 +4317,60 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                           }
                           "proxyConnectHeader" = {
                             "additionalProperties" = {
-                              "description" = "SecretKeySelector selects a key of a Secret."
-                              "properties" = {
-                                "key" = {
-                                  "description" = "The key of the secret to select from.  Must be a valid secret key."
-                                  "type" = "string"
+                              "items" = {
+                                "description" = "SecretKeySelector selects a key of a Secret."
+                                "properties" = {
+                                  "key" = {
+                                    "description" = "The key of the secret to select from.  Must be a valid secret key."
+                                    "type" = "string"
+                                  }
+                                  "name" = {
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
+                                    "type" = "string"
+                                  }
+                                  "optional" = {
+                                    "description" = "Specify whether the Secret or its key must be defined"
+                                    "type" = "boolean"
+                                  }
                                 }
-                                "name" = {
-                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
-                                  "type" = "string"
-                                }
-                                "optional" = {
-                                  "description" = "Specify whether the Secret or its key must be defined"
-                                  "type" = "boolean"
-                                }
+                                "required" = [
+                                  "key",
+                                ]
+                                "type" = "object"
+                                "x-kubernetes-map-type" = "atomic"
                               }
-                              "required" = [
-                                "key",
-                              ]
-                              "type" = "object"
-                              "x-kubernetes-map-type" = "atomic"
+                              "type" = "array"
                             }
                             "description" = <<-EOT
-                            ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests. 
-                             It requires Prometheus >= v2.43.0.
+                            ProxyConnectHeader optionally specifies headers to send to
+                            proxies during CONNECT requests.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "type" = "object"
                             "x-kubernetes-map-type" = "atomic"
                           }
                           "proxyFromEnvironment" = {
                             "description" = <<-EOT
-                            Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY). If unset, Prometheus uses its default value. 
-                             It requires Prometheus >= v2.43.0.
+                            Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+                            If unset, Prometheus uses its default value.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "type" = "boolean"
                           }
                           "proxyUrl" = {
                             "description" = <<-EOT
-                            `proxyURL` defines the HTTP proxy server to use. 
-                             It requires Prometheus >= v2.43.0.
+                            `proxyURL` defines the HTTP proxy server to use.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "pattern" = "^http(s)?://.+$"
                             "type" = "string"
@@ -3189,7 +4448,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -3211,7 +4474,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -3239,7 +4506,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -3261,7 +4532,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -3290,7 +4565,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -3322,7 +4601,10 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                     "kumaSDConfigs" = {
                       "description" = "KumaSDConfigs defines a list of Kuma service discovery configurations."
                       "items" = {
-                        "description" = "KumaSDConfig allow retrieving scrape targets from Kuma's control plane. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kuma_sd_config"
+                        "description" = <<-EOT
+                        KumaSDConfig allow retrieving scrape targets from Kuma's control plane.
+                        See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kuma_sd_config
+                        EOT
                         "properties" = {
                           "authorization" = {
                             "description" = "Authorization header to use on every scrape request."
@@ -3335,7 +4617,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -3351,9 +4637,13 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                               }
                               "type" = {
                                 "description" = <<-EOT
-                                Defines the authentication type. The value is case-insensitive. 
-                                 "Basic" is not a supported value. 
-                                 Default: "Bearer"
+                                Defines the authentication type. The value is case-insensitive.
+                                
+                                
+                                "Basic" is not a supported value.
+                                
+                                
+                                Default: "Bearer"
                                 EOT
                                 "type" = "string"
                               }
@@ -3364,14 +4654,21 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                             "description" = "BasicAuth information to use on every scrape request."
                             "properties" = {
                               "password" = {
-                                "description" = "`password` specifies a key of a Secret containing the password for authentication."
+                                "description" = <<-EOT
+                                `password` specifies a key of a Secret containing the password for
+                                authentication.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -3386,14 +4683,21 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "x-kubernetes-map-type" = "atomic"
                               }
                               "username" = {
-                                "description" = "`username` specifies a key of a Secret containing the username for authentication."
+                                "description" = <<-EOT
+                                `username` specifies a key of a Secret containing the username for
+                                authentication.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -3429,16 +4733,26 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                           }
                           "noProxy" = {
                             "description" = <<-EOT
-                            `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers. 
-                             It requires Prometheus >= v2.43.0.
+                            `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+                            that should be excluded from proxying. IP and domain names can
+                            contain port numbers.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "type" = "string"
                           }
                           "oauth2" = {
-                            "description" = "Optional OAuth 2.0 configuration. Cannot be set at the same time as `authorization`, or `basicAuth`."
+                            "description" = <<-EOT
+                            Optional OAuth 2.0 configuration.
+                            Cannot be set at the same time as `authorization`, or `basicAuth`.
+                            EOT
                             "properties" = {
                               "clientId" = {
-                                "description" = "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
+                                "description" = <<-EOT
+                                `clientId` specifies a key of a Secret or ConfigMap containing the
+                                OAuth2 client's ID.
+                                EOT
                                 "properties" = {
                                   "configMap" = {
                                     "description" = "ConfigMap containing data to use for the targets."
@@ -3448,7 +4762,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -3470,7 +4788,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -3488,14 +4810,21 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "type" = "object"
                               }
                               "clientSecret" = {
-                                "description" = "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
+                                "description" = <<-EOT
+                                `clientSecret` specifies a key of a Secret containing the OAuth2
+                                client's secret.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -3513,7 +4842,10 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                 "additionalProperties" = {
                                   "type" = "string"
                                 }
-                                "description" = "`endpointParams` configures the HTTP parameters to append to the token URL."
+                                "description" = <<-EOT
+                                `endpointParams` configures the HTTP parameters to append to the token
+                                URL.
+                                EOT
                                 "type" = "object"
                               }
                               "scopes" = {
@@ -3538,45 +4870,60 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                           }
                           "proxyConnectHeader" = {
                             "additionalProperties" = {
-                              "description" = "SecretKeySelector selects a key of a Secret."
-                              "properties" = {
-                                "key" = {
-                                  "description" = "The key of the secret to select from.  Must be a valid secret key."
-                                  "type" = "string"
+                              "items" = {
+                                "description" = "SecretKeySelector selects a key of a Secret."
+                                "properties" = {
+                                  "key" = {
+                                    "description" = "The key of the secret to select from.  Must be a valid secret key."
+                                    "type" = "string"
+                                  }
+                                  "name" = {
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
+                                    "type" = "string"
+                                  }
+                                  "optional" = {
+                                    "description" = "Specify whether the Secret or its key must be defined"
+                                    "type" = "boolean"
+                                  }
                                 }
-                                "name" = {
-                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
-                                  "type" = "string"
-                                }
-                                "optional" = {
-                                  "description" = "Specify whether the Secret or its key must be defined"
-                                  "type" = "boolean"
-                                }
+                                "required" = [
+                                  "key",
+                                ]
+                                "type" = "object"
+                                "x-kubernetes-map-type" = "atomic"
                               }
-                              "required" = [
-                                "key",
-                              ]
-                              "type" = "object"
-                              "x-kubernetes-map-type" = "atomic"
+                              "type" = "array"
                             }
                             "description" = <<-EOT
-                            ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests. 
-                             It requires Prometheus >= v2.43.0.
+                            ProxyConnectHeader optionally specifies headers to send to
+                            proxies during CONNECT requests.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "type" = "object"
                             "x-kubernetes-map-type" = "atomic"
                           }
                           "proxyFromEnvironment" = {
                             "description" = <<-EOT
-                            Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY). If unset, Prometheus uses its default value. 
-                             It requires Prometheus >= v2.43.0.
+                            Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+                            If unset, Prometheus uses its default value.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "type" = "boolean"
                           }
                           "proxyUrl" = {
                             "description" = <<-EOT
-                            `proxyURL` defines the HTTP proxy server to use. 
-                             It requires Prometheus >= v2.43.0.
+                            `proxyURL` defines the HTTP proxy server to use.
+                            
+                            
+                            It requires Prometheus >= v2.43.0.
                             EOT
                             "pattern" = "^http(s)?://.+$"
                             "type" = "string"
@@ -3605,7 +4952,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -3627,7 +4978,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -3655,7 +5010,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -3677,7 +5036,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -3706,7 +5069,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -3736,17 +5103,26 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                       "type" = "array"
                     }
                     "labelLimit" = {
-                      "description" = "Per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer."
+                      "description" = <<-EOT
+                      Per-scrape limit on number of labels that will be accepted for a sample.
+                      Only valid in Prometheus versions 2.27.0 and newer.
+                      EOT
                       "format" = "int64"
                       "type" = "integer"
                     }
                     "labelNameLengthLimit" = {
-                      "description" = "Per-scrape limit on length of labels name that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer."
+                      "description" = <<-EOT
+                      Per-scrape limit on length of labels name that will be accepted for a sample.
+                      Only valid in Prometheus versions 2.27.0 and newer.
+                      EOT
                       "format" = "int64"
                       "type" = "integer"
                     }
                     "labelValueLengthLimit" = {
-                      "description" = "Per-scrape limit on length of labels value that will be accepted for a sample. Only valid in Prometheus versions 2.27.0 and newer."
+                      "description" = <<-EOT
+                      Per-scrape limit on length of labels value that will be accepted for a sample.
+                      Only valid in Prometheus versions 2.27.0 and newer.
+                      EOT
                       "format" = "int64"
                       "type" = "integer"
                     }
@@ -3754,16 +5130,24 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                       "description" = "MetricRelabelConfigs to apply to samples before ingestion."
                       "items" = {
                         "description" = <<-EOT
-                        RelabelConfig allows dynamic rewriting of the label set for targets, alerts, scraped samples and remote write samples. 
-                         More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+                        RelabelConfig allows dynamic rewriting of the label set for targets, alerts,
+                        scraped samples and remote write samples.
+                        
+                        
+                        More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
                         EOT
                         "properties" = {
                           "action" = {
                             "default" = "replace"
                             "description" = <<-EOT
-                            Action to perform based on the regex matching. 
-                             `Uppercase` and `Lowercase` actions require Prometheus >= v2.36.0. `DropEqual` and `KeepEqual` actions require Prometheus >= v2.41.0. 
-                             Default: "Replace"
+                            Action to perform based on the regex matching.
+                            
+                            
+                            `Uppercase` and `Lowercase` actions require Prometheus >= v2.36.0.
+                            `DropEqual` and `KeepEqual` actions require Prometheus >= v2.41.0.
+                            
+                            
+                            Default: "Replace"
                             EOT
                             "enum" = [
                               "replace",
@@ -3793,8 +5177,10 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                           }
                           "modulus" = {
                             "description" = <<-EOT
-                            Modulus to take of the hash of the source label values. 
-                             Only applicable when the action is `HashMod`.
+                            Modulus to take of the hash of the source label values.
+                            
+                            
+                            Only applicable when the action is `HashMod`.
                             EOT
                             "format" = "int64"
                             "type" = "integer"
@@ -3805,8 +5191,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                           }
                           "replacement" = {
                             "description" = <<-EOT
-                            Replacement value against which a Replace action is performed if the regular expression matches. 
-                             Regex capture groups are available.
+                            Replacement value against which a Replace action is performed if the
+                            regular expression matches.
+                            
+                            
+                            Regex capture groups are available.
                             EOT
                             "type" = "string"
                           }
@@ -3815,9 +5204,16 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                             "type" = "string"
                           }
                           "sourceLabels" = {
-                            "description" = "The source labels select values from existing labels. Their content is concatenated using the configured Separator and matched against the configured regular expression."
+                            "description" = <<-EOT
+                            The source labels select values from existing labels. Their content is
+                            concatenated using the configured Separator and matched against the
+                            configured regular expression.
+                            EOT
                             "items" = {
-                              "description" = "LabelName is a valid Prometheus label name which may only contain ASCII letters, numbers, as well as underscores."
+                              "description" = <<-EOT
+                              LabelName is a valid Prometheus label name which may only contain ASCII
+                              letters, numbers, as well as underscores.
+                              EOT
                               "pattern" = "^[a-zA-Z_][a-zA-Z0-9_]*$"
                               "type" = "string"
                             }
@@ -3825,9 +5221,14 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                           }
                           "targetLabel" = {
                             "description" = <<-EOT
-                            Label to which the resulting string is written in a replacement. 
-                             It is mandatory for `Replace`, `HashMod`, `Lowercase`, `Uppercase`, `KeepEqual` and `DropEqual` actions. 
-                             Regex capture groups are available.
+                            Label to which the resulting string is written in a replacement.
+                            
+                            
+                            It is mandatory for `Replace`, `HashMod`, `Lowercase`, `Uppercase`,
+                            `KeepEqual` and `DropEqual` actions.
+                            
+                            
+                            Regex capture groups are available.
                             EOT
                             "type" = "string"
                           }
@@ -3842,18 +5243,28 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                     }
                     "noProxy" = {
                       "description" = <<-EOT
-                      `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names that should be excluded from proxying. IP and domain names can contain port numbers. 
-                       It requires Prometheus >= v2.43.0.
+                      `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+                      that should be excluded from proxying. IP and domain names can
+                      contain port numbers.
+                      
+                      
+                      It requires Prometheus >= v2.43.0.
                       EOT
                       "type" = "string"
                     }
                     "openstackSDConfigs" = {
                       "description" = "OpenStackSDConfigs defines a list of OpenStack service discovery configurations."
                       "items" = {
-                        "description" = "OpenStackSDConfig allow retrieving scrape targets from OpenStack Nova instances. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#openstack_sd_config"
+                        "description" = <<-EOT
+                        OpenStackSDConfig allow retrieving scrape targets from OpenStack Nova instances.
+                        See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#openstack_sd_config
+                        EOT
                         "properties" = {
                           "allTenants" = {
-                            "description" = "Whether the service discovery should list all instances for all projects. It is only relevant for the 'instance' role and usually requires admin permissions."
+                            "description" = <<-EOT
+                            Whether the service discovery should list all instances for all projects.
+                            It is only relevant for the 'instance' role and usually requires admin permissions.
+                            EOT
                             "type" = "boolean"
                           }
                           "applicationCredentialId" = {
@@ -3861,18 +5272,30 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                             "type" = "string"
                           }
                           "applicationCredentialName" = {
-                            "description" = "The ApplicationCredentialID or ApplicationCredentialName fields are required if using an application credential to authenticate. Some providers allow you to create an application credential to authenticate rather than a password."
+                            "description" = <<-EOT
+                            The ApplicationCredentialID or ApplicationCredentialName fields are
+                            required if using an application credential to authenticate. Some providers
+                            allow you to create an application credential to authenticate rather than a
+                            password.
+                            EOT
                             "type" = "string"
                           }
                           "applicationCredentialSecret" = {
-                            "description" = "The applicationCredentialSecret field is required if using an application credential to authenticate."
+                            "description" = <<-EOT
+                            The applicationCredentialSecret field is required if using an application
+                            credential to authenticate.
+                            EOT
                             "properties" = {
                               "key" = {
                                 "description" = "The key of the secret to select from.  Must be a valid secret key."
                                 "type" = "string"
                               }
                               "name" = {
-                                "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                "description" = <<-EOT
+                                Name of the referent.
+                                More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                TODO: Add other useful fields. apiVersion, kind, uid?
+                                EOT
                                 "type" = "string"
                               }
                               "optional" = {
@@ -3903,22 +5326,35 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                             "type" = "string"
                           }
                           "domainName" = {
-                            "description" = "At most one of domainId and domainName must be provided if using username with Identity V3. Otherwise, either are optional."
+                            "description" = <<-EOT
+                            At most one of domainId and domainName must be provided if using username
+                            with Identity V3. Otherwise, either are optional.
+                            EOT
                             "type" = "string"
                           }
                           "identityEndpoint" = {
-                            "description" = "IdentityEndpoint specifies the HTTP endpoint that is required to work with the Identity API of the appropriate version."
+                            "description" = <<-EOT
+                            IdentityEndpoint specifies the HTTP endpoint that is required to work with
+                            the Identity API of the appropriate version.
+                            EOT
                             "type" = "string"
                           }
                           "password" = {
-                            "description" = "Password for the Identity V2 and V3 APIs. Consult with your provider's control panel to discover your account's preferred method of authentication."
+                            "description" = <<-EOT
+                            Password for the Identity V2 and V3 APIs. Consult with your provider's
+                            control panel to discover your account's preferred method of authentication.
+                            EOT
                             "properties" = {
                               "key" = {
                                 "description" = "The key of the secret to select from.  Must be a valid secret key."
                                 "type" = "string"
                               }
                               "name" = {
-                                "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                "description" = <<-EOT
+                                Name of the referent.
+                                More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                TODO: Add other useful fields. apiVersion, kind, uid?
+                                EOT
                                 "type" = "string"
                               }
                               "optional" = {
@@ -3933,15 +5369,23 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                             "x-kubernetes-map-type" = "atomic"
                           }
                           "port" = {
-                            "description" = "The port to scrape metrics from. If using the public IP address, this must instead be specified in the relabeling rule."
+                            "description" = <<-EOT
+                            The port to scrape metrics from. If using the public IP address, this must
+                            instead be specified in the relabeling rule.
+                            EOT
                             "type" = "integer"
                           }
                           "projectID" = {
-                            "description" = "ProjectID"
+                            "description" = " ProjectID"
                             "type" = "string"
                           }
                           "projectName" = {
-                            "description" = "The ProjectId and ProjectName fields are optional for the Identity V2 API. Some providers allow you to specify a ProjectName instead of the ProjectId. Some require both. Your provider's authentication policies will determine how these fields influence authentication."
+                            "description" = <<-EOT
+                            The ProjectId and ProjectName fields are optional for the Identity V2 API.
+                            Some providers allow you to specify a ProjectName instead of the ProjectId.
+                            Some require both. Your provider's authentication policies will determine
+                            how these fields influence authentication.
+                            EOT
                             "type" = "string"
                           }
                           "refreshInterval" = {
@@ -3978,7 +5422,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -4000,7 +5448,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -4028,7 +5480,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -4050,7 +5506,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -4079,7 +5539,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -4105,7 +5569,12 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                             "type" = "string"
                           }
                           "username" = {
-                            "description" = "Username is required if using Identity V2 API. Consult with your provider's control panel to discover your account's username. In Identity V3, either userid or a combination of username and domainId or domainName are needed"
+                            "description" = <<-EOT
+                            Username is required if using Identity V2 API. Consult with your provider's
+                            control panel to discover your account's username.
+                            In Identity V3, either userid or a combination of username
+                            and domainId or domainName are needed
+                            EOT
                             "type" = "string"
                           }
                         }
@@ -4130,63 +5599,91 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                     }
                     "proxyConnectHeader" = {
                       "additionalProperties" = {
-                        "description" = "SecretKeySelector selects a key of a Secret."
-                        "properties" = {
-                          "key" = {
-                            "description" = "The key of the secret to select from.  Must be a valid secret key."
-                            "type" = "string"
+                        "items" = {
+                          "description" = "SecretKeySelector selects a key of a Secret."
+                          "properties" = {
+                            "key" = {
+                              "description" = "The key of the secret to select from.  Must be a valid secret key."
+                              "type" = "string"
+                            }
+                            "name" = {
+                              "description" = <<-EOT
+                              Name of the referent.
+                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                              TODO: Add other useful fields. apiVersion, kind, uid?
+                              EOT
+                              "type" = "string"
+                            }
+                            "optional" = {
+                              "description" = "Specify whether the Secret or its key must be defined"
+                              "type" = "boolean"
+                            }
                           }
-                          "name" = {
-                            "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
-                            "type" = "string"
-                          }
-                          "optional" = {
-                            "description" = "Specify whether the Secret or its key must be defined"
-                            "type" = "boolean"
-                          }
+                          "required" = [
+                            "key",
+                          ]
+                          "type" = "object"
+                          "x-kubernetes-map-type" = "atomic"
                         }
-                        "required" = [
-                          "key",
-                        ]
-                        "type" = "object"
-                        "x-kubernetes-map-type" = "atomic"
+                        "type" = "array"
                       }
                       "description" = <<-EOT
-                      ProxyConnectHeader optionally specifies headers to send to proxies during CONNECT requests. 
-                       It requires Prometheus >= v2.43.0.
+                      ProxyConnectHeader optionally specifies headers to send to
+                      proxies during CONNECT requests.
+                      
+                      
+                      It requires Prometheus >= v2.43.0.
                       EOT
                       "type" = "object"
                       "x-kubernetes-map-type" = "atomic"
                     }
                     "proxyFromEnvironment" = {
                       "description" = <<-EOT
-                      Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY). If unset, Prometheus uses its default value. 
-                       It requires Prometheus >= v2.43.0.
+                      Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+                      If unset, Prometheus uses its default value.
+                      
+                      
+                      It requires Prometheus >= v2.43.0.
                       EOT
                       "type" = "boolean"
                     }
                     "proxyUrl" = {
                       "description" = <<-EOT
-                      `proxyURL` defines the HTTP proxy server to use. 
-                       It requires Prometheus >= v2.43.0.
+                      `proxyURL` defines the HTTP proxy server to use.
+                      
+                      
+                      It requires Prometheus >= v2.43.0.
                       EOT
                       "pattern" = "^http(s)?://.+$"
                       "type" = "string"
                     }
                     "relabelings" = {
-                      "description" = "RelabelConfigs defines how to rewrite the target's labels before scraping. Prometheus Operator automatically adds relabelings for a few standard Kubernetes fields. The original scrape job's name is available via the `__tmp_prometheus_job_name` label. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config"
+                      "description" = <<-EOT
+                      RelabelConfigs defines how to rewrite the target's labels before scraping.
+                      Prometheus Operator automatically adds relabelings for a few standard Kubernetes fields.
+                      The original scrape job's name is available via the `__tmp_prometheus_job_name` label.
+                      More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+                      EOT
                       "items" = {
                         "description" = <<-EOT
-                        RelabelConfig allows dynamic rewriting of the label set for targets, alerts, scraped samples and remote write samples. 
-                         More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+                        RelabelConfig allows dynamic rewriting of the label set for targets, alerts,
+                        scraped samples and remote write samples.
+                        
+                        
+                        More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
                         EOT
                         "properties" = {
                           "action" = {
                             "default" = "replace"
                             "description" = <<-EOT
-                            Action to perform based on the regex matching. 
-                             `Uppercase` and `Lowercase` actions require Prometheus >= v2.36.0. `DropEqual` and `KeepEqual` actions require Prometheus >= v2.41.0. 
-                             Default: "Replace"
+                            Action to perform based on the regex matching.
+                            
+                            
+                            `Uppercase` and `Lowercase` actions require Prometheus >= v2.36.0.
+                            `DropEqual` and `KeepEqual` actions require Prometheus >= v2.41.0.
+                            
+                            
+                            Default: "Replace"
                             EOT
                             "enum" = [
                               "replace",
@@ -4216,8 +5713,10 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                           }
                           "modulus" = {
                             "description" = <<-EOT
-                            Modulus to take of the hash of the source label values. 
-                             Only applicable when the action is `HashMod`.
+                            Modulus to take of the hash of the source label values.
+                            
+                            
+                            Only applicable when the action is `HashMod`.
                             EOT
                             "format" = "int64"
                             "type" = "integer"
@@ -4228,8 +5727,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                           }
                           "replacement" = {
                             "description" = <<-EOT
-                            Replacement value against which a Replace action is performed if the regular expression matches. 
-                             Regex capture groups are available.
+                            Replacement value against which a Replace action is performed if the
+                            regular expression matches.
+                            
+                            
+                            Regex capture groups are available.
                             EOT
                             "type" = "string"
                           }
@@ -4238,9 +5740,16 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                             "type" = "string"
                           }
                           "sourceLabels" = {
-                            "description" = "The source labels select values from existing labels. Their content is concatenated using the configured Separator and matched against the configured regular expression."
+                            "description" = <<-EOT
+                            The source labels select values from existing labels. Their content is
+                            concatenated using the configured Separator and matched against the
+                            configured regular expression.
+                            EOT
                             "items" = {
-                              "description" = "LabelName is a valid Prometheus label name which may only contain ASCII letters, numbers, as well as underscores."
+                              "description" = <<-EOT
+                              LabelName is a valid Prometheus label name which may only contain ASCII
+                              letters, numbers, as well as underscores.
+                              EOT
                               "pattern" = "^[a-zA-Z_][a-zA-Z0-9_]*$"
                               "type" = "string"
                             }
@@ -4248,9 +5757,14 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                           }
                           "targetLabel" = {
                             "description" = <<-EOT
-                            Label to which the resulting string is written in a replacement. 
-                             It is mandatory for `Replace`, `HashMod`, `Lowercase`, `Uppercase`, `KeepEqual` and `DropEqual` actions. 
-                             Regex capture groups are available.
+                            Label to which the resulting string is written in a replacement.
+                            
+                            
+                            It is mandatory for `Replace`, `HashMod`, `Lowercase`, `Uppercase`,
+                            `KeepEqual` and `DropEqual` actions.
+                            
+                            
+                            Regex capture groups are available.
                             EOT
                             "type" = "string"
                           }
@@ -4265,7 +5779,10 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                       "type" = "integer"
                     }
                     "scheme" = {
-                      "description" = "Configures the protocol scheme used for requests. If empty, Prometheus uses HTTP by default."
+                      "description" = <<-EOT
+                      Configures the protocol scheme used for requests.
+                      If empty, Prometheus uses HTTP by default.
+                      EOT
                       "enum" = [
                         "HTTP",
                         "HTTPS",
@@ -4284,12 +5801,24 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                     }
                     "scrapeProtocols" = {
                       "description" = <<-EOT
-                      The protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred). 
-                       If unset, Prometheus uses its default value. 
-                       It requires Prometheus >= v2.49.0.
+                      The protocols to negotiate during a scrape. It tells clients the
+                      protocols supported by Prometheus in order of preference (from most to least preferred).
+                      
+                      
+                      If unset, Prometheus uses its default value.
+                      
+                      
+                      It requires Prometheus >= v2.49.0.
                       EOT
                       "items" = {
-                        "description" = "ScrapeProtocol represents a protocol used by Prometheus for scraping metrics. Supported values are: * `OpenMetricsText0.0.1` * `OpenMetricsText1.0.0` * `PrometheusProto` * `PrometheusText0.0.4`"
+                        "description" = <<-EOT
+                        ScrapeProtocol represents a protocol used by Prometheus for scraping metrics.
+                        Supported values are:
+                        * `OpenMetricsText0.0.1`
+                        * `OpenMetricsText1.0.0`
+                        * `PrometheusProto`
+                        * `PrometheusText0.0.4`
+                        EOT
                         "enum" = [
                           "PrometheusProto",
                           "OpenMetricsText0.0.1",
@@ -4309,7 +5838,10 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                     "staticConfigs" = {
                       "description" = "StaticConfigs defines a list of static targets with a common label set."
                       "items" = {
-                        "description" = "StaticConfig defines a Prometheus static configuration. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config"
+                        "description" = <<-EOT
+                        StaticConfig defines a Prometheus static configuration.
+                        See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config
+                        EOT
                         "properties" = {
                           "labels" = {
                             "additionalProperties" = {
@@ -4351,7 +5883,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                   "type" = "string"
                                 }
                                 "name" = {
-                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                  "description" = <<-EOT
+                                  Name of the referent.
+                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                  EOT
                                   "type" = "string"
                                 }
                                 "optional" = {
@@ -4373,7 +5909,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                   "type" = "string"
                                 }
                                 "name" = {
-                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                  "description" = <<-EOT
+                                  Name of the referent.
+                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                  EOT
                                   "type" = "string"
                                 }
                                 "optional" = {
@@ -4401,7 +5941,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                   "type" = "string"
                                 }
                                 "name" = {
-                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                  "description" = <<-EOT
+                                  Name of the referent.
+                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                  EOT
                                   "type" = "string"
                                 }
                                 "optional" = {
@@ -4423,7 +5967,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                                   "type" = "string"
                                 }
                                 "name" = {
-                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                  "description" = <<-EOT
+                                  Name of the referent.
+                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                  EOT
                                   "type" = "string"
                                 }
                                 "optional" = {
@@ -4452,7 +6000,11 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                               "type" = "string"
                             }
                             "name" = {
-                              "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                              "description" = <<-EOT
+                              Name of the referent.
+                              More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                              TODO: Add other useful fields. apiVersion, kind, uid?
+                              EOT
                               "type" = "string"
                             }
                             "optional" = {
@@ -4474,7 +6026,12 @@ resource "kubernetes_manifest" "customresourcedefinition_scrapeconfigs_monitorin
                       "type" = "object"
                     }
                     "trackTimestampsStaleness" = {
-                      "description" = "TrackTimestampsStaleness whether Prometheus tracks staleness of the metrics that have an explicit timestamp present in scraped data. Has no effect if `honorTimestamps` is false. It requires Prometheus >= v2.48.0."
+                      "description" = <<-EOT
+                      TrackTimestampsStaleness whether Prometheus tracks staleness of
+                      the metrics that have an explicit timestamp present in scraped data.
+                      Has no effect if `honorTimestamps` is false.
+                      It requires Prometheus >= v2.48.0.
+                      EOT
                       "type" = "boolean"
                     }
                   }

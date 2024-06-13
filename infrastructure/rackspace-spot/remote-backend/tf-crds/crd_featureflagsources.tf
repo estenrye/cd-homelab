@@ -4,9 +4,8 @@ resource "kubernetes_manifest" "customresourcedefinition_featureflagsources_core
     "kind" = "CustomResourceDefinition"
     "metadata" = {
       "annotations" = {
-        "controller-gen.kubebuilder.io/version" = "v0.10.0"
+        "controller-gen.kubebuilder.io/version" = "v0.15.0"
       }
-      "creationTimestamp" = null
       "name" = "featureflagsources.core.openfeature.dev"
     }
     "spec" = {
@@ -29,11 +28,22 @@ resource "kubernetes_manifest" "customresourcedefinition_featureflagsources_core
               "description" = "FeatureFlagSource is the Schema for the FeatureFlagSources API"
               "properties" = {
                 "apiVersion" = {
-                  "description" = "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+                  "description" = <<-EOT
+                  APIVersion defines the versioned schema of this representation of an object.
+                  Servers should convert recognized schemas to the latest internal value, and
+                  may reject unrecognized values.
+                  More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+                  EOT
                   "type" = "string"
                 }
                 "kind" = {
-                  "description" = "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+                  "description" = <<-EOT
+                  Kind is a string value representing the REST resource this object represents.
+                  Servers may infer this from the endpoint the client submits requests to.
+                  Cannot be updated.
+                  In CamelCase.
+                  More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+                  EOT
                   "type" = "string"
                 }
                 "metadata" = {
@@ -55,7 +65,10 @@ resource "kubernetes_manifest" "customresourcedefinition_featureflagsources_core
                       "type" = "string"
                     }
                     "envVars" = {
-                      "description" = "EnvVars define the env vars to be applied to the sidecar, any env vars in FeatureFlag CRs are added at the lowest index, all values will have the EnvVarPrefix applied, default FLAGD"
+                      "description" = <<-EOT
+                      EnvVars define the env vars to be applied to the sidecar, any env vars in FeatureFlag CRs
+                      are added at the lowest index, all values will have the EnvVarPrefix applied, default FLAGD
+                      EOT
                       "items" = {
                         "description" = "EnvVar represents an environment variable present in a Container."
                         "properties" = {
@@ -64,7 +77,17 @@ resource "kubernetes_manifest" "customresourcedefinition_featureflagsources_core
                             "type" = "string"
                           }
                           "value" = {
-                            "description" = "Variable references $(VAR_NAME) are expanded using the previously defined environment variables in the container and any service environment variables. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Defaults to \"\"."
+                            "description" = <<-EOT
+                            Variable references $(VAR_NAME) are expanded
+                            using the previously defined environment variables in the container and
+                            any service environment variables. If a variable cannot be resolved,
+                            the reference in the input string will be unchanged. Double $$ are reduced
+                            to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e.
+                            "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)".
+                            Escaped references will never be expanded, regardless of whether the variable
+                            exists or not.
+                            Defaults to "".
+                            EOT
                             "type" = "string"
                           }
                           "valueFrom" = {
@@ -78,7 +101,11 @@ resource "kubernetes_manifest" "customresourcedefinition_featureflagsources_core
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -93,7 +120,10 @@ resource "kubernetes_manifest" "customresourcedefinition_featureflagsources_core
                                 "x-kubernetes-map-type" = "atomic"
                               }
                               "fieldRef" = {
-                                "description" = "Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`, spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs."
+                                "description" = <<-EOT
+                                Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`,
+                                spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.
+                                EOT
                                 "properties" = {
                                   "apiVersion" = {
                                     "description" = "Version of the schema the FieldPath is written in terms of, defaults to \"v1\"."
@@ -111,7 +141,10 @@ resource "kubernetes_manifest" "customresourcedefinition_featureflagsources_core
                                 "x-kubernetes-map-type" = "atomic"
                               }
                               "resourceFieldRef" = {
-                                "description" = "Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported."
+                                "description" = <<-EOT
+                                Selects a resource of the container: only resources limits and requests
+                                (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.
+                                EOT
                                 "properties" = {
                                   "containerName" = {
                                     "description" = "Container name: required for volumes, optional for env vars"
@@ -149,7 +182,11 @@ resource "kubernetes_manifest" "customresourcedefinition_featureflagsources_core
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -205,15 +242,25 @@ resource "kubernetes_manifest" "customresourcedefinition_featureflagsources_core
                       "properties" = {
                         "claims" = {
                           "description" = <<-EOT
-                          Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
-                           This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-                           This field is immutable. It can only be set for containers.
+                          Claims lists the names of resources, defined in spec.resourceClaims,
+                          that are used by this container.
+                          
+                          
+                          This is an alpha field and requires enabling the
+                          DynamicResourceAllocation feature gate.
+                          
+                          
+                          This field is immutable. It can only be set for containers.
                           EOT
                           "items" = {
                             "description" = "ResourceClaim references one entry in PodSpec.ResourceClaims."
                             "properties" = {
                               "name" = {
-                                "description" = "Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container."
+                                "description" = <<-EOT
+                                Name must match the name of one entry in pod.spec.resourceClaims of
+                                the Pod where this field is used. It makes that resource available
+                                inside a container.
+                                EOT
                                 "type" = "string"
                               }
                             }
@@ -241,7 +288,10 @@ resource "kubernetes_manifest" "customresourcedefinition_featureflagsources_core
                             "pattern" = "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
                             "x-kubernetes-int-or-string" = true
                           }
-                          "description" = "Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+                          "description" = <<-EOT
+                          Limits describes the maximum amount of compute resources allowed.
+                          More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                          EOT
                           "type" = "object"
                         }
                         "requests" = {
@@ -257,14 +307,22 @@ resource "kubernetes_manifest" "customresourcedefinition_featureflagsources_core
                             "pattern" = "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
                             "x-kubernetes-int-or-string" = true
                           }
-                          "description" = "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+                          "description" = <<-EOT
+                          Requests describes the minimum amount of compute resources required.
+                          If Requests is omitted for a container, it defaults to Limits if that is explicitly specified,
+                          otherwise to an implementation-defined value. Requests cannot exceed Limits.
+                          More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                          EOT
                           "type" = "object"
                         }
                       }
                       "type" = "object"
                     }
                     "rolloutOnChange" = {
-                      "description" = "RolloutOnChange dictates whether annotated deployments will be restarted when configuration changes are detected in this CR, defaults to false"
+                      "description" = <<-EOT
+                      RolloutOnChange dictates whether annotated deployments will be restarted when configuration changes are
+                      detected in this CR, defaults to false
+                      EOT
                       "type" = "boolean"
                     }
                     "socketPath" = {
@@ -282,6 +340,11 @@ resource "kubernetes_manifest" "customresourcedefinition_featureflagsources_core
                           "httpSyncBearerToken" = {
                             "description" = "HttpSyncBearerToken is a bearer token. Used by http(s) sync provider only"
                             "type" = "string"
+                          }
+                          "interval" = {
+                            "description" = "Interval is a flag configuration interval in seconds used by http provider"
+                            "format" = "int32"
+                            "type" = "integer"
                           }
                           "provider" = {
                             "description" = "Provider type - kubernetes, http(s), grpc(s) or file"

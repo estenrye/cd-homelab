@@ -4,8 +4,8 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
     "kind" = "CustomResourceDefinition"
     "metadata" = {
       "annotations" = {
-        "controller-gen.kubebuilder.io/version" = "v0.13.0"
-        "operator.prometheus.io/version" = "0.73.2"
+        "controller-gen.kubebuilder.io/version" = "v0.14.0"
+        "operator.prometheus.io/version" = "0.74.0"
       }
       "name" = "prometheusagents.monitoring.coreos.com"
     }
@@ -74,24 +74,47 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
               "description" = "PrometheusAgent defines a Prometheus agent deployment."
               "properties" = {
                 "apiVersion" = {
-                  "description" = "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+                  "description" = <<-EOT
+                  APIVersion defines the versioned schema of this representation of an object.
+                  Servers should convert recognized schemas to the latest internal value, and
+                  may reject unrecognized values.
+                  More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+                  EOT
                   "type" = "string"
                 }
                 "kind" = {
-                  "description" = "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+                  "description" = <<-EOT
+                  Kind is a string value representing the REST resource this object represents.
+                  Servers may infer this from the endpoint the client submits requests to.
+                  Cannot be updated.
+                  In CamelCase.
+                  More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+                  EOT
                   "type" = "string"
                 }
                 "metadata" = {
                   "type" = "object"
                 }
                 "spec" = {
-                  "description" = "Specification of the desired behavior of the Prometheus agent. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status"
+                  "description" = <<-EOT
+                  Specification of the desired behavior of the Prometheus agent. More info:
+                  https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+                  EOT
                   "properties" = {
                     "additionalArgs" = {
                       "description" = <<-EOT
-                      AdditionalArgs allows setting additional arguments for the 'prometheus' container. 
-                       It is intended for e.g. activating hidden flags which are not supported by the dedicated configuration options yet. The arguments are passed as-is to the Prometheus container which may cause issues if they are invalid or not supported by the given Prometheus version. 
-                       In case of an argument conflict (e.g. an argument which is already set by the operator itself) or when providing an invalid argument, the reconciliation will fail and an error will be logged.
+                      AdditionalArgs allows setting additional arguments for the 'prometheus' container.
+                      
+                      
+                      It is intended for e.g. activating hidden flags which are not supported by
+                      the dedicated configuration options yet. The arguments are passed as-is to the
+                      Prometheus container which may cause issues if they are invalid or not supported
+                      by the given Prometheus version.
+                      
+                      
+                      In case of an argument conflict (e.g. an argument which is already set by the
+                      operator itself) or when providing an invalid argument, the reconciliation will
+                      fail and an error will be logged.
                       EOT
                       "items" = {
                         "description" = "Argument as part of the AdditionalArgs list."
@@ -114,14 +137,30 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                       "type" = "array"
                     }
                     "additionalScrapeConfigs" = {
-                      "description" = "AdditionalScrapeConfigs allows specifying a key of a Secret containing additional Prometheus scrape configurations. Scrape configurations specified are appended to the configurations generated by the Prometheus Operator. Job configurations specified must have the form as specified in the official Prometheus documentation: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config. As scrape configs are appended, the user is responsible to make sure it is valid. Note that using this feature may expose the possibility to break upgrades of Prometheus. It is advised to review Prometheus release notes to ensure that no incompatible scrape configs are going to break Prometheus after the upgrade."
+                      "description" = <<-EOT
+                      AdditionalScrapeConfigs allows specifying a key of a Secret containing
+                      additional Prometheus scrape configurations. Scrape configurations
+                      specified are appended to the configurations generated by the Prometheus
+                      Operator. Job configurations specified must have the form as specified
+                      in the official Prometheus documentation:
+                      https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config.
+                      As scrape configs are appended, the user is responsible to make sure it
+                      is valid. Note that using this feature may expose the possibility to
+                      break upgrades of Prometheus. It is advised to review Prometheus release
+                      notes to ensure that no incompatible scrape configs are going to break
+                      Prometheus after the upgrade.
+                      EOT
                       "properties" = {
                         "key" = {
                           "description" = "The key of the secret to select from.  Must be a valid secret key."
                           "type" = "string"
                         }
                         "name" = {
-                          "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                          "description" = <<-EOT
+                          Name of the referent.
+                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                          TODO: Add other useful fields. apiVersion, kind, uid?
+                          EOT
                           "type" = "string"
                         }
                         "optional" = {
@@ -142,9 +181,22 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           "description" = "Describes node affinity scheduling rules for the pod."
                           "properties" = {
                             "preferredDuringSchedulingIgnoredDuringExecution" = {
-                              "description" = "The scheduler will prefer to schedule pods to nodes that satisfy the affinity expressions specified by this field, but it may choose a node that violates one or more of the expressions. The node that is most preferred is the one with the greatest sum of weights, i.e. for each node that meets all of the scheduling requirements (resource request, requiredDuringScheduling affinity expressions, etc.), compute a sum by iterating through the elements of this field and adding \"weight\" to the sum if the node matches the corresponding matchExpressions; the node(s) with the highest sum are the most preferred."
+                              "description" = <<-EOT
+                              The scheduler will prefer to schedule pods to nodes that satisfy
+                              the affinity expressions specified by this field, but it may choose
+                              a node that violates one or more of the expressions. The node that is
+                              most preferred is the one with the greatest sum of weights, i.e.
+                              for each node that meets all of the scheduling requirements (resource
+                              request, requiredDuringScheduling affinity expressions, etc.),
+                              compute a sum by iterating through the elements of this field and adding
+                              "weight" to the sum if the node matches the corresponding matchExpressions; the
+                              node(s) with the highest sum are the most preferred.
+                              EOT
                               "items" = {
-                                "description" = "An empty preferred scheduling term matches all objects with implicit weight 0 (i.e. it's a no-op). A null preferred scheduling term matches no objects (i.e. is also a no-op)."
+                                "description" = <<-EOT
+                                An empty preferred scheduling term matches all objects with implicit weight 0
+                                (i.e. it's a no-op). A null preferred scheduling term matches no objects (i.e. is also a no-op).
+                                EOT
                                 "properties" = {
                                   "preference" = {
                                     "description" = "A node selector term, associated with the corresponding weight."
@@ -152,18 +204,30 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "matchExpressions" = {
                                         "description" = "A list of node selector requirements by node's labels."
                                         "items" = {
-                                          "description" = "A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                                          "description" = <<-EOT
+                                          A node selector requirement is a selector that contains values, a key, and an operator
+                                          that relates the key and values.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The label key that the selector applies to."
                                               "type" = "string"
                                             }
                                             "operator" = {
-                                              "description" = "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt."
+                                              "description" = <<-EOT
+                                              Represents a key's relationship to a set of values.
+                                              Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.
+                                              EOT
                                               "type" = "string"
                                             }
                                             "values" = {
-                                              "description" = "An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch."
+                                              "description" = <<-EOT
+                                              An array of string values. If the operator is In or NotIn,
+                                              the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                              the values array must be empty. If the operator is Gt or Lt, the values
+                                              array must have a single element, which will be interpreted as an integer.
+                                              This array is replaced during a strategic merge patch.
+                                              EOT
                                               "items" = {
                                                 "type" = "string"
                                               }
@@ -181,18 +245,30 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "matchFields" = {
                                         "description" = "A list of node selector requirements by node's fields."
                                         "items" = {
-                                          "description" = "A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                                          "description" = <<-EOT
+                                          A node selector requirement is a selector that contains values, a key, and an operator
+                                          that relates the key and values.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The label key that the selector applies to."
                                               "type" = "string"
                                             }
                                             "operator" = {
-                                              "description" = "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt."
+                                              "description" = <<-EOT
+                                              Represents a key's relationship to a set of values.
+                                              Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.
+                                              EOT
                                               "type" = "string"
                                             }
                                             "values" = {
-                                              "description" = "An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch."
+                                              "description" = <<-EOT
+                                              An array of string values. If the operator is In or NotIn,
+                                              the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                              the values array must be empty. If the operator is Gt or Lt, the values
+                                              array must have a single element, which will be interpreted as an integer.
+                                              This array is replaced during a strategic merge patch.
+                                              EOT
                                               "items" = {
                                                 "type" = "string"
                                               }
@@ -226,28 +302,50 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                               "type" = "array"
                             }
                             "requiredDuringSchedulingIgnoredDuringExecution" = {
-                              "description" = "If the affinity requirements specified by this field are not met at scheduling time, the pod will not be scheduled onto the node. If the affinity requirements specified by this field cease to be met at some point during pod execution (e.g. due to an update), the system may or may not try to eventually evict the pod from its node."
+                              "description" = <<-EOT
+                              If the affinity requirements specified by this field are not met at
+                              scheduling time, the pod will not be scheduled onto the node.
+                              If the affinity requirements specified by this field cease to be met
+                              at some point during pod execution (e.g. due to an update), the system
+                              may or may not try to eventually evict the pod from its node.
+                              EOT
                               "properties" = {
                                 "nodeSelectorTerms" = {
                                   "description" = "Required. A list of node selector terms. The terms are ORed."
                                   "items" = {
-                                    "description" = "A null or empty node selector term matches no objects. The requirements of them are ANDed. The TopologySelectorTerm type implements a subset of the NodeSelectorTerm."
+                                    "description" = <<-EOT
+                                    A null or empty node selector term matches no objects. The requirements of
+                                    them are ANDed.
+                                    The TopologySelectorTerm type implements a subset of the NodeSelectorTerm.
+                                    EOT
                                     "properties" = {
                                       "matchExpressions" = {
                                         "description" = "A list of node selector requirements by node's labels."
                                         "items" = {
-                                          "description" = "A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                                          "description" = <<-EOT
+                                          A node selector requirement is a selector that contains values, a key, and an operator
+                                          that relates the key and values.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The label key that the selector applies to."
                                               "type" = "string"
                                             }
                                             "operator" = {
-                                              "description" = "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt."
+                                              "description" = <<-EOT
+                                              Represents a key's relationship to a set of values.
+                                              Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.
+                                              EOT
                                               "type" = "string"
                                             }
                                             "values" = {
-                                              "description" = "An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch."
+                                              "description" = <<-EOT
+                                              An array of string values. If the operator is In or NotIn,
+                                              the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                              the values array must be empty. If the operator is Gt or Lt, the values
+                                              array must have a single element, which will be interpreted as an integer.
+                                              This array is replaced during a strategic merge patch.
+                                              EOT
                                               "items" = {
                                                 "type" = "string"
                                               }
@@ -265,18 +363,30 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "matchFields" = {
                                         "description" = "A list of node selector requirements by node's fields."
                                         "items" = {
-                                          "description" = "A node selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                                          "description" = <<-EOT
+                                          A node selector requirement is a selector that contains values, a key, and an operator
+                                          that relates the key and values.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "The label key that the selector applies to."
                                               "type" = "string"
                                             }
                                             "operator" = {
-                                              "description" = "Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt."
+                                              "description" = <<-EOT
+                                              Represents a key's relationship to a set of values.
+                                              Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.
+                                              EOT
                                               "type" = "string"
                                             }
                                             "values" = {
-                                              "description" = "An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. If the operator is Gt or Lt, the values array must have a single element, which will be interpreted as an integer. This array is replaced during a strategic merge patch."
+                                              "description" = <<-EOT
+                                              An array of string values. If the operator is In or NotIn,
+                                              the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                              the values array must be empty. If the operator is Gt or Lt, the values
+                                              array must have a single element, which will be interpreted as an integer.
+                                              This array is replaced during a strategic merge patch.
+                                              EOT
                                               "items" = {
                                                 "type" = "string"
                                               }
@@ -311,7 +421,17 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           "description" = "Describes pod affinity scheduling rules (e.g. co-locate this pod in the same node, zone, etc. as some other pod(s))."
                           "properties" = {
                             "preferredDuringSchedulingIgnoredDuringExecution" = {
-                              "description" = "The scheduler will prefer to schedule pods to nodes that satisfy the affinity expressions specified by this field, but it may choose a node that violates one or more of the expressions. The node that is most preferred is the one with the greatest sum of weights, i.e. for each node that meets all of the scheduling requirements (resource request, requiredDuringScheduling affinity expressions, etc.), compute a sum by iterating through the elements of this field and adding \"weight\" to the sum if the node has pods which matches the corresponding podAffinityTerm; the node(s) with the highest sum are the most preferred."
+                              "description" = <<-EOT
+                              The scheduler will prefer to schedule pods to nodes that satisfy
+                              the affinity expressions specified by this field, but it may choose
+                              a node that violates one or more of the expressions. The node that is
+                              most preferred is the one with the greatest sum of weights, i.e.
+                              for each node that meets all of the scheduling requirements (resource
+                              request, requiredDuringScheduling affinity expressions, etc.),
+                              compute a sum by iterating through the elements of this field and adding
+                              "weight" to the sum if the node has pods which matches the corresponding podAffinityTerm; the
+                              node(s) with the highest sum are the most preferred.
+                              EOT
                               "items" = {
                                 "description" = "The weights of all of the matched WeightedPodAffinityTerm fields are added per-node to find the most preferred node(s)"
                                 "properties" = {
@@ -319,23 +439,37 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "description" = "Required. A pod affinity term, associated with the corresponding weight."
                                     "properties" = {
                                       "labelSelector" = {
-                                        "description" = "A label query over a set of resources, in this case pods. If it's null, this PodAffinityTerm matches with no Pods."
+                                        "description" = <<-EOT
+                                        A label query over a set of resources, in this case pods.
+                                        If it's null, this PodAffinityTerm matches with no Pods.
+                                        EOT
                                         "properties" = {
                                           "matchExpressions" = {
                                             "description" = "matchExpressions is a list of label selector requirements. The requirements are ANDed."
                                             "items" = {
-                                              "description" = "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                                              "description" = <<-EOT
+                                              A label selector requirement is a selector that contains values, a key, and an operator that
+                                              relates the key and values.
+                                              EOT
                                               "properties" = {
                                                 "key" = {
                                                   "description" = "key is the label key that the selector applies to."
                                                   "type" = "string"
                                                 }
                                                 "operator" = {
-                                                  "description" = "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                                                  "description" = <<-EOT
+                                                  operator represents a key's relationship to a set of values.
+                                                  Valid operators are In, NotIn, Exists and DoesNotExist.
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "values" = {
-                                                  "description" = "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                                                  "description" = <<-EOT
+                                                  values is an array of string values. If the operator is In or NotIn,
+                                                  the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                                  the values array must be empty. This array is replaced during a strategic
+                                                  merge patch.
+                                                  EOT
                                                   "items" = {
                                                     "type" = "string"
                                                   }
@@ -354,7 +488,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                             "additionalProperties" = {
                                               "type" = "string"
                                             }
-                                            "description" = "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+                                            "description" = <<-EOT
+                                            matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                                            map is equivalent to an element of matchExpressions, whose key field is "key", the
+                                            operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                            EOT
                                             "type" = "object"
                                           }
                                         }
@@ -362,7 +500,17 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "x-kubernetes-map-type" = "atomic"
                                       }
                                       "matchLabelKeys" = {
-                                        "description" = "MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. Also, MatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+                                        "description" = <<-EOT
+                                        MatchLabelKeys is a set of pod label keys to select which pods will
+                                        be taken into consideration. The keys are used to lookup values from the
+                                        incoming pod labels, those key-value labels are merged with `LabelSelector` as `key in (value)`
+                                        to select the group of existing pods which pods will be taken into consideration
+                                        for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming
+                                        pod labels will be ignored. The default value is empty.
+                                        The same key is forbidden to exist in both MatchLabelKeys and LabelSelector.
+                                        Also, MatchLabelKeys cannot be set when LabelSelector isn't set.
+                                        This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+                                        EOT
                                         "items" = {
                                           "type" = "string"
                                         }
@@ -370,7 +518,17 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "x-kubernetes-list-type" = "atomic"
                                       }
                                       "mismatchLabelKeys" = {
-                                        "description" = "MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MismatchLabelKeys and LabelSelector. Also, MismatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+                                        "description" = <<-EOT
+                                        MismatchLabelKeys is a set of pod label keys to select which pods will
+                                        be taken into consideration. The keys are used to lookup values from the
+                                        incoming pod labels, those key-value labels are merged with `LabelSelector` as `key notin (value)`
+                                        to select the group of existing pods which pods will be taken into consideration
+                                        for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming
+                                        pod labels will be ignored. The default value is empty.
+                                        The same key is forbidden to exist in both MismatchLabelKeys and LabelSelector.
+                                        Also, MismatchLabelKeys cannot be set when LabelSelector isn't set.
+                                        This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+                                        EOT
                                         "items" = {
                                           "type" = "string"
                                         }
@@ -378,23 +536,40 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "x-kubernetes-list-type" = "atomic"
                                       }
                                       "namespaceSelector" = {
-                                        "description" = "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces."
+                                        "description" = <<-EOT
+                                        A label query over the set of namespaces that the term applies to.
+                                        The term is applied to the union of the namespaces selected by this field
+                                        and the ones listed in the namespaces field.
+                                        null selector and null or empty namespaces list means "this pod's namespace".
+                                        An empty selector ({}) matches all namespaces.
+                                        EOT
                                         "properties" = {
                                           "matchExpressions" = {
                                             "description" = "matchExpressions is a list of label selector requirements. The requirements are ANDed."
                                             "items" = {
-                                              "description" = "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                                              "description" = <<-EOT
+                                              A label selector requirement is a selector that contains values, a key, and an operator that
+                                              relates the key and values.
+                                              EOT
                                               "properties" = {
                                                 "key" = {
                                                   "description" = "key is the label key that the selector applies to."
                                                   "type" = "string"
                                                 }
                                                 "operator" = {
-                                                  "description" = "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                                                  "description" = <<-EOT
+                                                  operator represents a key's relationship to a set of values.
+                                                  Valid operators are In, NotIn, Exists and DoesNotExist.
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "values" = {
-                                                  "description" = "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                                                  "description" = <<-EOT
+                                                  values is an array of string values. If the operator is In or NotIn,
+                                                  the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                                  the values array must be empty. This array is replaced during a strategic
+                                                  merge patch.
+                                                  EOT
                                                   "items" = {
                                                     "type" = "string"
                                                   }
@@ -413,7 +588,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                             "additionalProperties" = {
                                               "type" = "string"
                                             }
-                                            "description" = "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+                                            "description" = <<-EOT
+                                            matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                                            map is equivalent to an element of matchExpressions, whose key field is "key", the
+                                            operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                            EOT
                                             "type" = "object"
                                           }
                                         }
@@ -421,14 +600,25 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "x-kubernetes-map-type" = "atomic"
                                       }
                                       "namespaces" = {
-                                        "description" = "namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means \"this pod's namespace\"."
+                                        "description" = <<-EOT
+                                        namespaces specifies a static list of namespace names that the term applies to.
+                                        The term is applied to the union of the namespaces listed in this field
+                                        and the ones selected by namespaceSelector.
+                                        null or empty namespaces list and null namespaceSelector means "this pod's namespace".
+                                        EOT
                                         "items" = {
                                           "type" = "string"
                                         }
                                         "type" = "array"
                                       }
                                       "topologyKey" = {
-                                        "description" = "This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed."
+                                        "description" = <<-EOT
+                                        This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching
+                                        the labelSelector in the specified namespaces, where co-located is defined as running on a node
+                                        whose value of the label with key topologyKey matches that of any node on which any of the
+                                        selected pods is running.
+                                        Empty topologyKey is not allowed.
+                                        EOT
                                         "type" = "string"
                                       }
                                     }
@@ -438,7 +628,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "type" = "object"
                                   }
                                   "weight" = {
-                                    "description" = "weight associated with matching the corresponding podAffinityTerm, in the range 1-100."
+                                    "description" = <<-EOT
+                                    weight associated with matching the corresponding podAffinityTerm,
+                                    in the range 1-100.
+                                    EOT
                                     "format" = "int32"
                                     "type" = "integer"
                                   }
@@ -452,28 +645,57 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                               "type" = "array"
                             }
                             "requiredDuringSchedulingIgnoredDuringExecution" = {
-                              "description" = "If the affinity requirements specified by this field are not met at scheduling time, the pod will not be scheduled onto the node. If the affinity requirements specified by this field cease to be met at some point during pod execution (e.g. due to a pod label update), the system may or may not try to eventually evict the pod from its node. When there are multiple elements, the lists of nodes corresponding to each podAffinityTerm are intersected, i.e. all terms must be satisfied."
+                              "description" = <<-EOT
+                              If the affinity requirements specified by this field are not met at
+                              scheduling time, the pod will not be scheduled onto the node.
+                              If the affinity requirements specified by this field cease to be met
+                              at some point during pod execution (e.g. due to a pod label update), the
+                              system may or may not try to eventually evict the pod from its node.
+                              When there are multiple elements, the lists of nodes corresponding to each
+                              podAffinityTerm are intersected, i.e. all terms must be satisfied.
+                              EOT
                               "items" = {
-                                "description" = "Defines a set of pods (namely those matching the labelSelector relative to the given namespace(s)) that this pod should be co-located (affinity) or not co-located (anti-affinity) with, where co-located is defined as running on a node whose value of the label with key <topologyKey> matches that of any node on which a pod of the set of pods is running"
+                                "description" = <<-EOT
+                                Defines a set of pods (namely those matching the labelSelector
+                                relative to the given namespace(s)) that this pod should be
+                                co-located (affinity) or not co-located (anti-affinity) with,
+                                where co-located is defined as running on a node whose value of
+                                the label with key <topologyKey> matches that of any node on which
+                                a pod of the set of pods is running
+                                EOT
                                 "properties" = {
                                   "labelSelector" = {
-                                    "description" = "A label query over a set of resources, in this case pods. If it's null, this PodAffinityTerm matches with no Pods."
+                                    "description" = <<-EOT
+                                    A label query over a set of resources, in this case pods.
+                                    If it's null, this PodAffinityTerm matches with no Pods.
+                                    EOT
                                     "properties" = {
                                       "matchExpressions" = {
                                         "description" = "matchExpressions is a list of label selector requirements. The requirements are ANDed."
                                         "items" = {
-                                          "description" = "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                                          "description" = <<-EOT
+                                          A label selector requirement is a selector that contains values, a key, and an operator that
+                                          relates the key and values.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "key is the label key that the selector applies to."
                                               "type" = "string"
                                             }
                                             "operator" = {
-                                              "description" = "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                                              "description" = <<-EOT
+                                              operator represents a key's relationship to a set of values.
+                                              Valid operators are In, NotIn, Exists and DoesNotExist.
+                                              EOT
                                               "type" = "string"
                                             }
                                             "values" = {
-                                              "description" = "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                                              "description" = <<-EOT
+                                              values is an array of string values. If the operator is In or NotIn,
+                                              the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                              the values array must be empty. This array is replaced during a strategic
+                                              merge patch.
+                                              EOT
                                               "items" = {
                                                 "type" = "string"
                                               }
@@ -492,7 +714,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "additionalProperties" = {
                                           "type" = "string"
                                         }
-                                        "description" = "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+                                        "description" = <<-EOT
+                                        matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                                        map is equivalent to an element of matchExpressions, whose key field is "key", the
+                                        operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                        EOT
                                         "type" = "object"
                                       }
                                     }
@@ -500,7 +726,17 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "x-kubernetes-map-type" = "atomic"
                                   }
                                   "matchLabelKeys" = {
-                                    "description" = "MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. Also, MatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+                                    "description" = <<-EOT
+                                    MatchLabelKeys is a set of pod label keys to select which pods will
+                                    be taken into consideration. The keys are used to lookup values from the
+                                    incoming pod labels, those key-value labels are merged with `LabelSelector` as `key in (value)`
+                                    to select the group of existing pods which pods will be taken into consideration
+                                    for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming
+                                    pod labels will be ignored. The default value is empty.
+                                    The same key is forbidden to exist in both MatchLabelKeys and LabelSelector.
+                                    Also, MatchLabelKeys cannot be set when LabelSelector isn't set.
+                                    This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+                                    EOT
                                     "items" = {
                                       "type" = "string"
                                     }
@@ -508,7 +744,17 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "x-kubernetes-list-type" = "atomic"
                                   }
                                   "mismatchLabelKeys" = {
-                                    "description" = "MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MismatchLabelKeys and LabelSelector. Also, MismatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+                                    "description" = <<-EOT
+                                    MismatchLabelKeys is a set of pod label keys to select which pods will
+                                    be taken into consideration. The keys are used to lookup values from the
+                                    incoming pod labels, those key-value labels are merged with `LabelSelector` as `key notin (value)`
+                                    to select the group of existing pods which pods will be taken into consideration
+                                    for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming
+                                    pod labels will be ignored. The default value is empty.
+                                    The same key is forbidden to exist in both MismatchLabelKeys and LabelSelector.
+                                    Also, MismatchLabelKeys cannot be set when LabelSelector isn't set.
+                                    This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+                                    EOT
                                     "items" = {
                                       "type" = "string"
                                     }
@@ -516,23 +762,40 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "x-kubernetes-list-type" = "atomic"
                                   }
                                   "namespaceSelector" = {
-                                    "description" = "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces."
+                                    "description" = <<-EOT
+                                    A label query over the set of namespaces that the term applies to.
+                                    The term is applied to the union of the namespaces selected by this field
+                                    and the ones listed in the namespaces field.
+                                    null selector and null or empty namespaces list means "this pod's namespace".
+                                    An empty selector ({}) matches all namespaces.
+                                    EOT
                                     "properties" = {
                                       "matchExpressions" = {
                                         "description" = "matchExpressions is a list of label selector requirements. The requirements are ANDed."
                                         "items" = {
-                                          "description" = "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                                          "description" = <<-EOT
+                                          A label selector requirement is a selector that contains values, a key, and an operator that
+                                          relates the key and values.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "key is the label key that the selector applies to."
                                               "type" = "string"
                                             }
                                             "operator" = {
-                                              "description" = "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                                              "description" = <<-EOT
+                                              operator represents a key's relationship to a set of values.
+                                              Valid operators are In, NotIn, Exists and DoesNotExist.
+                                              EOT
                                               "type" = "string"
                                             }
                                             "values" = {
-                                              "description" = "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                                              "description" = <<-EOT
+                                              values is an array of string values. If the operator is In or NotIn,
+                                              the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                              the values array must be empty. This array is replaced during a strategic
+                                              merge patch.
+                                              EOT
                                               "items" = {
                                                 "type" = "string"
                                               }
@@ -551,7 +814,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "additionalProperties" = {
                                           "type" = "string"
                                         }
-                                        "description" = "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+                                        "description" = <<-EOT
+                                        matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                                        map is equivalent to an element of matchExpressions, whose key field is "key", the
+                                        operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                        EOT
                                         "type" = "object"
                                       }
                                     }
@@ -559,14 +826,25 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "x-kubernetes-map-type" = "atomic"
                                   }
                                   "namespaces" = {
-                                    "description" = "namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means \"this pod's namespace\"."
+                                    "description" = <<-EOT
+                                    namespaces specifies a static list of namespace names that the term applies to.
+                                    The term is applied to the union of the namespaces listed in this field
+                                    and the ones selected by namespaceSelector.
+                                    null or empty namespaces list and null namespaceSelector means "this pod's namespace".
+                                    EOT
                                     "items" = {
                                       "type" = "string"
                                     }
                                     "type" = "array"
                                   }
                                   "topologyKey" = {
-                                    "description" = "This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed."
+                                    "description" = <<-EOT
+                                    This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching
+                                    the labelSelector in the specified namespaces, where co-located is defined as running on a node
+                                    whose value of the label with key topologyKey matches that of any node on which any of the
+                                    selected pods is running.
+                                    Empty topologyKey is not allowed.
+                                    EOT
                                     "type" = "string"
                                   }
                                 }
@@ -584,7 +862,17 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           "description" = "Describes pod anti-affinity scheduling rules (e.g. avoid putting this pod in the same node, zone, etc. as some other pod(s))."
                           "properties" = {
                             "preferredDuringSchedulingIgnoredDuringExecution" = {
-                              "description" = "The scheduler will prefer to schedule pods to nodes that satisfy the anti-affinity expressions specified by this field, but it may choose a node that violates one or more of the expressions. The node that is most preferred is the one with the greatest sum of weights, i.e. for each node that meets all of the scheduling requirements (resource request, requiredDuringScheduling anti-affinity expressions, etc.), compute a sum by iterating through the elements of this field and adding \"weight\" to the sum if the node has pods which matches the corresponding podAffinityTerm; the node(s) with the highest sum are the most preferred."
+                              "description" = <<-EOT
+                              The scheduler will prefer to schedule pods to nodes that satisfy
+                              the anti-affinity expressions specified by this field, but it may choose
+                              a node that violates one or more of the expressions. The node that is
+                              most preferred is the one with the greatest sum of weights, i.e.
+                              for each node that meets all of the scheduling requirements (resource
+                              request, requiredDuringScheduling anti-affinity expressions, etc.),
+                              compute a sum by iterating through the elements of this field and adding
+                              "weight" to the sum if the node has pods which matches the corresponding podAffinityTerm; the
+                              node(s) with the highest sum are the most preferred.
+                              EOT
                               "items" = {
                                 "description" = "The weights of all of the matched WeightedPodAffinityTerm fields are added per-node to find the most preferred node(s)"
                                 "properties" = {
@@ -592,23 +880,37 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "description" = "Required. A pod affinity term, associated with the corresponding weight."
                                     "properties" = {
                                       "labelSelector" = {
-                                        "description" = "A label query over a set of resources, in this case pods. If it's null, this PodAffinityTerm matches with no Pods."
+                                        "description" = <<-EOT
+                                        A label query over a set of resources, in this case pods.
+                                        If it's null, this PodAffinityTerm matches with no Pods.
+                                        EOT
                                         "properties" = {
                                           "matchExpressions" = {
                                             "description" = "matchExpressions is a list of label selector requirements. The requirements are ANDed."
                                             "items" = {
-                                              "description" = "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                                              "description" = <<-EOT
+                                              A label selector requirement is a selector that contains values, a key, and an operator that
+                                              relates the key and values.
+                                              EOT
                                               "properties" = {
                                                 "key" = {
                                                   "description" = "key is the label key that the selector applies to."
                                                   "type" = "string"
                                                 }
                                                 "operator" = {
-                                                  "description" = "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                                                  "description" = <<-EOT
+                                                  operator represents a key's relationship to a set of values.
+                                                  Valid operators are In, NotIn, Exists and DoesNotExist.
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "values" = {
-                                                  "description" = "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                                                  "description" = <<-EOT
+                                                  values is an array of string values. If the operator is In or NotIn,
+                                                  the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                                  the values array must be empty. This array is replaced during a strategic
+                                                  merge patch.
+                                                  EOT
                                                   "items" = {
                                                     "type" = "string"
                                                   }
@@ -627,7 +929,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                             "additionalProperties" = {
                                               "type" = "string"
                                             }
-                                            "description" = "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+                                            "description" = <<-EOT
+                                            matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                                            map is equivalent to an element of matchExpressions, whose key field is "key", the
+                                            operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                            EOT
                                             "type" = "object"
                                           }
                                         }
@@ -635,7 +941,17 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "x-kubernetes-map-type" = "atomic"
                                       }
                                       "matchLabelKeys" = {
-                                        "description" = "MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. Also, MatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+                                        "description" = <<-EOT
+                                        MatchLabelKeys is a set of pod label keys to select which pods will
+                                        be taken into consideration. The keys are used to lookup values from the
+                                        incoming pod labels, those key-value labels are merged with `LabelSelector` as `key in (value)`
+                                        to select the group of existing pods which pods will be taken into consideration
+                                        for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming
+                                        pod labels will be ignored. The default value is empty.
+                                        The same key is forbidden to exist in both MatchLabelKeys and LabelSelector.
+                                        Also, MatchLabelKeys cannot be set when LabelSelector isn't set.
+                                        This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+                                        EOT
                                         "items" = {
                                           "type" = "string"
                                         }
@@ -643,7 +959,17 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "x-kubernetes-list-type" = "atomic"
                                       }
                                       "mismatchLabelKeys" = {
-                                        "description" = "MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MismatchLabelKeys and LabelSelector. Also, MismatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+                                        "description" = <<-EOT
+                                        MismatchLabelKeys is a set of pod label keys to select which pods will
+                                        be taken into consideration. The keys are used to lookup values from the
+                                        incoming pod labels, those key-value labels are merged with `LabelSelector` as `key notin (value)`
+                                        to select the group of existing pods which pods will be taken into consideration
+                                        for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming
+                                        pod labels will be ignored. The default value is empty.
+                                        The same key is forbidden to exist in both MismatchLabelKeys and LabelSelector.
+                                        Also, MismatchLabelKeys cannot be set when LabelSelector isn't set.
+                                        This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+                                        EOT
                                         "items" = {
                                           "type" = "string"
                                         }
@@ -651,23 +977,40 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "x-kubernetes-list-type" = "atomic"
                                       }
                                       "namespaceSelector" = {
-                                        "description" = "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces."
+                                        "description" = <<-EOT
+                                        A label query over the set of namespaces that the term applies to.
+                                        The term is applied to the union of the namespaces selected by this field
+                                        and the ones listed in the namespaces field.
+                                        null selector and null or empty namespaces list means "this pod's namespace".
+                                        An empty selector ({}) matches all namespaces.
+                                        EOT
                                         "properties" = {
                                           "matchExpressions" = {
                                             "description" = "matchExpressions is a list of label selector requirements. The requirements are ANDed."
                                             "items" = {
-                                              "description" = "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                                              "description" = <<-EOT
+                                              A label selector requirement is a selector that contains values, a key, and an operator that
+                                              relates the key and values.
+                                              EOT
                                               "properties" = {
                                                 "key" = {
                                                   "description" = "key is the label key that the selector applies to."
                                                   "type" = "string"
                                                 }
                                                 "operator" = {
-                                                  "description" = "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                                                  "description" = <<-EOT
+                                                  operator represents a key's relationship to a set of values.
+                                                  Valid operators are In, NotIn, Exists and DoesNotExist.
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "values" = {
-                                                  "description" = "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                                                  "description" = <<-EOT
+                                                  values is an array of string values. If the operator is In or NotIn,
+                                                  the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                                  the values array must be empty. This array is replaced during a strategic
+                                                  merge patch.
+                                                  EOT
                                                   "items" = {
                                                     "type" = "string"
                                                   }
@@ -686,7 +1029,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                             "additionalProperties" = {
                                               "type" = "string"
                                             }
-                                            "description" = "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+                                            "description" = <<-EOT
+                                            matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                                            map is equivalent to an element of matchExpressions, whose key field is "key", the
+                                            operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                            EOT
                                             "type" = "object"
                                           }
                                         }
@@ -694,14 +1041,25 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "x-kubernetes-map-type" = "atomic"
                                       }
                                       "namespaces" = {
-                                        "description" = "namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means \"this pod's namespace\"."
+                                        "description" = <<-EOT
+                                        namespaces specifies a static list of namespace names that the term applies to.
+                                        The term is applied to the union of the namespaces listed in this field
+                                        and the ones selected by namespaceSelector.
+                                        null or empty namespaces list and null namespaceSelector means "this pod's namespace".
+                                        EOT
                                         "items" = {
                                           "type" = "string"
                                         }
                                         "type" = "array"
                                       }
                                       "topologyKey" = {
-                                        "description" = "This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed."
+                                        "description" = <<-EOT
+                                        This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching
+                                        the labelSelector in the specified namespaces, where co-located is defined as running on a node
+                                        whose value of the label with key topologyKey matches that of any node on which any of the
+                                        selected pods is running.
+                                        Empty topologyKey is not allowed.
+                                        EOT
                                         "type" = "string"
                                       }
                                     }
@@ -711,7 +1069,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "type" = "object"
                                   }
                                   "weight" = {
-                                    "description" = "weight associated with matching the corresponding podAffinityTerm, in the range 1-100."
+                                    "description" = <<-EOT
+                                    weight associated with matching the corresponding podAffinityTerm,
+                                    in the range 1-100.
+                                    EOT
                                     "format" = "int32"
                                     "type" = "integer"
                                   }
@@ -725,28 +1086,57 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                               "type" = "array"
                             }
                             "requiredDuringSchedulingIgnoredDuringExecution" = {
-                              "description" = "If the anti-affinity requirements specified by this field are not met at scheduling time, the pod will not be scheduled onto the node. If the anti-affinity requirements specified by this field cease to be met at some point during pod execution (e.g. due to a pod label update), the system may or may not try to eventually evict the pod from its node. When there are multiple elements, the lists of nodes corresponding to each podAffinityTerm are intersected, i.e. all terms must be satisfied."
+                              "description" = <<-EOT
+                              If the anti-affinity requirements specified by this field are not met at
+                              scheduling time, the pod will not be scheduled onto the node.
+                              If the anti-affinity requirements specified by this field cease to be met
+                              at some point during pod execution (e.g. due to a pod label update), the
+                              system may or may not try to eventually evict the pod from its node.
+                              When there are multiple elements, the lists of nodes corresponding to each
+                              podAffinityTerm are intersected, i.e. all terms must be satisfied.
+                              EOT
                               "items" = {
-                                "description" = "Defines a set of pods (namely those matching the labelSelector relative to the given namespace(s)) that this pod should be co-located (affinity) or not co-located (anti-affinity) with, where co-located is defined as running on a node whose value of the label with key <topologyKey> matches that of any node on which a pod of the set of pods is running"
+                                "description" = <<-EOT
+                                Defines a set of pods (namely those matching the labelSelector
+                                relative to the given namespace(s)) that this pod should be
+                                co-located (affinity) or not co-located (anti-affinity) with,
+                                where co-located is defined as running on a node whose value of
+                                the label with key <topologyKey> matches that of any node on which
+                                a pod of the set of pods is running
+                                EOT
                                 "properties" = {
                                   "labelSelector" = {
-                                    "description" = "A label query over a set of resources, in this case pods. If it's null, this PodAffinityTerm matches with no Pods."
+                                    "description" = <<-EOT
+                                    A label query over a set of resources, in this case pods.
+                                    If it's null, this PodAffinityTerm matches with no Pods.
+                                    EOT
                                     "properties" = {
                                       "matchExpressions" = {
                                         "description" = "matchExpressions is a list of label selector requirements. The requirements are ANDed."
                                         "items" = {
-                                          "description" = "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                                          "description" = <<-EOT
+                                          A label selector requirement is a selector that contains values, a key, and an operator that
+                                          relates the key and values.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "key is the label key that the selector applies to."
                                               "type" = "string"
                                             }
                                             "operator" = {
-                                              "description" = "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                                              "description" = <<-EOT
+                                              operator represents a key's relationship to a set of values.
+                                              Valid operators are In, NotIn, Exists and DoesNotExist.
+                                              EOT
                                               "type" = "string"
                                             }
                                             "values" = {
-                                              "description" = "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                                              "description" = <<-EOT
+                                              values is an array of string values. If the operator is In or NotIn,
+                                              the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                              the values array must be empty. This array is replaced during a strategic
+                                              merge patch.
+                                              EOT
                                               "items" = {
                                                 "type" = "string"
                                               }
@@ -765,7 +1155,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "additionalProperties" = {
                                           "type" = "string"
                                         }
-                                        "description" = "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+                                        "description" = <<-EOT
+                                        matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                                        map is equivalent to an element of matchExpressions, whose key field is "key", the
+                                        operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                        EOT
                                         "type" = "object"
                                       }
                                     }
@@ -773,7 +1167,17 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "x-kubernetes-map-type" = "atomic"
                                   }
                                   "matchLabelKeys" = {
-                                    "description" = "MatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key in (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. Also, MatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+                                    "description" = <<-EOT
+                                    MatchLabelKeys is a set of pod label keys to select which pods will
+                                    be taken into consideration. The keys are used to lookup values from the
+                                    incoming pod labels, those key-value labels are merged with `LabelSelector` as `key in (value)`
+                                    to select the group of existing pods which pods will be taken into consideration
+                                    for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming
+                                    pod labels will be ignored. The default value is empty.
+                                    The same key is forbidden to exist in both MatchLabelKeys and LabelSelector.
+                                    Also, MatchLabelKeys cannot be set when LabelSelector isn't set.
+                                    This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+                                    EOT
                                     "items" = {
                                       "type" = "string"
                                     }
@@ -781,7 +1185,17 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "x-kubernetes-list-type" = "atomic"
                                   }
                                   "mismatchLabelKeys" = {
-                                    "description" = "MismatchLabelKeys is a set of pod label keys to select which pods will be taken into consideration. The keys are used to lookup values from the incoming pod labels, those key-value labels are merged with `LabelSelector` as `key notin (value)` to select the group of existing pods which pods will be taken into consideration for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming pod labels will be ignored. The default value is empty. The same key is forbidden to exist in both MismatchLabelKeys and LabelSelector. Also, MismatchLabelKeys cannot be set when LabelSelector isn't set. This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate."
+                                    "description" = <<-EOT
+                                    MismatchLabelKeys is a set of pod label keys to select which pods will
+                                    be taken into consideration. The keys are used to lookup values from the
+                                    incoming pod labels, those key-value labels are merged with `LabelSelector` as `key notin (value)`
+                                    to select the group of existing pods which pods will be taken into consideration
+                                    for the incoming pod's pod (anti) affinity. Keys that don't exist in the incoming
+                                    pod labels will be ignored. The default value is empty.
+                                    The same key is forbidden to exist in both MismatchLabelKeys and LabelSelector.
+                                    Also, MismatchLabelKeys cannot be set when LabelSelector isn't set.
+                                    This is an alpha field and requires enabling MatchLabelKeysInPodAffinity feature gate.
+                                    EOT
                                     "items" = {
                                       "type" = "string"
                                     }
@@ -789,23 +1203,40 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "x-kubernetes-list-type" = "atomic"
                                   }
                                   "namespaceSelector" = {
-                                    "description" = "A label query over the set of namespaces that the term applies to. The term is applied to the union of the namespaces selected by this field and the ones listed in the namespaces field. null selector and null or empty namespaces list means \"this pod's namespace\". An empty selector ({}) matches all namespaces."
+                                    "description" = <<-EOT
+                                    A label query over the set of namespaces that the term applies to.
+                                    The term is applied to the union of the namespaces selected by this field
+                                    and the ones listed in the namespaces field.
+                                    null selector and null or empty namespaces list means "this pod's namespace".
+                                    An empty selector ({}) matches all namespaces.
+                                    EOT
                                     "properties" = {
                                       "matchExpressions" = {
                                         "description" = "matchExpressions is a list of label selector requirements. The requirements are ANDed."
                                         "items" = {
-                                          "description" = "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                                          "description" = <<-EOT
+                                          A label selector requirement is a selector that contains values, a key, and an operator that
+                                          relates the key and values.
+                                          EOT
                                           "properties" = {
                                             "key" = {
                                               "description" = "key is the label key that the selector applies to."
                                               "type" = "string"
                                             }
                                             "operator" = {
-                                              "description" = "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                                              "description" = <<-EOT
+                                              operator represents a key's relationship to a set of values.
+                                              Valid operators are In, NotIn, Exists and DoesNotExist.
+                                              EOT
                                               "type" = "string"
                                             }
                                             "values" = {
-                                              "description" = "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                                              "description" = <<-EOT
+                                              values is an array of string values. If the operator is In or NotIn,
+                                              the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                              the values array must be empty. This array is replaced during a strategic
+                                              merge patch.
+                                              EOT
                                               "items" = {
                                                 "type" = "string"
                                               }
@@ -824,7 +1255,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "additionalProperties" = {
                                           "type" = "string"
                                         }
-                                        "description" = "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+                                        "description" = <<-EOT
+                                        matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                                        map is equivalent to an element of matchExpressions, whose key field is "key", the
+                                        operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                        EOT
                                         "type" = "object"
                                       }
                                     }
@@ -832,14 +1267,25 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "x-kubernetes-map-type" = "atomic"
                                   }
                                   "namespaces" = {
-                                    "description" = "namespaces specifies a static list of namespace names that the term applies to. The term is applied to the union of the namespaces listed in this field and the ones selected by namespaceSelector. null or empty namespaces list and null namespaceSelector means \"this pod's namespace\"."
+                                    "description" = <<-EOT
+                                    namespaces specifies a static list of namespace names that the term applies to.
+                                    The term is applied to the union of the namespaces listed in this field
+                                    and the ones selected by namespaceSelector.
+                                    null or empty namespaces list and null namespaceSelector means "this pod's namespace".
+                                    EOT
                                     "items" = {
                                       "type" = "string"
                                     }
                                     "type" = "array"
                                   }
                                   "topologyKey" = {
-                                    "description" = "This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching the labelSelector in the specified namespaces, where co-located is defined as running on a node whose value of the label with key topologyKey matches that of any node on which any of the selected pods is running. Empty topologyKey is not allowed."
+                                    "description" = <<-EOT
+                                    This pod should be co-located (affinity) or not co-located (anti-affinity) with the pods matching
+                                    the labelSelector in the specified namespaces, where co-located is defined as running on a node
+                                    whose value of the label with key topologyKey matches that of any node on which any of the
+                                    selected pods is running.
+                                    Empty topologyKey is not allowed.
+                                    EOT
                                     "type" = "string"
                                   }
                                 }
@@ -857,12 +1303,21 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                       "type" = "object"
                     }
                     "apiserverConfig" = {
-                      "description" = "APIServerConfig allows specifying a host and auth methods to access the Kuberntees API server. If null, Prometheus is assumed to run inside of the cluster: it will discover the API servers automatically and use the Pod's CA certificate and bearer token file at /var/run/secrets/kubernetes.io/serviceaccount/."
+                      "description" = <<-EOT
+                      APIServerConfig allows specifying a host and auth methods to access the
+                      Kuberntees API server.
+                      If null, Prometheus is assumed to run inside of the cluster: it will
+                      discover the API servers automatically and use the Pod's CA certificate
+                      and bearer token file at /var/run/secrets/kubernetes.io/serviceaccount/.
+                      EOT
                       "properties" = {
                         "authorization" = {
                           "description" = <<-EOT
-                          Authorization section for the API server. 
-                           Cannot be set at the same time as `basicAuth`, `bearerToken`, or `bearerTokenFile`.
+                          Authorization section for the API server.
+                          
+                          
+                          Cannot be set at the same time as `basicAuth`, `bearerToken`, or
+                          `bearerTokenFile`.
                           EOT
                           "properties" = {
                             "credentials" = {
@@ -873,7 +1328,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "type" = "string"
                                 }
                                 "name" = {
-                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                  "description" = <<-EOT
+                                  Name of the referent.
+                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                  EOT
                                   "type" = "string"
                                 }
                                 "optional" = {
@@ -893,9 +1352,13 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             }
                             "type" = {
                               "description" = <<-EOT
-                              Defines the authentication type. The value is case-insensitive. 
-                               "Basic" is not a supported value. 
-                               Default: "Bearer"
+                              Defines the authentication type. The value is case-insensitive.
+                              
+                              
+                              "Basic" is not a supported value.
+                              
+                              
+                              Default: "Bearer"
                               EOT
                               "type" = "string"
                             }
@@ -904,19 +1367,29 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                         }
                         "basicAuth" = {
                           "description" = <<-EOT
-                          BasicAuth configuration for the API server. 
-                           Cannot be set at the same time as `authorization`, `bearerToken`, or `bearerTokenFile`.
+                          BasicAuth configuration for the API server.
+                          
+                          
+                          Cannot be set at the same time as `authorization`, `bearerToken`, or
+                          `bearerTokenFile`.
                           EOT
                           "properties" = {
                             "password" = {
-                              "description" = "`password` specifies a key of a Secret containing the password for authentication."
+                              "description" = <<-EOT
+                              `password` specifies a key of a Secret containing the password for
+                              authentication.
+                              EOT
                               "properties" = {
                                 "key" = {
                                   "description" = "The key of the secret to select from.  Must be a valid secret key."
                                   "type" = "string"
                                 }
                                 "name" = {
-                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                  "description" = <<-EOT
+                                  Name of the referent.
+                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                  EOT
                                   "type" = "string"
                                 }
                                 "optional" = {
@@ -931,14 +1404,21 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                               "x-kubernetes-map-type" = "atomic"
                             }
                             "username" = {
-                              "description" = "`username` specifies a key of a Secret containing the username for authentication."
+                              "description" = <<-EOT
+                              `username` specifies a key of a Secret containing the username for
+                              authentication.
+                              EOT
                               "properties" = {
                                 "key" = {
                                   "description" = "The key of the secret to select from.  Must be a valid secret key."
                                   "type" = "string"
                                 }
                                 "name" = {
-                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                  "description" = <<-EOT
+                                  Name of the referent.
+                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                  EOT
                                   "type" = "string"
                                 }
                                 "optional" = {
@@ -957,21 +1437,31 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                         }
                         "bearerToken" = {
                           "description" = <<-EOT
-                          *Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.* 
-                           Deprecated: this will be removed in a future release.
+                          *Warning: this field shouldn't be used because the token value appears
+                          in clear-text. Prefer using `authorization`.*
+                          
+                          
+                          Deprecated: this will be removed in a future release.
                           EOT
                           "type" = "string"
                         }
                         "bearerTokenFile" = {
                           "description" = <<-EOT
-                          File to read bearer token for accessing apiserver. 
-                           Cannot be set at the same time as `basicAuth`, `authorization`, or `bearerToken`. 
-                           Deprecated: this will be removed in a future release. Prefer using `authorization`.
+                          File to read bearer token for accessing apiserver.
+                          
+                          
+                          Cannot be set at the same time as `basicAuth`, `authorization`, or `bearerToken`.
+                          
+                          
+                          Deprecated: this will be removed in a future release. Prefer using `authorization`.
                           EOT
                           "type" = "string"
                         }
                         "host" = {
-                          "description" = "Kubernetes API address consisting of a hostname or IP address followed by an optional port number."
+                          "description" = <<-EOT
+                          Kubernetes API address consisting of a hostname or IP address followed
+                          by an optional port number.
+                          EOT
                           "type" = "string"
                         }
                         "tlsConfig" = {
@@ -988,7 +1478,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -1010,7 +1504,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -1042,7 +1540,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -1064,7 +1566,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -1101,7 +1607,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "type" = "string"
                                 }
                                 "name" = {
-                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                  "description" = <<-EOT
+                                  Name of the referent.
+                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                  EOT
                                   "type" = "string"
                                 }
                                 "optional" = {
@@ -1129,7 +1639,18 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                       "type" = "object"
                     }
                     "arbitraryFSAccessThroughSMs" = {
-                      "description" = "When true, ServiceMonitor, PodMonitor and Probe object are forbidden to reference arbitrary files on the file system of the 'prometheus' container. When a ServiceMonitor's endpoint specifies a `bearerTokenFile` value (e.g.  '/var/run/secrets/kubernetes.io/serviceaccount/token'), a malicious target can get access to the Prometheus service account's token in the Prometheus' scrape request. Setting `spec.arbitraryFSAccessThroughSM` to 'true' would prevent the attack. Users should instead provide the credentials using the `spec.bearerTokenSecret` field."
+                      "description" = <<-EOT
+                      When true, ServiceMonitor, PodMonitor and Probe object are forbidden to
+                      reference arbitrary files on the file system of the 'prometheus'
+                      container.
+                      When a ServiceMonitor's endpoint specifies a `bearerTokenFile` value
+                      (e.g.  '/var/run/secrets/kubernetes.io/serviceaccount/token'), a
+                      malicious target can get access to the Prometheus service account's
+                      token in the Prometheus' scrape request. Setting
+                      `spec.arbitraryFSAccessThroughSM` to 'true' would prevent the attack.
+                      Users should instead provide the credentials using the
+                      `spec.bearerTokenSecret` field.
+                      EOT
                       "properties" = {
                         "deny" = {
                           "type" = "boolean"
@@ -1137,13 +1658,32 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                       }
                       "type" = "object"
                     }
+                    "automountServiceAccountToken" = {
+                      "description" = <<-EOT
+                      AutomountServiceAccountToken indicates whether a service account token should be automatically mounted in the pod.
+                      If the field isn't set, the operator mounts the service account token by default.
+                      
+                      
+                      **Warning:** be aware that by default, Prometheus requires the service account token for Kubernetes service discovery.
+                      It is possible to use strategic merge patch to project the service account token into the 'prometheus' container.
+                      EOT
+                      "type" = "boolean"
+                    }
                     "bodySizeLimit" = {
-                      "description" = "BodySizeLimit defines per-scrape on response body size. Only valid in Prometheus versions 2.45.0 and newer."
+                      "description" = <<-EOT
+                      BodySizeLimit defines per-scrape on response body size.
+                      Only valid in Prometheus versions 2.45.0 and newer.
+                      EOT
                       "pattern" = "(^0|([0-9]*[.])?[0-9]+((K|M|G|T|E|P)i?)?B)$"
                       "type" = "string"
                     }
                     "configMaps" = {
-                      "description" = "ConfigMaps is a list of ConfigMaps in the same namespace as the Prometheus object, which shall be mounted into the Prometheus Pods. Each ConfigMap is added to the StatefulSet definition as a volume named `configmap-<configmap-name>`. The ConfigMaps are mounted into /etc/prometheus/configmaps/<configmap-name> in the 'prometheus' container."
+                      "description" = <<-EOT
+                      ConfigMaps is a list of ConfigMaps in the same namespace as the Prometheus
+                      object, which shall be mounted into the Prometheus Pods.
+                      Each ConfigMap is added to the StatefulSet definition as a volume named `configmap-<configmap-name>`.
+                      The ConfigMaps are mounted into /etc/prometheus/configmaps/<configmap-name> in the 'prometheus' container.
+                      EOT
                       "items" = {
                         "type" = "string"
                       }
@@ -1151,29 +1691,64 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     }
                     "containers" = {
                       "description" = <<-EOT
-                      Containers allows injecting additional containers or modifying operator generated containers. This can be used to allow adding an authentication proxy to the Pods or to change the behavior of an operator generated container. Containers described here modify an operator generated container if they share the same name and modifications are done via a strategic merge patch. 
-                       The names of containers managed by the operator are: * `prometheus` * `config-reloader` * `thanos-sidecar` 
-                       Overriding containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+                      Containers allows injecting additional containers or modifying operator
+                      generated containers. This can be used to allow adding an authentication
+                      proxy to the Pods or to change the behavior of an operator generated
+                      container. Containers described here modify an operator generated
+                      container if they share the same name and modifications are done via a
+                      strategic merge patch.
+                      
+                      
+                      The names of containers managed by the operator are:
+                      * `prometheus`
+                      * `config-reloader`
+                      * `thanos-sidecar`
+                      
+                      
+                      Overriding containers is entirely outside the scope of what the
+                      maintainers will support and by doing so, you accept that this behaviour
+                      may break at any time without notice.
                       EOT
                       "items" = {
                         "description" = "A single application container that you want to run within a pod."
                         "properties" = {
                           "args" = {
-                            "description" = "Arguments to the entrypoint. The container image's CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell"
+                            "description" = <<-EOT
+                            Arguments to the entrypoint.
+                            The container image's CMD is used if this is not provided.
+                            Variable references $(VAR_NAME) are expanded using the container's environment. If a variable
+                            cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced
+                            to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)" will
+                            produce the string literal "$(VAR_NAME)". Escaped references will never be expanded, regardless
+                            of whether the variable exists or not. Cannot be updated.
+                            More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell
+                            EOT
                             "items" = {
                               "type" = "string"
                             }
                             "type" = "array"
                           }
                           "command" = {
-                            "description" = "Entrypoint array. Not executed within a shell. The container image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell"
+                            "description" = <<-EOT
+                            Entrypoint array. Not executed within a shell.
+                            The container image's ENTRYPOINT is used if this is not provided.
+                            Variable references $(VAR_NAME) are expanded using the container's environment. If a variable
+                            cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced
+                            to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)" will
+                            produce the string literal "$(VAR_NAME)". Escaped references will never be expanded, regardless
+                            of whether the variable exists or not. Cannot be updated.
+                            More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell
+                            EOT
                             "items" = {
                               "type" = "string"
                             }
                             "type" = "array"
                           }
                           "env" = {
-                            "description" = "List of environment variables to set in the container. Cannot be updated."
+                            "description" = <<-EOT
+                            List of environment variables to set in the container.
+                            Cannot be updated.
+                            EOT
                             "items" = {
                               "description" = "EnvVar represents an environment variable present in a Container."
                               "properties" = {
@@ -1182,7 +1757,17 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "type" = "string"
                                 }
                                 "value" = {
-                                  "description" = "Variable references $(VAR_NAME) are expanded using the previously defined environment variables in the container and any service environment variables. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Defaults to \"\"."
+                                  "description" = <<-EOT
+                                  Variable references $(VAR_NAME) are expanded
+                                  using the previously defined environment variables in the container and
+                                  any service environment variables. If a variable cannot be resolved,
+                                  the reference in the input string will be unchanged. Double $$ are reduced
+                                  to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e.
+                                  "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)".
+                                  Escaped references will never be expanded, regardless of whether the variable
+                                  exists or not.
+                                  Defaults to "".
+                                  EOT
                                   "type" = "string"
                                 }
                                 "valueFrom" = {
@@ -1196,7 +1781,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                           "type" = "string"
                                         }
                                         "name" = {
-                                          "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                          "description" = <<-EOT
+                                          Name of the referent.
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion, kind, uid?
+                                          EOT
                                           "type" = "string"
                                         }
                                         "optional" = {
@@ -1211,7 +1800,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "x-kubernetes-map-type" = "atomic"
                                     }
                                     "fieldRef" = {
-                                      "description" = "Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`, spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs."
+                                      "description" = <<-EOT
+                                      Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`,
+                                      spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.
+                                      EOT
                                       "properties" = {
                                         "apiVersion" = {
                                           "description" = "Version of the schema the FieldPath is written in terms of, defaults to \"v1\"."
@@ -1229,7 +1821,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "x-kubernetes-map-type" = "atomic"
                                     }
                                     "resourceFieldRef" = {
-                                      "description" = "Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported."
+                                      "description" = <<-EOT
+                                      Selects a resource of the container: only resources limits and requests
+                                      (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.
+                                      EOT
                                       "properties" = {
                                         "containerName" = {
                                           "description" = "Container name: required for volumes, optional for env vars"
@@ -1267,7 +1862,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                           "type" = "string"
                                         }
                                         "name" = {
-                                          "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                          "description" = <<-EOT
+                                          Name of the referent.
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion, kind, uid?
+                                          EOT
                                           "type" = "string"
                                         }
                                         "optional" = {
@@ -1293,7 +1892,14 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "array"
                           }
                           "envFrom" = {
-                            "description" = "List of sources to populate environment variables in the container. The keys defined within a source must be a C_IDENTIFIER. All invalid keys will be reported as an event when the container is starting. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated."
+                            "description" = <<-EOT
+                            List of sources to populate environment variables in the container.
+                            The keys defined within a source must be a C_IDENTIFIER. All invalid keys
+                            will be reported as an event when the container is starting. When a key exists in multiple
+                            sources, the value associated with the last source will take precedence.
+                            Values defined by an Env with a duplicate key will take precedence.
+                            Cannot be updated.
+                            EOT
                             "items" = {
                               "description" = "EnvFromSource represents the source of a set of ConfigMaps"
                               "properties" = {
@@ -1301,7 +1907,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "description" = "The ConfigMap to select from"
                                   "properties" = {
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -1320,7 +1930,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "description" = "The Secret to select from"
                                   "properties" = {
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -1337,24 +1951,49 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "array"
                           }
                           "image" = {
-                            "description" = "Container image name. More info: https://kubernetes.io/docs/concepts/containers/images This field is optional to allow higher level config management to default or override container images in workload controllers like Deployments and StatefulSets."
+                            "description" = <<-EOT
+                            Container image name.
+                            More info: https://kubernetes.io/docs/concepts/containers/images
+                            This field is optional to allow higher level config management to default or override
+                            container images in workload controllers like Deployments and StatefulSets.
+                            EOT
                             "type" = "string"
                           }
                           "imagePullPolicy" = {
-                            "description" = "Image pull policy. One of Always, Never, IfNotPresent. Defaults to Always if :latest tag is specified, or IfNotPresent otherwise. Cannot be updated. More info: https://kubernetes.io/docs/concepts/containers/images#updating-images"
+                            "description" = <<-EOT
+                            Image pull policy.
+                            One of Always, Never, IfNotPresent.
+                            Defaults to Always if :latest tag is specified, or IfNotPresent otherwise.
+                            Cannot be updated.
+                            More info: https://kubernetes.io/docs/concepts/containers/images#updating-images
+                            EOT
                             "type" = "string"
                           }
                           "lifecycle" = {
-                            "description" = "Actions that the management system should take in response to container lifecycle events. Cannot be updated."
+                            "description" = <<-EOT
+                            Actions that the management system should take in response to container lifecycle events.
+                            Cannot be updated.
+                            EOT
                             "properties" = {
                               "postStart" = {
-                                "description" = "PostStart is called immediately after a container is created. If the handler fails, the container is terminated and restarted according to its restart policy. Other management of the container blocks until the hook completes. More info: https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks"
+                                "description" = <<-EOT
+                                PostStart is called immediately after a container is created. If the handler fails,
+                                the container is terminated and restarted according to its restart policy.
+                                Other management of the container blocks until the hook completes.
+                                More info: https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks
+                                EOT
                                 "properties" = {
                                   "exec" = {
                                     "description" = "Exec specifies the action to take."
                                     "properties" = {
                                       "command" = {
-                                        "description" = "Command is the command line to execute inside the container, the working directory for the command  is root ('/') in the container's filesystem. The command is simply exec'd, it is not run inside a shell, so traditional shell instructions ('|', etc) won't work. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as live/healthy and non-zero is unhealthy."
+                                        "description" = <<-EOT
+                                        Command is the command line to execute inside the container, the working directory for the
+                                        command  is root ('/') in the container's filesystem. The command is simply exec'd, it is
+                                        not run inside a shell, so traditional shell instructions ('|', etc) won't work. To use
+                                        a shell, you need to explicitly call out to that shell.
+                                        Exit status of 0 is treated as live/healthy and non-zero is unhealthy.
+                                        EOT
                                         "items" = {
                                           "type" = "string"
                                         }
@@ -1367,7 +2006,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "description" = "HTTPGet specifies the http request to perform."
                                     "properties" = {
                                       "host" = {
-                                        "description" = "Host name to connect to, defaults to the pod IP. You probably want to set \"Host\" in httpHeaders instead."
+                                        "description" = <<-EOT
+                                        Host name to connect to, defaults to the pod IP. You probably want to set
+                                        "Host" in httpHeaders instead.
+                                        EOT
                                         "type" = "string"
                                       }
                                       "httpHeaders" = {
@@ -1376,7 +2018,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                           "description" = "HTTPHeader describes a custom header to be used in HTTP probes"
                                           "properties" = {
                                             "name" = {
-                                              "description" = "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
+                                              "description" = <<-EOT
+                                              The header field name.
+                                              This will be canonicalized upon output, so case-variant names will be understood as the same header.
+                                              EOT
                                               "type" = "string"
                                             }
                                             "value" = {
@@ -1405,11 +2050,18 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                             "type" = "string"
                                           },
                                         ]
-                                        "description" = "Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."
+                                        "description" = <<-EOT
+                                        Name or number of the port to access on the container.
+                                        Number must be in the range 1 to 65535.
+                                        Name must be an IANA_SVC_NAME.
+                                        EOT
                                         "x-kubernetes-int-or-string" = true
                                       }
                                       "scheme" = {
-                                        "description" = "Scheme to use for connecting to the host. Defaults to HTTP."
+                                        "description" = <<-EOT
+                                        Scheme to use for connecting to the host.
+                                        Defaults to HTTP.
+                                        EOT
                                         "type" = "string"
                                       }
                                     }
@@ -1433,7 +2085,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "type" = "object"
                                   }
                                   "tcpSocket" = {
-                                    "description" = "Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept for the backward compatibility. There are no validation of this field and lifecycle hooks will fail in runtime when tcp handler is specified."
+                                    "description" = <<-EOT
+                                    Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept
+                                    for the backward compatibility. There are no validation of this field and
+                                    lifecycle hooks will fail in runtime when tcp handler is specified.
+                                    EOT
                                     "properties" = {
                                       "host" = {
                                         "description" = "Optional: Host name to connect to, defaults to the pod IP."
@@ -1448,7 +2104,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                             "type" = "string"
                                           },
                                         ]
-                                        "description" = "Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."
+                                        "description" = <<-EOT
+                                        Number or name of the port to access on the container.
+                                        Number must be in the range 1 to 65535.
+                                        Name must be an IANA_SVC_NAME.
+                                        EOT
                                         "x-kubernetes-int-or-string" = true
                                       }
                                     }
@@ -1461,13 +2121,29 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "preStop" = {
-                                "description" = "PreStop is called immediately before a container is terminated due to an API request or management event such as liveness/startup probe failure, preemption, resource contention, etc. The handler is not called if the container crashes or exits. The Pod's termination grace period countdown begins before the PreStop hook is executed. Regardless of the outcome of the handler, the container will eventually terminate within the Pod's termination grace period (unless delayed by finalizers). Other management of the container blocks until the hook completes or until the termination grace period is reached. More info: https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks"
+                                "description" = <<-EOT
+                                PreStop is called immediately before a container is terminated due to an
+                                API request or management event such as liveness/startup probe failure,
+                                preemption, resource contention, etc. The handler is not called if the
+                                container crashes or exits. The Pod's termination grace period countdown begins before the
+                                PreStop hook is executed. Regardless of the outcome of the handler, the
+                                container will eventually terminate within the Pod's termination grace
+                                period (unless delayed by finalizers). Other management of the container blocks until the hook completes
+                                or until the termination grace period is reached.
+                                More info: https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks
+                                EOT
                                 "properties" = {
                                   "exec" = {
                                     "description" = "Exec specifies the action to take."
                                     "properties" = {
                                       "command" = {
-                                        "description" = "Command is the command line to execute inside the container, the working directory for the command  is root ('/') in the container's filesystem. The command is simply exec'd, it is not run inside a shell, so traditional shell instructions ('|', etc) won't work. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as live/healthy and non-zero is unhealthy."
+                                        "description" = <<-EOT
+                                        Command is the command line to execute inside the container, the working directory for the
+                                        command  is root ('/') in the container's filesystem. The command is simply exec'd, it is
+                                        not run inside a shell, so traditional shell instructions ('|', etc) won't work. To use
+                                        a shell, you need to explicitly call out to that shell.
+                                        Exit status of 0 is treated as live/healthy and non-zero is unhealthy.
+                                        EOT
                                         "items" = {
                                           "type" = "string"
                                         }
@@ -1480,7 +2156,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "description" = "HTTPGet specifies the http request to perform."
                                     "properties" = {
                                       "host" = {
-                                        "description" = "Host name to connect to, defaults to the pod IP. You probably want to set \"Host\" in httpHeaders instead."
+                                        "description" = <<-EOT
+                                        Host name to connect to, defaults to the pod IP. You probably want to set
+                                        "Host" in httpHeaders instead.
+                                        EOT
                                         "type" = "string"
                                       }
                                       "httpHeaders" = {
@@ -1489,7 +2168,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                           "description" = "HTTPHeader describes a custom header to be used in HTTP probes"
                                           "properties" = {
                                             "name" = {
-                                              "description" = "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
+                                              "description" = <<-EOT
+                                              The header field name.
+                                              This will be canonicalized upon output, so case-variant names will be understood as the same header.
+                                              EOT
                                               "type" = "string"
                                             }
                                             "value" = {
@@ -1518,11 +2200,18 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                             "type" = "string"
                                           },
                                         ]
-                                        "description" = "Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."
+                                        "description" = <<-EOT
+                                        Name or number of the port to access on the container.
+                                        Number must be in the range 1 to 65535.
+                                        Name must be an IANA_SVC_NAME.
+                                        EOT
                                         "x-kubernetes-int-or-string" = true
                                       }
                                       "scheme" = {
-                                        "description" = "Scheme to use for connecting to the host. Defaults to HTTP."
+                                        "description" = <<-EOT
+                                        Scheme to use for connecting to the host.
+                                        Defaults to HTTP.
+                                        EOT
                                         "type" = "string"
                                       }
                                     }
@@ -1546,7 +2235,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "type" = "object"
                                   }
                                   "tcpSocket" = {
-                                    "description" = "Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept for the backward compatibility. There are no validation of this field and lifecycle hooks will fail in runtime when tcp handler is specified."
+                                    "description" = <<-EOT
+                                    Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept
+                                    for the backward compatibility. There are no validation of this field and
+                                    lifecycle hooks will fail in runtime when tcp handler is specified.
+                                    EOT
                                     "properties" = {
                                       "host" = {
                                         "description" = "Optional: Host name to connect to, defaults to the pod IP."
@@ -1561,7 +2254,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                             "type" = "string"
                                           },
                                         ]
-                                        "description" = "Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."
+                                        "description" = <<-EOT
+                                        Number or name of the port to access on the container.
+                                        Number must be in the range 1 to 65535.
+                                        Name must be an IANA_SVC_NAME.
+                                        EOT
                                         "x-kubernetes-int-or-string" = true
                                       }
                                     }
@@ -1577,13 +2274,24 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "object"
                           }
                           "livenessProbe" = {
-                            "description" = "Periodic probe of container liveness. Container will be restarted if the probe fails. Cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes"
+                            "description" = <<-EOT
+                            Periodic probe of container liveness.
+                            Container will be restarted if the probe fails.
+                            Cannot be updated.
+                            More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+                            EOT
                             "properties" = {
                               "exec" = {
                                 "description" = "Exec specifies the action to take."
                                 "properties" = {
                                   "command" = {
-                                    "description" = "Command is the command line to execute inside the container, the working directory for the command  is root ('/') in the container's filesystem. The command is simply exec'd, it is not run inside a shell, so traditional shell instructions ('|', etc) won't work. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as live/healthy and non-zero is unhealthy."
+                                    "description" = <<-EOT
+                                    Command is the command line to execute inside the container, the working directory for the
+                                    command  is root ('/') in the container's filesystem. The command is simply exec'd, it is
+                                    not run inside a shell, so traditional shell instructions ('|', etc) won't work. To use
+                                    a shell, you need to explicitly call out to that shell.
+                                    Exit status of 0 is treated as live/healthy and non-zero is unhealthy.
+                                    EOT
                                     "items" = {
                                       "type" = "string"
                                     }
@@ -1593,7 +2301,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "failureThreshold" = {
-                                "description" = "Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1."
+                                "description" = <<-EOT
+                                Minimum consecutive failures for the probe to be considered failed after having succeeded.
+                                Defaults to 3. Minimum value is 1.
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
@@ -1607,8 +2318,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   }
                                   "service" = {
                                     "description" = <<-EOT
-                                    Service is the name of the service to place in the gRPC HealthCheckRequest (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md). 
-                                     If this is not specified, the default behavior is defined by gRPC.
+                                    Service is the name of the service to place in the gRPC HealthCheckRequest
+                                    (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).
+                                    
+                                    
+                                    If this is not specified, the default behavior is defined by gRPC.
                                     EOT
                                     "type" = "string"
                                   }
@@ -1622,7 +2336,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "description" = "HTTPGet specifies the http request to perform."
                                 "properties" = {
                                   "host" = {
-                                    "description" = "Host name to connect to, defaults to the pod IP. You probably want to set \"Host\" in httpHeaders instead."
+                                    "description" = <<-EOT
+                                    Host name to connect to, defaults to the pod IP. You probably want to set
+                                    "Host" in httpHeaders instead.
+                                    EOT
                                     "type" = "string"
                                   }
                                   "httpHeaders" = {
@@ -1631,7 +2348,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "description" = "HTTPHeader describes a custom header to be used in HTTP probes"
                                       "properties" = {
                                         "name" = {
-                                          "description" = "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
+                                          "description" = <<-EOT
+                                          The header field name.
+                                          This will be canonicalized upon output, so case-variant names will be understood as the same header.
+                                          EOT
                                           "type" = "string"
                                         }
                                         "value" = {
@@ -1660,11 +2380,18 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "string"
                                       },
                                     ]
-                                    "description" = "Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."
+                                    "description" = <<-EOT
+                                    Name or number of the port to access on the container.
+                                    Number must be in the range 1 to 65535.
+                                    Name must be an IANA_SVC_NAME.
+                                    EOT
                                     "x-kubernetes-int-or-string" = true
                                   }
                                   "scheme" = {
-                                    "description" = "Scheme to use for connecting to the host. Defaults to HTTP."
+                                    "description" = <<-EOT
+                                    Scheme to use for connecting to the host.
+                                    Defaults to HTTP.
+                                    EOT
                                     "type" = "string"
                                   }
                                 }
@@ -1674,17 +2401,26 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "initialDelaySeconds" = {
-                                "description" = "Number of seconds after the container has started before liveness probes are initiated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes"
+                                "description" = <<-EOT
+                                Number of seconds after the container has started before liveness probes are initiated.
+                                More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
                               "periodSeconds" = {
-                                "description" = "How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1."
+                                "description" = <<-EOT
+                                How often (in seconds) to perform the probe.
+                                Default to 10 seconds. Minimum value is 1.
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
                               "successThreshold" = {
-                                "description" = "Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1."
+                                "description" = <<-EOT
+                                Minimum consecutive successes for the probe to be considered successful after having failed.
+                                Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1.
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
@@ -1704,7 +2440,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "string"
                                       },
                                     ]
-                                    "description" = "Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."
+                                    "description" = <<-EOT
+                                    Number or name of the port to access on the container.
+                                    Number must be in the range 1 to 65535.
+                                    Name must be an IANA_SVC_NAME.
+                                    EOT
                                     "x-kubernetes-int-or-string" = true
                                   }
                                 }
@@ -1714,12 +2454,27 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "terminationGracePeriodSeconds" = {
-                                "description" = "Optional duration in seconds the pod needs to terminate gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the pod are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this value longer than the expected cleanup time for your process. If this value is nil, the pod's terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down). This is a beta field and requires enabling ProbeTerminationGracePeriod feature gate. Minimum value is 1. spec.terminationGracePeriodSeconds is used if unset."
+                                "description" = <<-EOT
+                                Optional duration in seconds the pod needs to terminate gracefully upon probe failure.
+                                The grace period is the duration in seconds after the processes running in the pod are sent
+                                a termination signal and the time when the processes are forcibly halted with a kill signal.
+                                Set this value longer than the expected cleanup time for your process.
+                                If this value is nil, the pod's terminationGracePeriodSeconds will be used. Otherwise, this
+                                value overrides the value provided by the pod spec.
+                                Value must be non-negative integer. The value zero indicates stop immediately via
+                                the kill signal (no opportunity to shut down).
+                                This is a beta field and requires enabling ProbeTerminationGracePeriod feature gate.
+                                Minimum value is 1. spec.terminationGracePeriodSeconds is used if unset.
+                                EOT
                                 "format" = "int64"
                                 "type" = "integer"
                               }
                               "timeoutSeconds" = {
-                                "description" = "Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes"
+                                "description" = <<-EOT
+                                Number of seconds after which the probe times out.
+                                Defaults to 1 second. Minimum value is 1.
+                                More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
@@ -1727,16 +2482,31 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "object"
                           }
                           "name" = {
-                            "description" = "Name of the container specified as a DNS_LABEL. Each container in a pod must have a unique name (DNS_LABEL). Cannot be updated."
+                            "description" = <<-EOT
+                            Name of the container specified as a DNS_LABEL.
+                            Each container in a pod must have a unique name (DNS_LABEL).
+                            Cannot be updated.
+                            EOT
                             "type" = "string"
                           }
                           "ports" = {
-                            "description" = "List of ports to expose from the container. Not specifying a port here DOES NOT prevent that port from being exposed. Any port which is listening on the default \"0.0.0.0\" address inside a container will be accessible from the network. Modifying this array with strategic merge patch may corrupt the data. For more information See https://github.com/kubernetes/kubernetes/issues/108255. Cannot be updated."
+                            "description" = <<-EOT
+                            List of ports to expose from the container. Not specifying a port here
+                            DOES NOT prevent that port from being exposed. Any port which is
+                            listening on the default "0.0.0.0" address inside a container will be
+                            accessible from the network.
+                            Modifying this array with strategic merge patch may corrupt the data.
+                            For more information See https://github.com/kubernetes/kubernetes/issues/108255.
+                            Cannot be updated.
+                            EOT
                             "items" = {
                               "description" = "ContainerPort represents a network port in a single container."
                               "properties" = {
                                 "containerPort" = {
-                                  "description" = "Number of port to expose on the pod's IP address. This must be a valid port number, 0 < x < 65536."
+                                  "description" = <<-EOT
+                                  Number of port to expose on the pod's IP address.
+                                  This must be a valid port number, 0 < x < 65536.
+                                  EOT
                                   "format" = "int32"
                                   "type" = "integer"
                                 }
@@ -1745,17 +2515,29 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "type" = "string"
                                 }
                                 "hostPort" = {
-                                  "description" = "Number of port to expose on the host. If specified, this must be a valid port number, 0 < x < 65536. If HostNetwork is specified, this must match ContainerPort. Most containers do not need this."
+                                  "description" = <<-EOT
+                                  Number of port to expose on the host.
+                                  If specified, this must be a valid port number, 0 < x < 65536.
+                                  If HostNetwork is specified, this must match ContainerPort.
+                                  Most containers do not need this.
+                                  EOT
                                   "format" = "int32"
                                   "type" = "integer"
                                 }
                                 "name" = {
-                                  "description" = "If specified, this must be an IANA_SVC_NAME and unique within the pod. Each named port in a pod must have a unique name. Name for the port that can be referred to by services."
+                                  "description" = <<-EOT
+                                  If specified, this must be an IANA_SVC_NAME and unique within the pod. Each
+                                  named port in a pod must have a unique name. Name for the port that can be
+                                  referred to by services.
+                                  EOT
                                   "type" = "string"
                                 }
                                 "protocol" = {
                                   "default" = "TCP"
-                                  "description" = "Protocol for port. Must be UDP, TCP, or SCTP. Defaults to \"TCP\"."
+                                  "description" = <<-EOT
+                                  Protocol for port. Must be UDP, TCP, or SCTP.
+                                  Defaults to "TCP".
+                                  EOT
                                   "type" = "string"
                                 }
                               }
@@ -1772,13 +2554,24 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "x-kubernetes-list-type" = "map"
                           }
                           "readinessProbe" = {
-                            "description" = "Periodic probe of container service readiness. Container will be removed from service endpoints if the probe fails. Cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes"
+                            "description" = <<-EOT
+                            Periodic probe of container service readiness.
+                            Container will be removed from service endpoints if the probe fails.
+                            Cannot be updated.
+                            More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+                            EOT
                             "properties" = {
                               "exec" = {
                                 "description" = "Exec specifies the action to take."
                                 "properties" = {
                                   "command" = {
-                                    "description" = "Command is the command line to execute inside the container, the working directory for the command  is root ('/') in the container's filesystem. The command is simply exec'd, it is not run inside a shell, so traditional shell instructions ('|', etc) won't work. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as live/healthy and non-zero is unhealthy."
+                                    "description" = <<-EOT
+                                    Command is the command line to execute inside the container, the working directory for the
+                                    command  is root ('/') in the container's filesystem. The command is simply exec'd, it is
+                                    not run inside a shell, so traditional shell instructions ('|', etc) won't work. To use
+                                    a shell, you need to explicitly call out to that shell.
+                                    Exit status of 0 is treated as live/healthy and non-zero is unhealthy.
+                                    EOT
                                     "items" = {
                                       "type" = "string"
                                     }
@@ -1788,7 +2581,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "failureThreshold" = {
-                                "description" = "Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1."
+                                "description" = <<-EOT
+                                Minimum consecutive failures for the probe to be considered failed after having succeeded.
+                                Defaults to 3. Minimum value is 1.
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
@@ -1802,8 +2598,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   }
                                   "service" = {
                                     "description" = <<-EOT
-                                    Service is the name of the service to place in the gRPC HealthCheckRequest (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md). 
-                                     If this is not specified, the default behavior is defined by gRPC.
+                                    Service is the name of the service to place in the gRPC HealthCheckRequest
+                                    (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).
+                                    
+                                    
+                                    If this is not specified, the default behavior is defined by gRPC.
                                     EOT
                                     "type" = "string"
                                   }
@@ -1817,7 +2616,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "description" = "HTTPGet specifies the http request to perform."
                                 "properties" = {
                                   "host" = {
-                                    "description" = "Host name to connect to, defaults to the pod IP. You probably want to set \"Host\" in httpHeaders instead."
+                                    "description" = <<-EOT
+                                    Host name to connect to, defaults to the pod IP. You probably want to set
+                                    "Host" in httpHeaders instead.
+                                    EOT
                                     "type" = "string"
                                   }
                                   "httpHeaders" = {
@@ -1826,7 +2628,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "description" = "HTTPHeader describes a custom header to be used in HTTP probes"
                                       "properties" = {
                                         "name" = {
-                                          "description" = "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
+                                          "description" = <<-EOT
+                                          The header field name.
+                                          This will be canonicalized upon output, so case-variant names will be understood as the same header.
+                                          EOT
                                           "type" = "string"
                                         }
                                         "value" = {
@@ -1855,11 +2660,18 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "string"
                                       },
                                     ]
-                                    "description" = "Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."
+                                    "description" = <<-EOT
+                                    Name or number of the port to access on the container.
+                                    Number must be in the range 1 to 65535.
+                                    Name must be an IANA_SVC_NAME.
+                                    EOT
                                     "x-kubernetes-int-or-string" = true
                                   }
                                   "scheme" = {
-                                    "description" = "Scheme to use for connecting to the host. Defaults to HTTP."
+                                    "description" = <<-EOT
+                                    Scheme to use for connecting to the host.
+                                    Defaults to HTTP.
+                                    EOT
                                     "type" = "string"
                                   }
                                 }
@@ -1869,17 +2681,26 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "initialDelaySeconds" = {
-                                "description" = "Number of seconds after the container has started before liveness probes are initiated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes"
+                                "description" = <<-EOT
+                                Number of seconds after the container has started before liveness probes are initiated.
+                                More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
                               "periodSeconds" = {
-                                "description" = "How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1."
+                                "description" = <<-EOT
+                                How often (in seconds) to perform the probe.
+                                Default to 10 seconds. Minimum value is 1.
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
                               "successThreshold" = {
-                                "description" = "Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1."
+                                "description" = <<-EOT
+                                Minimum consecutive successes for the probe to be considered successful after having failed.
+                                Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1.
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
@@ -1899,7 +2720,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "string"
                                       },
                                     ]
-                                    "description" = "Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."
+                                    "description" = <<-EOT
+                                    Number or name of the port to access on the container.
+                                    Number must be in the range 1 to 65535.
+                                    Name must be an IANA_SVC_NAME.
+                                    EOT
                                     "x-kubernetes-int-or-string" = true
                                   }
                                 }
@@ -1909,12 +2734,27 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "terminationGracePeriodSeconds" = {
-                                "description" = "Optional duration in seconds the pod needs to terminate gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the pod are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this value longer than the expected cleanup time for your process. If this value is nil, the pod's terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down). This is a beta field and requires enabling ProbeTerminationGracePeriod feature gate. Minimum value is 1. spec.terminationGracePeriodSeconds is used if unset."
+                                "description" = <<-EOT
+                                Optional duration in seconds the pod needs to terminate gracefully upon probe failure.
+                                The grace period is the duration in seconds after the processes running in the pod are sent
+                                a termination signal and the time when the processes are forcibly halted with a kill signal.
+                                Set this value longer than the expected cleanup time for your process.
+                                If this value is nil, the pod's terminationGracePeriodSeconds will be used. Otherwise, this
+                                value overrides the value provided by the pod spec.
+                                Value must be non-negative integer. The value zero indicates stop immediately via
+                                the kill signal (no opportunity to shut down).
+                                This is a beta field and requires enabling ProbeTerminationGracePeriod feature gate.
+                                Minimum value is 1. spec.terminationGracePeriodSeconds is used if unset.
+                                EOT
                                 "format" = "int64"
                                 "type" = "integer"
                               }
                               "timeoutSeconds" = {
-                                "description" = "Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes"
+                                "description" = <<-EOT
+                                Number of seconds after which the probe times out.
+                                Defaults to 1 second. Minimum value is 1.
+                                More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
@@ -1927,11 +2767,17 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                               "description" = "ContainerResizePolicy represents resource resize policy for the container."
                               "properties" = {
                                 "resourceName" = {
-                                  "description" = "Name of the resource to which this resource resize policy applies. Supported values: cpu, memory."
+                                  "description" = <<-EOT
+                                  Name of the resource to which this resource resize policy applies.
+                                  Supported values: cpu, memory.
+                                  EOT
                                   "type" = "string"
                                 }
                                 "restartPolicy" = {
-                                  "description" = "Restart policy to apply when specified resource is resized. If not specified, it defaults to NotRequired."
+                                  "description" = <<-EOT
+                                  Restart policy to apply when specified resource is resized.
+                                  If not specified, it defaults to NotRequired.
+                                  EOT
                                   "type" = "string"
                                 }
                               }
@@ -1945,19 +2791,33 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "x-kubernetes-list-type" = "atomic"
                           }
                           "resources" = {
-                            "description" = "Compute Resources required by this container. Cannot be updated. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+                            "description" = <<-EOT
+                            Compute Resources required by this container.
+                            Cannot be updated.
+                            More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                            EOT
                             "properties" = {
                               "claims" = {
                                 "description" = <<-EOT
-                                Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
-                                 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-                                 This field is immutable. It can only be set for containers.
+                                Claims lists the names of resources, defined in spec.resourceClaims,
+                                that are used by this container.
+                                
+                                
+                                This is an alpha field and requires enabling the
+                                DynamicResourceAllocation feature gate.
+                                
+                                
+                                This field is immutable. It can only be set for containers.
                                 EOT
                                 "items" = {
                                   "description" = "ResourceClaim references one entry in PodSpec.ResourceClaims."
                                   "properties" = {
                                     "name" = {
-                                      "description" = "Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container."
+                                      "description" = <<-EOT
+                                      Name must match the name of one entry in pod.spec.resourceClaims of
+                                      the Pod where this field is used. It makes that resource available
+                                      inside a container.
+                                      EOT
                                       "type" = "string"
                                     }
                                   }
@@ -1985,7 +2845,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "pattern" = "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
                                   "x-kubernetes-int-or-string" = true
                                 }
-                                "description" = "Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+                                "description" = <<-EOT
+                                Limits describes the maximum amount of compute resources allowed.
+                                More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                                EOT
                                 "type" = "object"
                               }
                               "requests" = {
@@ -2001,25 +2864,62 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "pattern" = "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
                                   "x-kubernetes-int-or-string" = true
                                 }
-                                "description" = "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+                                "description" = <<-EOT
+                                Requests describes the minimum amount of compute resources required.
+                                If Requests is omitted for a container, it defaults to Limits if that is explicitly specified,
+                                otherwise to an implementation-defined value. Requests cannot exceed Limits.
+                                More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                                EOT
                                 "type" = "object"
                               }
                             }
                             "type" = "object"
                           }
                           "restartPolicy" = {
-                            "description" = "RestartPolicy defines the restart behavior of individual containers in a pod. This field may only be set for init containers, and the only allowed value is \"Always\". For non-init containers or when this field is not specified, the restart behavior is defined by the Pod's restart policy and the container type. Setting the RestartPolicy as \"Always\" for the init container will have the following effect: this init container will be continually restarted on exit until all regular containers have terminated. Once all regular containers have completed, all init containers with restartPolicy \"Always\" will be shut down. This lifecycle differs from normal init containers and is often referred to as a \"sidecar\" container. Although this init container still starts in the init container sequence, it does not wait for the container to complete before proceeding to the next init container. Instead, the next init container starts immediately after this init container is started, or after any startupProbe has successfully completed."
+                            "description" = <<-EOT
+                            RestartPolicy defines the restart behavior of individual containers in a pod.
+                            This field may only be set for init containers, and the only allowed value is "Always".
+                            For non-init containers or when this field is not specified,
+                            the restart behavior is defined by the Pod's restart policy and the container type.
+                            Setting the RestartPolicy as "Always" for the init container will have the following effect:
+                            this init container will be continually restarted on
+                            exit until all regular containers have terminated. Once all regular
+                            containers have completed, all init containers with restartPolicy "Always"
+                            will be shut down. This lifecycle differs from normal init containers and
+                            is often referred to as a "sidecar" container. Although this init
+                            container still starts in the init container sequence, it does not wait
+                            for the container to complete before proceeding to the next init
+                            container. Instead, the next init container starts immediately after this
+                            init container is started, or after any startupProbe has successfully
+                            completed.
+                            EOT
                             "type" = "string"
                           }
                           "securityContext" = {
-                            "description" = "SecurityContext defines the security options the container should be run with. If set, the fields of SecurityContext override the equivalent fields of PodSecurityContext. More info: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/"
+                            "description" = <<-EOT
+                            SecurityContext defines the security options the container should be run with.
+                            If set, the fields of SecurityContext override the equivalent fields of PodSecurityContext.
+                            More info: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+                            EOT
                             "properties" = {
                               "allowPrivilegeEscalation" = {
-                                "description" = "AllowPrivilegeEscalation controls whether a process can gain more privileges than its parent process. This bool directly controls if the no_new_privs flag will be set on the container process. AllowPrivilegeEscalation is true always when the container is: 1) run as Privileged 2) has CAP_SYS_ADMIN Note that this field cannot be set when spec.os.name is windows."
+                                "description" = <<-EOT
+                                AllowPrivilegeEscalation controls whether a process can gain more
+                                privileges than its parent process. This bool directly controls if
+                                the no_new_privs flag will be set on the container process.
+                                AllowPrivilegeEscalation is true always when the container is:
+                                1) run as Privileged
+                                2) has CAP_SYS_ADMIN
+                                Note that this field cannot be set when spec.os.name is windows.
+                                EOT
                                 "type" = "boolean"
                               }
                               "capabilities" = {
-                                "description" = "The capabilities to add/drop when running containers. Defaults to the default set of capabilities granted by the container runtime. Note that this field cannot be set when spec.os.name is windows."
+                                "description" = <<-EOT
+                                The capabilities to add/drop when running containers.
+                                Defaults to the default set of capabilities granted by the container runtime.
+                                Note that this field cannot be set when spec.os.name is windows.
+                                EOT
                                 "properties" = {
                                   "add" = {
                                     "description" = "Added capabilities"
@@ -2041,33 +2941,73 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "privileged" = {
-                                "description" = "Run container in privileged mode. Processes in privileged containers are essentially equivalent to root on the host. Defaults to false. Note that this field cannot be set when spec.os.name is windows."
+                                "description" = <<-EOT
+                                Run container in privileged mode.
+                                Processes in privileged containers are essentially equivalent to root on the host.
+                                Defaults to false.
+                                Note that this field cannot be set when spec.os.name is windows.
+                                EOT
                                 "type" = "boolean"
                               }
                               "procMount" = {
-                                "description" = "procMount denotes the type of proc mount to use for the containers. The default is DefaultProcMount which uses the container runtime defaults for readonly paths and masked paths. This requires the ProcMountType feature flag to be enabled. Note that this field cannot be set when spec.os.name is windows."
+                                "description" = <<-EOT
+                                procMount denotes the type of proc mount to use for the containers.
+                                The default is DefaultProcMount which uses the container runtime defaults for
+                                readonly paths and masked paths.
+                                This requires the ProcMountType feature flag to be enabled.
+                                Note that this field cannot be set when spec.os.name is windows.
+                                EOT
                                 "type" = "string"
                               }
                               "readOnlyRootFilesystem" = {
-                                "description" = "Whether this container has a read-only root filesystem. Default is false. Note that this field cannot be set when spec.os.name is windows."
+                                "description" = <<-EOT
+                                Whether this container has a read-only root filesystem.
+                                Default is false.
+                                Note that this field cannot be set when spec.os.name is windows.
+                                EOT
                                 "type" = "boolean"
                               }
                               "runAsGroup" = {
-                                "description" = "The GID to run the entrypoint of the container process. Uses runtime default if unset. May also be set in PodSecurityContext.  If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is windows."
+                                "description" = <<-EOT
+                                The GID to run the entrypoint of the container process.
+                                Uses runtime default if unset.
+                                May also be set in PodSecurityContext.  If set in both SecurityContext and
+                                PodSecurityContext, the value specified in SecurityContext takes precedence.
+                                Note that this field cannot be set when spec.os.name is windows.
+                                EOT
                                 "format" = "int64"
                                 "type" = "integer"
                               }
                               "runAsNonRoot" = {
-                                "description" = "Indicates that the container must run as a non-root user. If true, the Kubelet will validate the image at runtime to ensure that it does not run as UID 0 (root) and fail to start the container if it does. If unset or false, no such validation will be performed. May also be set in PodSecurityContext.  If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence."
+                                "description" = <<-EOT
+                                Indicates that the container must run as a non-root user.
+                                If true, the Kubelet will validate the image at runtime to ensure that it
+                                does not run as UID 0 (root) and fail to start the container if it does.
+                                If unset or false, no such validation will be performed.
+                                May also be set in PodSecurityContext.  If set in both SecurityContext and
+                                PodSecurityContext, the value specified in SecurityContext takes precedence.
+                                EOT
                                 "type" = "boolean"
                               }
                               "runAsUser" = {
-                                "description" = "The UID to run the entrypoint of the container process. Defaults to user specified in image metadata if unspecified. May also be set in PodSecurityContext.  If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is windows."
+                                "description" = <<-EOT
+                                The UID to run the entrypoint of the container process.
+                                Defaults to user specified in image metadata if unspecified.
+                                May also be set in PodSecurityContext.  If set in both SecurityContext and
+                                PodSecurityContext, the value specified in SecurityContext takes precedence.
+                                Note that this field cannot be set when spec.os.name is windows.
+                                EOT
                                 "format" = "int64"
                                 "type" = "integer"
                               }
                               "seLinuxOptions" = {
-                                "description" = "The SELinux context to be applied to the container. If unspecified, the container runtime will allocate a random SELinux context for each container.  May also be set in PodSecurityContext.  If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is windows."
+                                "description" = <<-EOT
+                                The SELinux context to be applied to the container.
+                                If unspecified, the container runtime will allocate a random SELinux context for each
+                                container.  May also be set in PodSecurityContext.  If set in both SecurityContext and
+                                PodSecurityContext, the value specified in SecurityContext takes precedence.
+                                Note that this field cannot be set when spec.os.name is windows.
+                                EOT
                                 "properties" = {
                                   "level" = {
                                     "description" = "Level is SELinux level label that applies to the container."
@@ -2089,16 +3029,31 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "seccompProfile" = {
-                                "description" = "The seccomp options to use by this container. If seccomp options are provided at both the pod & container level, the container options override the pod options. Note that this field cannot be set when spec.os.name is windows."
+                                "description" = <<-EOT
+                                The seccomp options to use by this container. If seccomp options are
+                                provided at both the pod & container level, the container options
+                                override the pod options.
+                                Note that this field cannot be set when spec.os.name is windows.
+                                EOT
                                 "properties" = {
                                   "localhostProfile" = {
-                                    "description" = "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must be set if type is \"Localhost\". Must NOT be set for any other type."
+                                    "description" = <<-EOT
+                                    localhostProfile indicates a profile defined in a file on the node should be used.
+                                    The profile must be preconfigured on the node to work.
+                                    Must be a descending path, relative to the kubelet's configured seccomp profile location.
+                                    Must be set if type is "Localhost". Must NOT be set for any other type.
+                                    EOT
                                     "type" = "string"
                                   }
                                   "type" = {
                                     "description" = <<-EOT
-                                    type indicates which kind of seccomp profile will be applied. Valid options are: 
-                                     Localhost - a profile defined in a file on the node should be used. RuntimeDefault - the container runtime default profile should be used. Unconfined - no profile should be applied.
+                                    type indicates which kind of seccomp profile will be applied.
+                                    Valid options are:
+                                    
+                                    
+                                    Localhost - a profile defined in a file on the node should be used.
+                                    RuntimeDefault - the container runtime default profile should be used.
+                                    Unconfined - no profile should be applied.
                                     EOT
                                     "type" = "string"
                                   }
@@ -2109,10 +3064,19 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "windowsOptions" = {
-                                "description" = "The Windows specific settings applied to all containers. If unspecified, the options from the PodSecurityContext will be used. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is linux."
+                                "description" = <<-EOT
+                                The Windows specific settings applied to all containers.
+                                If unspecified, the options from the PodSecurityContext will be used.
+                                If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence.
+                                Note that this field cannot be set when spec.os.name is linux.
+                                EOT
                                 "properties" = {
                                   "gmsaCredentialSpec" = {
-                                    "description" = "GMSACredentialSpec is where the GMSA admission webhook (https://github.com/kubernetes-sigs/windows-gmsa) inlines the contents of the GMSA credential spec named by the GMSACredentialSpecName field."
+                                    "description" = <<-EOT
+                                    GMSACredentialSpec is where the GMSA admission webhook
+                                    (https://github.com/kubernetes-sigs/windows-gmsa) inlines the contents of the
+                                    GMSA credential spec named by the GMSACredentialSpecName field.
+                                    EOT
                                     "type" = "string"
                                   }
                                   "gmsaCredentialSpecName" = {
@@ -2120,11 +3084,21 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "type" = "string"
                                   }
                                   "hostProcess" = {
-                                    "description" = "HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true."
+                                    "description" = <<-EOT
+                                    HostProcess determines if a container should be run as a 'Host Process' container.
+                                    All of a Pod's containers must have the same effective HostProcess value
+                                    (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers).
+                                    In addition, if HostProcess is true then HostNetwork must also be set to true.
+                                    EOT
                                     "type" = "boolean"
                                   }
                                   "runAsUserName" = {
-                                    "description" = "The UserName in Windows to run the entrypoint of the container process. Defaults to the user specified in image metadata if unspecified. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence."
+                                    "description" = <<-EOT
+                                    The UserName in Windows to run the entrypoint of the container process.
+                                    Defaults to the user specified in image metadata if unspecified.
+                                    May also be set in PodSecurityContext. If set in both SecurityContext and
+                                    PodSecurityContext, the value specified in SecurityContext takes precedence.
+                                    EOT
                                     "type" = "string"
                                   }
                                 }
@@ -2134,13 +3108,27 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "object"
                           }
                           "startupProbe" = {
-                            "description" = "StartupProbe indicates that the Pod has successfully initialized. If specified, no other probes are executed until this completes successfully. If this probe fails, the Pod will be restarted, just as if the livenessProbe failed. This can be used to provide different probe parameters at the beginning of a Pod's lifecycle, when it might take a long time to load data or warm a cache, than during steady-state operation. This cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes"
+                            "description" = <<-EOT
+                            StartupProbe indicates that the Pod has successfully initialized.
+                            If specified, no other probes are executed until this completes successfully.
+                            If this probe fails, the Pod will be restarted, just as if the livenessProbe failed.
+                            This can be used to provide different probe parameters at the beginning of a Pod's lifecycle,
+                            when it might take a long time to load data or warm a cache, than during steady-state operation.
+                            This cannot be updated.
+                            More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+                            EOT
                             "properties" = {
                               "exec" = {
                                 "description" = "Exec specifies the action to take."
                                 "properties" = {
                                   "command" = {
-                                    "description" = "Command is the command line to execute inside the container, the working directory for the command  is root ('/') in the container's filesystem. The command is simply exec'd, it is not run inside a shell, so traditional shell instructions ('|', etc) won't work. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as live/healthy and non-zero is unhealthy."
+                                    "description" = <<-EOT
+                                    Command is the command line to execute inside the container, the working directory for the
+                                    command  is root ('/') in the container's filesystem. The command is simply exec'd, it is
+                                    not run inside a shell, so traditional shell instructions ('|', etc) won't work. To use
+                                    a shell, you need to explicitly call out to that shell.
+                                    Exit status of 0 is treated as live/healthy and non-zero is unhealthy.
+                                    EOT
                                     "items" = {
                                       "type" = "string"
                                     }
@@ -2150,7 +3138,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "failureThreshold" = {
-                                "description" = "Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1."
+                                "description" = <<-EOT
+                                Minimum consecutive failures for the probe to be considered failed after having succeeded.
+                                Defaults to 3. Minimum value is 1.
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
@@ -2164,8 +3155,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   }
                                   "service" = {
                                     "description" = <<-EOT
-                                    Service is the name of the service to place in the gRPC HealthCheckRequest (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md). 
-                                     If this is not specified, the default behavior is defined by gRPC.
+                                    Service is the name of the service to place in the gRPC HealthCheckRequest
+                                    (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).
+                                    
+                                    
+                                    If this is not specified, the default behavior is defined by gRPC.
                                     EOT
                                     "type" = "string"
                                   }
@@ -2179,7 +3173,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "description" = "HTTPGet specifies the http request to perform."
                                 "properties" = {
                                   "host" = {
-                                    "description" = "Host name to connect to, defaults to the pod IP. You probably want to set \"Host\" in httpHeaders instead."
+                                    "description" = <<-EOT
+                                    Host name to connect to, defaults to the pod IP. You probably want to set
+                                    "Host" in httpHeaders instead.
+                                    EOT
                                     "type" = "string"
                                   }
                                   "httpHeaders" = {
@@ -2188,7 +3185,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "description" = "HTTPHeader describes a custom header to be used in HTTP probes"
                                       "properties" = {
                                         "name" = {
-                                          "description" = "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
+                                          "description" = <<-EOT
+                                          The header field name.
+                                          This will be canonicalized upon output, so case-variant names will be understood as the same header.
+                                          EOT
                                           "type" = "string"
                                         }
                                         "value" = {
@@ -2217,11 +3217,18 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "string"
                                       },
                                     ]
-                                    "description" = "Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."
+                                    "description" = <<-EOT
+                                    Name or number of the port to access on the container.
+                                    Number must be in the range 1 to 65535.
+                                    Name must be an IANA_SVC_NAME.
+                                    EOT
                                     "x-kubernetes-int-or-string" = true
                                   }
                                   "scheme" = {
-                                    "description" = "Scheme to use for connecting to the host. Defaults to HTTP."
+                                    "description" = <<-EOT
+                                    Scheme to use for connecting to the host.
+                                    Defaults to HTTP.
+                                    EOT
                                     "type" = "string"
                                   }
                                 }
@@ -2231,17 +3238,26 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "initialDelaySeconds" = {
-                                "description" = "Number of seconds after the container has started before liveness probes are initiated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes"
+                                "description" = <<-EOT
+                                Number of seconds after the container has started before liveness probes are initiated.
+                                More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
                               "periodSeconds" = {
-                                "description" = "How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1."
+                                "description" = <<-EOT
+                                How often (in seconds) to perform the probe.
+                                Default to 10 seconds. Minimum value is 1.
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
                               "successThreshold" = {
-                                "description" = "Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1."
+                                "description" = <<-EOT
+                                Minimum consecutive successes for the probe to be considered successful after having failed.
+                                Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1.
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
@@ -2261,7 +3277,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "string"
                                       },
                                     ]
-                                    "description" = "Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."
+                                    "description" = <<-EOT
+                                    Number or name of the port to access on the container.
+                                    Number must be in the range 1 to 65535.
+                                    Name must be an IANA_SVC_NAME.
+                                    EOT
                                     "x-kubernetes-int-or-string" = true
                                   }
                                 }
@@ -2271,12 +3291,27 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "terminationGracePeriodSeconds" = {
-                                "description" = "Optional duration in seconds the pod needs to terminate gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the pod are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this value longer than the expected cleanup time for your process. If this value is nil, the pod's terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down). This is a beta field and requires enabling ProbeTerminationGracePeriod feature gate. Minimum value is 1. spec.terminationGracePeriodSeconds is used if unset."
+                                "description" = <<-EOT
+                                Optional duration in seconds the pod needs to terminate gracefully upon probe failure.
+                                The grace period is the duration in seconds after the processes running in the pod are sent
+                                a termination signal and the time when the processes are forcibly halted with a kill signal.
+                                Set this value longer than the expected cleanup time for your process.
+                                If this value is nil, the pod's terminationGracePeriodSeconds will be used. Otherwise, this
+                                value overrides the value provided by the pod spec.
+                                Value must be non-negative integer. The value zero indicates stop immediately via
+                                the kill signal (no opportunity to shut down).
+                                This is a beta field and requires enabling ProbeTerminationGracePeriod feature gate.
+                                Minimum value is 1. spec.terminationGracePeriodSeconds is used if unset.
+                                EOT
                                 "format" = "int64"
                                 "type" = "integer"
                               }
                               "timeoutSeconds" = {
-                                "description" = "Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes"
+                                "description" = <<-EOT
+                                Number of seconds after which the probe times out.
+                                Defaults to 1 second. Minimum value is 1.
+                                More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
@@ -2284,23 +3319,54 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "object"
                           }
                           "stdin" = {
-                            "description" = "Whether this container should allocate a buffer for stdin in the container runtime. If this is not set, reads from stdin in the container will always result in EOF. Default is false."
+                            "description" = <<-EOT
+                            Whether this container should allocate a buffer for stdin in the container runtime. If this
+                            is not set, reads from stdin in the container will always result in EOF.
+                            Default is false.
+                            EOT
                             "type" = "boolean"
                           }
                           "stdinOnce" = {
-                            "description" = "Whether the container runtime should close the stdin channel after it has been opened by a single attach. When stdin is true the stdin stream will remain open across multiple attach sessions. If stdinOnce is set to true, stdin is opened on container start, is empty until the first client attaches to stdin, and then remains open and accepts data until the client disconnects, at which time stdin is closed and remains closed until the container is restarted. If this flag is false, a container processes that reads from stdin will never receive an EOF. Default is false"
+                            "description" = <<-EOT
+                            Whether the container runtime should close the stdin channel after it has been opened by
+                            a single attach. When stdin is true the stdin stream will remain open across multiple attach
+                            sessions. If stdinOnce is set to true, stdin is opened on container start, is empty until the
+                            first client attaches to stdin, and then remains open and accepts data until the client disconnects,
+                            at which time stdin is closed and remains closed until the container is restarted. If this
+                            flag is false, a container processes that reads from stdin will never receive an EOF.
+                            Default is false
+                            EOT
                             "type" = "boolean"
                           }
                           "terminationMessagePath" = {
-                            "description" = "Optional: Path at which the file to which the container's termination message will be written is mounted into the container's filesystem. Message written is intended to be brief final status, such as an assertion failure message. Will be truncated by the node if greater than 4096 bytes. The total message length across all containers will be limited to 12kb. Defaults to /dev/termination-log. Cannot be updated."
+                            "description" = <<-EOT
+                            Optional: Path at which the file to which the container's termination message
+                            will be written is mounted into the container's filesystem.
+                            Message written is intended to be brief final status, such as an assertion failure message.
+                            Will be truncated by the node if greater than 4096 bytes. The total message length across
+                            all containers will be limited to 12kb.
+                            Defaults to /dev/termination-log.
+                            Cannot be updated.
+                            EOT
                             "type" = "string"
                           }
                           "terminationMessagePolicy" = {
-                            "description" = "Indicate how the termination message should be populated. File will use the contents of terminationMessagePath to populate the container status message on both success and failure. FallbackToLogsOnError will use the last chunk of container log output if the termination message file is empty and the container exited with an error. The log output is limited to 2048 bytes or 80 lines, whichever is smaller. Defaults to File. Cannot be updated."
+                            "description" = <<-EOT
+                            Indicate how the termination message should be populated. File will use the contents of
+                            terminationMessagePath to populate the container status message on both success and failure.
+                            FallbackToLogsOnError will use the last chunk of container log output if the termination
+                            message file is empty and the container exited with an error.
+                            The log output is limited to 2048 bytes or 80 lines, whichever is smaller.
+                            Defaults to File.
+                            Cannot be updated.
+                            EOT
                             "type" = "string"
                           }
                           "tty" = {
-                            "description" = "Whether this container should allocate a TTY for itself, also requires 'stdin' to be true. Default is false."
+                            "description" = <<-EOT
+                            Whether this container should allocate a TTY for itself, also requires 'stdin' to be true.
+                            Default is false.
+                            EOT
                             "type" = "boolean"
                           }
                           "volumeDevices" = {
@@ -2326,16 +3392,27 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "array"
                           }
                           "volumeMounts" = {
-                            "description" = "Pod volumes to mount into the container's filesystem. Cannot be updated."
+                            "description" = <<-EOT
+                            Pod volumes to mount into the container's filesystem.
+                            Cannot be updated.
+                            EOT
                             "items" = {
                               "description" = "VolumeMount describes a mounting of a Volume within a container."
                               "properties" = {
                                 "mountPath" = {
-                                  "description" = "Path within the container at which the volume should be mounted.  Must not contain ':'."
+                                  "description" = <<-EOT
+                                  Path within the container at which the volume should be mounted.  Must
+                                  not contain ':'.
+                                  EOT
                                   "type" = "string"
                                 }
                                 "mountPropagation" = {
-                                  "description" = "mountPropagation determines how mounts are propagated from the host to container and the other way around. When not set, MountPropagationNone is used. This field is beta in 1.10."
+                                  "description" = <<-EOT
+                                  mountPropagation determines how mounts are propagated from the host
+                                  to container and the other way around.
+                                  When not set, MountPropagationNone is used.
+                                  This field is beta in 1.10.
+                                  EOT
                                   "type" = "string"
                                 }
                                 "name" = {
@@ -2343,15 +3420,26 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "type" = "string"
                                 }
                                 "readOnly" = {
-                                  "description" = "Mounted read-only if true, read-write otherwise (false or unspecified). Defaults to false."
+                                  "description" = <<-EOT
+                                  Mounted read-only if true, read-write otherwise (false or unspecified).
+                                  Defaults to false.
+                                  EOT
                                   "type" = "boolean"
                                 }
                                 "subPath" = {
-                                  "description" = "Path within the volume from which the container's volume should be mounted. Defaults to \"\" (volume's root)."
+                                  "description" = <<-EOT
+                                  Path within the volume from which the container's volume should be mounted.
+                                  Defaults to "" (volume's root).
+                                  EOT
                                   "type" = "string"
                                 }
                                 "subPathExpr" = {
-                                  "description" = "Expanded path within the volume from which the container's volume should be mounted. Behaves similarly to SubPath but environment variable references $(VAR_NAME) are expanded using the container's environment. Defaults to \"\" (volume's root). SubPathExpr and SubPath are mutually exclusive."
+                                  "description" = <<-EOT
+                                  Expanded path within the volume from which the container's volume should be mounted.
+                                  Behaves similarly to SubPath but environment variable references $(VAR_NAME) are expanded using the container's environment.
+                                  Defaults to "" (volume's root).
+                                  SubPathExpr and SubPath are mutually exclusive.
+                                  EOT
                                   "type" = "string"
                                 }
                               }
@@ -2364,7 +3452,12 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "array"
                           }
                           "workingDir" = {
-                            "description" = "Container's working directory. If not specified, the container runtime's default will be used, which might be configured in the container image. Cannot be updated."
+                            "description" = <<-EOT
+                            Container's working directory.
+                            If not specified, the container runtime's default will be used, which
+                            might be configured in the container image.
+                            Cannot be updated.
+                            EOT
                             "type" = "string"
                           }
                         }
@@ -2377,92 +3470,162 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     }
                     "enableFeatures" = {
                       "description" = <<-EOT
-                      Enable access to Prometheus feature flags. By default, no features are enabled. 
-                       Enabling features which are disabled by default is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice. 
-                       For more information see https://prometheus.io/docs/prometheus/latest/feature_flags/
+                      Enable access to Prometheus feature flags. By default, no features are enabled.
+                      
+                      
+                      Enabling features which are disabled by default is entirely outside the
+                      scope of what the maintainers will support and by doing so, you accept
+                      that this behaviour may break at any time without notice.
+                      
+                      
+                      For more information see https://prometheus.io/docs/prometheus/latest/feature_flags/
                       EOT
                       "items" = {
+                        "minLength" = 1
                         "type" = "string"
                       }
                       "type" = "array"
+                      "x-kubernetes-list-type" = "set"
                     }
                     "enableRemoteWriteReceiver" = {
                       "description" = <<-EOT
-                      Enable Prometheus to be used as a receiver for the Prometheus remote write protocol. 
-                       WARNING: This is not considered an efficient way of ingesting samples. Use it with caution for specific low-volume use cases. It is not suitable for replacing the ingestion via scraping and turning Prometheus into a push-based metrics collection system. For more information see https://prometheus.io/docs/prometheus/latest/querying/api/#remote-write-receiver 
-                       It requires Prometheus >= v2.33.0.
+                      Enable Prometheus to be used as a receiver for the Prometheus remote
+                      write protocol.
+                      
+                      
+                      WARNING: This is not considered an efficient way of ingesting samples.
+                      Use it with caution for specific low-volume use cases.
+                      It is not suitable for replacing the ingestion via scraping and turning
+                      Prometheus into a push-based metrics collection system.
+                      For more information see https://prometheus.io/docs/prometheus/latest/querying/api/#remote-write-receiver
+                      
+                      
+                      It requires Prometheus >= v2.33.0.
                       EOT
                       "type" = "boolean"
                     }
                     "enforcedBodySizeLimit" = {
                       "description" = <<-EOT
-                      When defined, enforcedBodySizeLimit specifies a global limit on the size of uncompressed response body that will be accepted by Prometheus. Targets responding with a body larger than this many bytes will cause the scrape to fail. 
-                       It requires Prometheus >= v2.28.0.
+                      When defined, enforcedBodySizeLimit specifies a global limit on the size
+                      of uncompressed response body that will be accepted by Prometheus.
+                      Targets responding with a body larger than this many bytes will cause
+                      the scrape to fail.
+                      
+                      
+                      It requires Prometheus >= v2.28.0.
                       EOT
                       "pattern" = "(^0|([0-9]*[.])?[0-9]+((K|M|G|T|E|P)i?)?B)$"
                       "type" = "string"
                     }
                     "enforcedKeepDroppedTargets" = {
                       "description" = <<-EOT
-                      When defined, enforcedKeepDroppedTargets specifies a global limit on the number of targets dropped by relabeling that will be kept in memory. The value overrides any `spec.keepDroppedTargets` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.keepDroppedTargets` is greater than zero and less than `spec.enforcedKeepDroppedTargets`. 
-                       It requires Prometheus >= v2.47.0.
+                      When defined, enforcedKeepDroppedTargets specifies a global limit on the number of targets
+                      dropped by relabeling that will be kept in memory. The value overrides
+                      any `spec.keepDroppedTargets` set by
+                      ServiceMonitor, PodMonitor, Probe objects unless `spec.keepDroppedTargets` is
+                      greater than zero and less than `spec.enforcedKeepDroppedTargets`.
+                      
+                      
+                      It requires Prometheus >= v2.47.0.
                       EOT
                       "format" = "int64"
                       "type" = "integer"
                     }
                     "enforcedLabelLimit" = {
                       "description" = <<-EOT
-                      When defined, enforcedLabelLimit specifies a global limit on the number of labels per sample. The value overrides any `spec.labelLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.labelLimit` is greater than zero and less than `spec.enforcedLabelLimit`. 
-                       It requires Prometheus >= v2.27.0.
+                      When defined, enforcedLabelLimit specifies a global limit on the number
+                      of labels per sample. The value overrides any `spec.labelLimit` set by
+                      ServiceMonitor, PodMonitor, Probe objects unless `spec.labelLimit` is
+                      greater than zero and less than `spec.enforcedLabelLimit`.
+                      
+                      
+                      It requires Prometheus >= v2.27.0.
                       EOT
                       "format" = "int64"
                       "type" = "integer"
                     }
                     "enforcedLabelNameLengthLimit" = {
                       "description" = <<-EOT
-                      When defined, enforcedLabelNameLengthLimit specifies a global limit on the length of labels name per sample. The value overrides any `spec.labelNameLengthLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.labelNameLengthLimit` is greater than zero and less than `spec.enforcedLabelNameLengthLimit`. 
-                       It requires Prometheus >= v2.27.0.
+                      When defined, enforcedLabelNameLengthLimit specifies a global limit on the length
+                      of labels name per sample. The value overrides any `spec.labelNameLengthLimit` set by
+                      ServiceMonitor, PodMonitor, Probe objects unless `spec.labelNameLengthLimit` is
+                      greater than zero and less than `spec.enforcedLabelNameLengthLimit`.
+                      
+                      
+                      It requires Prometheus >= v2.27.0.
                       EOT
                       "format" = "int64"
                       "type" = "integer"
                     }
                     "enforcedLabelValueLengthLimit" = {
                       "description" = <<-EOT
-                      When not null, enforcedLabelValueLengthLimit defines a global limit on the length of labels value per sample. The value overrides any `spec.labelValueLengthLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.labelValueLengthLimit` is greater than zero and less than `spec.enforcedLabelValueLengthLimit`. 
-                       It requires Prometheus >= v2.27.0.
+                      When not null, enforcedLabelValueLengthLimit defines a global limit on the length
+                      of labels value per sample. The value overrides any `spec.labelValueLengthLimit` set by
+                      ServiceMonitor, PodMonitor, Probe objects unless `spec.labelValueLengthLimit` is
+                      greater than zero and less than `spec.enforcedLabelValueLengthLimit`.
+                      
+                      
+                      It requires Prometheus >= v2.27.0.
                       EOT
                       "format" = "int64"
                       "type" = "integer"
                     }
                     "enforcedNamespaceLabel" = {
                       "description" = <<-EOT
-                      When not empty, a label will be added to 
-                       1. All metrics scraped from `ServiceMonitor`, `PodMonitor`, `Probe` and `ScrapeConfig` objects. 2. All metrics generated from recording rules defined in `PrometheusRule` objects. 3. All alerts generated from alerting rules defined in `PrometheusRule` objects. 4. All vector selectors of PromQL expressions defined in `PrometheusRule` objects. 
-                       The label will not added for objects referenced in `spec.excludedFromEnforcement`. 
-                       The label's name is this field's value. The label's value is the namespace of the `ServiceMonitor`, `PodMonitor`, `Probe` or `PrometheusRule` object.
+                      When not empty, a label will be added to:
+                      
+                      
+                      1. All metrics scraped from `ServiceMonitor`, `PodMonitor`, `Probe` and `ScrapeConfig` objects.
+                      2. All metrics generated from recording rules defined in `PrometheusRule` objects.
+                      3. All alerts generated from alerting rules defined in `PrometheusRule` objects.
+                      4. All vector selectors of PromQL expressions defined in `PrometheusRule` objects.
+                      
+                      
+                      The label will not added for objects referenced in `spec.excludedFromEnforcement`.
+                      
+                      
+                      The label's name is this field's value.
+                      The label's value is the namespace of the `ServiceMonitor`,
+                      `PodMonitor`, `Probe`, `PrometheusRule` or `ScrapeConfig` object.
                       EOT
                       "type" = "string"
                     }
                     "enforcedSampleLimit" = {
                       "description" = <<-EOT
-                      When defined, enforcedSampleLimit specifies a global limit on the number of scraped samples that will be accepted. This overrides any `spec.sampleLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.sampleLimit` is greater than zero and less than `spec.enforcedSampleLimit`. 
-                       It is meant to be used by admins to keep the overall number of samples/series under a desired limit.
+                      When defined, enforcedSampleLimit specifies a global limit on the number
+                      of scraped samples that will be accepted. This overrides any
+                      `spec.sampleLimit` set by ServiceMonitor, PodMonitor, Probe objects
+                      unless `spec.sampleLimit` is greater than zero and less than
+                      `spec.enforcedSampleLimit`.
+                      
+                      
+                      It is meant to be used by admins to keep the overall number of
+                      samples/series under a desired limit.
                       EOT
                       "format" = "int64"
                       "type" = "integer"
                     }
                     "enforcedTargetLimit" = {
                       "description" = <<-EOT
-                      When defined, enforcedTargetLimit specifies a global limit on the number of scraped targets. The value overrides any `spec.targetLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.targetLimit` is greater than zero and less than `spec.enforcedTargetLimit`. 
-                       It is meant to be used by admins to to keep the overall number of targets under a desired limit.
+                      When defined, enforcedTargetLimit specifies a global limit on the number
+                      of scraped targets. The value overrides any `spec.targetLimit` set by
+                      ServiceMonitor, PodMonitor, Probe objects unless `spec.targetLimit` is
+                      greater than zero and less than `spec.enforcedTargetLimit`.
+                      
+                      
+                      It is meant to be used by admins to to keep the overall number of
+                      targets under a desired limit.
                       EOT
                       "format" = "int64"
                       "type" = "integer"
                     }
                     "excludedFromEnforcement" = {
                       "description" = <<-EOT
-                      List of references to PodMonitor, ServiceMonitor, Probe and PrometheusRule objects to be excluded from enforcing a namespace label of origin. 
-                       It is only applicable if `spec.enforcedNamespaceLabel` set to true.
+                      List of references to PodMonitor, ServiceMonitor, Probe and PrometheusRule objects
+                      to be excluded from enforcing a namespace label of origin.
+                      
+                      
+                      It is only applicable if `spec.enforcedNamespaceLabel` set to true.
                       EOT
                       "items" = {
                         "description" = "ObjectReference references a PodMonitor, ServiceMonitor, Probe or PrometheusRule object."
@@ -2480,7 +3643,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "string"
                           }
                           "namespace" = {
-                            "description" = "Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/"
+                            "description" = <<-EOT
+                            Namespace of the referent.
+                            More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+                            EOT
                             "minLength" = 1
                             "type" = "string"
                           }
@@ -2508,17 +3674,32 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                       "additionalProperties" = {
                         "type" = "string"
                       }
-                      "description" = "The labels to add to any time series or alerts when communicating with external systems (federation, remote storage, Alertmanager). Labels defined by `spec.replicaExternalLabelName` and `spec.prometheusExternalLabelName` take precedence over this list."
+                      "description" = <<-EOT
+                      The labels to add to any time series or alerts when communicating with
+                      external systems (federation, remote storage, Alertmanager).
+                      Labels defined by `spec.replicaExternalLabelName` and
+                      `spec.prometheusExternalLabelName` take precedence over this list.
+                      EOT
                       "type" = "object"
                     }
                     "externalUrl" = {
-                      "description" = "The external URL under which the Prometheus service is externally available. This is necessary to generate correct URLs (for instance if Prometheus is accessible behind an Ingress resource)."
+                      "description" = <<-EOT
+                      The external URL under which the Prometheus service is externally
+                      available. This is necessary to generate correct URLs (for instance if
+                      Prometheus is accessible behind an Ingress resource).
+                      EOT
                       "type" = "string"
                     }
                     "hostAliases" = {
-                      "description" = "Optional list of hosts and IPs that will be injected into the Pod's hosts file if specified."
+                      "description" = <<-EOT
+                      Optional list of hosts and IPs that will be injected into the Pod's
+                      hosts file if specified.
+                      EOT
                       "items" = {
-                        "description" = "HostAlias holds the mapping between IP and hostnames that will be injected as an entry in the pod's hosts file."
+                        "description" = <<-EOT
+                        HostAlias holds the mapping between IP and hostnames that will be injected as an entry in the
+                        pod's hosts file.
+                        EOT
                         "properties" = {
                           "hostnames" = {
                             "description" = "Hostnames for the above IP address."
@@ -2546,26 +3727,48 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     }
                     "hostNetwork" = {
                       "description" = <<-EOT
-                      Use the host's network namespace if true. 
-                       Make sure to understand the security implications if you want to enable it (https://kubernetes.io/docs/concepts/configuration/overview/). 
-                       When hostNetwork is enabled, this will set the DNS policy to `ClusterFirstWithHostNet` automatically.
+                      Use the host's network namespace if true.
+                      
+                      
+                      Make sure to understand the security implications if you want to enable
+                      it (https://kubernetes.io/docs/concepts/configuration/overview/).
+                      
+                      
+                      When hostNetwork is enabled, this will set the DNS policy to
+                      `ClusterFirstWithHostNet` automatically.
                       EOT
                       "type" = "boolean"
                     }
                     "ignoreNamespaceSelectors" = {
-                      "description" = "When true, `spec.namespaceSelector` from all PodMonitor, ServiceMonitor and Probe objects will be ignored. They will only discover targets within the namespace of the PodMonitor, ServiceMonitor and Probe object."
+                      "description" = <<-EOT
+                      When true, `spec.namespaceSelector` from all PodMonitor, ServiceMonitor
+                      and Probe objects will be ignored. They will only discover targets
+                      within the namespace of the PodMonitor, ServiceMonitor and Probe
+                      object.
+                      EOT
                       "type" = "boolean"
                     }
                     "image" = {
                       "description" = <<-EOT
-                      Container image name for Prometheus. If specified, it takes precedence over the `spec.baseImage`, `spec.tag` and `spec.sha` fields. 
-                       Specifying `spec.version` is still necessary to ensure the Prometheus Operator knows which version of Prometheus is being configured. 
-                       If neither `spec.image` nor `spec.baseImage` are defined, the operator will use the latest upstream version of Prometheus available at the time when the operator was released.
+                      Container image name for Prometheus. If specified, it takes precedence
+                      over the `spec.baseImage`, `spec.tag` and `spec.sha` fields.
+                      
+                      
+                      Specifying `spec.version` is still necessary to ensure the Prometheus
+                      Operator knows which version of Prometheus is being configured.
+                      
+                      
+                      If neither `spec.image` nor `spec.baseImage` are defined, the operator
+                      will use the latest upstream version of Prometheus available at the time
+                      when the operator was released.
                       EOT
                       "type" = "string"
                     }
                     "imagePullPolicy" = {
-                      "description" = "Image pull policy for the 'prometheus', 'init-config-reloader' and 'config-reloader' containers. See https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy for more details."
+                      "description" = <<-EOT
+                      Image pull policy for the 'prometheus', 'init-config-reloader' and 'config-reloader' containers.
+                      See https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy for more details.
+                      EOT
                       "enum" = [
                         "",
                         "Always",
@@ -2575,12 +3778,23 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                       "type" = "string"
                     }
                     "imagePullSecrets" = {
-                      "description" = "An optional list of references to Secrets in the same namespace to use for pulling images from registries. See http://kubernetes.io/docs/user-guide/images#specifying-imagepullsecrets-on-a-pod"
+                      "description" = <<-EOT
+                      An optional list of references to Secrets in the same namespace
+                      to use for pulling images from registries.
+                      See http://kubernetes.io/docs/user-guide/images#specifying-imagepullsecrets-on-a-pod
+                      EOT
                       "items" = {
-                        "description" = "LocalObjectReference contains enough information to let you locate the referenced object inside the same namespace."
+                        "description" = <<-EOT
+                        LocalObjectReference contains enough information to let you locate the
+                        referenced object inside the same namespace.
+                        EOT
                         "properties" = {
                           "name" = {
-                            "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                            "description" = <<-EOT
+                            Name of the referent.
+                            More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                            TODO: Add other useful fields. apiVersion, kind, uid?
+                            EOT
                             "type" = "string"
                           }
                         }
@@ -2591,29 +3805,64 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     }
                     "initContainers" = {
                       "description" = <<-EOT
-                      InitContainers allows injecting initContainers to the Pod definition. Those can be used to e.g.  fetch secrets for injection into the Prometheus configuration from external sources. Any errors during the execution of an initContainer will lead to a restart of the Pod. More info: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/ InitContainers described here modify an operator generated init containers if they share the same name and modifications are done via a strategic merge patch. 
-                       The names of init container name managed by the operator are: * `init-config-reloader`. 
-                       Overriding init containers is entirely outside the scope of what the maintainers will support and by doing so, you accept that this behaviour may break at any time without notice.
+                      InitContainers allows injecting initContainers to the Pod definition. Those
+                      can be used to e.g.  fetch secrets for injection into the Prometheus
+                      configuration from external sources. Any errors during the execution of
+                      an initContainer will lead to a restart of the Pod. More info:
+                      https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
+                      InitContainers described here modify an operator generated init
+                      containers if they share the same name and modifications are done via a
+                      strategic merge patch.
+                      
+                      
+                      The names of init container name managed by the operator are:
+                      * `init-config-reloader`.
+                      
+                      
+                      Overriding init containers is entirely outside the scope of what the
+                      maintainers will support and by doing so, you accept that this behaviour
+                      may break at any time without notice.
                       EOT
                       "items" = {
                         "description" = "A single application container that you want to run within a pod."
                         "properties" = {
                           "args" = {
-                            "description" = "Arguments to the entrypoint. The container image's CMD is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell"
+                            "description" = <<-EOT
+                            Arguments to the entrypoint.
+                            The container image's CMD is used if this is not provided.
+                            Variable references $(VAR_NAME) are expanded using the container's environment. If a variable
+                            cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced
+                            to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)" will
+                            produce the string literal "$(VAR_NAME)". Escaped references will never be expanded, regardless
+                            of whether the variable exists or not. Cannot be updated.
+                            More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell
+                            EOT
                             "items" = {
                               "type" = "string"
                             }
                             "type" = "array"
                           }
                           "command" = {
-                            "description" = "Entrypoint array. Not executed within a shell. The container image's ENTRYPOINT is used if this is not provided. Variable references $(VAR_NAME) are expanded using the container's environment. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Cannot be updated. More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell"
+                            "description" = <<-EOT
+                            Entrypoint array. Not executed within a shell.
+                            The container image's ENTRYPOINT is used if this is not provided.
+                            Variable references $(VAR_NAME) are expanded using the container's environment. If a variable
+                            cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced
+                            to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. "$$(VAR_NAME)" will
+                            produce the string literal "$(VAR_NAME)". Escaped references will never be expanded, regardless
+                            of whether the variable exists or not. Cannot be updated.
+                            More info: https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell
+                            EOT
                             "items" = {
                               "type" = "string"
                             }
                             "type" = "array"
                           }
                           "env" = {
-                            "description" = "List of environment variables to set in the container. Cannot be updated."
+                            "description" = <<-EOT
+                            List of environment variables to set in the container.
+                            Cannot be updated.
+                            EOT
                             "items" = {
                               "description" = "EnvVar represents an environment variable present in a Container."
                               "properties" = {
@@ -2622,7 +3871,17 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "type" = "string"
                                 }
                                 "value" = {
-                                  "description" = "Variable references $(VAR_NAME) are expanded using the previously defined environment variables in the container and any service environment variables. If a variable cannot be resolved, the reference in the input string will be unchanged. Double $$ are reduced to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e. \"$$(VAR_NAME)\" will produce the string literal \"$(VAR_NAME)\". Escaped references will never be expanded, regardless of whether the variable exists or not. Defaults to \"\"."
+                                  "description" = <<-EOT
+                                  Variable references $(VAR_NAME) are expanded
+                                  using the previously defined environment variables in the container and
+                                  any service environment variables. If a variable cannot be resolved,
+                                  the reference in the input string will be unchanged. Double $$ are reduced
+                                  to a single $, which allows for escaping the $(VAR_NAME) syntax: i.e.
+                                  "$$(VAR_NAME)" will produce the string literal "$(VAR_NAME)".
+                                  Escaped references will never be expanded, regardless of whether the variable
+                                  exists or not.
+                                  Defaults to "".
+                                  EOT
                                   "type" = "string"
                                 }
                                 "valueFrom" = {
@@ -2636,7 +3895,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                           "type" = "string"
                                         }
                                         "name" = {
-                                          "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                          "description" = <<-EOT
+                                          Name of the referent.
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion, kind, uid?
+                                          EOT
                                           "type" = "string"
                                         }
                                         "optional" = {
@@ -2651,7 +3914,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "x-kubernetes-map-type" = "atomic"
                                     }
                                     "fieldRef" = {
-                                      "description" = "Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`, spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs."
+                                      "description" = <<-EOT
+                                      Selects a field of the pod: supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`,
+                                      spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs.
+                                      EOT
                                       "properties" = {
                                         "apiVersion" = {
                                           "description" = "Version of the schema the FieldPath is written in terms of, defaults to \"v1\"."
@@ -2669,7 +3935,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "x-kubernetes-map-type" = "atomic"
                                     }
                                     "resourceFieldRef" = {
-                                      "description" = "Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported."
+                                      "description" = <<-EOT
+                                      Selects a resource of the container: only resources limits and requests
+                                      (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.
+                                      EOT
                                       "properties" = {
                                         "containerName" = {
                                           "description" = "Container name: required for volumes, optional for env vars"
@@ -2707,7 +3976,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                           "type" = "string"
                                         }
                                         "name" = {
-                                          "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                          "description" = <<-EOT
+                                          Name of the referent.
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion, kind, uid?
+                                          EOT
                                           "type" = "string"
                                         }
                                         "optional" = {
@@ -2733,7 +4006,14 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "array"
                           }
                           "envFrom" = {
-                            "description" = "List of sources to populate environment variables in the container. The keys defined within a source must be a C_IDENTIFIER. All invalid keys will be reported as an event when the container is starting. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated."
+                            "description" = <<-EOT
+                            List of sources to populate environment variables in the container.
+                            The keys defined within a source must be a C_IDENTIFIER. All invalid keys
+                            will be reported as an event when the container is starting. When a key exists in multiple
+                            sources, the value associated with the last source will take precedence.
+                            Values defined by an Env with a duplicate key will take precedence.
+                            Cannot be updated.
+                            EOT
                             "items" = {
                               "description" = "EnvFromSource represents the source of a set of ConfigMaps"
                               "properties" = {
@@ -2741,7 +4021,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "description" = "The ConfigMap to select from"
                                   "properties" = {
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -2760,7 +4044,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "description" = "The Secret to select from"
                                   "properties" = {
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -2777,24 +4065,49 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "array"
                           }
                           "image" = {
-                            "description" = "Container image name. More info: https://kubernetes.io/docs/concepts/containers/images This field is optional to allow higher level config management to default or override container images in workload controllers like Deployments and StatefulSets."
+                            "description" = <<-EOT
+                            Container image name.
+                            More info: https://kubernetes.io/docs/concepts/containers/images
+                            This field is optional to allow higher level config management to default or override
+                            container images in workload controllers like Deployments and StatefulSets.
+                            EOT
                             "type" = "string"
                           }
                           "imagePullPolicy" = {
-                            "description" = "Image pull policy. One of Always, Never, IfNotPresent. Defaults to Always if :latest tag is specified, or IfNotPresent otherwise. Cannot be updated. More info: https://kubernetes.io/docs/concepts/containers/images#updating-images"
+                            "description" = <<-EOT
+                            Image pull policy.
+                            One of Always, Never, IfNotPresent.
+                            Defaults to Always if :latest tag is specified, or IfNotPresent otherwise.
+                            Cannot be updated.
+                            More info: https://kubernetes.io/docs/concepts/containers/images#updating-images
+                            EOT
                             "type" = "string"
                           }
                           "lifecycle" = {
-                            "description" = "Actions that the management system should take in response to container lifecycle events. Cannot be updated."
+                            "description" = <<-EOT
+                            Actions that the management system should take in response to container lifecycle events.
+                            Cannot be updated.
+                            EOT
                             "properties" = {
                               "postStart" = {
-                                "description" = "PostStart is called immediately after a container is created. If the handler fails, the container is terminated and restarted according to its restart policy. Other management of the container blocks until the hook completes. More info: https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks"
+                                "description" = <<-EOT
+                                PostStart is called immediately after a container is created. If the handler fails,
+                                the container is terminated and restarted according to its restart policy.
+                                Other management of the container blocks until the hook completes.
+                                More info: https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks
+                                EOT
                                 "properties" = {
                                   "exec" = {
                                     "description" = "Exec specifies the action to take."
                                     "properties" = {
                                       "command" = {
-                                        "description" = "Command is the command line to execute inside the container, the working directory for the command  is root ('/') in the container's filesystem. The command is simply exec'd, it is not run inside a shell, so traditional shell instructions ('|', etc) won't work. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as live/healthy and non-zero is unhealthy."
+                                        "description" = <<-EOT
+                                        Command is the command line to execute inside the container, the working directory for the
+                                        command  is root ('/') in the container's filesystem. The command is simply exec'd, it is
+                                        not run inside a shell, so traditional shell instructions ('|', etc) won't work. To use
+                                        a shell, you need to explicitly call out to that shell.
+                                        Exit status of 0 is treated as live/healthy and non-zero is unhealthy.
+                                        EOT
                                         "items" = {
                                           "type" = "string"
                                         }
@@ -2807,7 +4120,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "description" = "HTTPGet specifies the http request to perform."
                                     "properties" = {
                                       "host" = {
-                                        "description" = "Host name to connect to, defaults to the pod IP. You probably want to set \"Host\" in httpHeaders instead."
+                                        "description" = <<-EOT
+                                        Host name to connect to, defaults to the pod IP. You probably want to set
+                                        "Host" in httpHeaders instead.
+                                        EOT
                                         "type" = "string"
                                       }
                                       "httpHeaders" = {
@@ -2816,7 +4132,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                           "description" = "HTTPHeader describes a custom header to be used in HTTP probes"
                                           "properties" = {
                                             "name" = {
-                                              "description" = "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
+                                              "description" = <<-EOT
+                                              The header field name.
+                                              This will be canonicalized upon output, so case-variant names will be understood as the same header.
+                                              EOT
                                               "type" = "string"
                                             }
                                             "value" = {
@@ -2845,11 +4164,18 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                             "type" = "string"
                                           },
                                         ]
-                                        "description" = "Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."
+                                        "description" = <<-EOT
+                                        Name or number of the port to access on the container.
+                                        Number must be in the range 1 to 65535.
+                                        Name must be an IANA_SVC_NAME.
+                                        EOT
                                         "x-kubernetes-int-or-string" = true
                                       }
                                       "scheme" = {
-                                        "description" = "Scheme to use for connecting to the host. Defaults to HTTP."
+                                        "description" = <<-EOT
+                                        Scheme to use for connecting to the host.
+                                        Defaults to HTTP.
+                                        EOT
                                         "type" = "string"
                                       }
                                     }
@@ -2873,7 +4199,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "type" = "object"
                                   }
                                   "tcpSocket" = {
-                                    "description" = "Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept for the backward compatibility. There are no validation of this field and lifecycle hooks will fail in runtime when tcp handler is specified."
+                                    "description" = <<-EOT
+                                    Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept
+                                    for the backward compatibility. There are no validation of this field and
+                                    lifecycle hooks will fail in runtime when tcp handler is specified.
+                                    EOT
                                     "properties" = {
                                       "host" = {
                                         "description" = "Optional: Host name to connect to, defaults to the pod IP."
@@ -2888,7 +4218,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                             "type" = "string"
                                           },
                                         ]
-                                        "description" = "Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."
+                                        "description" = <<-EOT
+                                        Number or name of the port to access on the container.
+                                        Number must be in the range 1 to 65535.
+                                        Name must be an IANA_SVC_NAME.
+                                        EOT
                                         "x-kubernetes-int-or-string" = true
                                       }
                                     }
@@ -2901,13 +4235,29 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "preStop" = {
-                                "description" = "PreStop is called immediately before a container is terminated due to an API request or management event such as liveness/startup probe failure, preemption, resource contention, etc. The handler is not called if the container crashes or exits. The Pod's termination grace period countdown begins before the PreStop hook is executed. Regardless of the outcome of the handler, the container will eventually terminate within the Pod's termination grace period (unless delayed by finalizers). Other management of the container blocks until the hook completes or until the termination grace period is reached. More info: https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks"
+                                "description" = <<-EOT
+                                PreStop is called immediately before a container is terminated due to an
+                                API request or management event such as liveness/startup probe failure,
+                                preemption, resource contention, etc. The handler is not called if the
+                                container crashes or exits. The Pod's termination grace period countdown begins before the
+                                PreStop hook is executed. Regardless of the outcome of the handler, the
+                                container will eventually terminate within the Pod's termination grace
+                                period (unless delayed by finalizers). Other management of the container blocks until the hook completes
+                                or until the termination grace period is reached.
+                                More info: https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks
+                                EOT
                                 "properties" = {
                                   "exec" = {
                                     "description" = "Exec specifies the action to take."
                                     "properties" = {
                                       "command" = {
-                                        "description" = "Command is the command line to execute inside the container, the working directory for the command  is root ('/') in the container's filesystem. The command is simply exec'd, it is not run inside a shell, so traditional shell instructions ('|', etc) won't work. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as live/healthy and non-zero is unhealthy."
+                                        "description" = <<-EOT
+                                        Command is the command line to execute inside the container, the working directory for the
+                                        command  is root ('/') in the container's filesystem. The command is simply exec'd, it is
+                                        not run inside a shell, so traditional shell instructions ('|', etc) won't work. To use
+                                        a shell, you need to explicitly call out to that shell.
+                                        Exit status of 0 is treated as live/healthy and non-zero is unhealthy.
+                                        EOT
                                         "items" = {
                                           "type" = "string"
                                         }
@@ -2920,7 +4270,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "description" = "HTTPGet specifies the http request to perform."
                                     "properties" = {
                                       "host" = {
-                                        "description" = "Host name to connect to, defaults to the pod IP. You probably want to set \"Host\" in httpHeaders instead."
+                                        "description" = <<-EOT
+                                        Host name to connect to, defaults to the pod IP. You probably want to set
+                                        "Host" in httpHeaders instead.
+                                        EOT
                                         "type" = "string"
                                       }
                                       "httpHeaders" = {
@@ -2929,7 +4282,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                           "description" = "HTTPHeader describes a custom header to be used in HTTP probes"
                                           "properties" = {
                                             "name" = {
-                                              "description" = "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
+                                              "description" = <<-EOT
+                                              The header field name.
+                                              This will be canonicalized upon output, so case-variant names will be understood as the same header.
+                                              EOT
                                               "type" = "string"
                                             }
                                             "value" = {
@@ -2958,11 +4314,18 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                             "type" = "string"
                                           },
                                         ]
-                                        "description" = "Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."
+                                        "description" = <<-EOT
+                                        Name or number of the port to access on the container.
+                                        Number must be in the range 1 to 65535.
+                                        Name must be an IANA_SVC_NAME.
+                                        EOT
                                         "x-kubernetes-int-or-string" = true
                                       }
                                       "scheme" = {
-                                        "description" = "Scheme to use for connecting to the host. Defaults to HTTP."
+                                        "description" = <<-EOT
+                                        Scheme to use for connecting to the host.
+                                        Defaults to HTTP.
+                                        EOT
                                         "type" = "string"
                                       }
                                     }
@@ -2986,7 +4349,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "type" = "object"
                                   }
                                   "tcpSocket" = {
-                                    "description" = "Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept for the backward compatibility. There are no validation of this field and lifecycle hooks will fail in runtime when tcp handler is specified."
+                                    "description" = <<-EOT
+                                    Deprecated. TCPSocket is NOT supported as a LifecycleHandler and kept
+                                    for the backward compatibility. There are no validation of this field and
+                                    lifecycle hooks will fail in runtime when tcp handler is specified.
+                                    EOT
                                     "properties" = {
                                       "host" = {
                                         "description" = "Optional: Host name to connect to, defaults to the pod IP."
@@ -3001,7 +4368,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                             "type" = "string"
                                           },
                                         ]
-                                        "description" = "Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."
+                                        "description" = <<-EOT
+                                        Number or name of the port to access on the container.
+                                        Number must be in the range 1 to 65535.
+                                        Name must be an IANA_SVC_NAME.
+                                        EOT
                                         "x-kubernetes-int-or-string" = true
                                       }
                                     }
@@ -3017,13 +4388,24 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "object"
                           }
                           "livenessProbe" = {
-                            "description" = "Periodic probe of container liveness. Container will be restarted if the probe fails. Cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes"
+                            "description" = <<-EOT
+                            Periodic probe of container liveness.
+                            Container will be restarted if the probe fails.
+                            Cannot be updated.
+                            More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+                            EOT
                             "properties" = {
                               "exec" = {
                                 "description" = "Exec specifies the action to take."
                                 "properties" = {
                                   "command" = {
-                                    "description" = "Command is the command line to execute inside the container, the working directory for the command  is root ('/') in the container's filesystem. The command is simply exec'd, it is not run inside a shell, so traditional shell instructions ('|', etc) won't work. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as live/healthy and non-zero is unhealthy."
+                                    "description" = <<-EOT
+                                    Command is the command line to execute inside the container, the working directory for the
+                                    command  is root ('/') in the container's filesystem. The command is simply exec'd, it is
+                                    not run inside a shell, so traditional shell instructions ('|', etc) won't work. To use
+                                    a shell, you need to explicitly call out to that shell.
+                                    Exit status of 0 is treated as live/healthy and non-zero is unhealthy.
+                                    EOT
                                     "items" = {
                                       "type" = "string"
                                     }
@@ -3033,7 +4415,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "failureThreshold" = {
-                                "description" = "Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1."
+                                "description" = <<-EOT
+                                Minimum consecutive failures for the probe to be considered failed after having succeeded.
+                                Defaults to 3. Minimum value is 1.
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
@@ -3047,8 +4432,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   }
                                   "service" = {
                                     "description" = <<-EOT
-                                    Service is the name of the service to place in the gRPC HealthCheckRequest (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md). 
-                                     If this is not specified, the default behavior is defined by gRPC.
+                                    Service is the name of the service to place in the gRPC HealthCheckRequest
+                                    (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).
+                                    
+                                    
+                                    If this is not specified, the default behavior is defined by gRPC.
                                     EOT
                                     "type" = "string"
                                   }
@@ -3062,7 +4450,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "description" = "HTTPGet specifies the http request to perform."
                                 "properties" = {
                                   "host" = {
-                                    "description" = "Host name to connect to, defaults to the pod IP. You probably want to set \"Host\" in httpHeaders instead."
+                                    "description" = <<-EOT
+                                    Host name to connect to, defaults to the pod IP. You probably want to set
+                                    "Host" in httpHeaders instead.
+                                    EOT
                                     "type" = "string"
                                   }
                                   "httpHeaders" = {
@@ -3071,7 +4462,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "description" = "HTTPHeader describes a custom header to be used in HTTP probes"
                                       "properties" = {
                                         "name" = {
-                                          "description" = "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
+                                          "description" = <<-EOT
+                                          The header field name.
+                                          This will be canonicalized upon output, so case-variant names will be understood as the same header.
+                                          EOT
                                           "type" = "string"
                                         }
                                         "value" = {
@@ -3100,11 +4494,18 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "string"
                                       },
                                     ]
-                                    "description" = "Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."
+                                    "description" = <<-EOT
+                                    Name or number of the port to access on the container.
+                                    Number must be in the range 1 to 65535.
+                                    Name must be an IANA_SVC_NAME.
+                                    EOT
                                     "x-kubernetes-int-or-string" = true
                                   }
                                   "scheme" = {
-                                    "description" = "Scheme to use for connecting to the host. Defaults to HTTP."
+                                    "description" = <<-EOT
+                                    Scheme to use for connecting to the host.
+                                    Defaults to HTTP.
+                                    EOT
                                     "type" = "string"
                                   }
                                 }
@@ -3114,17 +4515,26 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "initialDelaySeconds" = {
-                                "description" = "Number of seconds after the container has started before liveness probes are initiated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes"
+                                "description" = <<-EOT
+                                Number of seconds after the container has started before liveness probes are initiated.
+                                More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
                               "periodSeconds" = {
-                                "description" = "How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1."
+                                "description" = <<-EOT
+                                How often (in seconds) to perform the probe.
+                                Default to 10 seconds. Minimum value is 1.
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
                               "successThreshold" = {
-                                "description" = "Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1."
+                                "description" = <<-EOT
+                                Minimum consecutive successes for the probe to be considered successful after having failed.
+                                Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1.
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
@@ -3144,7 +4554,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "string"
                                       },
                                     ]
-                                    "description" = "Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."
+                                    "description" = <<-EOT
+                                    Number or name of the port to access on the container.
+                                    Number must be in the range 1 to 65535.
+                                    Name must be an IANA_SVC_NAME.
+                                    EOT
                                     "x-kubernetes-int-or-string" = true
                                   }
                                 }
@@ -3154,12 +4568,27 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "terminationGracePeriodSeconds" = {
-                                "description" = "Optional duration in seconds the pod needs to terminate gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the pod are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this value longer than the expected cleanup time for your process. If this value is nil, the pod's terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down). This is a beta field and requires enabling ProbeTerminationGracePeriod feature gate. Minimum value is 1. spec.terminationGracePeriodSeconds is used if unset."
+                                "description" = <<-EOT
+                                Optional duration in seconds the pod needs to terminate gracefully upon probe failure.
+                                The grace period is the duration in seconds after the processes running in the pod are sent
+                                a termination signal and the time when the processes are forcibly halted with a kill signal.
+                                Set this value longer than the expected cleanup time for your process.
+                                If this value is nil, the pod's terminationGracePeriodSeconds will be used. Otherwise, this
+                                value overrides the value provided by the pod spec.
+                                Value must be non-negative integer. The value zero indicates stop immediately via
+                                the kill signal (no opportunity to shut down).
+                                This is a beta field and requires enabling ProbeTerminationGracePeriod feature gate.
+                                Minimum value is 1. spec.terminationGracePeriodSeconds is used if unset.
+                                EOT
                                 "format" = "int64"
                                 "type" = "integer"
                               }
                               "timeoutSeconds" = {
-                                "description" = "Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes"
+                                "description" = <<-EOT
+                                Number of seconds after which the probe times out.
+                                Defaults to 1 second. Minimum value is 1.
+                                More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
@@ -3167,16 +4596,31 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "object"
                           }
                           "name" = {
-                            "description" = "Name of the container specified as a DNS_LABEL. Each container in a pod must have a unique name (DNS_LABEL). Cannot be updated."
+                            "description" = <<-EOT
+                            Name of the container specified as a DNS_LABEL.
+                            Each container in a pod must have a unique name (DNS_LABEL).
+                            Cannot be updated.
+                            EOT
                             "type" = "string"
                           }
                           "ports" = {
-                            "description" = "List of ports to expose from the container. Not specifying a port here DOES NOT prevent that port from being exposed. Any port which is listening on the default \"0.0.0.0\" address inside a container will be accessible from the network. Modifying this array with strategic merge patch may corrupt the data. For more information See https://github.com/kubernetes/kubernetes/issues/108255. Cannot be updated."
+                            "description" = <<-EOT
+                            List of ports to expose from the container. Not specifying a port here
+                            DOES NOT prevent that port from being exposed. Any port which is
+                            listening on the default "0.0.0.0" address inside a container will be
+                            accessible from the network.
+                            Modifying this array with strategic merge patch may corrupt the data.
+                            For more information See https://github.com/kubernetes/kubernetes/issues/108255.
+                            Cannot be updated.
+                            EOT
                             "items" = {
                               "description" = "ContainerPort represents a network port in a single container."
                               "properties" = {
                                 "containerPort" = {
-                                  "description" = "Number of port to expose on the pod's IP address. This must be a valid port number, 0 < x < 65536."
+                                  "description" = <<-EOT
+                                  Number of port to expose on the pod's IP address.
+                                  This must be a valid port number, 0 < x < 65536.
+                                  EOT
                                   "format" = "int32"
                                   "type" = "integer"
                                 }
@@ -3185,17 +4629,29 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "type" = "string"
                                 }
                                 "hostPort" = {
-                                  "description" = "Number of port to expose on the host. If specified, this must be a valid port number, 0 < x < 65536. If HostNetwork is specified, this must match ContainerPort. Most containers do not need this."
+                                  "description" = <<-EOT
+                                  Number of port to expose on the host.
+                                  If specified, this must be a valid port number, 0 < x < 65536.
+                                  If HostNetwork is specified, this must match ContainerPort.
+                                  Most containers do not need this.
+                                  EOT
                                   "format" = "int32"
                                   "type" = "integer"
                                 }
                                 "name" = {
-                                  "description" = "If specified, this must be an IANA_SVC_NAME and unique within the pod. Each named port in a pod must have a unique name. Name for the port that can be referred to by services."
+                                  "description" = <<-EOT
+                                  If specified, this must be an IANA_SVC_NAME and unique within the pod. Each
+                                  named port in a pod must have a unique name. Name for the port that can be
+                                  referred to by services.
+                                  EOT
                                   "type" = "string"
                                 }
                                 "protocol" = {
                                   "default" = "TCP"
-                                  "description" = "Protocol for port. Must be UDP, TCP, or SCTP. Defaults to \"TCP\"."
+                                  "description" = <<-EOT
+                                  Protocol for port. Must be UDP, TCP, or SCTP.
+                                  Defaults to "TCP".
+                                  EOT
                                   "type" = "string"
                                 }
                               }
@@ -3212,13 +4668,24 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "x-kubernetes-list-type" = "map"
                           }
                           "readinessProbe" = {
-                            "description" = "Periodic probe of container service readiness. Container will be removed from service endpoints if the probe fails. Cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes"
+                            "description" = <<-EOT
+                            Periodic probe of container service readiness.
+                            Container will be removed from service endpoints if the probe fails.
+                            Cannot be updated.
+                            More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+                            EOT
                             "properties" = {
                               "exec" = {
                                 "description" = "Exec specifies the action to take."
                                 "properties" = {
                                   "command" = {
-                                    "description" = "Command is the command line to execute inside the container, the working directory for the command  is root ('/') in the container's filesystem. The command is simply exec'd, it is not run inside a shell, so traditional shell instructions ('|', etc) won't work. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as live/healthy and non-zero is unhealthy."
+                                    "description" = <<-EOT
+                                    Command is the command line to execute inside the container, the working directory for the
+                                    command  is root ('/') in the container's filesystem. The command is simply exec'd, it is
+                                    not run inside a shell, so traditional shell instructions ('|', etc) won't work. To use
+                                    a shell, you need to explicitly call out to that shell.
+                                    Exit status of 0 is treated as live/healthy and non-zero is unhealthy.
+                                    EOT
                                     "items" = {
                                       "type" = "string"
                                     }
@@ -3228,7 +4695,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "failureThreshold" = {
-                                "description" = "Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1."
+                                "description" = <<-EOT
+                                Minimum consecutive failures for the probe to be considered failed after having succeeded.
+                                Defaults to 3. Minimum value is 1.
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
@@ -3242,8 +4712,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   }
                                   "service" = {
                                     "description" = <<-EOT
-                                    Service is the name of the service to place in the gRPC HealthCheckRequest (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md). 
-                                     If this is not specified, the default behavior is defined by gRPC.
+                                    Service is the name of the service to place in the gRPC HealthCheckRequest
+                                    (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).
+                                    
+                                    
+                                    If this is not specified, the default behavior is defined by gRPC.
                                     EOT
                                     "type" = "string"
                                   }
@@ -3257,7 +4730,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "description" = "HTTPGet specifies the http request to perform."
                                 "properties" = {
                                   "host" = {
-                                    "description" = "Host name to connect to, defaults to the pod IP. You probably want to set \"Host\" in httpHeaders instead."
+                                    "description" = <<-EOT
+                                    Host name to connect to, defaults to the pod IP. You probably want to set
+                                    "Host" in httpHeaders instead.
+                                    EOT
                                     "type" = "string"
                                   }
                                   "httpHeaders" = {
@@ -3266,7 +4742,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "description" = "HTTPHeader describes a custom header to be used in HTTP probes"
                                       "properties" = {
                                         "name" = {
-                                          "description" = "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
+                                          "description" = <<-EOT
+                                          The header field name.
+                                          This will be canonicalized upon output, so case-variant names will be understood as the same header.
+                                          EOT
                                           "type" = "string"
                                         }
                                         "value" = {
@@ -3295,11 +4774,18 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "string"
                                       },
                                     ]
-                                    "description" = "Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."
+                                    "description" = <<-EOT
+                                    Name or number of the port to access on the container.
+                                    Number must be in the range 1 to 65535.
+                                    Name must be an IANA_SVC_NAME.
+                                    EOT
                                     "x-kubernetes-int-or-string" = true
                                   }
                                   "scheme" = {
-                                    "description" = "Scheme to use for connecting to the host. Defaults to HTTP."
+                                    "description" = <<-EOT
+                                    Scheme to use for connecting to the host.
+                                    Defaults to HTTP.
+                                    EOT
                                     "type" = "string"
                                   }
                                 }
@@ -3309,17 +4795,26 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "initialDelaySeconds" = {
-                                "description" = "Number of seconds after the container has started before liveness probes are initiated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes"
+                                "description" = <<-EOT
+                                Number of seconds after the container has started before liveness probes are initiated.
+                                More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
                               "periodSeconds" = {
-                                "description" = "How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1."
+                                "description" = <<-EOT
+                                How often (in seconds) to perform the probe.
+                                Default to 10 seconds. Minimum value is 1.
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
                               "successThreshold" = {
-                                "description" = "Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1."
+                                "description" = <<-EOT
+                                Minimum consecutive successes for the probe to be considered successful after having failed.
+                                Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1.
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
@@ -3339,7 +4834,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "string"
                                       },
                                     ]
-                                    "description" = "Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."
+                                    "description" = <<-EOT
+                                    Number or name of the port to access on the container.
+                                    Number must be in the range 1 to 65535.
+                                    Name must be an IANA_SVC_NAME.
+                                    EOT
                                     "x-kubernetes-int-or-string" = true
                                   }
                                 }
@@ -3349,12 +4848,27 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "terminationGracePeriodSeconds" = {
-                                "description" = "Optional duration in seconds the pod needs to terminate gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the pod are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this value longer than the expected cleanup time for your process. If this value is nil, the pod's terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down). This is a beta field and requires enabling ProbeTerminationGracePeriod feature gate. Minimum value is 1. spec.terminationGracePeriodSeconds is used if unset."
+                                "description" = <<-EOT
+                                Optional duration in seconds the pod needs to terminate gracefully upon probe failure.
+                                The grace period is the duration in seconds after the processes running in the pod are sent
+                                a termination signal and the time when the processes are forcibly halted with a kill signal.
+                                Set this value longer than the expected cleanup time for your process.
+                                If this value is nil, the pod's terminationGracePeriodSeconds will be used. Otherwise, this
+                                value overrides the value provided by the pod spec.
+                                Value must be non-negative integer. The value zero indicates stop immediately via
+                                the kill signal (no opportunity to shut down).
+                                This is a beta field and requires enabling ProbeTerminationGracePeriod feature gate.
+                                Minimum value is 1. spec.terminationGracePeriodSeconds is used if unset.
+                                EOT
                                 "format" = "int64"
                                 "type" = "integer"
                               }
                               "timeoutSeconds" = {
-                                "description" = "Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes"
+                                "description" = <<-EOT
+                                Number of seconds after which the probe times out.
+                                Defaults to 1 second. Minimum value is 1.
+                                More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
@@ -3367,11 +4881,17 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                               "description" = "ContainerResizePolicy represents resource resize policy for the container."
                               "properties" = {
                                 "resourceName" = {
-                                  "description" = "Name of the resource to which this resource resize policy applies. Supported values: cpu, memory."
+                                  "description" = <<-EOT
+                                  Name of the resource to which this resource resize policy applies.
+                                  Supported values: cpu, memory.
+                                  EOT
                                   "type" = "string"
                                 }
                                 "restartPolicy" = {
-                                  "description" = "Restart policy to apply when specified resource is resized. If not specified, it defaults to NotRequired."
+                                  "description" = <<-EOT
+                                  Restart policy to apply when specified resource is resized.
+                                  If not specified, it defaults to NotRequired.
+                                  EOT
                                   "type" = "string"
                                 }
                               }
@@ -3385,19 +4905,33 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "x-kubernetes-list-type" = "atomic"
                           }
                           "resources" = {
-                            "description" = "Compute Resources required by this container. Cannot be updated. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+                            "description" = <<-EOT
+                            Compute Resources required by this container.
+                            Cannot be updated.
+                            More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                            EOT
                             "properties" = {
                               "claims" = {
                                 "description" = <<-EOT
-                                Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
-                                 This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-                                 This field is immutable. It can only be set for containers.
+                                Claims lists the names of resources, defined in spec.resourceClaims,
+                                that are used by this container.
+                                
+                                
+                                This is an alpha field and requires enabling the
+                                DynamicResourceAllocation feature gate.
+                                
+                                
+                                This field is immutable. It can only be set for containers.
                                 EOT
                                 "items" = {
                                   "description" = "ResourceClaim references one entry in PodSpec.ResourceClaims."
                                   "properties" = {
                                     "name" = {
-                                      "description" = "Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container."
+                                      "description" = <<-EOT
+                                      Name must match the name of one entry in pod.spec.resourceClaims of
+                                      the Pod where this field is used. It makes that resource available
+                                      inside a container.
+                                      EOT
                                       "type" = "string"
                                     }
                                   }
@@ -3425,7 +4959,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "pattern" = "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
                                   "x-kubernetes-int-or-string" = true
                                 }
-                                "description" = "Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+                                "description" = <<-EOT
+                                Limits describes the maximum amount of compute resources allowed.
+                                More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                                EOT
                                 "type" = "object"
                               }
                               "requests" = {
@@ -3441,25 +4978,62 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "pattern" = "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
                                   "x-kubernetes-int-or-string" = true
                                 }
-                                "description" = "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+                                "description" = <<-EOT
+                                Requests describes the minimum amount of compute resources required.
+                                If Requests is omitted for a container, it defaults to Limits if that is explicitly specified,
+                                otherwise to an implementation-defined value. Requests cannot exceed Limits.
+                                More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                                EOT
                                 "type" = "object"
                               }
                             }
                             "type" = "object"
                           }
                           "restartPolicy" = {
-                            "description" = "RestartPolicy defines the restart behavior of individual containers in a pod. This field may only be set for init containers, and the only allowed value is \"Always\". For non-init containers or when this field is not specified, the restart behavior is defined by the Pod's restart policy and the container type. Setting the RestartPolicy as \"Always\" for the init container will have the following effect: this init container will be continually restarted on exit until all regular containers have terminated. Once all regular containers have completed, all init containers with restartPolicy \"Always\" will be shut down. This lifecycle differs from normal init containers and is often referred to as a \"sidecar\" container. Although this init container still starts in the init container sequence, it does not wait for the container to complete before proceeding to the next init container. Instead, the next init container starts immediately after this init container is started, or after any startupProbe has successfully completed."
+                            "description" = <<-EOT
+                            RestartPolicy defines the restart behavior of individual containers in a pod.
+                            This field may only be set for init containers, and the only allowed value is "Always".
+                            For non-init containers or when this field is not specified,
+                            the restart behavior is defined by the Pod's restart policy and the container type.
+                            Setting the RestartPolicy as "Always" for the init container will have the following effect:
+                            this init container will be continually restarted on
+                            exit until all regular containers have terminated. Once all regular
+                            containers have completed, all init containers with restartPolicy "Always"
+                            will be shut down. This lifecycle differs from normal init containers and
+                            is often referred to as a "sidecar" container. Although this init
+                            container still starts in the init container sequence, it does not wait
+                            for the container to complete before proceeding to the next init
+                            container. Instead, the next init container starts immediately after this
+                            init container is started, or after any startupProbe has successfully
+                            completed.
+                            EOT
                             "type" = "string"
                           }
                           "securityContext" = {
-                            "description" = "SecurityContext defines the security options the container should be run with. If set, the fields of SecurityContext override the equivalent fields of PodSecurityContext. More info: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/"
+                            "description" = <<-EOT
+                            SecurityContext defines the security options the container should be run with.
+                            If set, the fields of SecurityContext override the equivalent fields of PodSecurityContext.
+                            More info: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+                            EOT
                             "properties" = {
                               "allowPrivilegeEscalation" = {
-                                "description" = "AllowPrivilegeEscalation controls whether a process can gain more privileges than its parent process. This bool directly controls if the no_new_privs flag will be set on the container process. AllowPrivilegeEscalation is true always when the container is: 1) run as Privileged 2) has CAP_SYS_ADMIN Note that this field cannot be set when spec.os.name is windows."
+                                "description" = <<-EOT
+                                AllowPrivilegeEscalation controls whether a process can gain more
+                                privileges than its parent process. This bool directly controls if
+                                the no_new_privs flag will be set on the container process.
+                                AllowPrivilegeEscalation is true always when the container is:
+                                1) run as Privileged
+                                2) has CAP_SYS_ADMIN
+                                Note that this field cannot be set when spec.os.name is windows.
+                                EOT
                                 "type" = "boolean"
                               }
                               "capabilities" = {
-                                "description" = "The capabilities to add/drop when running containers. Defaults to the default set of capabilities granted by the container runtime. Note that this field cannot be set when spec.os.name is windows."
+                                "description" = <<-EOT
+                                The capabilities to add/drop when running containers.
+                                Defaults to the default set of capabilities granted by the container runtime.
+                                Note that this field cannot be set when spec.os.name is windows.
+                                EOT
                                 "properties" = {
                                   "add" = {
                                     "description" = "Added capabilities"
@@ -3481,33 +5055,73 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "privileged" = {
-                                "description" = "Run container in privileged mode. Processes in privileged containers are essentially equivalent to root on the host. Defaults to false. Note that this field cannot be set when spec.os.name is windows."
+                                "description" = <<-EOT
+                                Run container in privileged mode.
+                                Processes in privileged containers are essentially equivalent to root on the host.
+                                Defaults to false.
+                                Note that this field cannot be set when spec.os.name is windows.
+                                EOT
                                 "type" = "boolean"
                               }
                               "procMount" = {
-                                "description" = "procMount denotes the type of proc mount to use for the containers. The default is DefaultProcMount which uses the container runtime defaults for readonly paths and masked paths. This requires the ProcMountType feature flag to be enabled. Note that this field cannot be set when spec.os.name is windows."
+                                "description" = <<-EOT
+                                procMount denotes the type of proc mount to use for the containers.
+                                The default is DefaultProcMount which uses the container runtime defaults for
+                                readonly paths and masked paths.
+                                This requires the ProcMountType feature flag to be enabled.
+                                Note that this field cannot be set when spec.os.name is windows.
+                                EOT
                                 "type" = "string"
                               }
                               "readOnlyRootFilesystem" = {
-                                "description" = "Whether this container has a read-only root filesystem. Default is false. Note that this field cannot be set when spec.os.name is windows."
+                                "description" = <<-EOT
+                                Whether this container has a read-only root filesystem.
+                                Default is false.
+                                Note that this field cannot be set when spec.os.name is windows.
+                                EOT
                                 "type" = "boolean"
                               }
                               "runAsGroup" = {
-                                "description" = "The GID to run the entrypoint of the container process. Uses runtime default if unset. May also be set in PodSecurityContext.  If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is windows."
+                                "description" = <<-EOT
+                                The GID to run the entrypoint of the container process.
+                                Uses runtime default if unset.
+                                May also be set in PodSecurityContext.  If set in both SecurityContext and
+                                PodSecurityContext, the value specified in SecurityContext takes precedence.
+                                Note that this field cannot be set when spec.os.name is windows.
+                                EOT
                                 "format" = "int64"
                                 "type" = "integer"
                               }
                               "runAsNonRoot" = {
-                                "description" = "Indicates that the container must run as a non-root user. If true, the Kubelet will validate the image at runtime to ensure that it does not run as UID 0 (root) and fail to start the container if it does. If unset or false, no such validation will be performed. May also be set in PodSecurityContext.  If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence."
+                                "description" = <<-EOT
+                                Indicates that the container must run as a non-root user.
+                                If true, the Kubelet will validate the image at runtime to ensure that it
+                                does not run as UID 0 (root) and fail to start the container if it does.
+                                If unset or false, no such validation will be performed.
+                                May also be set in PodSecurityContext.  If set in both SecurityContext and
+                                PodSecurityContext, the value specified in SecurityContext takes precedence.
+                                EOT
                                 "type" = "boolean"
                               }
                               "runAsUser" = {
-                                "description" = "The UID to run the entrypoint of the container process. Defaults to user specified in image metadata if unspecified. May also be set in PodSecurityContext.  If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is windows."
+                                "description" = <<-EOT
+                                The UID to run the entrypoint of the container process.
+                                Defaults to user specified in image metadata if unspecified.
+                                May also be set in PodSecurityContext.  If set in both SecurityContext and
+                                PodSecurityContext, the value specified in SecurityContext takes precedence.
+                                Note that this field cannot be set when spec.os.name is windows.
+                                EOT
                                 "format" = "int64"
                                 "type" = "integer"
                               }
                               "seLinuxOptions" = {
-                                "description" = "The SELinux context to be applied to the container. If unspecified, the container runtime will allocate a random SELinux context for each container.  May also be set in PodSecurityContext.  If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is windows."
+                                "description" = <<-EOT
+                                The SELinux context to be applied to the container.
+                                If unspecified, the container runtime will allocate a random SELinux context for each
+                                container.  May also be set in PodSecurityContext.  If set in both SecurityContext and
+                                PodSecurityContext, the value specified in SecurityContext takes precedence.
+                                Note that this field cannot be set when spec.os.name is windows.
+                                EOT
                                 "properties" = {
                                   "level" = {
                                     "description" = "Level is SELinux level label that applies to the container."
@@ -3529,16 +5143,31 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "seccompProfile" = {
-                                "description" = "The seccomp options to use by this container. If seccomp options are provided at both the pod & container level, the container options override the pod options. Note that this field cannot be set when spec.os.name is windows."
+                                "description" = <<-EOT
+                                The seccomp options to use by this container. If seccomp options are
+                                provided at both the pod & container level, the container options
+                                override the pod options.
+                                Note that this field cannot be set when spec.os.name is windows.
+                                EOT
                                 "properties" = {
                                   "localhostProfile" = {
-                                    "description" = "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must be set if type is \"Localhost\". Must NOT be set for any other type."
+                                    "description" = <<-EOT
+                                    localhostProfile indicates a profile defined in a file on the node should be used.
+                                    The profile must be preconfigured on the node to work.
+                                    Must be a descending path, relative to the kubelet's configured seccomp profile location.
+                                    Must be set if type is "Localhost". Must NOT be set for any other type.
+                                    EOT
                                     "type" = "string"
                                   }
                                   "type" = {
                                     "description" = <<-EOT
-                                    type indicates which kind of seccomp profile will be applied. Valid options are: 
-                                     Localhost - a profile defined in a file on the node should be used. RuntimeDefault - the container runtime default profile should be used. Unconfined - no profile should be applied.
+                                    type indicates which kind of seccomp profile will be applied.
+                                    Valid options are:
+                                    
+                                    
+                                    Localhost - a profile defined in a file on the node should be used.
+                                    RuntimeDefault - the container runtime default profile should be used.
+                                    Unconfined - no profile should be applied.
                                     EOT
                                     "type" = "string"
                                   }
@@ -3549,10 +5178,19 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "windowsOptions" = {
-                                "description" = "The Windows specific settings applied to all containers. If unspecified, the options from the PodSecurityContext will be used. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is linux."
+                                "description" = <<-EOT
+                                The Windows specific settings applied to all containers.
+                                If unspecified, the options from the PodSecurityContext will be used.
+                                If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence.
+                                Note that this field cannot be set when spec.os.name is linux.
+                                EOT
                                 "properties" = {
                                   "gmsaCredentialSpec" = {
-                                    "description" = "GMSACredentialSpec is where the GMSA admission webhook (https://github.com/kubernetes-sigs/windows-gmsa) inlines the contents of the GMSA credential spec named by the GMSACredentialSpecName field."
+                                    "description" = <<-EOT
+                                    GMSACredentialSpec is where the GMSA admission webhook
+                                    (https://github.com/kubernetes-sigs/windows-gmsa) inlines the contents of the
+                                    GMSA credential spec named by the GMSACredentialSpecName field.
+                                    EOT
                                     "type" = "string"
                                   }
                                   "gmsaCredentialSpecName" = {
@@ -3560,11 +5198,21 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "type" = "string"
                                   }
                                   "hostProcess" = {
-                                    "description" = "HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true."
+                                    "description" = <<-EOT
+                                    HostProcess determines if a container should be run as a 'Host Process' container.
+                                    All of a Pod's containers must have the same effective HostProcess value
+                                    (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers).
+                                    In addition, if HostProcess is true then HostNetwork must also be set to true.
+                                    EOT
                                     "type" = "boolean"
                                   }
                                   "runAsUserName" = {
-                                    "description" = "The UserName in Windows to run the entrypoint of the container process. Defaults to the user specified in image metadata if unspecified. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence."
+                                    "description" = <<-EOT
+                                    The UserName in Windows to run the entrypoint of the container process.
+                                    Defaults to the user specified in image metadata if unspecified.
+                                    May also be set in PodSecurityContext. If set in both SecurityContext and
+                                    PodSecurityContext, the value specified in SecurityContext takes precedence.
+                                    EOT
                                     "type" = "string"
                                   }
                                 }
@@ -3574,13 +5222,27 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "object"
                           }
                           "startupProbe" = {
-                            "description" = "StartupProbe indicates that the Pod has successfully initialized. If specified, no other probes are executed until this completes successfully. If this probe fails, the Pod will be restarted, just as if the livenessProbe failed. This can be used to provide different probe parameters at the beginning of a Pod's lifecycle, when it might take a long time to load data or warm a cache, than during steady-state operation. This cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes"
+                            "description" = <<-EOT
+                            StartupProbe indicates that the Pod has successfully initialized.
+                            If specified, no other probes are executed until this completes successfully.
+                            If this probe fails, the Pod will be restarted, just as if the livenessProbe failed.
+                            This can be used to provide different probe parameters at the beginning of a Pod's lifecycle,
+                            when it might take a long time to load data or warm a cache, than during steady-state operation.
+                            This cannot be updated.
+                            More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+                            EOT
                             "properties" = {
                               "exec" = {
                                 "description" = "Exec specifies the action to take."
                                 "properties" = {
                                   "command" = {
-                                    "description" = "Command is the command line to execute inside the container, the working directory for the command  is root ('/') in the container's filesystem. The command is simply exec'd, it is not run inside a shell, so traditional shell instructions ('|', etc) won't work. To use a shell, you need to explicitly call out to that shell. Exit status of 0 is treated as live/healthy and non-zero is unhealthy."
+                                    "description" = <<-EOT
+                                    Command is the command line to execute inside the container, the working directory for the
+                                    command  is root ('/') in the container's filesystem. The command is simply exec'd, it is
+                                    not run inside a shell, so traditional shell instructions ('|', etc) won't work. To use
+                                    a shell, you need to explicitly call out to that shell.
+                                    Exit status of 0 is treated as live/healthy and non-zero is unhealthy.
+                                    EOT
                                     "items" = {
                                       "type" = "string"
                                     }
@@ -3590,7 +5252,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "failureThreshold" = {
-                                "description" = "Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1."
+                                "description" = <<-EOT
+                                Minimum consecutive failures for the probe to be considered failed after having succeeded.
+                                Defaults to 3. Minimum value is 1.
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
@@ -3604,8 +5269,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   }
                                   "service" = {
                                     "description" = <<-EOT
-                                    Service is the name of the service to place in the gRPC HealthCheckRequest (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md). 
-                                     If this is not specified, the default behavior is defined by gRPC.
+                                    Service is the name of the service to place in the gRPC HealthCheckRequest
+                                    (see https://github.com/grpc/grpc/blob/master/doc/health-checking.md).
+                                    
+                                    
+                                    If this is not specified, the default behavior is defined by gRPC.
                                     EOT
                                     "type" = "string"
                                   }
@@ -3619,7 +5287,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "description" = "HTTPGet specifies the http request to perform."
                                 "properties" = {
                                   "host" = {
-                                    "description" = "Host name to connect to, defaults to the pod IP. You probably want to set \"Host\" in httpHeaders instead."
+                                    "description" = <<-EOT
+                                    Host name to connect to, defaults to the pod IP. You probably want to set
+                                    "Host" in httpHeaders instead.
+                                    EOT
                                     "type" = "string"
                                   }
                                   "httpHeaders" = {
@@ -3628,7 +5299,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "description" = "HTTPHeader describes a custom header to be used in HTTP probes"
                                       "properties" = {
                                         "name" = {
-                                          "description" = "The header field name. This will be canonicalized upon output, so case-variant names will be understood as the same header."
+                                          "description" = <<-EOT
+                                          The header field name.
+                                          This will be canonicalized upon output, so case-variant names will be understood as the same header.
+                                          EOT
                                           "type" = "string"
                                         }
                                         "value" = {
@@ -3657,11 +5331,18 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "string"
                                       },
                                     ]
-                                    "description" = "Name or number of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."
+                                    "description" = <<-EOT
+                                    Name or number of the port to access on the container.
+                                    Number must be in the range 1 to 65535.
+                                    Name must be an IANA_SVC_NAME.
+                                    EOT
                                     "x-kubernetes-int-or-string" = true
                                   }
                                   "scheme" = {
-                                    "description" = "Scheme to use for connecting to the host. Defaults to HTTP."
+                                    "description" = <<-EOT
+                                    Scheme to use for connecting to the host.
+                                    Defaults to HTTP.
+                                    EOT
                                     "type" = "string"
                                   }
                                 }
@@ -3671,17 +5352,26 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "initialDelaySeconds" = {
-                                "description" = "Number of seconds after the container has started before liveness probes are initiated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes"
+                                "description" = <<-EOT
+                                Number of seconds after the container has started before liveness probes are initiated.
+                                More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
                               "periodSeconds" = {
-                                "description" = "How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value is 1."
+                                "description" = <<-EOT
+                                How often (in seconds) to perform the probe.
+                                Default to 10 seconds. Minimum value is 1.
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
                               "successThreshold" = {
-                                "description" = "Minimum consecutive successes for the probe to be considered successful after having failed. Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1."
+                                "description" = <<-EOT
+                                Minimum consecutive successes for the probe to be considered successful after having failed.
+                                Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1.
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
@@ -3701,7 +5391,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "string"
                                       },
                                     ]
-                                    "description" = "Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an IANA_SVC_NAME."
+                                    "description" = <<-EOT
+                                    Number or name of the port to access on the container.
+                                    Number must be in the range 1 to 65535.
+                                    Name must be an IANA_SVC_NAME.
+                                    EOT
                                     "x-kubernetes-int-or-string" = true
                                   }
                                 }
@@ -3711,12 +5405,27 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "terminationGracePeriodSeconds" = {
-                                "description" = "Optional duration in seconds the pod needs to terminate gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the pod are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this value longer than the expected cleanup time for your process. If this value is nil, the pod's terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec. Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity to shut down). This is a beta field and requires enabling ProbeTerminationGracePeriod feature gate. Minimum value is 1. spec.terminationGracePeriodSeconds is used if unset."
+                                "description" = <<-EOT
+                                Optional duration in seconds the pod needs to terminate gracefully upon probe failure.
+                                The grace period is the duration in seconds after the processes running in the pod are sent
+                                a termination signal and the time when the processes are forcibly halted with a kill signal.
+                                Set this value longer than the expected cleanup time for your process.
+                                If this value is nil, the pod's terminationGracePeriodSeconds will be used. Otherwise, this
+                                value overrides the value provided by the pod spec.
+                                Value must be non-negative integer. The value zero indicates stop immediately via
+                                the kill signal (no opportunity to shut down).
+                                This is a beta field and requires enabling ProbeTerminationGracePeriod feature gate.
+                                Minimum value is 1. spec.terminationGracePeriodSeconds is used if unset.
+                                EOT
                                 "format" = "int64"
                                 "type" = "integer"
                               }
                               "timeoutSeconds" = {
-                                "description" = "Number of seconds after which the probe times out. Defaults to 1 second. Minimum value is 1. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes"
+                                "description" = <<-EOT
+                                Number of seconds after which the probe times out.
+                                Defaults to 1 second. Minimum value is 1.
+                                More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
@@ -3724,23 +5433,54 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "object"
                           }
                           "stdin" = {
-                            "description" = "Whether this container should allocate a buffer for stdin in the container runtime. If this is not set, reads from stdin in the container will always result in EOF. Default is false."
+                            "description" = <<-EOT
+                            Whether this container should allocate a buffer for stdin in the container runtime. If this
+                            is not set, reads from stdin in the container will always result in EOF.
+                            Default is false.
+                            EOT
                             "type" = "boolean"
                           }
                           "stdinOnce" = {
-                            "description" = "Whether the container runtime should close the stdin channel after it has been opened by a single attach. When stdin is true the stdin stream will remain open across multiple attach sessions. If stdinOnce is set to true, stdin is opened on container start, is empty until the first client attaches to stdin, and then remains open and accepts data until the client disconnects, at which time stdin is closed and remains closed until the container is restarted. If this flag is false, a container processes that reads from stdin will never receive an EOF. Default is false"
+                            "description" = <<-EOT
+                            Whether the container runtime should close the stdin channel after it has been opened by
+                            a single attach. When stdin is true the stdin stream will remain open across multiple attach
+                            sessions. If stdinOnce is set to true, stdin is opened on container start, is empty until the
+                            first client attaches to stdin, and then remains open and accepts data until the client disconnects,
+                            at which time stdin is closed and remains closed until the container is restarted. If this
+                            flag is false, a container processes that reads from stdin will never receive an EOF.
+                            Default is false
+                            EOT
                             "type" = "boolean"
                           }
                           "terminationMessagePath" = {
-                            "description" = "Optional: Path at which the file to which the container's termination message will be written is mounted into the container's filesystem. Message written is intended to be brief final status, such as an assertion failure message. Will be truncated by the node if greater than 4096 bytes. The total message length across all containers will be limited to 12kb. Defaults to /dev/termination-log. Cannot be updated."
+                            "description" = <<-EOT
+                            Optional: Path at which the file to which the container's termination message
+                            will be written is mounted into the container's filesystem.
+                            Message written is intended to be brief final status, such as an assertion failure message.
+                            Will be truncated by the node if greater than 4096 bytes. The total message length across
+                            all containers will be limited to 12kb.
+                            Defaults to /dev/termination-log.
+                            Cannot be updated.
+                            EOT
                             "type" = "string"
                           }
                           "terminationMessagePolicy" = {
-                            "description" = "Indicate how the termination message should be populated. File will use the contents of terminationMessagePath to populate the container status message on both success and failure. FallbackToLogsOnError will use the last chunk of container log output if the termination message file is empty and the container exited with an error. The log output is limited to 2048 bytes or 80 lines, whichever is smaller. Defaults to File. Cannot be updated."
+                            "description" = <<-EOT
+                            Indicate how the termination message should be populated. File will use the contents of
+                            terminationMessagePath to populate the container status message on both success and failure.
+                            FallbackToLogsOnError will use the last chunk of container log output if the termination
+                            message file is empty and the container exited with an error.
+                            The log output is limited to 2048 bytes or 80 lines, whichever is smaller.
+                            Defaults to File.
+                            Cannot be updated.
+                            EOT
                             "type" = "string"
                           }
                           "tty" = {
-                            "description" = "Whether this container should allocate a TTY for itself, also requires 'stdin' to be true. Default is false."
+                            "description" = <<-EOT
+                            Whether this container should allocate a TTY for itself, also requires 'stdin' to be true.
+                            Default is false.
+                            EOT
                             "type" = "boolean"
                           }
                           "volumeDevices" = {
@@ -3766,16 +5506,27 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "array"
                           }
                           "volumeMounts" = {
-                            "description" = "Pod volumes to mount into the container's filesystem. Cannot be updated."
+                            "description" = <<-EOT
+                            Pod volumes to mount into the container's filesystem.
+                            Cannot be updated.
+                            EOT
                             "items" = {
                               "description" = "VolumeMount describes a mounting of a Volume within a container."
                               "properties" = {
                                 "mountPath" = {
-                                  "description" = "Path within the container at which the volume should be mounted.  Must not contain ':'."
+                                  "description" = <<-EOT
+                                  Path within the container at which the volume should be mounted.  Must
+                                  not contain ':'.
+                                  EOT
                                   "type" = "string"
                                 }
                                 "mountPropagation" = {
-                                  "description" = "mountPropagation determines how mounts are propagated from the host to container and the other way around. When not set, MountPropagationNone is used. This field is beta in 1.10."
+                                  "description" = <<-EOT
+                                  mountPropagation determines how mounts are propagated from the host
+                                  to container and the other way around.
+                                  When not set, MountPropagationNone is used.
+                                  This field is beta in 1.10.
+                                  EOT
                                   "type" = "string"
                                 }
                                 "name" = {
@@ -3783,15 +5534,26 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "type" = "string"
                                 }
                                 "readOnly" = {
-                                  "description" = "Mounted read-only if true, read-write otherwise (false or unspecified). Defaults to false."
+                                  "description" = <<-EOT
+                                  Mounted read-only if true, read-write otherwise (false or unspecified).
+                                  Defaults to false.
+                                  EOT
                                   "type" = "boolean"
                                 }
                                 "subPath" = {
-                                  "description" = "Path within the volume from which the container's volume should be mounted. Defaults to \"\" (volume's root)."
+                                  "description" = <<-EOT
+                                  Path within the volume from which the container's volume should be mounted.
+                                  Defaults to "" (volume's root).
+                                  EOT
                                   "type" = "string"
                                 }
                                 "subPathExpr" = {
-                                  "description" = "Expanded path within the volume from which the container's volume should be mounted. Behaves similarly to SubPath but environment variable references $(VAR_NAME) are expanded using the container's environment. Defaults to \"\" (volume's root). SubPathExpr and SubPath are mutually exclusive."
+                                  "description" = <<-EOT
+                                  Expanded path within the volume from which the container's volume should be mounted.
+                                  Behaves similarly to SubPath but environment variable references $(VAR_NAME) are expanded using the container's environment.
+                                  Defaults to "" (volume's root).
+                                  SubPathExpr and SubPath are mutually exclusive.
+                                  EOT
                                   "type" = "string"
                                 }
                               }
@@ -3804,7 +5566,12 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "array"
                           }
                           "workingDir" = {
-                            "description" = "Container's working directory. If not specified, the container runtime's default will be used, which might be configured in the container image. Cannot be updated."
+                            "description" = <<-EOT
+                            Container's working directory.
+                            If not specified, the container runtime's default will be used, which
+                            might be configured in the container image.
+                            Cannot be updated.
+                            EOT
                             "type" = "string"
                           }
                         }
@@ -3817,29 +5584,44 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     }
                     "keepDroppedTargets" = {
                       "description" = <<-EOT
-                      Per-scrape limit on the number of targets dropped by relabeling that will be kept in memory. 0 means no limit. 
-                       It requires Prometheus >= v2.47.0.
+                      Per-scrape limit on the number of targets dropped by relabeling
+                      that will be kept in memory. 0 means no limit.
+                      
+                      
+                      It requires Prometheus >= v2.47.0.
                       EOT
                       "format" = "int64"
                       "type" = "integer"
                     }
                     "labelLimit" = {
-                      "description" = "Per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer."
+                      "description" = <<-EOT
+                      Per-scrape limit on number of labels that will be accepted for a sample.
+                      Only valid in Prometheus versions 2.45.0 and newer.
+                      EOT
                       "format" = "int64"
                       "type" = "integer"
                     }
                     "labelNameLengthLimit" = {
-                      "description" = "Per-scrape limit on length of labels name that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer."
+                      "description" = <<-EOT
+                      Per-scrape limit on length of labels name that will be accepted for a sample.
+                      Only valid in Prometheus versions 2.45.0 and newer.
+                      EOT
                       "format" = "int64"
                       "type" = "integer"
                     }
                     "labelValueLengthLimit" = {
-                      "description" = "Per-scrape limit on length of labels value that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer."
+                      "description" = <<-EOT
+                      Per-scrape limit on length of labels value that will be accepted for a sample.
+                      Only valid in Prometheus versions 2.45.0 and newer.
+                      EOT
                       "format" = "int64"
                       "type" = "integer"
                     }
                     "listenLocal" = {
-                      "description" = "When true, the Prometheus server listens on the loopback address instead of the Pod IP's address."
+                      "description" = <<-EOT
+                      When true, the Prometheus server listens on the loopback address
+                      instead of the Pod IP's address.
+                      EOT
                       "type" = "boolean"
                     }
                     "logFormat" = {
@@ -3863,15 +5645,23 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                       "type" = "string"
                     }
                     "maximumStartupDurationSeconds" = {
-                      "description" = "Defines the maximum time that the `prometheus` container's startup probe will wait before being considered failed. The startup probe will return success after the WAL replay is complete. If set, the value should be greater than 60 (seconds). Otherwise it will be equal to 600 seconds (15 minutes)."
+                      "description" = <<-EOT
+                      Defines the maximum time that the `prometheus` container's startup probe will wait before being considered failed. The startup probe will return success after the WAL replay is complete.
+                      If set, the value should be greater than 60 (seconds). Otherwise it will be equal to 600 seconds (15 minutes).
+                      EOT
                       "format" = "int32"
                       "minimum" = 60
                       "type" = "integer"
                     }
                     "minReadySeconds" = {
                       "description" = <<-EOT
-                      Minimum number of seconds for which a newly created Pod should be ready without any of its container crashing for it to be considered available. Defaults to 0 (pod will be considered available as soon as it is ready) 
-                       This is an alpha field from kubernetes 1.22 until 1.24 which requires enabling the StatefulSetMinReadySeconds feature gate.
+                      Minimum number of seconds for which a newly created Pod should be ready
+                      without any of its container crashing for it to be considered available.
+                      Defaults to 0 (pod will be considered available as soon as it is ready)
+                      
+                      
+                      This is an alpha field from kubernetes 1.22 until 1.24 which requires
+                      enabling the StatefulSetMinReadySeconds feature gate.
                       EOT
                       "format" = "int32"
                       "type" = "integer"
@@ -3884,26 +5674,54 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                       "type" = "object"
                     }
                     "overrideHonorLabels" = {
-                      "description" = "When true, Prometheus resolves label conflicts by renaming the labels in the scraped data to \"exported_<label value>\" for all targets created from service and pod monitors. Otherwise the HonorLabels field of the service or pod monitor applies."
+                      "description" = <<-EOT
+                      When true, Prometheus resolves label conflicts by renaming the labels in
+                      the scraped data to "exported_<label value>" for all targets created
+                      from service and pod monitors.
+                      Otherwise the HonorLabels field of the service or pod monitor applies.
+                      EOT
                       "type" = "boolean"
                     }
                     "overrideHonorTimestamps" = {
-                      "description" = "When true, Prometheus ignores the timestamps for all the targets created from service and pod monitors. Otherwise the HonorTimestamps field of the service or pod monitor applies."
+                      "description" = <<-EOT
+                      When true, Prometheus ignores the timestamps for all the targets created
+                      from service and pod monitors.
+                      Otherwise the HonorTimestamps field of the service or pod monitor applies.
+                      EOT
                       "type" = "boolean"
                     }
                     "paused" = {
-                      "description" = "When a Prometheus deployment is paused, no actions except for deletion will be performed on the underlying objects."
+                      "description" = <<-EOT
+                      When a Prometheus deployment is paused, no actions except for deletion
+                      will be performed on the underlying objects.
+                      EOT
                       "type" = "boolean"
                     }
                     "persistentVolumeClaimRetentionPolicy" = {
-                      "description" = "The field controls if and how PVCs are deleted during the lifecycle of a StatefulSet. The default behavior is all PVCs are retained. This is an alpha field from kubernetes 1.23 until 1.26 and a beta field from 1.26. It requires enabling the StatefulSetAutoDeletePVC feature gate."
+                      "description" = <<-EOT
+                      The field controls if and how PVCs are deleted during the lifecycle of a StatefulSet.
+                      The default behavior is all PVCs are retained.
+                      This is an alpha field from kubernetes 1.23 until 1.26 and a beta field from 1.26.
+                      It requires enabling the StatefulSetAutoDeletePVC feature gate.
+                      EOT
                       "properties" = {
                         "whenDeleted" = {
-                          "description" = "WhenDeleted specifies what happens to PVCs created from StatefulSet VolumeClaimTemplates when the StatefulSet is deleted. The default policy of `Retain` causes PVCs to not be affected by StatefulSet deletion. The `Delete` policy causes those PVCs to be deleted."
+                          "description" = <<-EOT
+                          WhenDeleted specifies what happens to PVCs created from StatefulSet
+                          VolumeClaimTemplates when the StatefulSet is deleted. The default policy
+                          of `Retain` causes PVCs to not be affected by StatefulSet deletion. The
+                          `Delete` policy causes those PVCs to be deleted.
+                          EOT
                           "type" = "string"
                         }
                         "whenScaled" = {
-                          "description" = "WhenScaled specifies what happens to PVCs created from StatefulSet VolumeClaimTemplates when the StatefulSet is scaled down. The default policy of `Retain` causes PVCs to not be affected by a scaledown. The `Delete` policy causes the associated PVCs for any excess pods above the replica count to be deleted."
+                          "description" = <<-EOT
+                          WhenScaled specifies what happens to PVCs created from StatefulSet
+                          VolumeClaimTemplates when the StatefulSet is scaled down. The default
+                          policy of `Retain` causes PVCs to not be affected by a scaledown. The
+                          `Delete` policy causes the associated PVCs for any excess pods above
+                          the replica count to be deleted.
+                          EOT
                           "type" = "string"
                         }
                       }
@@ -3911,49 +5729,91 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     }
                     "podMetadata" = {
                       "description" = <<-EOT
-                      PodMetadata configures labels and annotations which are propagated to the Prometheus pods. 
-                       The following items are reserved and cannot be overridden: * "prometheus" label, set to the name of the Prometheus object. * "app.kubernetes.io/instance" label, set to the name of the Prometheus object. * "app.kubernetes.io/managed-by" label, set to "prometheus-operator". * "app.kubernetes.io/name" label, set to "prometheus". * "app.kubernetes.io/version" label, set to the Prometheus version. * "operator.prometheus.io/name" label, set to the name of the Prometheus object. * "operator.prometheus.io/shard" label, set to the shard number of the Prometheus object. * "kubectl.kubernetes.io/default-container" annotation, set to "prometheus".
+                      PodMetadata configures labels and annotations which are propagated to the Prometheus pods.
+                      
+                      
+                      The following items are reserved and cannot be overridden:
+                      * "prometheus" label, set to the name of the Prometheus object.
+                      * "app.kubernetes.io/instance" label, set to the name of the Prometheus object.
+                      * "app.kubernetes.io/managed-by" label, set to "prometheus-operator".
+                      * "app.kubernetes.io/name" label, set to "prometheus".
+                      * "app.kubernetes.io/version" label, set to the Prometheus version.
+                      * "operator.prometheus.io/name" label, set to the name of the Prometheus object.
+                      * "operator.prometheus.io/shard" label, set to the shard number of the Prometheus object.
+                      * "kubectl.kubernetes.io/default-container" annotation, set to "prometheus".
                       EOT
                       "properties" = {
                         "annotations" = {
                           "additionalProperties" = {
                             "type" = "string"
                           }
-                          "description" = "Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects. More info: http://kubernetes.io/docs/user-guide/annotations"
+                          "description" = <<-EOT
+                          Annotations is an unstructured key value map stored with a resource that may be
+                          set by external tools to store and retrieve arbitrary metadata. They are not
+                          queryable and should be preserved when modifying objects.
+                          More info: http://kubernetes.io/docs/user-guide/annotations
+                          EOT
                           "type" = "object"
                         }
                         "labels" = {
                           "additionalProperties" = {
                             "type" = "string"
                           }
-                          "description" = "Map of string keys and values that can be used to organize and categorize (scope and select) objects. May match selectors of replication controllers and services. More info: http://kubernetes.io/docs/user-guide/labels"
+                          "description" = <<-EOT
+                          Map of string keys and values that can be used to organize and categorize
+                          (scope and select) objects. May match selectors of replication controllers
+                          and services.
+                          More info: http://kubernetes.io/docs/user-guide/labels
+                          EOT
                           "type" = "object"
                         }
                         "name" = {
-                          "description" = "Name must be unique within a namespace. Is required when creating resources, although some resources may allow a client to request the generation of an appropriate name automatically. Name is primarily intended for creation idempotence and configuration definition. Cannot be updated. More info: http://kubernetes.io/docs/user-guide/identifiers#names"
+                          "description" = <<-EOT
+                          Name must be unique within a namespace. Is required when creating resources, although
+                          some resources may allow a client to request the generation of an appropriate name
+                          automatically. Name is primarily intended for creation idempotence and configuration
+                          definition.
+                          Cannot be updated.
+                          More info: http://kubernetes.io/docs/user-guide/identifiers#names
+                          EOT
                           "type" = "string"
                         }
                       }
                       "type" = "object"
                     }
                     "podMonitorNamespaceSelector" = {
-                      "description" = "Namespaces to match for PodMonitors discovery. An empty label selector matches all namespaces. A null label selector matches the current namespace only."
+                      "description" = <<-EOT
+                      Namespaces to match for PodMonitors discovery. An empty label selector
+                      matches all namespaces. A null label selector matches the current
+                      namespace only.
+                      EOT
                       "properties" = {
                         "matchExpressions" = {
                           "description" = "matchExpressions is a list of label selector requirements. The requirements are ANDed."
                           "items" = {
-                            "description" = "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                            "description" = <<-EOT
+                            A label selector requirement is a selector that contains values, a key, and an operator that
+                            relates the key and values.
+                            EOT
                             "properties" = {
                               "key" = {
                                 "description" = "key is the label key that the selector applies to."
                                 "type" = "string"
                               }
                               "operator" = {
-                                "description" = "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                                "description" = <<-EOT
+                                operator represents a key's relationship to a set of values.
+                                Valid operators are In, NotIn, Exists and DoesNotExist.
+                                EOT
                                 "type" = "string"
                               }
                               "values" = {
-                                "description" = "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                                "description" = <<-EOT
+                                values is an array of string values. If the operator is In or NotIn,
+                                the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                the values array must be empty. This array is replaced during a strategic
+                                merge patch.
+                                EOT
                                 "items" = {
                                   "type" = "string"
                                 }
@@ -3972,7 +5832,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           "additionalProperties" = {
                             "type" = "string"
                           }
-                          "description" = "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+                          "description" = <<-EOT
+                          matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                          map is equivalent to an element of matchExpressions, whose key field is "key", the
+                          operator is "In", and the values array contains only "value". The requirements are ANDed.
+                          EOT
                           "type" = "object"
                         }
                       }
@@ -3981,25 +5845,46 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     }
                     "podMonitorSelector" = {
                       "description" = <<-EOT
-                      PodMonitors to be selected for target discovery. An empty label selector matches all objects. A null label selector matches no objects. 
-                       If `spec.serviceMonitorSelector`, `spec.podMonitorSelector`, `spec.probeSelector` and `spec.scrapeConfigSelector` are null, the Prometheus configuration is unmanaged. The Prometheus operator will ensure that the Prometheus configuration's Secret exists, but it is the responsibility of the user to provide the raw gzipped Prometheus configuration under the `prometheus.yaml.gz` key. This behavior is *deprecated* and will be removed in the next major version of the custom resource definition. It is recommended to use `spec.additionalScrapeConfigs` instead.
+                      PodMonitors to be selected for target discovery. An empty label selector
+                      matches all objects. A null label selector matches no objects.
+                      
+                      
+                      If `spec.serviceMonitorSelector`, `spec.podMonitorSelector`, `spec.probeSelector`
+                      and `spec.scrapeConfigSelector` are null, the Prometheus configuration is unmanaged.
+                      The Prometheus operator will ensure that the Prometheus configuration's
+                      Secret exists, but it is the responsibility of the user to provide the raw
+                      gzipped Prometheus configuration under the `prometheus.yaml.gz` key.
+                      This behavior is *deprecated* and will be removed in the next major version
+                      of the custom resource definition. It is recommended to use
+                      `spec.additionalScrapeConfigs` instead.
                       EOT
                       "properties" = {
                         "matchExpressions" = {
                           "description" = "matchExpressions is a list of label selector requirements. The requirements are ANDed."
                           "items" = {
-                            "description" = "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                            "description" = <<-EOT
+                            A label selector requirement is a selector that contains values, a key, and an operator that
+                            relates the key and values.
+                            EOT
                             "properties" = {
                               "key" = {
                                 "description" = "key is the label key that the selector applies to."
                                 "type" = "string"
                               }
                               "operator" = {
-                                "description" = "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                                "description" = <<-EOT
+                                operator represents a key's relationship to a set of values.
+                                Valid operators are In, NotIn, Exists and DoesNotExist.
+                                EOT
                                 "type" = "string"
                               }
                               "values" = {
-                                "description" = "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                                "description" = <<-EOT
+                                values is an array of string values. If the operator is In or NotIn,
+                                the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                the values array must be empty. This array is replaced during a strategic
+                                merge patch.
+                                EOT
                                 "items" = {
                                   "type" = "string"
                                 }
@@ -4018,7 +5903,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           "additionalProperties" = {
                             "type" = "string"
                           }
-                          "description" = "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+                          "description" = <<-EOT
+                          matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                          map is equivalent to an element of matchExpressions, whose key field is "key", the
+                          operator is "In", and the values array contains only "value". The requirements are ANDed.
+                          EOT
                           "type" = "object"
                         }
                       }
@@ -4026,7 +5915,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                       "x-kubernetes-map-type" = "atomic"
                     }
                     "podTargetLabels" = {
-                      "description" = "PodTargetLabels are appended to the `spec.podTargetLabels` field of all PodMonitor and ServiceMonitor objects."
+                      "description" = <<-EOT
+                      PodTargetLabels are appended to the `spec.podTargetLabels` field of all
+                      PodMonitor and ServiceMonitor objects.
+                      EOT
                       "items" = {
                         "type" = "string"
                       }
@@ -4034,7 +5926,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     }
                     "portName" = {
                       "default" = "web"
-                      "description" = "Port name used for the pods and governing service. Default: \"web\""
+                      "description" = <<-EOT
+                      Port name used for the pods and governing service.
+                      Default: "web"
+                      EOT
                       "type" = "string"
                     }
                     "priorityClassName" = {
@@ -4042,23 +5937,38 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                       "type" = "string"
                     }
                     "probeNamespaceSelector" = {
-                      "description" = "Namespaces to match for Probe discovery. An empty label selector matches all namespaces. A null label selector matches the current namespace only."
+                      "description" = <<-EOT
+                      Namespaces to match for Probe discovery. An empty label
+                      selector matches all namespaces. A null label selector matches the
+                      current namespace only.
+                      EOT
                       "properties" = {
                         "matchExpressions" = {
                           "description" = "matchExpressions is a list of label selector requirements. The requirements are ANDed."
                           "items" = {
-                            "description" = "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                            "description" = <<-EOT
+                            A label selector requirement is a selector that contains values, a key, and an operator that
+                            relates the key and values.
+                            EOT
                             "properties" = {
                               "key" = {
                                 "description" = "key is the label key that the selector applies to."
                                 "type" = "string"
                               }
                               "operator" = {
-                                "description" = "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                                "description" = <<-EOT
+                                operator represents a key's relationship to a set of values.
+                                Valid operators are In, NotIn, Exists and DoesNotExist.
+                                EOT
                                 "type" = "string"
                               }
                               "values" = {
-                                "description" = "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                                "description" = <<-EOT
+                                values is an array of string values. If the operator is In or NotIn,
+                                the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                the values array must be empty. This array is replaced during a strategic
+                                merge patch.
+                                EOT
                                 "items" = {
                                   "type" = "string"
                                 }
@@ -4077,7 +5987,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           "additionalProperties" = {
                             "type" = "string"
                           }
-                          "description" = "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+                          "description" = <<-EOT
+                          matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                          map is equivalent to an element of matchExpressions, whose key field is "key", the
+                          operator is "In", and the values array contains only "value". The requirements are ANDed.
+                          EOT
                           "type" = "object"
                         }
                       }
@@ -4086,25 +6000,46 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     }
                     "probeSelector" = {
                       "description" = <<-EOT
-                      Probes to be selected for target discovery. An empty label selector matches all objects. A null label selector matches no objects. 
-                       If `spec.serviceMonitorSelector`, `spec.podMonitorSelector`, `spec.probeSelector` and `spec.scrapeConfigSelector` are null, the Prometheus configuration is unmanaged. The Prometheus operator will ensure that the Prometheus configuration's Secret exists, but it is the responsibility of the user to provide the raw gzipped Prometheus configuration under the `prometheus.yaml.gz` key. This behavior is *deprecated* and will be removed in the next major version of the custom resource definition. It is recommended to use `spec.additionalScrapeConfigs` instead.
+                      Probes to be selected for target discovery. An empty label selector
+                      matches all objects. A null label selector matches no objects.
+                      
+                      
+                      If `spec.serviceMonitorSelector`, `spec.podMonitorSelector`, `spec.probeSelector`
+                      and `spec.scrapeConfigSelector` are null, the Prometheus configuration is unmanaged.
+                      The Prometheus operator will ensure that the Prometheus configuration's
+                      Secret exists, but it is the responsibility of the user to provide the raw
+                      gzipped Prometheus configuration under the `prometheus.yaml.gz` key.
+                      This behavior is *deprecated* and will be removed in the next major version
+                      of the custom resource definition. It is recommended to use
+                      `spec.additionalScrapeConfigs` instead.
                       EOT
                       "properties" = {
                         "matchExpressions" = {
                           "description" = "matchExpressions is a list of label selector requirements. The requirements are ANDed."
                           "items" = {
-                            "description" = "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                            "description" = <<-EOT
+                            A label selector requirement is a selector that contains values, a key, and an operator that
+                            relates the key and values.
+                            EOT
                             "properties" = {
                               "key" = {
                                 "description" = "key is the label key that the selector applies to."
                                 "type" = "string"
                               }
                               "operator" = {
-                                "description" = "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                                "description" = <<-EOT
+                                operator represents a key's relationship to a set of values.
+                                Valid operators are In, NotIn, Exists and DoesNotExist.
+                                EOT
                                 "type" = "string"
                               }
                               "values" = {
-                                "description" = "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                                "description" = <<-EOT
+                                values is an array of string values. If the operator is In or NotIn,
+                                the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                the values array must be empty. This array is replaced during a strategic
+                                merge patch.
+                                EOT
                                 "items" = {
                                   "type" = "string"
                                 }
@@ -4123,7 +6058,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           "additionalProperties" = {
                             "type" = "string"
                           }
-                          "description" = "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+                          "description" = <<-EOT
+                          matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                          map is equivalent to an element of matchExpressions, whose key field is "key", the
+                          operator is "In", and the values array contains only "value". The requirements are ANDed.
+                          EOT
                           "type" = "object"
                         }
                       }
@@ -4132,13 +6071,20 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     }
                     "prometheusExternalLabelName" = {
                       "description" = <<-EOT
-                      Name of Prometheus external label used to denote the Prometheus instance name. The external label will _not_ be added when the field is set to the empty string (`""`). 
-                       Default: "prometheus"
+                      Name of Prometheus external label used to denote the Prometheus instance
+                      name. The external label will _not_ be added when the field is set to
+                      the empty string (`""`).
+                      
+                      
+                      Default: "prometheus"
                       EOT
                       "type" = "string"
                     }
                     "reloadStrategy" = {
-                      "description" = "Defines the strategy used to reload the Prometheus configuration. If not specified, the configuration is reloaded using the /-/reload HTTP endpoint."
+                      "description" = <<-EOT
+                      Defines the strategy used to reload the Prometheus configuration.
+                      If not specified, the configuration is reloaded using the /-/reload HTTP endpoint.
+                      EOT
                       "enum" = [
                         "HTTP",
                         "ProcessSignal",
@@ -4148,13 +6094,20 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     "remoteWrite" = {
                       "description" = "Defines the list of remote write configurations."
                       "items" = {
-                        "description" = "RemoteWriteSpec defines the configuration to write samples from Prometheus to a remote endpoint."
+                        "description" = <<-EOT
+                        RemoteWriteSpec defines the configuration to write samples from Prometheus
+                        to a remote endpoint.
+                        EOT
                         "properties" = {
                           "authorization" = {
                             "description" = <<-EOT
-                            Authorization section for the URL. 
-                             It requires Prometheus >= v2.26.0. 
-                             Cannot be set at the same time as `sigv4`, `basicAuth`, `oauth2`, or `azureAd`.
+                            Authorization section for the URL.
+                            
+                            
+                            It requires Prometheus >= v2.26.0.
+                            
+                            
+                            Cannot be set at the same time as `sigv4`, `basicAuth`, `oauth2`, or `azureAd`.
                             EOT
                             "properties" = {
                               "credentials" = {
@@ -4165,7 +6118,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -4185,9 +6142,13 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                               }
                               "type" = {
                                 "description" = <<-EOT
-                                Defines the authentication type. The value is case-insensitive. 
-                                 "Basic" is not a supported value. 
-                                 Default: "Bearer"
+                                Defines the authentication type. The value is case-insensitive.
+                                
+                                
+                                "Basic" is not a supported value.
+                                
+                                
+                                Default: "Bearer"
                                 EOT
                                 "type" = "string"
                               }
@@ -4196,9 +6157,13 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           }
                           "azureAd" = {
                             "description" = <<-EOT
-                            AzureAD for the URL. 
-                             It requires Prometheus >= v2.45.0. 
-                             Cannot be set at the same time as `authorization`, `basicAuth`, `oauth2`, or `sigv4`.
+                            AzureAD for the URL.
+                            
+                            
+                            It requires Prometheus >= v2.45.0.
+                            
+                            
+                            Cannot be set at the same time as `authorization`, `basicAuth`, `oauth2`, or `sigv4`.
                             EOT
                             "properties" = {
                               "cloud" = {
@@ -4211,7 +6176,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "string"
                               }
                               "managedIdentity" = {
-                                "description" = "ManagedIdentity defines the Azure User-assigned Managed identity. Cannot be set at the same time as `oauth`."
+                                "description" = <<-EOT
+                                ManagedIdentity defines the Azure User-assigned Managed identity.
+                                Cannot be set at the same time as `oauth` or `sdk`.
+                                EOT
                                 "properties" = {
                                   "clientId" = {
                                     "description" = "The client id"
@@ -4225,8 +6193,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                               }
                               "oauth" = {
                                 "description" = <<-EOT
-                                OAuth defines the oauth config that is being used to authenticate. Cannot be set at the same time as `managedIdentity`. 
-                                 It requires Prometheus >= v2.48.0.
+                                OAuth defines the oauth config that is being used to authenticate.
+                                Cannot be set at the same time as `managedIdentity` or `sdk`.
+                                
+                                
+                                It requires Prometheus >= v2.48.0.
                                 EOT
                                 "properties" = {
                                   "clientId" = {
@@ -4242,7 +6213,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -4257,7 +6232,7 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "x-kubernetes-map-type" = "atomic"
                                   }
                                   "tenantId" = {
-                                    "description" = "`tenantID` is the tenant ID of the Azure Active Directory application that is being used to authenticate."
+                                    "description" = "`tenantId` is the tenant ID of the Azure Active Directory application that is being used to authenticate."
                                     "minLength" = 1
                                     "pattern" = "^[0-9a-zA-Z-.]+$"
                                     "type" = "string"
@@ -4270,24 +6245,51 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 ]
                                 "type" = "object"
                               }
+                              "sdk" = {
+                                "description" = <<-EOT
+                                SDK defines the Azure SDK config that is being used to authenticate.
+                                See https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication
+                                Cannot be set at the same time as `oauth` or `managedIdentity`.
+                                
+                                
+                                It requires Prometheus >= 2.52.0.
+                                EOT
+                                "properties" = {
+                                  "tenantId" = {
+                                    "description" = "`tenantId` is the tenant ID of the azure active directory application that is being used to authenticate."
+                                    "pattern" = "^[0-9a-zA-Z-.]+$"
+                                    "type" = "string"
+                                  }
+                                }
+                                "type" = "object"
+                              }
                             }
                             "type" = "object"
                           }
                           "basicAuth" = {
                             "description" = <<-EOT
-                            BasicAuth configuration for the URL. 
-                             Cannot be set at the same time as `sigv4`, `authorization`, `oauth2`, or `azureAd`.
+                            BasicAuth configuration for the URL.
+                            
+                            
+                            Cannot be set at the same time as `sigv4`, `authorization`, `oauth2`, or `azureAd`.
                             EOT
                             "properties" = {
                               "password" = {
-                                "description" = "`password` specifies a key of a Secret containing the password for authentication."
+                                "description" = <<-EOT
+                                `password` specifies a key of a Secret containing the password for
+                                authentication.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -4302,14 +6304,21 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "x-kubernetes-map-type" = "atomic"
                               }
                               "username" = {
-                                "description" = "`username` specifies a key of a Secret containing the username for authentication."
+                                "description" = <<-EOT
+                                `username` specifies a key of a Secret containing the username for
+                                authentication.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -4328,15 +6337,20 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           }
                           "bearerToken" = {
                             "description" = <<-EOT
-                            *Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.* 
-                             Deprecated: this will be removed in a future release.
+                            *Warning: this field shouldn't be used because the token value appears
+                            in clear-text. Prefer using `authorization`.*
+                            
+                            
+                            Deprecated: this will be removed in a future release.
                             EOT
                             "type" = "string"
                           }
                           "bearerTokenFile" = {
                             "description" = <<-EOT
-                            File from which to read bearer token for the URL. 
-                             Deprecated: this will be removed in a future release. Prefer using `authorization`.
+                            File from which to read bearer token for the URL.
+                            
+                            
+                            Deprecated: this will be removed in a future release. Prefer using `authorization`.
                             EOT
                             "type" = "string"
                           }
@@ -4349,8 +6363,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                               "type" = "string"
                             }
                             "description" = <<-EOT
-                            Custom HTTP headers to be sent along with each remote write request. Be aware that headers that are set by Prometheus itself can't be overwritten. 
-                             It requires Prometheus >= v2.25.0.
+                            Custom HTTP headers to be sent along with each remote write request.
+                            Be aware that headers that are set by Prometheus itself can't be overwritten.
+                            
+                            
+                            It requires Prometheus >= v2.25.0.
                             EOT
                             "type" = "object"
                           }
@@ -4371,20 +6388,30 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           }
                           "name" = {
                             "description" = <<-EOT
-                            The name of the remote write queue, it must be unique if specified. The name is used in metrics and logging in order to differentiate queues. 
-                             It requires Prometheus >= v2.15.0.
+                            The name of the remote write queue, it must be unique if specified. The
+                            name is used in metrics and logging in order to differentiate queues.
+                            
+                            
+                            It requires Prometheus >= v2.15.0.
                             EOT
                             "type" = "string"
                           }
                           "oauth2" = {
                             "description" = <<-EOT
-                            OAuth2 configuration for the URL. 
-                             It requires Prometheus >= v2.27.0. 
-                             Cannot be set at the same time as `sigv4`, `authorization`, `basicAuth`, or `azureAd`.
+                            OAuth2 configuration for the URL.
+                            
+                            
+                            It requires Prometheus >= v2.27.0.
+                            
+                            
+                            Cannot be set at the same time as `sigv4`, `authorization`, `basicAuth`, or `azureAd`.
                             EOT
                             "properties" = {
                               "clientId" = {
-                                "description" = "`clientId` specifies a key of a Secret or ConfigMap containing the OAuth2 client's ID."
+                                "description" = <<-EOT
+                                `clientId` specifies a key of a Secret or ConfigMap containing the
+                                OAuth2 client's ID.
+                                EOT
                                 "properties" = {
                                   "configMap" = {
                                     "description" = "ConfigMap containing data to use for the targets."
@@ -4394,7 +6421,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -4416,7 +6447,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -4434,14 +6469,21 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "clientSecret" = {
-                                "description" = "`clientSecret` specifies a key of a Secret containing the OAuth2 client's secret."
+                                "description" = <<-EOT
+                                `clientSecret` specifies a key of a Secret containing the OAuth2
+                                client's secret.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -4459,7 +6501,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "additionalProperties" = {
                                   "type" = "string"
                                 }
-                                "description" = "`endpointParams` configures the HTTP parameters to append to the token URL."
+                                "description" = <<-EOT
+                                `endpointParams` configures the HTTP parameters to append to the token
+                                URL.
+                                EOT
                                 "type" = "object"
                               }
                               "scopes" = {
@@ -4495,7 +6540,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "string"
                               }
                               "capacity" = {
-                                "description" = "Capacity is the number of samples to buffer per shard before we start dropping them."
+                                "description" = <<-EOT
+                                Capacity is the number of samples to buffer per shard before we start
+                                dropping them.
+                                EOT
                                 "type" = "integer"
                               }
                               "maxBackoff" = {
@@ -4526,13 +6574,19 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                               }
                               "retryOnRateLimit" = {
                                 "description" = <<-EOT
-                                Retry upon receiving a 429 status code from the remote-write storage. 
-                                 This is an *experimental feature*, it may change in any upcoming release in a breaking way.
+                                Retry upon receiving a 429 status code from the remote-write storage.
+                                
+                                
+                                This is an *experimental feature*, it may change in any upcoming release
+                                in a breaking way.
                                 EOT
                                 "type" = "boolean"
                               }
                               "sampleAgeLimit" = {
-                                "description" = "SampleAgeLimit drops samples older than the limit. It requires Prometheus >= v2.50.0."
+                                "description" = <<-EOT
+                                SampleAgeLimit drops samples older than the limit.
+                                It requires Prometheus >= v2.50.0.
+                                EOT
                                 "pattern" = "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
                                 "type" = "string"
                               }
@@ -4546,34 +6600,52 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           }
                           "sendExemplars" = {
                             "description" = <<-EOT
-                            Enables sending of exemplars over remote write. Note that exemplar-storage itself must be enabled using the `spec.enableFeature` option for exemplars to be scraped in the first place. 
-                             It requires Prometheus >= v2.27.0.
+                            Enables sending of exemplars over remote write. Note that
+                            exemplar-storage itself must be enabled using the `spec.enableFeature`
+                            option for exemplars to be scraped in the first place.
+                            
+                            
+                            It requires Prometheus >= v2.27.0.
                             EOT
                             "type" = "boolean"
                           }
                           "sendNativeHistograms" = {
                             "description" = <<-EOT
-                            Enables sending of native histograms, also known as sparse histograms over remote write. 
-                             It requires Prometheus >= v2.40.0.
+                            Enables sending of native histograms, also known as sparse histograms
+                            over remote write.
+                            
+                            
+                            It requires Prometheus >= v2.40.0.
                             EOT
                             "type" = "boolean"
                           }
                           "sigv4" = {
                             "description" = <<-EOT
-                            Sigv4 allows to configures AWS's Signature Verification 4 for the URL. 
-                             It requires Prometheus >= v2.26.0. 
-                             Cannot be set at the same time as `authorization`, `basicAuth`, `oauth2`, or `azureAd`.
+                            Sigv4 allows to configures AWS's Signature Verification 4 for the URL.
+                            
+                            
+                            It requires Prometheus >= v2.26.0.
+                            
+                            
+                            Cannot be set at the same time as `authorization`, `basicAuth`, `oauth2`, or `azureAd`.
                             EOT
                             "properties" = {
                               "accessKey" = {
-                                "description" = "AccessKey is the AWS API key. If not specified, the environment variable `AWS_ACCESS_KEY_ID` is used."
+                                "description" = <<-EOT
+                                AccessKey is the AWS API key. If not specified, the environment variable
+                                `AWS_ACCESS_KEY_ID` is used.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -4600,14 +6672,21 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "string"
                               }
                               "secretKey" = {
-                                "description" = "SecretKey is the AWS API secret. If not specified, the environment variable `AWS_SECRET_ACCESS_KEY` is used."
+                                "description" = <<-EOT
+                                SecretKey is the AWS API secret. If not specified, the environment
+                                variable `AWS_SECRET_ACCESS_KEY` is used.
+                                EOT
                                 "properties" = {
                                   "key" = {
                                     "description" = "The key of the secret to select from.  Must be a valid secret key."
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -4638,7 +6717,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -4660,7 +6743,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -4692,7 +6779,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -4714,7 +6805,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -4751,7 +6846,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -4780,16 +6879,24 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "description" = "The list of remote write relabel configurations."
                             "items" = {
                               "description" = <<-EOT
-                              RelabelConfig allows dynamic rewriting of the label set for targets, alerts, scraped samples and remote write samples. 
-                               More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+                              RelabelConfig allows dynamic rewriting of the label set for targets, alerts,
+                              scraped samples and remote write samples.
+                              
+                              
+                              More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
                               EOT
                               "properties" = {
                                 "action" = {
                                   "default" = "replace"
                                   "description" = <<-EOT
-                                  Action to perform based on the regex matching. 
-                                   `Uppercase` and `Lowercase` actions require Prometheus >= v2.36.0. `DropEqual` and `KeepEqual` actions require Prometheus >= v2.41.0. 
-                                   Default: "Replace"
+                                  Action to perform based on the regex matching.
+                                  
+                                  
+                                  `Uppercase` and `Lowercase` actions require Prometheus >= v2.36.0.
+                                  `DropEqual` and `KeepEqual` actions require Prometheus >= v2.41.0.
+                                  
+                                  
+                                  Default: "Replace"
                                   EOT
                                   "enum" = [
                                     "replace",
@@ -4819,8 +6926,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 }
                                 "modulus" = {
                                   "description" = <<-EOT
-                                  Modulus to take of the hash of the source label values. 
-                                   Only applicable when the action is `HashMod`.
+                                  Modulus to take of the hash of the source label values.
+                                  
+                                  
+                                  Only applicable when the action is `HashMod`.
                                   EOT
                                   "format" = "int64"
                                   "type" = "integer"
@@ -4831,8 +6940,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 }
                                 "replacement" = {
                                   "description" = <<-EOT
-                                  Replacement value against which a Replace action is performed if the regular expression matches. 
-                                   Regex capture groups are available.
+                                  Replacement value against which a Replace action is performed if the
+                                  regular expression matches.
+                                  
+                                  
+                                  Regex capture groups are available.
                                   EOT
                                   "type" = "string"
                                 }
@@ -4841,9 +6953,16 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "type" = "string"
                                 }
                                 "sourceLabels" = {
-                                  "description" = "The source labels select values from existing labels. Their content is concatenated using the configured Separator and matched against the configured regular expression."
+                                  "description" = <<-EOT
+                                  The source labels select values from existing labels. Their content is
+                                  concatenated using the configured Separator and matched against the
+                                  configured regular expression.
+                                  EOT
                                   "items" = {
-                                    "description" = "LabelName is a valid Prometheus label name which may only contain ASCII letters, numbers, as well as underscores."
+                                    "description" = <<-EOT
+                                    LabelName is a valid Prometheus label name which may only contain ASCII
+                                    letters, numbers, as well as underscores.
+                                    EOT
                                     "pattern" = "^[a-zA-Z_][a-zA-Z0-9_]*$"
                                     "type" = "string"
                                   }
@@ -4851,9 +6970,14 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 }
                                 "targetLabel" = {
                                   "description" = <<-EOT
-                                  Label to which the resulting string is written in a replacement. 
-                                   It is mandatory for `Replace`, `HashMod`, `Lowercase`, `Uppercase`, `KeepEqual` and `DropEqual` actions. 
-                                   Regex capture groups are available.
+                                  Label to which the resulting string is written in a replacement.
+                                  
+                                  
+                                  It is mandatory for `Replace`, `HashMod`, `Lowercase`, `Uppercase`,
+                                  `KeepEqual` and `DropEqual` actions.
+                                  
+                                  
+                                  Regex capture groups are available.
                                   EOT
                                   "type" = "string"
                                 }
@@ -4872,15 +6996,23 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     }
                     "replicaExternalLabelName" = {
                       "description" = <<-EOT
-                      Name of Prometheus external label used to denote the replica name. The external label will _not_ be added when the field is set to the empty string (`""`). 
-                       Default: "prometheus_replica"
+                      Name of Prometheus external label used to denote the replica name.
+                      The external label will _not_ be added when the field is set to the
+                      empty string (`""`).
+                      
+                      
+                      Default: "prometheus_replica"
                       EOT
                       "type" = "string"
                     }
                     "replicas" = {
                       "description" = <<-EOT
-                      Number of replicas of each shard to deploy for a Prometheus deployment. `spec.replicas` multiplied by `spec.shards` is the total number of Pods created. 
-                       Default: 1
+                      Number of replicas of each shard to deploy for a Prometheus deployment.
+                      `spec.replicas` multiplied by `spec.shards` is the total number of Pods
+                      created.
+                      
+                      
+                      Default: 1
                       EOT
                       "format" = "int32"
                       "type" = "integer"
@@ -4890,15 +7022,25 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                       "properties" = {
                         "claims" = {
                           "description" = <<-EOT
-                          Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container. 
-                           This is an alpha field and requires enabling the DynamicResourceAllocation feature gate. 
-                           This field is immutable. It can only be set for containers.
+                          Claims lists the names of resources, defined in spec.resourceClaims,
+                          that are used by this container.
+                          
+                          
+                          This is an alpha field and requires enabling the
+                          DynamicResourceAllocation feature gate.
+                          
+                          
+                          This field is immutable. It can only be set for containers.
                           EOT
                           "items" = {
                             "description" = "ResourceClaim references one entry in PodSpec.ResourceClaims."
                             "properties" = {
                               "name" = {
-                                "description" = "Name must match the name of one entry in pod.spec.resourceClaims of the Pod where this field is used. It makes that resource available inside a container."
+                                "description" = <<-EOT
+                                Name must match the name of one entry in pod.spec.resourceClaims of
+                                the Pod where this field is used. It makes that resource available
+                                inside a container.
+                                EOT
                                 "type" = "string"
                               }
                             }
@@ -4926,7 +7068,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "pattern" = "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
                             "x-kubernetes-int-or-string" = true
                           }
-                          "description" = "Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+                          "description" = <<-EOT
+                          Limits describes the maximum amount of compute resources allowed.
+                          More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                          EOT
                           "type" = "object"
                         }
                         "requests" = {
@@ -4942,7 +7087,12 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "pattern" = "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
                             "x-kubernetes-int-or-string" = true
                           }
-                          "description" = "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+                          "description" = <<-EOT
+                          Requests describes the minimum amount of compute resources required.
+                          If Requests is omitted for a container, it defaults to Limits if that is explicitly specified,
+                          otherwise to an implementation-defined value. Requests cannot exceed Limits.
+                          More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                          EOT
                           "type" = "object"
                         }
                       }
@@ -4950,27 +7100,42 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     }
                     "routePrefix" = {
                       "description" = <<-EOT
-                      The route prefix Prometheus registers HTTP handlers for. 
-                       This is useful when using `spec.externalURL`, and a proxy is rewriting HTTP routes of a request, and the actual ExternalURL is still true, but the server serves requests under a different route prefix. For example for use with `kubectl proxy`.
+                      The route prefix Prometheus registers HTTP handlers for.
+                      
+                      
+                      This is useful when using `spec.externalURL`, and a proxy is rewriting
+                      HTTP routes of a request, and the actual ExternalURL is still true, but
+                      the server serves requests under a different route prefix. For example
+                      for use with `kubectl proxy`.
                       EOT
                       "type" = "string"
                     }
                     "sampleLimit" = {
-                      "description" = "SampleLimit defines per-scrape limit on number of scraped samples that will be accepted. Only valid in Prometheus versions 2.45.0 and newer."
+                      "description" = <<-EOT
+                      SampleLimit defines per-scrape limit on number of scraped samples that will be accepted.
+                      Only valid in Prometheus versions 2.45.0 and newer.
+                      EOT
                       "format" = "int64"
                       "type" = "integer"
                     }
                     "scrapeClasses" = {
                       "description" = <<-EOT
-                      List of scrape classes to expose to scraping objects such as PodMonitors, ServiceMonitors, Probes and ScrapeConfigs. 
-                       This is an *experimental feature*, it may change in any upcoming release in a breaking way.
+                      List of scrape classes to expose to scraping objects such as
+                      PodMonitors, ServiceMonitors, Probes and ScrapeConfigs.
+                      
+                      
+                      This is an *experimental feature*, it may change in any upcoming release
+                      in a breaking way.
                       EOT
                       "items" = {
                         "properties" = {
                           "default" = {
                             "description" = <<-EOT
-                            Default indicates that the scrape applies to all scrape objects that don't configure an explicit scrape class name. 
-                             Only one scrape class can be set as default.
+                            Default indicates that the scrape applies to all scrape objects that
+                            don't configure an explicit scrape class name.
+                            
+                            
+                            Only one scrape class can be set as the default.
                             EOT
                             "type" = "boolean"
                           }
@@ -4981,22 +7146,37 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           }
                           "relabelings" = {
                             "description" = <<-EOT
-                            Relabelings configures the relabeling rules to apply to all scrape targets. 
-                             The Operator automatically adds relabelings for a few standard Kubernetes fields like `__meta_kubernetes_namespace` and `__meta_kubernetes_service_name`. Then the Operator adds the scrape class relabelings defined here. Then the Operator adds the target-specific relabelings defined in the scrape object. 
-                             More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+                            Relabelings configures the relabeling rules to apply to all scrape targets.
+                            
+                            
+                            The Operator automatically adds relabelings for a few standard Kubernetes fields
+                            like `__meta_kubernetes_namespace` and `__meta_kubernetes_service_name`.
+                            Then the Operator adds the scrape class relabelings defined here.
+                            Then the Operator adds the target-specific relabelings defined in the scrape object.
+                            
+                            
+                            More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
                             EOT
                             "items" = {
                               "description" = <<-EOT
-                              RelabelConfig allows dynamic rewriting of the label set for targets, alerts, scraped samples and remote write samples. 
-                               More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+                              RelabelConfig allows dynamic rewriting of the label set for targets, alerts,
+                              scraped samples and remote write samples.
+                              
+                              
+                              More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
                               EOT
                               "properties" = {
                                 "action" = {
                                   "default" = "replace"
                                   "description" = <<-EOT
-                                  Action to perform based on the regex matching. 
-                                   `Uppercase` and `Lowercase` actions require Prometheus >= v2.36.0. `DropEqual` and `KeepEqual` actions require Prometheus >= v2.41.0. 
-                                   Default: "Replace"
+                                  Action to perform based on the regex matching.
+                                  
+                                  
+                                  `Uppercase` and `Lowercase` actions require Prometheus >= v2.36.0.
+                                  `DropEqual` and `KeepEqual` actions require Prometheus >= v2.41.0.
+                                  
+                                  
+                                  Default: "Replace"
                                   EOT
                                   "enum" = [
                                     "replace",
@@ -5026,8 +7206,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 }
                                 "modulus" = {
                                   "description" = <<-EOT
-                                  Modulus to take of the hash of the source label values. 
-                                   Only applicable when the action is `HashMod`.
+                                  Modulus to take of the hash of the source label values.
+                                  
+                                  
+                                  Only applicable when the action is `HashMod`.
                                   EOT
                                   "format" = "int64"
                                   "type" = "integer"
@@ -5038,8 +7220,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 }
                                 "replacement" = {
                                   "description" = <<-EOT
-                                  Replacement value against which a Replace action is performed if the regular expression matches. 
-                                   Regex capture groups are available.
+                                  Replacement value against which a Replace action is performed if the
+                                  regular expression matches.
+                                  
+                                  
+                                  Regex capture groups are available.
                                   EOT
                                   "type" = "string"
                                 }
@@ -5048,9 +7233,16 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "type" = "string"
                                 }
                                 "sourceLabels" = {
-                                  "description" = "The source labels select values from existing labels. Their content is concatenated using the configured Separator and matched against the configured regular expression."
+                                  "description" = <<-EOT
+                                  The source labels select values from existing labels. Their content is
+                                  concatenated using the configured Separator and matched against the
+                                  configured regular expression.
+                                  EOT
                                   "items" = {
-                                    "description" = "LabelName is a valid Prometheus label name which may only contain ASCII letters, numbers, as well as underscores."
+                                    "description" = <<-EOT
+                                    LabelName is a valid Prometheus label name which may only contain ASCII
+                                    letters, numbers, as well as underscores.
+                                    EOT
                                     "pattern" = "^[a-zA-Z_][a-zA-Z0-9_]*$"
                                     "type" = "string"
                                   }
@@ -5058,9 +7250,14 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 }
                                 "targetLabel" = {
                                   "description" = <<-EOT
-                                  Label to which the resulting string is written in a replacement. 
-                                   It is mandatory for `Replace`, `HashMod`, `Lowercase`, `Uppercase`, `KeepEqual` and `DropEqual` actions. 
-                                   Regex capture groups are available.
+                                  Label to which the resulting string is written in a replacement.
+                                  
+                                  
+                                  It is mandatory for `Replace`, `HashMod`, `Lowercase`, `Uppercase`,
+                                  `KeepEqual` and `DropEqual` actions.
+                                  
+                                  
+                                  Regex capture groups are available.
                                   EOT
                                   "type" = "string"
                                 }
@@ -5070,7 +7267,14 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "array"
                           }
                           "tlsConfig" = {
-                            "description" = "TLSConfig section for scrapes."
+                            "description" = <<-EOT
+                            TLSConfig defines the TLS settings to use for the scrape. When the
+                            scrape objects define their own CA, certificate and/or key, they take
+                            precedence over the corresponding scrape class fields.
+                            
+                            
+                            For now only the `caFile`, `certFile` and `keyFile` fields are supported.
+                            EOT
                             "properties" = {
                               "ca" = {
                                 "description" = "Certificate authority used when verifying server certificates."
@@ -5083,7 +7287,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -5105,7 +7313,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -5137,7 +7349,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -5159,7 +7375,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "string"
                                       }
                                       "name" = {
-                                        "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                        "description" = <<-EOT
+                                        Name of the referent.
+                                        More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion, kind, uid?
+                                        EOT
                                         "type" = "string"
                                       }
                                       "optional" = {
@@ -5196,7 +7416,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "type" = "string"
                                   }
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                   "optional" = {
@@ -5231,25 +7455,40 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     }
                     "scrapeConfigNamespaceSelector" = {
                       "description" = <<-EOT
-                      Namespaces to match for ScrapeConfig discovery. An empty label selector matches all namespaces. A null label selector matches the current namespace only. 
-                       Note that the ScrapeConfig custom resource definition is currently at Alpha level.
+                      Namespaces to match for ScrapeConfig discovery. An empty label selector
+                      matches all namespaces. A null label selector matches the current
+                      namespace only.
+                      
+                      
+                      Note that the ScrapeConfig custom resource definition is currently at Alpha level.
                       EOT
                       "properties" = {
                         "matchExpressions" = {
                           "description" = "matchExpressions is a list of label selector requirements. The requirements are ANDed."
                           "items" = {
-                            "description" = "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                            "description" = <<-EOT
+                            A label selector requirement is a selector that contains values, a key, and an operator that
+                            relates the key and values.
+                            EOT
                             "properties" = {
                               "key" = {
                                 "description" = "key is the label key that the selector applies to."
                                 "type" = "string"
                               }
                               "operator" = {
-                                "description" = "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                                "description" = <<-EOT
+                                operator represents a key's relationship to a set of values.
+                                Valid operators are In, NotIn, Exists and DoesNotExist.
+                                EOT
                                 "type" = "string"
                               }
                               "values" = {
-                                "description" = "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                                "description" = <<-EOT
+                                values is an array of string values. If the operator is In or NotIn,
+                                the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                the values array must be empty. This array is replaced during a strategic
+                                merge patch.
+                                EOT
                                 "items" = {
                                   "type" = "string"
                                 }
@@ -5268,7 +7507,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           "additionalProperties" = {
                             "type" = "string"
                           }
-                          "description" = "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+                          "description" = <<-EOT
+                          matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                          map is equivalent to an element of matchExpressions, whose key field is "key", the
+                          operator is "In", and the values array contains only "value". The requirements are ANDed.
+                          EOT
                           "type" = "object"
                         }
                       }
@@ -5277,26 +7520,49 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     }
                     "scrapeConfigSelector" = {
                       "description" = <<-EOT
-                      ScrapeConfigs to be selected for target discovery. An empty label selector matches all objects. A null label selector matches no objects. 
-                       If `spec.serviceMonitorSelector`, `spec.podMonitorSelector`, `spec.probeSelector` and `spec.scrapeConfigSelector` are null, the Prometheus configuration is unmanaged. The Prometheus operator will ensure that the Prometheus configuration's Secret exists, but it is the responsibility of the user to provide the raw gzipped Prometheus configuration under the `prometheus.yaml.gz` key. This behavior is *deprecated* and will be removed in the next major version of the custom resource definition. It is recommended to use `spec.additionalScrapeConfigs` instead. 
-                       Note that the ScrapeConfig custom resource definition is currently at Alpha level.
+                      ScrapeConfigs to be selected for target discovery. An empty label
+                      selector matches all objects. A null label selector matches no objects.
+                      
+                      
+                      If `spec.serviceMonitorSelector`, `spec.podMonitorSelector`, `spec.probeSelector`
+                      and `spec.scrapeConfigSelector` are null, the Prometheus configuration is unmanaged.
+                      The Prometheus operator will ensure that the Prometheus configuration's
+                      Secret exists, but it is the responsibility of the user to provide the raw
+                      gzipped Prometheus configuration under the `prometheus.yaml.gz` key.
+                      This behavior is *deprecated* and will be removed in the next major version
+                      of the custom resource definition. It is recommended to use
+                      `spec.additionalScrapeConfigs` instead.
+                      
+                      
+                      Note that the ScrapeConfig custom resource definition is currently at Alpha level.
                       EOT
                       "properties" = {
                         "matchExpressions" = {
                           "description" = "matchExpressions is a list of label selector requirements. The requirements are ANDed."
                           "items" = {
-                            "description" = "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                            "description" = <<-EOT
+                            A label selector requirement is a selector that contains values, a key, and an operator that
+                            relates the key and values.
+                            EOT
                             "properties" = {
                               "key" = {
                                 "description" = "key is the label key that the selector applies to."
                                 "type" = "string"
                               }
                               "operator" = {
-                                "description" = "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                                "description" = <<-EOT
+                                operator represents a key's relationship to a set of values.
+                                Valid operators are In, NotIn, Exists and DoesNotExist.
+                                EOT
                                 "type" = "string"
                               }
                               "values" = {
-                                "description" = "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                                "description" = <<-EOT
+                                values is an array of string values. If the operator is In or NotIn,
+                                the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                the values array must be empty. This array is replaced during a strategic
+                                merge patch.
+                                EOT
                                 "items" = {
                                   "type" = "string"
                                 }
@@ -5315,7 +7581,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           "additionalProperties" = {
                             "type" = "string"
                           }
-                          "description" = "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+                          "description" = <<-EOT
+                          matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                          map is equivalent to an element of matchExpressions, whose key field is "key", the
+                          operator is "In", and the values array contains only "value". The requirements are ANDed.
+                          EOT
                           "type" = "object"
                         }
                       }
@@ -5325,20 +7595,34 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     "scrapeInterval" = {
                       "default" = "30s"
                       "description" = <<-EOT
-                      Interval between consecutive scrapes. 
-                       Default: "30s"
+                      Interval between consecutive scrapes.
+                      
+                      
+                      Default: "30s"
                       EOT
                       "pattern" = "^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$"
                       "type" = "string"
                     }
                     "scrapeProtocols" = {
                       "description" = <<-EOT
-                      The protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred). 
-                       If unset, Prometheus uses its default value. 
-                       It requires Prometheus >= v2.49.0.
+                      The protocols to negotiate during a scrape. It tells clients the
+                      protocols supported by Prometheus in order of preference (from most to least preferred).
+                      
+                      
+                      If unset, Prometheus uses its default value.
+                      
+                      
+                      It requires Prometheus >= v2.49.0.
                       EOT
                       "items" = {
-                        "description" = "ScrapeProtocol represents a protocol used by Prometheus for scraping metrics. Supported values are: * `OpenMetricsText0.0.1` * `OpenMetricsText1.0.0` * `PrometheusProto` * `PrometheusText0.0.4`"
+                        "description" = <<-EOT
+                        ScrapeProtocol represents a protocol used by Prometheus for scraping metrics.
+                        Supported values are:
+                        * `OpenMetricsText0.0.1`
+                        * `OpenMetricsText1.0.0`
+                        * `PrometheusProto`
+                        * `PrometheusText0.0.4`
+                        EOT
                         "enum" = [
                           "PrometheusProto",
                           "OpenMetricsText0.0.1",
@@ -5356,44 +7640,97 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                       "type" = "string"
                     }
                     "secrets" = {
-                      "description" = "Secrets is a list of Secrets in the same namespace as the Prometheus object, which shall be mounted into the Prometheus Pods. Each Secret is added to the StatefulSet definition as a volume named `secret-<secret-name>`. The Secrets are mounted into /etc/prometheus/secrets/<secret-name> in the 'prometheus' container."
+                      "description" = <<-EOT
+                      Secrets is a list of Secrets in the same namespace as the Prometheus
+                      object, which shall be mounted into the Prometheus Pods.
+                      Each Secret is added to the StatefulSet definition as a volume named `secret-<secret-name>`.
+                      The Secrets are mounted into /etc/prometheus/secrets/<secret-name> in the 'prometheus' container.
+                      EOT
                       "items" = {
                         "type" = "string"
                       }
                       "type" = "array"
                     }
                     "securityContext" = {
-                      "description" = "SecurityContext holds pod-level security attributes and common container settings. This defaults to the default PodSecurityContext."
+                      "description" = <<-EOT
+                      SecurityContext holds pod-level security attributes and common container settings.
+                      This defaults to the default PodSecurityContext.
+                      EOT
                       "properties" = {
                         "fsGroup" = {
                           "description" = <<-EOT
-                          A special supplemental group that applies to all containers in a pod. Some volume types allow the Kubelet to change the ownership of that volume to be owned by the pod: 
-                           1. The owning GID will be the FSGroup 2. The setgid bit is set (new files created in the volume will be owned by FSGroup) 3. The permission bits are OR'd with rw-rw---- 
-                           If unset, the Kubelet will not modify the ownership and permissions of any volume. Note that this field cannot be set when spec.os.name is windows.
+                          A special supplemental group that applies to all containers in a pod.
+                          Some volume types allow the Kubelet to change the ownership of that volume
+                          to be owned by the pod:
+                          
+                          
+                          1. The owning GID will be the FSGroup
+                          2. The setgid bit is set (new files created in the volume will be owned by FSGroup)
+                          3. The permission bits are OR'd with rw-rw----
+                          
+                          
+                          If unset, the Kubelet will not modify the ownership and permissions of any volume.
+                          Note that this field cannot be set when spec.os.name is windows.
                           EOT
                           "format" = "int64"
                           "type" = "integer"
                         }
                         "fsGroupChangePolicy" = {
-                          "description" = "fsGroupChangePolicy defines behavior of changing ownership and permission of the volume before being exposed inside Pod. This field will only apply to volume types which support fsGroup based ownership(and permissions). It will have no effect on ephemeral volume types such as: secret, configmaps and emptydir. Valid values are \"OnRootMismatch\" and \"Always\". If not specified, \"Always\" is used. Note that this field cannot be set when spec.os.name is windows."
+                          "description" = <<-EOT
+                          fsGroupChangePolicy defines behavior of changing ownership and permission of the volume
+                          before being exposed inside Pod. This field will only apply to
+                          volume types which support fsGroup based ownership(and permissions).
+                          It will have no effect on ephemeral volume types such as: secret, configmaps
+                          and emptydir.
+                          Valid values are "OnRootMismatch" and "Always". If not specified, "Always" is used.
+                          Note that this field cannot be set when spec.os.name is windows.
+                          EOT
                           "type" = "string"
                         }
                         "runAsGroup" = {
-                          "description" = "The GID to run the entrypoint of the container process. Uses runtime default if unset. May also be set in SecurityContext.  If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence for that container. Note that this field cannot be set when spec.os.name is windows."
+                          "description" = <<-EOT
+                          The GID to run the entrypoint of the container process.
+                          Uses runtime default if unset.
+                          May also be set in SecurityContext.  If set in both SecurityContext and
+                          PodSecurityContext, the value specified in SecurityContext takes precedence
+                          for that container.
+                          Note that this field cannot be set when spec.os.name is windows.
+                          EOT
                           "format" = "int64"
                           "type" = "integer"
                         }
                         "runAsNonRoot" = {
-                          "description" = "Indicates that the container must run as a non-root user. If true, the Kubelet will validate the image at runtime to ensure that it does not run as UID 0 (root) and fail to start the container if it does. If unset or false, no such validation will be performed. May also be set in SecurityContext.  If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence."
+                          "description" = <<-EOT
+                          Indicates that the container must run as a non-root user.
+                          If true, the Kubelet will validate the image at runtime to ensure that it
+                          does not run as UID 0 (root) and fail to start the container if it does.
+                          If unset or false, no such validation will be performed.
+                          May also be set in SecurityContext.  If set in both SecurityContext and
+                          PodSecurityContext, the value specified in SecurityContext takes precedence.
+                          EOT
                           "type" = "boolean"
                         }
                         "runAsUser" = {
-                          "description" = "The UID to run the entrypoint of the container process. Defaults to user specified in image metadata if unspecified. May also be set in SecurityContext.  If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence for that container. Note that this field cannot be set when spec.os.name is windows."
+                          "description" = <<-EOT
+                          The UID to run the entrypoint of the container process.
+                          Defaults to user specified in image metadata if unspecified.
+                          May also be set in SecurityContext.  If set in both SecurityContext and
+                          PodSecurityContext, the value specified in SecurityContext takes precedence
+                          for that container.
+                          Note that this field cannot be set when spec.os.name is windows.
+                          EOT
                           "format" = "int64"
                           "type" = "integer"
                         }
                         "seLinuxOptions" = {
-                          "description" = "The SELinux context to be applied to all containers. If unspecified, the container runtime will allocate a random SELinux context for each container.  May also be set in SecurityContext.  If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence for that container. Note that this field cannot be set when spec.os.name is windows."
+                          "description" = <<-EOT
+                          The SELinux context to be applied to all containers.
+                          If unspecified, the container runtime will allocate a random SELinux context for each
+                          container.  May also be set in SecurityContext.  If set in
+                          both SecurityContext and PodSecurityContext, the value specified in SecurityContext
+                          takes precedence for that container.
+                          Note that this field cannot be set when spec.os.name is windows.
+                          EOT
                           "properties" = {
                             "level" = {
                               "description" = "Level is SELinux level label that applies to the container."
@@ -5415,16 +7752,29 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           "type" = "object"
                         }
                         "seccompProfile" = {
-                          "description" = "The seccomp options to use by the containers in this pod. Note that this field cannot be set when spec.os.name is windows."
+                          "description" = <<-EOT
+                          The seccomp options to use by the containers in this pod.
+                          Note that this field cannot be set when spec.os.name is windows.
+                          EOT
                           "properties" = {
                             "localhostProfile" = {
-                              "description" = "localhostProfile indicates a profile defined in a file on the node should be used. The profile must be preconfigured on the node to work. Must be a descending path, relative to the kubelet's configured seccomp profile location. Must be set if type is \"Localhost\". Must NOT be set for any other type."
+                              "description" = <<-EOT
+                              localhostProfile indicates a profile defined in a file on the node should be used.
+                              The profile must be preconfigured on the node to work.
+                              Must be a descending path, relative to the kubelet's configured seccomp profile location.
+                              Must be set if type is "Localhost". Must NOT be set for any other type.
+                              EOT
                               "type" = "string"
                             }
                             "type" = {
                               "description" = <<-EOT
-                              type indicates which kind of seccomp profile will be applied. Valid options are: 
-                               Localhost - a profile defined in a file on the node should be used. RuntimeDefault - the container runtime default profile should be used. Unconfined - no profile should be applied.
+                              type indicates which kind of seccomp profile will be applied.
+                              Valid options are:
+                              
+                              
+                              Localhost - a profile defined in a file on the node should be used.
+                              RuntimeDefault - the container runtime default profile should be used.
+                              Unconfined - no profile should be applied.
                               EOT
                               "type" = "string"
                             }
@@ -5435,7 +7785,15 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           "type" = "object"
                         }
                         "supplementalGroups" = {
-                          "description" = "A list of groups applied to the first process run in each container, in addition to the container's primary GID, the fsGroup (if specified), and group memberships defined in the container image for the uid of the container process. If unspecified, no additional groups are added to any container. Note that group memberships defined in the container image for the uid of the container process are still effective, even if they are not included in this list. Note that this field cannot be set when spec.os.name is windows."
+                          "description" = <<-EOT
+                          A list of groups applied to the first process run in each container, in addition
+                          to the container's primary GID, the fsGroup (if specified), and group memberships
+                          defined in the container image for the uid of the container process. If unspecified,
+                          no additional groups are added to any container. Note that group memberships
+                          defined in the container image for the uid of the container process are still effective,
+                          even if they are not included in this list.
+                          Note that this field cannot be set when spec.os.name is windows.
+                          EOT
                           "items" = {
                             "format" = "int64"
                             "type" = "integer"
@@ -5443,7 +7801,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           "type" = "array"
                         }
                         "sysctls" = {
-                          "description" = "Sysctls hold a list of namespaced sysctls used for the pod. Pods with unsupported sysctls (by the container runtime) might fail to launch. Note that this field cannot be set when spec.os.name is windows."
+                          "description" = <<-EOT
+                          Sysctls hold a list of namespaced sysctls used for the pod. Pods with unsupported
+                          sysctls (by the container runtime) might fail to launch.
+                          Note that this field cannot be set when spec.os.name is windows.
+                          EOT
                           "items" = {
                             "description" = "Sysctl defines a kernel parameter to be set"
                             "properties" = {
@@ -5465,10 +7827,19 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           "type" = "array"
                         }
                         "windowsOptions" = {
-                          "description" = "The Windows specific settings applied to all containers. If unspecified, the options within a container's SecurityContext will be used. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence. Note that this field cannot be set when spec.os.name is linux."
+                          "description" = <<-EOT
+                          The Windows specific settings applied to all containers.
+                          If unspecified, the options within a container's SecurityContext will be used.
+                          If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence.
+                          Note that this field cannot be set when spec.os.name is linux.
+                          EOT
                           "properties" = {
                             "gmsaCredentialSpec" = {
-                              "description" = "GMSACredentialSpec is where the GMSA admission webhook (https://github.com/kubernetes-sigs/windows-gmsa) inlines the contents of the GMSA credential spec named by the GMSACredentialSpecName field."
+                              "description" = <<-EOT
+                              GMSACredentialSpec is where the GMSA admission webhook
+                              (https://github.com/kubernetes-sigs/windows-gmsa) inlines the contents of the
+                              GMSA credential spec named by the GMSACredentialSpecName field.
+                              EOT
                               "type" = "string"
                             }
                             "gmsaCredentialSpecName" = {
@@ -5476,11 +7847,21 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                               "type" = "string"
                             }
                             "hostProcess" = {
-                              "description" = "HostProcess determines if a container should be run as a 'Host Process' container. All of a Pod's containers must have the same effective HostProcess value (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers). In addition, if HostProcess is true then HostNetwork must also be set to true."
+                              "description" = <<-EOT
+                              HostProcess determines if a container should be run as a 'Host Process' container.
+                              All of a Pod's containers must have the same effective HostProcess value
+                              (it is not allowed to have a mix of HostProcess containers and non-HostProcess containers).
+                              In addition, if HostProcess is true then HostNetwork must also be set to true.
+                              EOT
                               "type" = "boolean"
                             }
                             "runAsUserName" = {
-                              "description" = "The UserName in Windows to run the entrypoint of the container process. Defaults to the user specified in image metadata if unspecified. May also be set in PodSecurityContext. If set in both SecurityContext and PodSecurityContext, the value specified in SecurityContext takes precedence."
+                              "description" = <<-EOT
+                              The UserName in Windows to run the entrypoint of the container process.
+                              Defaults to the user specified in image metadata if unspecified.
+                              May also be set in PodSecurityContext. If set in both SecurityContext and
+                              PodSecurityContext, the value specified in SecurityContext takes precedence.
+                              EOT
                               "type" = "string"
                             }
                           }
@@ -5490,27 +7871,45 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                       "type" = "object"
                     }
                     "serviceAccountName" = {
-                      "description" = "ServiceAccountName is the name of the ServiceAccount to use to run the Prometheus Pods."
+                      "description" = <<-EOT
+                      ServiceAccountName is the name of the ServiceAccount to use to run the
+                      Prometheus Pods.
+                      EOT
                       "type" = "string"
                     }
                     "serviceMonitorNamespaceSelector" = {
-                      "description" = "Namespaces to match for ServicedMonitors discovery. An empty label selector matches all namespaces. A null label selector matches the current namespace only."
+                      "description" = <<-EOT
+                      Namespaces to match for ServicedMonitors discovery. An empty label selector
+                      matches all namespaces. A null label selector matches the current
+                      namespace only.
+                      EOT
                       "properties" = {
                         "matchExpressions" = {
                           "description" = "matchExpressions is a list of label selector requirements. The requirements are ANDed."
                           "items" = {
-                            "description" = "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                            "description" = <<-EOT
+                            A label selector requirement is a selector that contains values, a key, and an operator that
+                            relates the key and values.
+                            EOT
                             "properties" = {
                               "key" = {
                                 "description" = "key is the label key that the selector applies to."
                                 "type" = "string"
                               }
                               "operator" = {
-                                "description" = "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                                "description" = <<-EOT
+                                operator represents a key's relationship to a set of values.
+                                Valid operators are In, NotIn, Exists and DoesNotExist.
+                                EOT
                                 "type" = "string"
                               }
                               "values" = {
-                                "description" = "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                                "description" = <<-EOT
+                                values is an array of string values. If the operator is In or NotIn,
+                                the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                the values array must be empty. This array is replaced during a strategic
+                                merge patch.
+                                EOT
                                 "items" = {
                                   "type" = "string"
                                 }
@@ -5529,7 +7928,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           "additionalProperties" = {
                             "type" = "string"
                           }
-                          "description" = "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+                          "description" = <<-EOT
+                          matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                          map is equivalent to an element of matchExpressions, whose key field is "key", the
+                          operator is "In", and the values array contains only "value". The requirements are ANDed.
+                          EOT
                           "type" = "object"
                         }
                       }
@@ -5538,25 +7941,46 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     }
                     "serviceMonitorSelector" = {
                       "description" = <<-EOT
-                      ServiceMonitors to be selected for target discovery. An empty label selector matches all objects. A null label selector matches no objects. 
-                       If `spec.serviceMonitorSelector`, `spec.podMonitorSelector`, `spec.probeSelector` and `spec.scrapeConfigSelector` are null, the Prometheus configuration is unmanaged. The Prometheus operator will ensure that the Prometheus configuration's Secret exists, but it is the responsibility of the user to provide the raw gzipped Prometheus configuration under the `prometheus.yaml.gz` key. This behavior is *deprecated* and will be removed in the next major version of the custom resource definition. It is recommended to use `spec.additionalScrapeConfigs` instead.
+                      ServiceMonitors to be selected for target discovery. An empty label
+                      selector matches all objects. A null label selector matches no objects.
+                      
+                      
+                      If `spec.serviceMonitorSelector`, `spec.podMonitorSelector`, `spec.probeSelector`
+                      and `spec.scrapeConfigSelector` are null, the Prometheus configuration is unmanaged.
+                      The Prometheus operator will ensure that the Prometheus configuration's
+                      Secret exists, but it is the responsibility of the user to provide the raw
+                      gzipped Prometheus configuration under the `prometheus.yaml.gz` key.
+                      This behavior is *deprecated* and will be removed in the next major version
+                      of the custom resource definition. It is recommended to use
+                      `spec.additionalScrapeConfigs` instead.
                       EOT
                       "properties" = {
                         "matchExpressions" = {
                           "description" = "matchExpressions is a list of label selector requirements. The requirements are ANDed."
                           "items" = {
-                            "description" = "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                            "description" = <<-EOT
+                            A label selector requirement is a selector that contains values, a key, and an operator that
+                            relates the key and values.
+                            EOT
                             "properties" = {
                               "key" = {
                                 "description" = "key is the label key that the selector applies to."
                                 "type" = "string"
                               }
                               "operator" = {
-                                "description" = "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                                "description" = <<-EOT
+                                operator represents a key's relationship to a set of values.
+                                Valid operators are In, NotIn, Exists and DoesNotExist.
+                                EOT
                                 "type" = "string"
                               }
                               "values" = {
-                                "description" = "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                                "description" = <<-EOT
+                                values is an array of string values. If the operator is In or NotIn,
+                                the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                the values array must be empty. This array is replaced during a strategic
+                                merge patch.
+                                EOT
                                 "items" = {
                                   "type" = "string"
                                 }
@@ -5575,7 +7999,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           "additionalProperties" = {
                             "type" = "string"
                           }
-                          "description" = "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+                          "description" = <<-EOT
+                          matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                          map is equivalent to an element of matchExpressions, whose key field is "key", the
+                          operator is "In", and the values array contains only "value". The requirements are ANDed.
+                          EOT
                           "type" = "object"
                         }
                       }
@@ -5584,10 +8012,22 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     }
                     "shards" = {
                       "description" = <<-EOT
-                      Number of shards to distribute targets onto. `spec.replicas` multiplied by `spec.shards` is the total number of Pods created. 
-                       Note that scaling down shards will not reshard data onto remaining instances, it must be manually moved. Increasing shards will not reshard data either but it will continue to be available from the same instances. To query globally, use Thanos sidecar and Thanos querier or remote write data to a central location. 
-                       Sharding is performed on the content of the `__address__` target meta-label for PodMonitors and ServiceMonitors and `__param_target__` for Probes. 
-                       Default: 1
+                      Number of shards to distribute targets onto. `spec.replicas`
+                      multiplied by `spec.shards` is the total number of Pods created.
+                      
+                      
+                      Note that scaling down shards will not reshard data onto remaining
+                      instances, it must be manually moved. Increasing shards will not reshard
+                      data either but it will continue to be available from the same
+                      instances. To query globally, use Thanos sidecar and Thanos querier or
+                      remote write data to a central location.
+                      
+                      
+                      Sharding is performed on the content of the `__address__` target meta-label
+                      for PodMonitors and ServiceMonitors and `__param_target__` for Probes.
+                      
+                      
+                      Default: 1
                       EOT
                       "format" = "int32"
                       "type" = "integer"
@@ -5600,10 +8040,19 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           "type" = "boolean"
                         }
                         "emptyDir" = {
-                          "description" = "EmptyDirVolumeSource to be used by the StatefulSet. If specified, it takes precedence over `ephemeral` and `volumeClaimTemplate`. More info: https://kubernetes.io/docs/concepts/storage/volumes/#emptydir"
+                          "description" = <<-EOT
+                          EmptyDirVolumeSource to be used by the StatefulSet.
+                          If specified, it takes precedence over `ephemeral` and `volumeClaimTemplate`.
+                          More info: https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
+                          EOT
                           "properties" = {
                             "medium" = {
-                              "description" = "medium represents what type of storage medium should back this directory. The default is \"\" which means to use the node's default medium. Must be an empty string (default) or Memory. More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir"
+                              "description" = <<-EOT
+                              medium represents what type of storage medium should back this directory.
+                              The default is "" which means to use the node's default medium.
+                              Must be an empty string (default) or Memory.
+                              More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir
+                              EOT
                               "type" = "string"
                             }
                             "sizeLimit" = {
@@ -5615,7 +8064,14 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "type" = "string"
                                 },
                               ]
-                              "description" = "sizeLimit is the total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir"
+                              "description" = <<-EOT
+                              sizeLimit is the total amount of local storage required for this EmptyDir volume.
+                              The size limit is also applicable for memory medium.
+                              The maximum usage on memory medium EmptyDir would be the minimum value between
+                              the SizeLimit specified here and the sum of memory limits of all containers in a pod.
+                              The default is nil which means that the limit is undefined.
+                              More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir
+                              EOT
                               "pattern" = "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
                               "x-kubernetes-int-or-string" = true
                             }
@@ -5623,35 +8079,85 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           "type" = "object"
                         }
                         "ephemeral" = {
-                          "description" = "EphemeralVolumeSource to be used by the StatefulSet. This is a beta field in k8s 1.21 and GA in 1.15. For lower versions, starting with k8s 1.19, it requires enabling the GenericEphemeralVolume feature gate. More info: https://kubernetes.io/docs/concepts/storage/ephemeral-volumes/#generic-ephemeral-volumes"
+                          "description" = <<-EOT
+                          EphemeralVolumeSource to be used by the StatefulSet.
+                          This is a beta field in k8s 1.21 and GA in 1.15.
+                          For lower versions, starting with k8s 1.19, it requires enabling the GenericEphemeralVolume feature gate.
+                          More info: https://kubernetes.io/docs/concepts/storage/ephemeral-volumes/#generic-ephemeral-volumes
+                          EOT
                           "properties" = {
                             "volumeClaimTemplate" = {
                               "description" = <<-EOT
-                              Will be used to create a stand-alone PVC to provision the volume. The pod in which this EphemeralVolumeSource is embedded will be the owner of the PVC, i.e. the PVC will be deleted together with the pod.  The name of the PVC will be `<pod name>-<volume name>` where `<volume name>` is the name from the `PodSpec.Volumes` array entry. Pod validation will reject the pod if the concatenated name is not valid for a PVC (for example, too long). 
-                               An existing PVC with that name that is not owned by the pod will *not* be used for the pod to avoid using an unrelated volume by mistake. Starting the pod is then blocked until the unrelated PVC is removed. If such a pre-created PVC is meant to be used by the pod, the PVC has to updated with an owner reference to the pod once the pod exists. Normally this should not be necessary, but it may be useful when manually reconstructing a broken cluster. 
-                               This field is read-only and no changes will be made by Kubernetes to the PVC after it has been created. 
-                               Required, must not be nil.
+                              Will be used to create a stand-alone PVC to provision the volume.
+                              The pod in which this EphemeralVolumeSource is embedded will be the
+                              owner of the PVC, i.e. the PVC will be deleted together with the
+                              pod.  The name of the PVC will be `<pod name>-<volume name>` where
+                              `<volume name>` is the name from the `PodSpec.Volumes` array
+                              entry. Pod validation will reject the pod if the concatenated name
+                              is not valid for a PVC (for example, too long).
+                              
+                              
+                              An existing PVC with that name that is not owned by the pod
+                              will *not* be used for the pod to avoid using an unrelated
+                              volume by mistake. Starting the pod is then blocked until
+                              the unrelated PVC is removed. If such a pre-created PVC is
+                              meant to be used by the pod, the PVC has to updated with an
+                              owner reference to the pod once the pod exists. Normally
+                              this should not be necessary, but it may be useful when
+                              manually reconstructing a broken cluster.
+                              
+                              
+                              This field is read-only and no changes will be made by Kubernetes
+                              to the PVC after it has been created.
+                              
+                              
+                              Required, must not be nil.
                               EOT
                               "properties" = {
                                 "metadata" = {
-                                  "description" = "May contain labels and annotations that will be copied into the PVC when creating it. No other fields are allowed and will be rejected during validation."
+                                  "description" = <<-EOT
+                                  May contain labels and annotations that will be copied into the PVC
+                                  when creating it. No other fields are allowed and will be rejected during
+                                  validation.
+                                  EOT
                                   "type" = "object"
                                 }
                                 "spec" = {
-                                  "description" = "The specification for the PersistentVolumeClaim. The entire content is copied unchanged into the PVC that gets created from this template. The same fields as in a PersistentVolumeClaim are also valid here."
+                                  "description" = <<-EOT
+                                  The specification for the PersistentVolumeClaim. The entire content is
+                                  copied unchanged into the PVC that gets created from this
+                                  template. The same fields as in a PersistentVolumeClaim
+                                  are also valid here.
+                                  EOT
                                   "properties" = {
                                     "accessModes" = {
-                                      "description" = "accessModes contains the desired access modes the volume should have. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1"
+                                      "description" = <<-EOT
+                                      accessModes contains the desired access modes the volume should have.
+                                      More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1
+                                      EOT
                                       "items" = {
                                         "type" = "string"
                                       }
                                       "type" = "array"
                                     }
                                     "dataSource" = {
-                                      "description" = "dataSource field can be used to specify either: * An existing VolumeSnapshot object (snapshot.storage.k8s.io/VolumeSnapshot) * An existing PVC (PersistentVolumeClaim) If the provisioner or an external controller can support the specified data source, it will create a new volume based on the contents of the specified data source. When the AnyVolumeDataSource feature gate is enabled, dataSource contents will be copied to dataSourceRef, and dataSourceRef contents will be copied to dataSource when dataSourceRef.namespace is not specified. If the namespace is specified, then dataSourceRef will not be copied to dataSource."
+                                      "description" = <<-EOT
+                                      dataSource field can be used to specify either:
+                                      * An existing VolumeSnapshot object (snapshot.storage.k8s.io/VolumeSnapshot)
+                                      * An existing PVC (PersistentVolumeClaim)
+                                      If the provisioner or an external controller can support the specified data source,
+                                      it will create a new volume based on the contents of the specified data source.
+                                      When the AnyVolumeDataSource feature gate is enabled, dataSource contents will be copied to dataSourceRef,
+                                      and dataSourceRef contents will be copied to dataSource when dataSourceRef.namespace is not specified.
+                                      If the namespace is specified, then dataSourceRef will not be copied to dataSource.
+                                      EOT
                                       "properties" = {
                                         "apiGroup" = {
-                                          "description" = "APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required."
+                                          "description" = <<-EOT
+                                          APIGroup is the group for the resource being referenced.
+                                          If APIGroup is not specified, the specified Kind must be in the core API group.
+                                          For any other third-party types, APIGroup is required.
+                                          EOT
                                           "type" = "string"
                                         }
                                         "kind" = {
@@ -5671,10 +8177,38 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "x-kubernetes-map-type" = "atomic"
                                     }
                                     "dataSourceRef" = {
-                                      "description" = "dataSourceRef specifies the object from which to populate the volume with data, if a non-empty volume is desired. This may be any object from a non-empty API group (non core object) or a PersistentVolumeClaim object. When this field is specified, volume binding will only succeed if the type of the specified object matches some installed volume populator or dynamic provisioner. This field will replace the functionality of the dataSource field and as such if both fields are non-empty, they must have the same value. For backwards compatibility, when namespace isn't specified in dataSourceRef, both fields (dataSource and dataSourceRef) will be set to the same value automatically if one of them is empty and the other is non-empty. When namespace is specified in dataSourceRef, dataSource isn't set to the same value and must be empty. There are three important differences between dataSource and dataSourceRef: * While dataSource only allows two specific types of objects, dataSourceRef allows any non-core object, as well as PersistentVolumeClaim objects. * While dataSource ignores disallowed values (dropping them), dataSourceRef preserves all values, and generates an error if a disallowed value is specified. * While dataSource only allows local objects, dataSourceRef allows objects in any namespaces. (Beta) Using this field requires the AnyVolumeDataSource feature gate to be enabled. (Alpha) Using the namespace field of dataSourceRef requires the CrossNamespaceVolumeDataSource feature gate to be enabled."
+                                      "description" = <<-EOT
+                                      dataSourceRef specifies the object from which to populate the volume with data, if a non-empty
+                                      volume is desired. This may be any object from a non-empty API group (non
+                                      core object) or a PersistentVolumeClaim object.
+                                      When this field is specified, volume binding will only succeed if the type of
+                                      the specified object matches some installed volume populator or dynamic
+                                      provisioner.
+                                      This field will replace the functionality of the dataSource field and as such
+                                      if both fields are non-empty, they must have the same value. For backwards
+                                      compatibility, when namespace isn't specified in dataSourceRef,
+                                      both fields (dataSource and dataSourceRef) will be set to the same
+                                      value automatically if one of them is empty and the other is non-empty.
+                                      When namespace is specified in dataSourceRef,
+                                      dataSource isn't set to the same value and must be empty.
+                                      There are three important differences between dataSource and dataSourceRef:
+                                      * While dataSource only allows two specific types of objects, dataSourceRef
+                                        allows any non-core object, as well as PersistentVolumeClaim objects.
+                                      * While dataSource ignores disallowed values (dropping them), dataSourceRef
+                                        preserves all values, and generates an error if a disallowed value is
+                                        specified.
+                                      * While dataSource only allows local objects, dataSourceRef allows objects
+                                        in any namespaces.
+                                      (Beta) Using this field requires the AnyVolumeDataSource feature gate to be enabled.
+                                      (Alpha) Using the namespace field of dataSourceRef requires the CrossNamespaceVolumeDataSource feature gate to be enabled.
+                                      EOT
                                       "properties" = {
                                         "apiGroup" = {
-                                          "description" = "APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required."
+                                          "description" = <<-EOT
+                                          APIGroup is the group for the resource being referenced.
+                                          If APIGroup is not specified, the specified Kind must be in the core API group.
+                                          For any other third-party types, APIGroup is required.
+                                          EOT
                                           "type" = "string"
                                         }
                                         "kind" = {
@@ -5686,7 +8220,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                           "type" = "string"
                                         }
                                         "namespace" = {
-                                          "description" = "Namespace is the namespace of resource being referenced Note that when a namespace is specified, a gateway.networking.k8s.io/ReferenceGrant object is required in the referent namespace to allow that namespace's owner to accept the reference. See the ReferenceGrant documentation for details. (Alpha) This field requires the CrossNamespaceVolumeDataSource feature gate to be enabled."
+                                          "description" = <<-EOT
+                                          Namespace is the namespace of resource being referenced
+                                          Note that when a namespace is specified, a gateway.networking.k8s.io/ReferenceGrant object is required in the referent namespace to allow that namespace's owner to accept the reference. See the ReferenceGrant documentation for details.
+                                          (Alpha) This field requires the CrossNamespaceVolumeDataSource feature gate to be enabled.
+                                          EOT
                                           "type" = "string"
                                         }
                                       }
@@ -5697,7 +8235,13 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "type" = "object"
                                     }
                                     "resources" = {
-                                      "description" = "resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources"
+                                      "description" = <<-EOT
+                                      resources represents the minimum resources the volume should have.
+                                      If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements
+                                      that are lower than previous value but must still be higher than capacity recorded in the
+                                      status field of the claim.
+                                      More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources
+                                      EOT
                                       "properties" = {
                                         "limits" = {
                                           "additionalProperties" = {
@@ -5712,7 +8256,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                             "pattern" = "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
                                             "x-kubernetes-int-or-string" = true
                                           }
-                                          "description" = "Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+                                          "description" = <<-EOT
+                                          Limits describes the maximum amount of compute resources allowed.
+                                          More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                                          EOT
                                           "type" = "object"
                                         }
                                         "requests" = {
@@ -5728,7 +8275,12 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                             "pattern" = "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
                                             "x-kubernetes-int-or-string" = true
                                           }
-                                          "description" = "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+                                          "description" = <<-EOT
+                                          Requests describes the minimum amount of compute resources required.
+                                          If Requests is omitted for a container, it defaults to Limits if that is explicitly specified,
+                                          otherwise to an implementation-defined value. Requests cannot exceed Limits.
+                                          More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                                          EOT
                                           "type" = "object"
                                         }
                                       }
@@ -5740,18 +8292,29 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "matchExpressions" = {
                                           "description" = "matchExpressions is a list of label selector requirements. The requirements are ANDed."
                                           "items" = {
-                                            "description" = "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                                            "description" = <<-EOT
+                                            A label selector requirement is a selector that contains values, a key, and an operator that
+                                            relates the key and values.
+                                            EOT
                                             "properties" = {
                                               "key" = {
                                                 "description" = "key is the label key that the selector applies to."
                                                 "type" = "string"
                                               }
                                               "operator" = {
-                                                "description" = "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                                                "description" = <<-EOT
+                                                operator represents a key's relationship to a set of values.
+                                                Valid operators are In, NotIn, Exists and DoesNotExist.
+                                                EOT
                                                 "type" = "string"
                                               }
                                               "values" = {
-                                                "description" = "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                                                "description" = <<-EOT
+                                                values is an array of string values. If the operator is In or NotIn,
+                                                the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                                the values array must be empty. This array is replaced during a strategic
+                                                merge patch.
+                                                EOT
                                                 "items" = {
                                                   "type" = "string"
                                                 }
@@ -5770,7 +8333,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                           "additionalProperties" = {
                                             "type" = "string"
                                           }
-                                          "description" = "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+                                          "description" = <<-EOT
+                                          matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                                          map is equivalent to an element of matchExpressions, whose key field is "key", the
+                                          operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                          EOT
                                           "type" = "object"
                                         }
                                       }
@@ -5778,15 +8345,34 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "x-kubernetes-map-type" = "atomic"
                                     }
                                     "storageClassName" = {
-                                      "description" = "storageClassName is the name of the StorageClass required by the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1"
+                                      "description" = <<-EOT
+                                      storageClassName is the name of the StorageClass required by the claim.
+                                      More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1
+                                      EOT
                                       "type" = "string"
                                     }
                                     "volumeAttributesClassName" = {
-                                      "description" = "volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass will be applied to the claim but it's not allowed to reset this field to empty string once it is set. If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass will be set by the persistentvolume controller if it exists. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#volumeattributesclass (Alpha) Using this field requires the VolumeAttributesClass feature gate to be enabled."
+                                      "description" = <<-EOT
+                                      volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim.
+                                      If specified, the CSI driver will create or update the volume with the attributes defined
+                                      in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName,
+                                      it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass
+                                      will be applied to the claim but it's not allowed to reset this field to empty string once it is set.
+                                      If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass
+                                      will be set by the persistentvolume controller if it exists.
+                                      If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be
+                                      set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource
+                                      exists.
+                                      More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#volumeattributesclass
+                                      (Alpha) Using this field requires the VolumeAttributesClass feature gate to be enabled.
+                                      EOT
                                       "type" = "string"
                                     }
                                     "volumeMode" = {
-                                      "description" = "volumeMode defines what type of volume is required by the claim. Value of Filesystem is implied when not included in claim spec."
+                                      "description" = <<-EOT
+                                      volumeMode defines what type of volume is required by the claim.
+                                      Value of Filesystem is implied when not included in claim spec.
+                                      EOT
                                       "type" = "string"
                                     }
                                     "volumeName" = {
@@ -5806,14 +8392,29 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           "type" = "object"
                         }
                         "volumeClaimTemplate" = {
-                          "description" = "Defines the PVC spec to be used by the Prometheus StatefulSets. The easiest way to use a volume that cannot be automatically provisioned is to use a label selector alongside manually created PersistentVolumes."
+                          "description" = <<-EOT
+                          Defines the PVC spec to be used by the Prometheus StatefulSets.
+                          The easiest way to use a volume that cannot be automatically provisioned
+                          is to use a label selector alongside manually created PersistentVolumes.
+                          EOT
                           "properties" = {
                             "apiVersion" = {
-                              "description" = "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+                              "description" = <<-EOT
+                              APIVersion defines the versioned schema of this representation of an object.
+                              Servers should convert recognized schemas to the latest internal value, and
+                              may reject unrecognized values.
+                              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+                              EOT
                               "type" = "string"
                             }
                             "kind" = {
-                              "description" = "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+                              "description" = <<-EOT
+                              Kind is a string value representing the REST resource this object represents.
+                              Servers may infer this from the endpoint the client submits requests to.
+                              Cannot be updated.
+                              In CamelCase.
+                              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+                              EOT
                               "type" = "string"
                             }
                             "metadata" = {
@@ -5823,38 +8424,74 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "additionalProperties" = {
                                     "type" = "string"
                                   }
-                                  "description" = "Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects. More info: http://kubernetes.io/docs/user-guide/annotations"
+                                  "description" = <<-EOT
+                                  Annotations is an unstructured key value map stored with a resource that may be
+                                  set by external tools to store and retrieve arbitrary metadata. They are not
+                                  queryable and should be preserved when modifying objects.
+                                  More info: http://kubernetes.io/docs/user-guide/annotations
+                                  EOT
                                   "type" = "object"
                                 }
                                 "labels" = {
                                   "additionalProperties" = {
                                     "type" = "string"
                                   }
-                                  "description" = "Map of string keys and values that can be used to organize and categorize (scope and select) objects. May match selectors of replication controllers and services. More info: http://kubernetes.io/docs/user-guide/labels"
+                                  "description" = <<-EOT
+                                  Map of string keys and values that can be used to organize and categorize
+                                  (scope and select) objects. May match selectors of replication controllers
+                                  and services.
+                                  More info: http://kubernetes.io/docs/user-guide/labels
+                                  EOT
                                   "type" = "object"
                                 }
                                 "name" = {
-                                  "description" = "Name must be unique within a namespace. Is required when creating resources, although some resources may allow a client to request the generation of an appropriate name automatically. Name is primarily intended for creation idempotence and configuration definition. Cannot be updated. More info: http://kubernetes.io/docs/user-guide/identifiers#names"
+                                  "description" = <<-EOT
+                                  Name must be unique within a namespace. Is required when creating resources, although
+                                  some resources may allow a client to request the generation of an appropriate name
+                                  automatically. Name is primarily intended for creation idempotence and configuration
+                                  definition.
+                                  Cannot be updated.
+                                  More info: http://kubernetes.io/docs/user-guide/identifiers#names
+                                  EOT
                                   "type" = "string"
                                 }
                               }
                               "type" = "object"
                             }
                             "spec" = {
-                              "description" = "Defines the desired characteristics of a volume requested by a pod author. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims"
+                              "description" = <<-EOT
+                              Defines the desired characteristics of a volume requested by a pod author.
+                              More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims
+                              EOT
                               "properties" = {
                                 "accessModes" = {
-                                  "description" = "accessModes contains the desired access modes the volume should have. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1"
+                                  "description" = <<-EOT
+                                  accessModes contains the desired access modes the volume should have.
+                                  More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1
+                                  EOT
                                   "items" = {
                                     "type" = "string"
                                   }
                                   "type" = "array"
                                 }
                                 "dataSource" = {
-                                  "description" = "dataSource field can be used to specify either: * An existing VolumeSnapshot object (snapshot.storage.k8s.io/VolumeSnapshot) * An existing PVC (PersistentVolumeClaim) If the provisioner or an external controller can support the specified data source, it will create a new volume based on the contents of the specified data source. When the AnyVolumeDataSource feature gate is enabled, dataSource contents will be copied to dataSourceRef, and dataSourceRef contents will be copied to dataSource when dataSourceRef.namespace is not specified. If the namespace is specified, then dataSourceRef will not be copied to dataSource."
+                                  "description" = <<-EOT
+                                  dataSource field can be used to specify either:
+                                  * An existing VolumeSnapshot object (snapshot.storage.k8s.io/VolumeSnapshot)
+                                  * An existing PVC (PersistentVolumeClaim)
+                                  If the provisioner or an external controller can support the specified data source,
+                                  it will create a new volume based on the contents of the specified data source.
+                                  When the AnyVolumeDataSource feature gate is enabled, dataSource contents will be copied to dataSourceRef,
+                                  and dataSourceRef contents will be copied to dataSource when dataSourceRef.namespace is not specified.
+                                  If the namespace is specified, then dataSourceRef will not be copied to dataSource.
+                                  EOT
                                   "properties" = {
                                     "apiGroup" = {
-                                      "description" = "APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required."
+                                      "description" = <<-EOT
+                                      APIGroup is the group for the resource being referenced.
+                                      If APIGroup is not specified, the specified Kind must be in the core API group.
+                                      For any other third-party types, APIGroup is required.
+                                      EOT
                                       "type" = "string"
                                     }
                                     "kind" = {
@@ -5874,10 +8511,38 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "x-kubernetes-map-type" = "atomic"
                                 }
                                 "dataSourceRef" = {
-                                  "description" = "dataSourceRef specifies the object from which to populate the volume with data, if a non-empty volume is desired. This may be any object from a non-empty API group (non core object) or a PersistentVolumeClaim object. When this field is specified, volume binding will only succeed if the type of the specified object matches some installed volume populator or dynamic provisioner. This field will replace the functionality of the dataSource field and as such if both fields are non-empty, they must have the same value. For backwards compatibility, when namespace isn't specified in dataSourceRef, both fields (dataSource and dataSourceRef) will be set to the same value automatically if one of them is empty and the other is non-empty. When namespace is specified in dataSourceRef, dataSource isn't set to the same value and must be empty. There are three important differences between dataSource and dataSourceRef: * While dataSource only allows two specific types of objects, dataSourceRef allows any non-core object, as well as PersistentVolumeClaim objects. * While dataSource ignores disallowed values (dropping them), dataSourceRef preserves all values, and generates an error if a disallowed value is specified. * While dataSource only allows local objects, dataSourceRef allows objects in any namespaces. (Beta) Using this field requires the AnyVolumeDataSource feature gate to be enabled. (Alpha) Using the namespace field of dataSourceRef requires the CrossNamespaceVolumeDataSource feature gate to be enabled."
+                                  "description" = <<-EOT
+                                  dataSourceRef specifies the object from which to populate the volume with data, if a non-empty
+                                  volume is desired. This may be any object from a non-empty API group (non
+                                  core object) or a PersistentVolumeClaim object.
+                                  When this field is specified, volume binding will only succeed if the type of
+                                  the specified object matches some installed volume populator or dynamic
+                                  provisioner.
+                                  This field will replace the functionality of the dataSource field and as such
+                                  if both fields are non-empty, they must have the same value. For backwards
+                                  compatibility, when namespace isn't specified in dataSourceRef,
+                                  both fields (dataSource and dataSourceRef) will be set to the same
+                                  value automatically if one of them is empty and the other is non-empty.
+                                  When namespace is specified in dataSourceRef,
+                                  dataSource isn't set to the same value and must be empty.
+                                  There are three important differences between dataSource and dataSourceRef:
+                                  * While dataSource only allows two specific types of objects, dataSourceRef
+                                    allows any non-core object, as well as PersistentVolumeClaim objects.
+                                  * While dataSource ignores disallowed values (dropping them), dataSourceRef
+                                    preserves all values, and generates an error if a disallowed value is
+                                    specified.
+                                  * While dataSource only allows local objects, dataSourceRef allows objects
+                                    in any namespaces.
+                                  (Beta) Using this field requires the AnyVolumeDataSource feature gate to be enabled.
+                                  (Alpha) Using the namespace field of dataSourceRef requires the CrossNamespaceVolumeDataSource feature gate to be enabled.
+                                  EOT
                                   "properties" = {
                                     "apiGroup" = {
-                                      "description" = "APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required."
+                                      "description" = <<-EOT
+                                      APIGroup is the group for the resource being referenced.
+                                      If APIGroup is not specified, the specified Kind must be in the core API group.
+                                      For any other third-party types, APIGroup is required.
+                                      EOT
                                       "type" = "string"
                                     }
                                     "kind" = {
@@ -5889,7 +8554,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "type" = "string"
                                     }
                                     "namespace" = {
-                                      "description" = "Namespace is the namespace of resource being referenced Note that when a namespace is specified, a gateway.networking.k8s.io/ReferenceGrant object is required in the referent namespace to allow that namespace's owner to accept the reference. See the ReferenceGrant documentation for details. (Alpha) This field requires the CrossNamespaceVolumeDataSource feature gate to be enabled."
+                                      "description" = <<-EOT
+                                      Namespace is the namespace of resource being referenced
+                                      Note that when a namespace is specified, a gateway.networking.k8s.io/ReferenceGrant object is required in the referent namespace to allow that namespace's owner to accept the reference. See the ReferenceGrant documentation for details.
+                                      (Alpha) This field requires the CrossNamespaceVolumeDataSource feature gate to be enabled.
+                                      EOT
                                       "type" = "string"
                                     }
                                   }
@@ -5900,7 +8569,13 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "type" = "object"
                                 }
                                 "resources" = {
-                                  "description" = "resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources"
+                                  "description" = <<-EOT
+                                  resources represents the minimum resources the volume should have.
+                                  If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements
+                                  that are lower than previous value but must still be higher than capacity recorded in the
+                                  status field of the claim.
+                                  More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources
+                                  EOT
                                   "properties" = {
                                     "limits" = {
                                       "additionalProperties" = {
@@ -5915,7 +8590,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "pattern" = "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
                                         "x-kubernetes-int-or-string" = true
                                       }
-                                      "description" = "Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+                                      "description" = <<-EOT
+                                      Limits describes the maximum amount of compute resources allowed.
+                                      More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                                      EOT
                                       "type" = "object"
                                     }
                                     "requests" = {
@@ -5931,7 +8609,12 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "pattern" = "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
                                         "x-kubernetes-int-or-string" = true
                                       }
-                                      "description" = "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+                                      "description" = <<-EOT
+                                      Requests describes the minimum amount of compute resources required.
+                                      If Requests is omitted for a container, it defaults to Limits if that is explicitly specified,
+                                      otherwise to an implementation-defined value. Requests cannot exceed Limits.
+                                      More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                                      EOT
                                       "type" = "object"
                                     }
                                   }
@@ -5943,18 +8626,29 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "matchExpressions" = {
                                       "description" = "matchExpressions is a list of label selector requirements. The requirements are ANDed."
                                       "items" = {
-                                        "description" = "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                                        "description" = <<-EOT
+                                        A label selector requirement is a selector that contains values, a key, and an operator that
+                                        relates the key and values.
+                                        EOT
                                         "properties" = {
                                           "key" = {
                                             "description" = "key is the label key that the selector applies to."
                                             "type" = "string"
                                           }
                                           "operator" = {
-                                            "description" = "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                                            "description" = <<-EOT
+                                            operator represents a key's relationship to a set of values.
+                                            Valid operators are In, NotIn, Exists and DoesNotExist.
+                                            EOT
                                             "type" = "string"
                                           }
                                           "values" = {
-                                            "description" = "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                                            "description" = <<-EOT
+                                            values is an array of string values. If the operator is In or NotIn,
+                                            the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                            the values array must be empty. This array is replaced during a strategic
+                                            merge patch.
+                                            EOT
                                             "items" = {
                                               "type" = "string"
                                             }
@@ -5973,7 +8667,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "additionalProperties" = {
                                         "type" = "string"
                                       }
-                                      "description" = "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+                                      "description" = <<-EOT
+                                      matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                                      map is equivalent to an element of matchExpressions, whose key field is "key", the
+                                      operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                      EOT
                                       "type" = "object"
                                     }
                                   }
@@ -5981,15 +8679,34 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "x-kubernetes-map-type" = "atomic"
                                 }
                                 "storageClassName" = {
-                                  "description" = "storageClassName is the name of the StorageClass required by the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1"
+                                  "description" = <<-EOT
+                                  storageClassName is the name of the StorageClass required by the claim.
+                                  More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1
+                                  EOT
                                   "type" = "string"
                                 }
                                 "volumeAttributesClassName" = {
-                                  "description" = "volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass will be applied to the claim but it's not allowed to reset this field to empty string once it is set. If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass will be set by the persistentvolume controller if it exists. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#volumeattributesclass (Alpha) Using this field requires the VolumeAttributesClass feature gate to be enabled."
+                                  "description" = <<-EOT
+                                  volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim.
+                                  If specified, the CSI driver will create or update the volume with the attributes defined
+                                  in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName,
+                                  it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass
+                                  will be applied to the claim but it's not allowed to reset this field to empty string once it is set.
+                                  If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass
+                                  will be set by the persistentvolume controller if it exists.
+                                  If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be
+                                  set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource
+                                  exists.
+                                  More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#volumeattributesclass
+                                  (Alpha) Using this field requires the VolumeAttributesClass feature gate to be enabled.
+                                  EOT
                                   "type" = "string"
                                 }
                                 "volumeMode" = {
-                                  "description" = "volumeMode defines what type of volume is required by the claim. Value of Filesystem is implied when not included in claim spec."
+                                  "description" = <<-EOT
+                                  volumeMode defines what type of volume is required by the claim.
+                                  Value of Filesystem is implied when not included in claim spec.
+                                  EOT
                                   "type" = "string"
                                 }
                                 "volumeName" = {
@@ -6003,7 +8720,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                               "description" = "Deprecated: this field is never set."
                               "properties" = {
                                 "accessModes" = {
-                                  "description" = "accessModes contains the actual access modes the volume backing the PVC has. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1"
+                                  "description" = <<-EOT
+                                  accessModes contains the actual access modes the volume backing the PVC has.
+                                  More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1
+                                  EOT
                                   "items" = {
                                     "type" = "string"
                                   }
@@ -6011,14 +8731,52 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 }
                                 "allocatedResourceStatuses" = {
                                   "additionalProperties" = {
-                                    "description" = "When a controller receives persistentvolume claim update with ClaimResourceStatus for a resource that it does not recognizes, then it should ignore that update and let other controllers handle it."
+                                    "description" = <<-EOT
+                                    When a controller receives persistentvolume claim update with ClaimResourceStatus for a resource
+                                    that it does not recognizes, then it should ignore that update and let other controllers
+                                    handle it.
+                                    EOT
                                     "type" = "string"
                                   }
                                   "description" = <<-EOT
-                                  allocatedResourceStatuses stores status of resource being resized for the given PVC. Key names follow standard Kubernetes label syntax. Valid values are either: * Un-prefixed keys: - storage - the capacity of the volume. * Custom resources must use implementation-defined prefixed names such as "example.com/my-custom-resource" Apart from above values - keys that are unprefixed or have kubernetes.io prefix are considered reserved and hence may not be used. 
-                                   ClaimResourceStatus can be in any of following states: - ControllerResizeInProgress: State set when resize controller starts resizing the volume in control-plane. - ControllerResizeFailed: State set when resize has failed in resize controller with a terminal error. - NodeResizePending: State set when resize controller has finished resizing the volume but further resizing of volume is needed on the node. - NodeResizeInProgress: State set when kubelet starts resizing the volume. - NodeResizeFailed: State set when resizing has failed in kubelet with a terminal error. Transient errors don't set NodeResizeFailed. For example: if expanding a PVC for more capacity - this field can be one of the following states: - pvc.status.allocatedResourceStatus['storage'] = "ControllerResizeInProgress" - pvc.status.allocatedResourceStatus['storage'] = "ControllerResizeFailed" - pvc.status.allocatedResourceStatus['storage'] = "NodeResizePending" - pvc.status.allocatedResourceStatus['storage'] = "NodeResizeInProgress" - pvc.status.allocatedResourceStatus['storage'] = "NodeResizeFailed" When this field is not set, it means that no resize operation is in progress for the given PVC. 
-                                   A controller that receives PVC update with previously unknown resourceName or ClaimResourceStatus should ignore the update for the purpose it was designed. For example - a controller that only is responsible for resizing capacity of the volume, should ignore PVC updates that change other valid resources associated with PVC. 
-                                   This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature.
+                                  allocatedResourceStatuses stores status of resource being resized for the given PVC.
+                                  Key names follow standard Kubernetes label syntax. Valid values are either:
+                                  	* Un-prefixed keys:
+                                  		- storage - the capacity of the volume.
+                                  	* Custom resources must use implementation-defined prefixed names such as "example.com/my-custom-resource"
+                                  Apart from above values - keys that are unprefixed or have kubernetes.io prefix are considered
+                                  reserved and hence may not be used.
+                                  
+                                  
+                                  ClaimResourceStatus can be in any of following states:
+                                  	- ControllerResizeInProgress:
+                                  		State set when resize controller starts resizing the volume in control-plane.
+                                  	- ControllerResizeFailed:
+                                  		State set when resize has failed in resize controller with a terminal error.
+                                  	- NodeResizePending:
+                                  		State set when resize controller has finished resizing the volume but further resizing of
+                                  		volume is needed on the node.
+                                  	- NodeResizeInProgress:
+                                  		State set when kubelet starts resizing the volume.
+                                  	- NodeResizeFailed:
+                                  		State set when resizing has failed in kubelet with a terminal error. Transient errors don't set
+                                  		NodeResizeFailed.
+                                  For example: if expanding a PVC for more capacity - this field can be one of the following states:
+                                  	- pvc.status.allocatedResourceStatus['storage'] = "ControllerResizeInProgress"
+                                       - pvc.status.allocatedResourceStatus['storage'] = "ControllerResizeFailed"
+                                       - pvc.status.allocatedResourceStatus['storage'] = "NodeResizePending"
+                                       - pvc.status.allocatedResourceStatus['storage'] = "NodeResizeInProgress"
+                                       - pvc.status.allocatedResourceStatus['storage'] = "NodeResizeFailed"
+                                  When this field is not set, it means that no resize operation is in progress for the given PVC.
+                                  
+                                  
+                                  A controller that receives PVC update with previously unknown resourceName or ClaimResourceStatus
+                                  should ignore the update for the purpose it was designed. For example - a controller that
+                                  only is responsible for resizing capacity of the volume, should ignore PVC updates that change other valid
+                                  resources associated with PVC.
+                                  
+                                  
+                                  This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature.
                                   EOT
                                   "type" = "object"
                                   "x-kubernetes-map-type" = "granular"
@@ -6037,10 +8795,31 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "x-kubernetes-int-or-string" = true
                                   }
                                   "description" = <<-EOT
-                                  allocatedResources tracks the resources allocated to a PVC including its capacity. Key names follow standard Kubernetes label syntax. Valid values are either: * Un-prefixed keys: - storage - the capacity of the volume. * Custom resources must use implementation-defined prefixed names such as "example.com/my-custom-resource" Apart from above values - keys that are unprefixed or have kubernetes.io prefix are considered reserved and hence may not be used. 
-                                   Capacity reported here may be larger than the actual capacity when a volume expansion operation is requested. For storage quota, the larger value from allocatedResources and PVC.spec.resources is used. If allocatedResources is not set, PVC.spec.resources alone is used for quota calculation. If a volume expansion capacity request is lowered, allocatedResources is only lowered if there are no expansion operations in progress and if the actual volume capacity is equal or lower than the requested capacity. 
-                                   A controller that receives PVC update with previously unknown resourceName should ignore the update for the purpose it was designed. For example - a controller that only is responsible for resizing capacity of the volume, should ignore PVC updates that change other valid resources associated with PVC. 
-                                   This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature.
+                                  allocatedResources tracks the resources allocated to a PVC including its capacity.
+                                  Key names follow standard Kubernetes label syntax. Valid values are either:
+                                  	* Un-prefixed keys:
+                                  		- storage - the capacity of the volume.
+                                  	* Custom resources must use implementation-defined prefixed names such as "example.com/my-custom-resource"
+                                  Apart from above values - keys that are unprefixed or have kubernetes.io prefix are considered
+                                  reserved and hence may not be used.
+                                  
+                                  
+                                  Capacity reported here may be larger than the actual capacity when a volume expansion operation
+                                  is requested.
+                                  For storage quota, the larger value from allocatedResources and PVC.spec.resources is used.
+                                  If allocatedResources is not set, PVC.spec.resources alone is used for quota calculation.
+                                  If a volume expansion capacity request is lowered, allocatedResources is only
+                                  lowered if there are no expansion operations in progress and if the actual volume capacity
+                                  is equal or lower than the requested capacity.
+                                  
+                                  
+                                  A controller that receives PVC update with previously unknown resourceName
+                                  should ignore the update for the purpose it was designed. For example - a controller that
+                                  only is responsible for resizing capacity of the volume, should ignore PVC updates that change other valid
+                                  resources associated with PVC.
+                                  
+                                  
+                                  This is an alpha field and requires enabling RecoverVolumeExpansionFailure feature.
                                   EOT
                                   "type" = "object"
                                 }
@@ -6061,7 +8840,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "type" = "object"
                                 }
                                 "conditions" = {
-                                  "description" = "conditions is the current Condition of persistent volume claim. If underlying persistent volume is being resized then the Condition will be set to 'ResizeStarted'."
+                                  "description" = <<-EOT
+                                  conditions is the current Condition of persistent volume claim. If underlying persistent volume is being
+                                  resized then the Condition will be set to 'ResizeStarted'.
+                                  EOT
                                   "items" = {
                                     "description" = "PersistentVolumeClaimCondition contains details about state of pvc"
                                     "properties" = {
@@ -6080,7 +8862,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "string"
                                       }
                                       "reason" = {
-                                        "description" = "reason is a unique, this should be a short, machine understandable string that gives the reason for condition's last transition. If it reports \"ResizeStarted\" that means the underlying persistent volume is being resized."
+                                        "description" = <<-EOT
+                                        reason is a unique, this should be a short, machine understandable string that gives the reason
+                                        for condition's last transition. If it reports "ResizeStarted" that means the underlying
+                                        persistent volume is being resized.
+                                        EOT
                                         "type" = "string"
                                       }
                                       "status" = {
@@ -6100,14 +8886,33 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "type" = "array"
                                 }
                                 "currentVolumeAttributesClassName" = {
-                                  "description" = "currentVolumeAttributesClassName is the current name of the VolumeAttributesClass the PVC is using. When unset, there is no VolumeAttributeClass applied to this PersistentVolumeClaim This is an alpha field and requires enabling VolumeAttributesClass feature."
+                                  "description" = <<-EOT
+                                  currentVolumeAttributesClassName is the current name of the VolumeAttributesClass the PVC is using.
+                                  When unset, there is no VolumeAttributeClass applied to this PersistentVolumeClaim
+                                  This is an alpha field and requires enabling VolumeAttributesClass feature.
+                                  EOT
                                   "type" = "string"
                                 }
                                 "modifyVolumeStatus" = {
-                                  "description" = "ModifyVolumeStatus represents the status object of ControllerModifyVolume operation. When this is unset, there is no ModifyVolume operation being attempted. This is an alpha field and requires enabling VolumeAttributesClass feature."
+                                  "description" = <<-EOT
+                                  ModifyVolumeStatus represents the status object of ControllerModifyVolume operation.
+                                  When this is unset, there is no ModifyVolume operation being attempted.
+                                  This is an alpha field and requires enabling VolumeAttributesClass feature.
+                                  EOT
                                   "properties" = {
                                     "status" = {
-                                      "description" = "status is the status of the ControllerModifyVolume operation. It can be in any of following states: - Pending Pending indicates that the PersistentVolumeClaim cannot be modified due to unmet requirements, such as the specified VolumeAttributesClass not existing. - InProgress InProgress indicates that the volume is being modified. - Infeasible Infeasible indicates that the request has been rejected as invalid by the CSI driver. To resolve the error, a valid VolumeAttributesClass needs to be specified. Note: New statuses can be added in the future. Consumers should check for unknown statuses and fail appropriately."
+                                      "description" = <<-EOT
+                                      status is the status of the ControllerModifyVolume operation. It can be in any of following states:
+                                       - Pending
+                                         Pending indicates that the PersistentVolumeClaim cannot be modified due to unmet requirements, such as
+                                         the specified VolumeAttributesClass not existing.
+                                       - InProgress
+                                         InProgress indicates that the volume is being modified.
+                                       - Infeasible
+                                        Infeasible indicates that the request has been rejected as invalid by the CSI driver. To
+                                      	  resolve the error, a valid VolumeAttributesClass needs to be specified.
+                                      Note: New statuses can be added in the future. Consumers should check for unknown statuses and fail appropriately.
+                                      EOT
                                       "type" = "string"
                                     }
                                     "targetVolumeAttributesClassName" = {
@@ -6134,34 +8939,59 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                       "type" = "object"
                     }
                     "targetLimit" = {
-                      "description" = "TargetLimit defines a limit on the number of scraped targets that will be accepted. Only valid in Prometheus versions 2.45.0 and newer."
+                      "description" = <<-EOT
+                      TargetLimit defines a limit on the number of scraped targets that will be accepted.
+                      Only valid in Prometheus versions 2.45.0 and newer.
+                      EOT
                       "format" = "int64"
                       "type" = "integer"
                     }
                     "tolerations" = {
                       "description" = "Defines the Pods' tolerations if specified."
                       "items" = {
-                        "description" = "The pod this Toleration is attached to tolerates any taint that matches the triple <key,value,effect> using the matching operator <operator>."
+                        "description" = <<-EOT
+                        The pod this Toleration is attached to tolerates any taint that matches
+                        the triple <key,value,effect> using the matching operator <operator>.
+                        EOT
                         "properties" = {
                           "effect" = {
-                            "description" = "Effect indicates the taint effect to match. Empty means match all taint effects. When specified, allowed values are NoSchedule, PreferNoSchedule and NoExecute."
+                            "description" = <<-EOT
+                            Effect indicates the taint effect to match. Empty means match all taint effects.
+                            When specified, allowed values are NoSchedule, PreferNoSchedule and NoExecute.
+                            EOT
                             "type" = "string"
                           }
                           "key" = {
-                            "description" = "Key is the taint key that the toleration applies to. Empty means match all taint keys. If the key is empty, operator must be Exists; this combination means to match all values and all keys."
+                            "description" = <<-EOT
+                            Key is the taint key that the toleration applies to. Empty means match all taint keys.
+                            If the key is empty, operator must be Exists; this combination means to match all values and all keys.
+                            EOT
                             "type" = "string"
                           }
                           "operator" = {
-                            "description" = "Operator represents a key's relationship to the value. Valid operators are Exists and Equal. Defaults to Equal. Exists is equivalent to wildcard for value, so that a pod can tolerate all taints of a particular category."
+                            "description" = <<-EOT
+                            Operator represents a key's relationship to the value.
+                            Valid operators are Exists and Equal. Defaults to Equal.
+                            Exists is equivalent to wildcard for value, so that a pod can
+                            tolerate all taints of a particular category.
+                            EOT
                             "type" = "string"
                           }
                           "tolerationSeconds" = {
-                            "description" = "TolerationSeconds represents the period of time the toleration (which must be of effect NoExecute, otherwise this field is ignored) tolerates the taint. By default, it is not set, which means tolerate the taint forever (do not evict). Zero and negative values will be treated as 0 (evict immediately) by the system."
+                            "description" = <<-EOT
+                            TolerationSeconds represents the period of time the toleration (which must be
+                            of effect NoExecute, otherwise this field is ignored) tolerates the taint. By default,
+                            it is not set, which means tolerate the taint forever (do not evict). Zero and
+                            negative values will be treated as 0 (evict immediately) by the system.
+                            EOT
                             "format" = "int64"
                             "type" = "integer"
                           }
                           "value" = {
-                            "description" = "Value is the taint value the toleration matches to. If the operator is Exists, the value should be empty, otherwise just a regular string."
+                            "description" = <<-EOT
+                            Value is the taint value the toleration matches to.
+                            If the operator is Exists, the value should be empty, otherwise just a regular string.
+                            EOT
                             "type" = "string"
                           }
                         }
@@ -6182,23 +9012,38 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "string"
                           }
                           "labelSelector" = {
-                            "description" = "LabelSelector is used to find matching pods. Pods that match this label selector are counted to determine the number of pods in their corresponding topology domain."
+                            "description" = <<-EOT
+                            LabelSelector is used to find matching pods.
+                            Pods that match this label selector are counted to determine the number of pods
+                            in their corresponding topology domain.
+                            EOT
                             "properties" = {
                               "matchExpressions" = {
                                 "description" = "matchExpressions is a list of label selector requirements. The requirements are ANDed."
                                 "items" = {
-                                  "description" = "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                                  "description" = <<-EOT
+                                  A label selector requirement is a selector that contains values, a key, and an operator that
+                                  relates the key and values.
+                                  EOT
                                   "properties" = {
                                     "key" = {
                                       "description" = "key is the label key that the selector applies to."
                                       "type" = "string"
                                     }
                                     "operator" = {
-                                      "description" = "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                                      "description" = <<-EOT
+                                      operator represents a key's relationship to a set of values.
+                                      Valid operators are In, NotIn, Exists and DoesNotExist.
+                                      EOT
                                       "type" = "string"
                                     }
                                     "values" = {
-                                      "description" = "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                                      "description" = <<-EOT
+                                      values is an array of string values. If the operator is In or NotIn,
+                                      the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                      the values array must be empty. This array is replaced during a strategic
+                                      merge patch.
+                                      EOT
                                       "items" = {
                                         "type" = "string"
                                       }
@@ -6217,7 +9062,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "additionalProperties" = {
                                   "type" = "string"
                                 }
-                                "description" = "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+                                "description" = <<-EOT
+                                matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                                map is equivalent to an element of matchExpressions, whose key field is "key", the
+                                operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                EOT
                                 "type" = "object"
                               }
                             }
@@ -6226,8 +9075,17 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           }
                           "matchLabelKeys" = {
                             "description" = <<-EOT
-                            MatchLabelKeys is a set of pod label keys to select the pods over which spreading will be calculated. The keys are used to lookup values from the incoming pod labels, those key-value labels are ANDed with labelSelector to select the group of existing pods over which spreading will be calculated for the incoming pod. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector. MatchLabelKeys cannot be set when LabelSelector isn't set. Keys that don't exist in the incoming pod labels will be ignored. A null or empty list means only match against labelSelector. 
-                             This is a beta field and requires the MatchLabelKeysInPodTopologySpread feature gate to be enabled (enabled by default).
+                            MatchLabelKeys is a set of pod label keys to select the pods over which
+                            spreading will be calculated. The keys are used to lookup values from the
+                            incoming pod labels, those key-value labels are ANDed with labelSelector
+                            to select the group of existing pods over which spreading will be calculated
+                            for the incoming pod. The same key is forbidden to exist in both MatchLabelKeys and LabelSelector.
+                            MatchLabelKeys cannot be set when LabelSelector isn't set.
+                            Keys that don't exist in the incoming pod labels will
+                            be ignored. A null or empty list means only match against labelSelector.
+                            
+                            
+                            This is a beta field and requires the MatchLabelKeysInPodTopologySpread feature gate to be enabled (enabled by default).
                             EOT
                             "items" = {
                               "type" = "string"
@@ -6236,39 +9094,120 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "x-kubernetes-list-type" = "atomic"
                           }
                           "maxSkew" = {
-                            "description" = "MaxSkew describes the degree to which pods may be unevenly distributed. When `whenUnsatisfiable=DoNotSchedule`, it is the maximum permitted difference between the number of matching pods in the target topology and the global minimum. The global minimum is the minimum number of matching pods in an eligible domain or zero if the number of eligible domains is less than MinDomains. For example, in a 3-zone cluster, MaxSkew is set to 1, and pods with the same labelSelector spread as 2/2/1: In this case, the global minimum is 1. | zone1 | zone2 | zone3 | |  P P  |  P P  |   P   | - if MaxSkew is 1, incoming pod can only be scheduled to zone3 to become 2/2/2; scheduling it onto zone1(zone2) would make the ActualSkew(3-1) on zone1(zone2) violate MaxSkew(1). - if MaxSkew is 2, incoming pod can be scheduled onto any zone. When `whenUnsatisfiable=ScheduleAnyway`, it is used to give higher precedence to topologies that satisfy it. It's a required field. Default value is 1 and 0 is not allowed."
+                            "description" = <<-EOT
+                            MaxSkew describes the degree to which pods may be unevenly distributed.
+                            When `whenUnsatisfiable=DoNotSchedule`, it is the maximum permitted difference
+                            between the number of matching pods in the target topology and the global minimum.
+                            The global minimum is the minimum number of matching pods in an eligible domain
+                            or zero if the number of eligible domains is less than MinDomains.
+                            For example, in a 3-zone cluster, MaxSkew is set to 1, and pods with the same
+                            labelSelector spread as 2/2/1:
+                            In this case, the global minimum is 1.
+                            | zone1 | zone2 | zone3 |
+                            |  P P  |  P P  |   P   |
+                            - if MaxSkew is 1, incoming pod can only be scheduled to zone3 to become 2/2/2;
+                            scheduling it onto zone1(zone2) would make the ActualSkew(3-1) on zone1(zone2)
+                            violate MaxSkew(1).
+                            - if MaxSkew is 2, incoming pod can be scheduled onto any zone.
+                            When `whenUnsatisfiable=ScheduleAnyway`, it is used to give higher precedence
+                            to topologies that satisfy it.
+                            It's a required field. Default value is 1 and 0 is not allowed.
+                            EOT
                             "format" = "int32"
                             "type" = "integer"
                           }
                           "minDomains" = {
                             "description" = <<-EOT
-                            MinDomains indicates a minimum number of eligible domains. When the number of eligible domains with matching topology keys is less than minDomains, Pod Topology Spread treats "global minimum" as 0, and then the calculation of Skew is performed. And when the number of eligible domains with matching topology keys equals or greater than minDomains, this value has no effect on scheduling. As a result, when the number of eligible domains is less than minDomains, scheduler won't schedule more than maxSkew Pods to those domains. If value is nil, the constraint behaves as if MinDomains is equal to 1. Valid values are integers greater than 0. When value is not nil, WhenUnsatisfiable must be DoNotSchedule. 
-                             For example, in a 3-zone cluster, MaxSkew is set to 2, MinDomains is set to 5 and pods with the same labelSelector spread as 2/2/2: | zone1 | zone2 | zone3 | |  P P  |  P P  |  P P  | The number of domains is less than 5(MinDomains), so "global minimum" is treated as 0. In this situation, new pod with the same labelSelector cannot be scheduled, because computed skew will be 3(3 - 0) if new Pod is scheduled to any of the three zones, it will violate MaxSkew. 
-                             This is a beta field and requires the MinDomainsInPodTopologySpread feature gate to be enabled (enabled by default).
+                            MinDomains indicates a minimum number of eligible domains.
+                            When the number of eligible domains with matching topology keys is less than minDomains,
+                            Pod Topology Spread treats "global minimum" as 0, and then the calculation of Skew is performed.
+                            And when the number of eligible domains with matching topology keys equals or greater than minDomains,
+                            this value has no effect on scheduling.
+                            As a result, when the number of eligible domains is less than minDomains,
+                            scheduler won't schedule more than maxSkew Pods to those domains.
+                            If value is nil, the constraint behaves as if MinDomains is equal to 1.
+                            Valid values are integers greater than 0.
+                            When value is not nil, WhenUnsatisfiable must be DoNotSchedule.
+                            
+                            
+                            For example, in a 3-zone cluster, MaxSkew is set to 2, MinDomains is set to 5 and pods with the same
+                            labelSelector spread as 2/2/2:
+                            | zone1 | zone2 | zone3 |
+                            |  P P  |  P P  |  P P  |
+                            The number of domains is less than 5(MinDomains), so "global minimum" is treated as 0.
+                            In this situation, new pod with the same labelSelector cannot be scheduled,
+                            because computed skew will be 3(3 - 0) if new Pod is scheduled to any of the three zones,
+                            it will violate MaxSkew.
+                            
+                            
+                            This is a beta field and requires the MinDomainsInPodTopologySpread feature gate to be enabled (enabled by default).
                             EOT
                             "format" = "int32"
                             "type" = "integer"
                           }
                           "nodeAffinityPolicy" = {
                             "description" = <<-EOT
-                            NodeAffinityPolicy indicates how we will treat Pod's nodeAffinity/nodeSelector when calculating pod topology spread skew. Options are: - Honor: only nodes matching nodeAffinity/nodeSelector are included in the calculations. - Ignore: nodeAffinity/nodeSelector are ignored. All nodes are included in the calculations. 
-                             If this value is nil, the behavior is equivalent to the Honor policy. This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
+                            NodeAffinityPolicy indicates how we will treat Pod's nodeAffinity/nodeSelector
+                            when calculating pod topology spread skew. Options are:
+                            - Honor: only nodes matching nodeAffinity/nodeSelector are included in the calculations.
+                            - Ignore: nodeAffinity/nodeSelector are ignored. All nodes are included in the calculations.
+                            
+                            
+                            If this value is nil, the behavior is equivalent to the Honor policy.
+                            This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
                             EOT
                             "type" = "string"
                           }
                           "nodeTaintsPolicy" = {
                             "description" = <<-EOT
-                            NodeTaintsPolicy indicates how we will treat node taints when calculating pod topology spread skew. Options are: - Honor: nodes without taints, along with tainted nodes for which the incoming pod has a toleration, are included. - Ignore: node taints are ignored. All nodes are included. 
-                             If this value is nil, the behavior is equivalent to the Ignore policy. This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
+                            NodeTaintsPolicy indicates how we will treat node taints when calculating
+                            pod topology spread skew. Options are:
+                            - Honor: nodes without taints, along with tainted nodes for which the incoming pod
+                            has a toleration, are included.
+                            - Ignore: node taints are ignored. All nodes are included.
+                            
+                            
+                            If this value is nil, the behavior is equivalent to the Ignore policy.
+                            This is a beta-level feature default enabled by the NodeInclusionPolicyInPodTopologySpread feature flag.
                             EOT
                             "type" = "string"
                           }
                           "topologyKey" = {
-                            "description" = "TopologyKey is the key of node labels. Nodes that have a label with this key and identical values are considered to be in the same topology. We consider each <key, value> as a \"bucket\", and try to put balanced number of pods into each bucket. We define a domain as a particular instance of a topology. Also, we define an eligible domain as a domain whose nodes meet the requirements of nodeAffinityPolicy and nodeTaintsPolicy. e.g. If TopologyKey is \"kubernetes.io/hostname\", each Node is a domain of that topology. And, if TopologyKey is \"topology.kubernetes.io/zone\", each zone is a domain of that topology. It's a required field."
+                            "description" = <<-EOT
+                            TopologyKey is the key of node labels. Nodes that have a label with this key
+                            and identical values are considered to be in the same topology.
+                            We consider each <key, value> as a "bucket", and try to put balanced number
+                            of pods into each bucket.
+                            We define a domain as a particular instance of a topology.
+                            Also, we define an eligible domain as a domain whose nodes meet the requirements of
+                            nodeAffinityPolicy and nodeTaintsPolicy.
+                            e.g. If TopologyKey is "kubernetes.io/hostname", each Node is a domain of that topology.
+                            And, if TopologyKey is "topology.kubernetes.io/zone", each zone is a domain of that topology.
+                            It's a required field.
+                            EOT
                             "type" = "string"
                           }
                           "whenUnsatisfiable" = {
-                            "description" = "WhenUnsatisfiable indicates how to deal with a pod if it doesn't satisfy the spread constraint. - DoNotSchedule (default) tells the scheduler not to schedule it. - ScheduleAnyway tells the scheduler to schedule the pod in any location, but giving higher precedence to topologies that would help reduce the skew. A constraint is considered \"Unsatisfiable\" for an incoming pod if and only if every possible node assignment for that pod would violate \"MaxSkew\" on some topology. For example, in a 3-zone cluster, MaxSkew is set to 1, and pods with the same labelSelector spread as 3/1/1: | zone1 | zone2 | zone3 | | P P P |   P   |   P   | If WhenUnsatisfiable is set to DoNotSchedule, incoming pod can only be scheduled to zone2(zone3) to become 3/2/1(3/1/2) as ActualSkew(2-1) on zone2(zone3) satisfies MaxSkew(1). In other words, the cluster can still be imbalanced, but scheduler won't make it *more* imbalanced. It's a required field."
+                            "description" = <<-EOT
+                            WhenUnsatisfiable indicates how to deal with a pod if it doesn't satisfy
+                            the spread constraint.
+                            - DoNotSchedule (default) tells the scheduler not to schedule it.
+                            - ScheduleAnyway tells the scheduler to schedule the pod in any location,
+                              but giving higher precedence to topologies that would help reduce the
+                              skew.
+                            A constraint is considered "Unsatisfiable" for an incoming pod
+                            if and only if every possible node assignment for that pod would violate
+                            "MaxSkew" on some topology.
+                            For example, in a 3-zone cluster, MaxSkew is set to 1, and pods with the same
+                            labelSelector spread as 3/1/1:
+                            | zone1 | zone2 | zone3 |
+                            | P P P |   P   |   P   |
+                            If WhenUnsatisfiable is set to DoNotSchedule, incoming pod can only be scheduled
+                            to zone2(zone3) to become 3/2/1(3/1/2) as ActualSkew(2-1) on zone2(zone3) satisfies
+                            MaxSkew(1). In other words, the cluster can still be imbalanced, but scheduler
+                            won't make it *more* imbalanced.
+                            It's a required field.
+                            EOT
                             "type" = "string"
                           }
                         }
@@ -6283,8 +9222,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     }
                     "tracingConfig" = {
                       "description" = <<-EOT
-                      TracingConfig configures tracing in Prometheus. 
-                       This is an *experimental feature*, it may change in any upcoming release in a breaking way.
+                      TracingConfig configures tracing in Prometheus.
+                      
+                      
+                      This is an *experimental feature*, it may change in any upcoming release
+                      in a breaking way.
                       EOT
                       "properties" = {
                         "clientType" = {
@@ -6350,7 +9292,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -6372,7 +9318,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -6404,7 +9354,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -6426,7 +9380,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -6463,7 +9421,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "type" = "string"
                                 }
                                 "name" = {
-                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                  "description" = <<-EOT
+                                  Name of the referent.
+                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                  EOT
                                   "type" = "string"
                                 }
                                 "optional" = {
@@ -6492,25 +9454,41 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     }
                     "version" = {
                       "description" = <<-EOT
-                      Version of Prometheus being deployed. The operator uses this information to generate the Prometheus StatefulSet + configuration files. 
-                       If not specified, the operator assumes the latest upstream version of Prometheus available at the time when the version of the operator was released.
+                      Version of Prometheus being deployed. The operator uses this information
+                      to generate the Prometheus StatefulSet + configuration files.
+                      
+                      
+                      If not specified, the operator assumes the latest upstream version of
+                      Prometheus available at the time when the version of the operator was
+                      released.
                       EOT
                       "type" = "string"
                     }
                     "volumeMounts" = {
                       "description" = <<-EOT
-                      VolumeMounts allows the configuration of additional VolumeMounts. 
-                       VolumeMounts will be appended to other VolumeMounts in the 'prometheus' container, that are generated as a result of StorageSpec objects.
+                      VolumeMounts allows the configuration of additional VolumeMounts.
+                      
+                      
+                      VolumeMounts will be appended to other VolumeMounts in the 'prometheus'
+                      container, that are generated as a result of StorageSpec objects.
                       EOT
                       "items" = {
                         "description" = "VolumeMount describes a mounting of a Volume within a container."
                         "properties" = {
                           "mountPath" = {
-                            "description" = "Path within the container at which the volume should be mounted.  Must not contain ':'."
+                            "description" = <<-EOT
+                            Path within the container at which the volume should be mounted.  Must
+                            not contain ':'.
+                            EOT
                             "type" = "string"
                           }
                           "mountPropagation" = {
-                            "description" = "mountPropagation determines how mounts are propagated from the host to container and the other way around. When not set, MountPropagationNone is used. This field is beta in 1.10."
+                            "description" = <<-EOT
+                            mountPropagation determines how mounts are propagated from the host
+                            to container and the other way around.
+                            When not set, MountPropagationNone is used.
+                            This field is beta in 1.10.
+                            EOT
                             "type" = "string"
                           }
                           "name" = {
@@ -6518,15 +9496,26 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "string"
                           }
                           "readOnly" = {
-                            "description" = "Mounted read-only if true, read-write otherwise (false or unspecified). Defaults to false."
+                            "description" = <<-EOT
+                            Mounted read-only if true, read-write otherwise (false or unspecified).
+                            Defaults to false.
+                            EOT
                             "type" = "boolean"
                           }
                           "subPath" = {
-                            "description" = "Path within the volume from which the container's volume should be mounted. Defaults to \"\" (volume's root)."
+                            "description" = <<-EOT
+                            Path within the volume from which the container's volume should be mounted.
+                            Defaults to "" (volume's root).
+                            EOT
                             "type" = "string"
                           }
                           "subPathExpr" = {
-                            "description" = "Expanded path within the volume from which the container's volume should be mounted. Behaves similarly to SubPath but environment variable references $(VAR_NAME) are expanded using the container's environment. Defaults to \"\" (volume's root). SubPathExpr and SubPath are mutually exclusive."
+                            "description" = <<-EOT
+                            Expanded path within the volume from which the container's volume should be mounted.
+                            Behaves similarly to SubPath but environment variable references $(VAR_NAME) are expanded using the container's environment.
+                            Defaults to "" (volume's root).
+                            SubPathExpr and SubPath are mutually exclusive.
+                            EOT
                             "type" = "string"
                           }
                         }
@@ -6539,28 +9528,53 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                       "type" = "array"
                     }
                     "volumes" = {
-                      "description" = "Volumes allows the configuration of additional volumes on the output StatefulSet definition. Volumes specified will be appended to other volumes that are generated as a result of StorageSpec objects."
+                      "description" = <<-EOT
+                      Volumes allows the configuration of additional volumes on the output
+                      StatefulSet definition. Volumes specified will be appended to other
+                      volumes that are generated as a result of StorageSpec objects.
+                      EOT
                       "items" = {
                         "description" = "Volume represents a named volume in a pod that may be accessed by any container in the pod."
                         "properties" = {
                           "awsElasticBlockStore" = {
-                            "description" = "awsElasticBlockStore represents an AWS Disk resource that is attached to a kubelet's host machine and then exposed to the pod. More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore"
+                            "description" = <<-EOT
+                            awsElasticBlockStore represents an AWS Disk resource that is attached to a
+                            kubelet's host machine and then exposed to the pod.
+                            More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore
+                            EOT
                             "properties" = {
                               "fsType" = {
-                                "description" = "fsType is the filesystem type of the volume that you want to mount. Tip: Ensure that the filesystem type is supported by the host operating system. Examples: \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified. More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore TODO: how do we prevent errors in the filesystem from compromising the machine"
+                                "description" = <<-EOT
+                                fsType is the filesystem type of the volume that you want to mount.
+                                Tip: Ensure that the filesystem type is supported by the host operating system.
+                                Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
+                                More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore
+                                TODO: how do we prevent errors in the filesystem from compromising the machine
+                                EOT
                                 "type" = "string"
                               }
                               "partition" = {
-                                "description" = "partition is the partition in the volume that you want to mount. If omitted, the default is to mount by volume name. Examples: For volume /dev/sda1, you specify the partition as \"1\". Similarly, the volume partition for /dev/sda is \"0\" (or you can leave the property empty)."
+                                "description" = <<-EOT
+                                partition is the partition in the volume that you want to mount.
+                                If omitted, the default is to mount by volume name.
+                                Examples: For volume /dev/sda1, you specify the partition as "1".
+                                Similarly, the volume partition for /dev/sda is "0" (or you can leave the property empty).
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
                               "readOnly" = {
-                                "description" = "readOnly value true will force the readOnly setting in VolumeMounts. More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore"
+                                "description" = <<-EOT
+                                readOnly value true will force the readOnly setting in VolumeMounts.
+                                More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore
+                                EOT
                                 "type" = "boolean"
                               }
                               "volumeID" = {
-                                "description" = "volumeID is unique ID of the persistent disk resource in AWS (Amazon EBS volume). More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore"
+                                "description" = <<-EOT
+                                volumeID is unique ID of the persistent disk resource in AWS (Amazon EBS volume).
+                                More info: https://kubernetes.io/docs/concepts/storage/volumes#awselasticblockstore
+                                EOT
                                 "type" = "string"
                               }
                             }
@@ -6585,7 +9599,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "string"
                               }
                               "fsType" = {
-                                "description" = "fsType is Filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified."
+                                "description" = <<-EOT
+                                fsType is Filesystem type to mount.
+                                Must be a filesystem type supported by the host operating system.
+                                Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
+                                EOT
                                 "type" = "string"
                               }
                               "kind" = {
@@ -6593,7 +9611,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "string"
                               }
                               "readOnly" = {
-                                "description" = "readOnly Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts."
+                                "description" = <<-EOT
+                                readOnly Defaults to false (read/write). ReadOnly here will force
+                                the ReadOnly setting in VolumeMounts.
+                                EOT
                                 "type" = "boolean"
                               }
                             }
@@ -6607,7 +9628,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "description" = "azureFile represents an Azure File Service mount on the host and bind mount to the pod."
                             "properties" = {
                               "readOnly" = {
-                                "description" = "readOnly defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts."
+                                "description" = <<-EOT
+                                readOnly defaults to false (read/write). ReadOnly here will force
+                                the ReadOnly setting in VolumeMounts.
+                                EOT
                                 "type" = "boolean"
                               }
                               "secretName" = {
@@ -6629,7 +9653,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "description" = "cephFS represents a Ceph FS mount on the host that shares a pod's lifetime"
                             "properties" = {
                               "monitors" = {
-                                "description" = "monitors is Required: Monitors is a collection of Ceph monitors More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it"
+                                "description" = <<-EOT
+                                monitors is Required: Monitors is a collection of Ceph monitors
+                                More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it
+                                EOT
                                 "items" = {
                                   "type" = "string"
                                 }
@@ -6640,18 +9667,32 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "string"
                               }
                               "readOnly" = {
-                                "description" = "readOnly is Optional: Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts. More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it"
+                                "description" = <<-EOT
+                                readOnly is Optional: Defaults to false (read/write). ReadOnly here will force
+                                the ReadOnly setting in VolumeMounts.
+                                More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it
+                                EOT
                                 "type" = "boolean"
                               }
                               "secretFile" = {
-                                "description" = "secretFile is Optional: SecretFile is the path to key ring for User, default is /etc/ceph/user.secret More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it"
+                                "description" = <<-EOT
+                                secretFile is Optional: SecretFile is the path to key ring for User, default is /etc/ceph/user.secret
+                                More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it
+                                EOT
                                 "type" = "string"
                               }
                               "secretRef" = {
-                                "description" = "secretRef is Optional: SecretRef is reference to the authentication secret for User, default is empty. More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it"
+                                "description" = <<-EOT
+                                secretRef is Optional: SecretRef is reference to the authentication secret for User, default is empty.
+                                More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it
+                                EOT
                                 "properties" = {
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                 }
@@ -6659,7 +9700,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "x-kubernetes-map-type" = "atomic"
                               }
                               "user" = {
-                                "description" = "user is optional: User is the rados user name, default is admin More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it"
+                                "description" = <<-EOT
+                                user is optional: User is the rados user name, default is admin
+                                More info: https://examples.k8s.io/volumes/cephfs/README.md#how-to-use-it
+                                EOT
                                 "type" = "string"
                               }
                             }
@@ -6669,21 +9713,40 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "object"
                           }
                           "cinder" = {
-                            "description" = "cinder represents a cinder volume attached and mounted on kubelets host machine. More info: https://examples.k8s.io/mysql-cinder-pd/README.md"
+                            "description" = <<-EOT
+                            cinder represents a cinder volume attached and mounted on kubelets host machine.
+                            More info: https://examples.k8s.io/mysql-cinder-pd/README.md
+                            EOT
                             "properties" = {
                               "fsType" = {
-                                "description" = "fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Examples: \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified. More info: https://examples.k8s.io/mysql-cinder-pd/README.md"
+                                "description" = <<-EOT
+                                fsType is the filesystem type to mount.
+                                Must be a filesystem type supported by the host operating system.
+                                Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
+                                More info: https://examples.k8s.io/mysql-cinder-pd/README.md
+                                EOT
                                 "type" = "string"
                               }
                               "readOnly" = {
-                                "description" = "readOnly defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts. More info: https://examples.k8s.io/mysql-cinder-pd/README.md"
+                                "description" = <<-EOT
+                                readOnly defaults to false (read/write). ReadOnly here will force
+                                the ReadOnly setting in VolumeMounts.
+                                More info: https://examples.k8s.io/mysql-cinder-pd/README.md
+                                EOT
                                 "type" = "boolean"
                               }
                               "secretRef" = {
-                                "description" = "secretRef is optional: points to a secret object containing parameters used to connect to OpenStack."
+                                "description" = <<-EOT
+                                secretRef is optional: points to a secret object containing parameters used to connect
+                                to OpenStack.
+                                EOT
                                 "properties" = {
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                 }
@@ -6691,7 +9754,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "x-kubernetes-map-type" = "atomic"
                               }
                               "volumeID" = {
-                                "description" = "volumeID used to identify the volume in cinder. More info: https://examples.k8s.io/mysql-cinder-pd/README.md"
+                                "description" = <<-EOT
+                                volumeID used to identify the volume in cinder.
+                                More info: https://examples.k8s.io/mysql-cinder-pd/README.md
+                                EOT
                                 "type" = "string"
                               }
                             }
@@ -6704,12 +9770,28 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "description" = "configMap represents a configMap that should populate this volume"
                             "properties" = {
                               "defaultMode" = {
-                                "description" = "defaultMode is optional: mode bits used to set permissions on created files by default. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. Defaults to 0644. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
+                                "description" = <<-EOT
+                                defaultMode is optional: mode bits used to set permissions on created files by default.
+                                Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511.
+                                YAML accepts both octal and decimal values, JSON requires decimal values for mode bits.
+                                Defaults to 0644.
+                                Directories within the path are not affected by this setting.
+                                This might be in conflict with other options that affect the file
+                                mode, like fsGroup, and the result can be other mode bits set.
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
                               "items" = {
-                                "description" = "items if unspecified, each key-value pair in the Data field of the referenced ConfigMap will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the ConfigMap, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'."
+                                "description" = <<-EOT
+                                items if unspecified, each key-value pair in the Data field of the referenced
+                                ConfigMap will be projected into the volume as a file whose name is the
+                                key and content is the value. If specified, the listed keys will be
+                                projected into the specified paths, and unlisted keys will not be
+                                present. If a key is specified which is not present in the ConfigMap,
+                                the volume setup will error unless it is marked optional. Paths must be
+                                relative and may not contain the '..' path or start with '..'.
+                                EOT
                                 "items" = {
                                   "description" = "Maps a string key to a path within a volume."
                                   "properties" = {
@@ -6718,12 +9800,24 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "type" = "string"
                                     }
                                     "mode" = {
-                                      "description" = "mode is Optional: mode bits used to set permissions on this file. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
+                                      "description" = <<-EOT
+                                      mode is Optional: mode bits used to set permissions on this file.
+                                      Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511.
+                                      YAML accepts both octal and decimal values, JSON requires decimal values for mode bits.
+                                      If not specified, the volume defaultMode will be used.
+                                      This might be in conflict with other options that affect the file
+                                      mode, like fsGroup, and the result can be other mode bits set.
+                                      EOT
                                       "format" = "int32"
                                       "type" = "integer"
                                     }
                                     "path" = {
-                                      "description" = "path is the relative path of the file to map the key to. May not be an absolute path. May not contain the path element '..'. May not start with the string '..'."
+                                      "description" = <<-EOT
+                                      path is the relative path of the file to map the key to.
+                                      May not be an absolute path.
+                                      May not contain the path element '..'.
+                                      May not start with the string '..'.
+                                      EOT
                                       "type" = "string"
                                     }
                                   }
@@ -6736,7 +9830,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "array"
                               }
                               "name" = {
-                                "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                "description" = <<-EOT
+                                Name of the referent.
+                                More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                TODO: Add other useful fields. apiVersion, kind, uid?
+                                EOT
                                 "type" = "string"
                               }
                               "optional" = {
@@ -6751,18 +9849,35 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "description" = "csi (Container Storage Interface) represents ephemeral storage that is handled by certain external CSI drivers (Beta feature)."
                             "properties" = {
                               "driver" = {
-                                "description" = "driver is the name of the CSI driver that handles this volume. Consult with your admin for the correct name as registered in the cluster."
+                                "description" = <<-EOT
+                                driver is the name of the CSI driver that handles this volume.
+                                Consult with your admin for the correct name as registered in the cluster.
+                                EOT
                                 "type" = "string"
                               }
                               "fsType" = {
-                                "description" = "fsType to mount. Ex. \"ext4\", \"xfs\", \"ntfs\". If not provided, the empty value is passed to the associated CSI driver which will determine the default filesystem to apply."
+                                "description" = <<-EOT
+                                fsType to mount. Ex. "ext4", "xfs", "ntfs".
+                                If not provided, the empty value is passed to the associated CSI driver
+                                which will determine the default filesystem to apply.
+                                EOT
                                 "type" = "string"
                               }
                               "nodePublishSecretRef" = {
-                                "description" = "nodePublishSecretRef is a reference to the secret object containing sensitive information to pass to the CSI driver to complete the CSI NodePublishVolume and NodeUnpublishVolume calls. This field is optional, and  may be empty if no secret is required. If the secret object contains more than one secret, all secret references are passed."
+                                "description" = <<-EOT
+                                nodePublishSecretRef is a reference to the secret object containing
+                                sensitive information to pass to the CSI driver to complete the CSI
+                                NodePublishVolume and NodeUnpublishVolume calls.
+                                This field is optional, and  may be empty if no secret is required. If the
+                                secret object contains more than one secret, all secret references are passed.
+                                EOT
                                 "properties" = {
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                 }
@@ -6770,14 +9885,20 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "x-kubernetes-map-type" = "atomic"
                               }
                               "readOnly" = {
-                                "description" = "readOnly specifies a read-only configuration for the volume. Defaults to false (read/write)."
+                                "description" = <<-EOT
+                                readOnly specifies a read-only configuration for the volume.
+                                Defaults to false (read/write).
+                                EOT
                                 "type" = "boolean"
                               }
                               "volumeAttributes" = {
                                 "additionalProperties" = {
                                   "type" = "string"
                                 }
-                                "description" = "volumeAttributes stores driver-specific properties that are passed to the CSI driver. Consult your driver's documentation for supported values."
+                                "description" = <<-EOT
+                                volumeAttributes stores driver-specific properties that are passed to the CSI
+                                driver. Consult your driver's documentation for supported values.
+                                EOT
                                 "type" = "object"
                               }
                             }
@@ -6790,7 +9911,16 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "description" = "downwardAPI represents downward API about the pod that should populate this volume"
                             "properties" = {
                               "defaultMode" = {
-                                "description" = "Optional: mode bits to use on created files by default. Must be a Optional: mode bits used to set permissions on created files by default. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. Defaults to 0644. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
+                                "description" = <<-EOT
+                                Optional: mode bits to use on created files by default. Must be a
+                                Optional: mode bits used to set permissions on created files by default.
+                                Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511.
+                                YAML accepts both octal and decimal values, JSON requires decimal values for mode bits.
+                                Defaults to 0644.
+                                Directories within the path are not affected by this setting.
+                                This might be in conflict with other options that affect the file
+                                mode, like fsGroup, and the result can be other mode bits set.
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
@@ -6818,7 +9948,14 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "x-kubernetes-map-type" = "atomic"
                                     }
                                     "mode" = {
-                                      "description" = "Optional: mode bits used to set permissions on this file, must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
+                                      "description" = <<-EOT
+                                      Optional: mode bits used to set permissions on this file, must be an octal value
+                                      between 0000 and 0777 or a decimal value between 0 and 511.
+                                      YAML accepts both octal and decimal values, JSON requires decimal values for mode bits.
+                                      If not specified, the volume defaultMode will be used.
+                                      This might be in conflict with other options that affect the file
+                                      mode, like fsGroup, and the result can be other mode bits set.
+                                      EOT
                                       "format" = "int32"
                                       "type" = "integer"
                                     }
@@ -6827,7 +9964,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "type" = "string"
                                     }
                                     "resourceFieldRef" = {
-                                      "description" = "Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, requests.cpu and requests.memory) are currently supported."
+                                      "description" = <<-EOT
+                                      Selects a resource of the container: only resources limits and requests
+                                      (limits.cpu, limits.memory, requests.cpu and requests.memory) are currently supported.
+                                      EOT
                                       "properties" = {
                                         "containerName" = {
                                           "description" = "Container name: required for volumes, optional for env vars"
@@ -6869,10 +10009,18 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "object"
                           }
                           "emptyDir" = {
-                            "description" = "emptyDir represents a temporary directory that shares a pod's lifetime. More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir"
+                            "description" = <<-EOT
+                            emptyDir represents a temporary directory that shares a pod's lifetime.
+                            More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir
+                            EOT
                             "properties" = {
                               "medium" = {
-                                "description" = "medium represents what type of storage medium should back this directory. The default is \"\" which means to use the node's default medium. Must be an empty string (default) or Memory. More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir"
+                                "description" = <<-EOT
+                                medium represents what type of storage medium should back this directory.
+                                The default is "" which means to use the node's default medium.
+                                Must be an empty string (default) or Memory.
+                                More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir
+                                EOT
                                 "type" = "string"
                               }
                               "sizeLimit" = {
@@ -6884,7 +10032,14 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                     "type" = "string"
                                   },
                                 ]
-                                "description" = "sizeLimit is the total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir"
+                                "description" = <<-EOT
+                                sizeLimit is the total amount of local storage required for this EmptyDir volume.
+                                The size limit is also applicable for memory medium.
+                                The maximum usage on memory medium EmptyDir would be the minimum value between
+                                the SizeLimit specified here and the sum of memory limits of all containers in a pod.
+                                The default is nil which means that the limit is undefined.
+                                More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir
+                                EOT
                                 "pattern" = "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
                                 "x-kubernetes-int-or-string" = true
                               }
@@ -6893,40 +10048,108 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                           }
                           "ephemeral" = {
                             "description" = <<-EOT
-                            ephemeral represents a volume that is handled by a cluster storage driver. The volume's lifecycle is tied to the pod that defines it - it will be created before the pod starts, and deleted when the pod is removed. 
-                             Use this if: a) the volume is only needed while the pod runs, b) features of normal volumes like restoring from snapshot or capacity tracking are needed, c) the storage driver is specified through a storage class, and d) the storage driver supports dynamic volume provisioning through a PersistentVolumeClaim (see EphemeralVolumeSource for more information on the connection between this volume type and PersistentVolumeClaim). 
-                             Use PersistentVolumeClaim or one of the vendor-specific APIs for volumes that persist for longer than the lifecycle of an individual pod. 
-                             Use CSI for light-weight local ephemeral volumes if the CSI driver is meant to be used that way - see the documentation of the driver for more information. 
-                             A pod can use both types of ephemeral volumes and persistent volumes at the same time.
+                            ephemeral represents a volume that is handled by a cluster storage driver.
+                            The volume's lifecycle is tied to the pod that defines it - it will be created before the pod starts,
+                            and deleted when the pod is removed.
+                            
+                            
+                            Use this if:
+                            a) the volume is only needed while the pod runs,
+                            b) features of normal volumes like restoring from snapshot or capacity
+                               tracking are needed,
+                            c) the storage driver is specified through a storage class, and
+                            d) the storage driver supports dynamic volume provisioning through
+                               a PersistentVolumeClaim (see EphemeralVolumeSource for more
+                               information on the connection between this volume type
+                               and PersistentVolumeClaim).
+                            
+                            
+                            Use PersistentVolumeClaim or one of the vendor-specific
+                            APIs for volumes that persist for longer than the lifecycle
+                            of an individual pod.
+                            
+                            
+                            Use CSI for light-weight local ephemeral volumes if the CSI driver is meant to
+                            be used that way - see the documentation of the driver for
+                            more information.
+                            
+                            
+                            A pod can use both types of ephemeral volumes and
+                            persistent volumes at the same time.
                             EOT
                             "properties" = {
                               "volumeClaimTemplate" = {
                                 "description" = <<-EOT
-                                Will be used to create a stand-alone PVC to provision the volume. The pod in which this EphemeralVolumeSource is embedded will be the owner of the PVC, i.e. the PVC will be deleted together with the pod.  The name of the PVC will be `<pod name>-<volume name>` where `<volume name>` is the name from the `PodSpec.Volumes` array entry. Pod validation will reject the pod if the concatenated name is not valid for a PVC (for example, too long). 
-                                 An existing PVC with that name that is not owned by the pod will *not* be used for the pod to avoid using an unrelated volume by mistake. Starting the pod is then blocked until the unrelated PVC is removed. If such a pre-created PVC is meant to be used by the pod, the PVC has to updated with an owner reference to the pod once the pod exists. Normally this should not be necessary, but it may be useful when manually reconstructing a broken cluster. 
-                                 This field is read-only and no changes will be made by Kubernetes to the PVC after it has been created. 
-                                 Required, must not be nil.
+                                Will be used to create a stand-alone PVC to provision the volume.
+                                The pod in which this EphemeralVolumeSource is embedded will be the
+                                owner of the PVC, i.e. the PVC will be deleted together with the
+                                pod.  The name of the PVC will be `<pod name>-<volume name>` where
+                                `<volume name>` is the name from the `PodSpec.Volumes` array
+                                entry. Pod validation will reject the pod if the concatenated name
+                                is not valid for a PVC (for example, too long).
+                                
+                                
+                                An existing PVC with that name that is not owned by the pod
+                                will *not* be used for the pod to avoid using an unrelated
+                                volume by mistake. Starting the pod is then blocked until
+                                the unrelated PVC is removed. If such a pre-created PVC is
+                                meant to be used by the pod, the PVC has to updated with an
+                                owner reference to the pod once the pod exists. Normally
+                                this should not be necessary, but it may be useful when
+                                manually reconstructing a broken cluster.
+                                
+                                
+                                This field is read-only and no changes will be made by Kubernetes
+                                to the PVC after it has been created.
+                                
+                                
+                                Required, must not be nil.
                                 EOT
                                 "properties" = {
                                   "metadata" = {
-                                    "description" = "May contain labels and annotations that will be copied into the PVC when creating it. No other fields are allowed and will be rejected during validation."
+                                    "description" = <<-EOT
+                                    May contain labels and annotations that will be copied into the PVC
+                                    when creating it. No other fields are allowed and will be rejected during
+                                    validation.
+                                    EOT
                                     "type" = "object"
                                   }
                                   "spec" = {
-                                    "description" = "The specification for the PersistentVolumeClaim. The entire content is copied unchanged into the PVC that gets created from this template. The same fields as in a PersistentVolumeClaim are also valid here."
+                                    "description" = <<-EOT
+                                    The specification for the PersistentVolumeClaim. The entire content is
+                                    copied unchanged into the PVC that gets created from this
+                                    template. The same fields as in a PersistentVolumeClaim
+                                    are also valid here.
+                                    EOT
                                     "properties" = {
                                       "accessModes" = {
-                                        "description" = "accessModes contains the desired access modes the volume should have. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1"
+                                        "description" = <<-EOT
+                                        accessModes contains the desired access modes the volume should have.
+                                        More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1
+                                        EOT
                                         "items" = {
                                           "type" = "string"
                                         }
                                         "type" = "array"
                                       }
                                       "dataSource" = {
-                                        "description" = "dataSource field can be used to specify either: * An existing VolumeSnapshot object (snapshot.storage.k8s.io/VolumeSnapshot) * An existing PVC (PersistentVolumeClaim) If the provisioner or an external controller can support the specified data source, it will create a new volume based on the contents of the specified data source. When the AnyVolumeDataSource feature gate is enabled, dataSource contents will be copied to dataSourceRef, and dataSourceRef contents will be copied to dataSource when dataSourceRef.namespace is not specified. If the namespace is specified, then dataSourceRef will not be copied to dataSource."
+                                        "description" = <<-EOT
+                                        dataSource field can be used to specify either:
+                                        * An existing VolumeSnapshot object (snapshot.storage.k8s.io/VolumeSnapshot)
+                                        * An existing PVC (PersistentVolumeClaim)
+                                        If the provisioner or an external controller can support the specified data source,
+                                        it will create a new volume based on the contents of the specified data source.
+                                        When the AnyVolumeDataSource feature gate is enabled, dataSource contents will be copied to dataSourceRef,
+                                        and dataSourceRef contents will be copied to dataSource when dataSourceRef.namespace is not specified.
+                                        If the namespace is specified, then dataSourceRef will not be copied to dataSource.
+                                        EOT
                                         "properties" = {
                                           "apiGroup" = {
-                                            "description" = "APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required."
+                                            "description" = <<-EOT
+                                            APIGroup is the group for the resource being referenced.
+                                            If APIGroup is not specified, the specified Kind must be in the core API group.
+                                            For any other third-party types, APIGroup is required.
+                                            EOT
                                             "type" = "string"
                                           }
                                           "kind" = {
@@ -6946,10 +10169,38 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "x-kubernetes-map-type" = "atomic"
                                       }
                                       "dataSourceRef" = {
-                                        "description" = "dataSourceRef specifies the object from which to populate the volume with data, if a non-empty volume is desired. This may be any object from a non-empty API group (non core object) or a PersistentVolumeClaim object. When this field is specified, volume binding will only succeed if the type of the specified object matches some installed volume populator or dynamic provisioner. This field will replace the functionality of the dataSource field and as such if both fields are non-empty, they must have the same value. For backwards compatibility, when namespace isn't specified in dataSourceRef, both fields (dataSource and dataSourceRef) will be set to the same value automatically if one of them is empty and the other is non-empty. When namespace is specified in dataSourceRef, dataSource isn't set to the same value and must be empty. There are three important differences between dataSource and dataSourceRef: * While dataSource only allows two specific types of objects, dataSourceRef allows any non-core object, as well as PersistentVolumeClaim objects. * While dataSource ignores disallowed values (dropping them), dataSourceRef preserves all values, and generates an error if a disallowed value is specified. * While dataSource only allows local objects, dataSourceRef allows objects in any namespaces. (Beta) Using this field requires the AnyVolumeDataSource feature gate to be enabled. (Alpha) Using the namespace field of dataSourceRef requires the CrossNamespaceVolumeDataSource feature gate to be enabled."
+                                        "description" = <<-EOT
+                                        dataSourceRef specifies the object from which to populate the volume with data, if a non-empty
+                                        volume is desired. This may be any object from a non-empty API group (non
+                                        core object) or a PersistentVolumeClaim object.
+                                        When this field is specified, volume binding will only succeed if the type of
+                                        the specified object matches some installed volume populator or dynamic
+                                        provisioner.
+                                        This field will replace the functionality of the dataSource field and as such
+                                        if both fields are non-empty, they must have the same value. For backwards
+                                        compatibility, when namespace isn't specified in dataSourceRef,
+                                        both fields (dataSource and dataSourceRef) will be set to the same
+                                        value automatically if one of them is empty and the other is non-empty.
+                                        When namespace is specified in dataSourceRef,
+                                        dataSource isn't set to the same value and must be empty.
+                                        There are three important differences between dataSource and dataSourceRef:
+                                        * While dataSource only allows two specific types of objects, dataSourceRef
+                                          allows any non-core object, as well as PersistentVolumeClaim objects.
+                                        * While dataSource ignores disallowed values (dropping them), dataSourceRef
+                                          preserves all values, and generates an error if a disallowed value is
+                                          specified.
+                                        * While dataSource only allows local objects, dataSourceRef allows objects
+                                          in any namespaces.
+                                        (Beta) Using this field requires the AnyVolumeDataSource feature gate to be enabled.
+                                        (Alpha) Using the namespace field of dataSourceRef requires the CrossNamespaceVolumeDataSource feature gate to be enabled.
+                                        EOT
                                         "properties" = {
                                           "apiGroup" = {
-                                            "description" = "APIGroup is the group for the resource being referenced. If APIGroup is not specified, the specified Kind must be in the core API group. For any other third-party types, APIGroup is required."
+                                            "description" = <<-EOT
+                                            APIGroup is the group for the resource being referenced.
+                                            If APIGroup is not specified, the specified Kind must be in the core API group.
+                                            For any other third-party types, APIGroup is required.
+                                            EOT
                                             "type" = "string"
                                           }
                                           "kind" = {
@@ -6961,7 +10212,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                             "type" = "string"
                                           }
                                           "namespace" = {
-                                            "description" = "Namespace is the namespace of resource being referenced Note that when a namespace is specified, a gateway.networking.k8s.io/ReferenceGrant object is required in the referent namespace to allow that namespace's owner to accept the reference. See the ReferenceGrant documentation for details. (Alpha) This field requires the CrossNamespaceVolumeDataSource feature gate to be enabled."
+                                            "description" = <<-EOT
+                                            Namespace is the namespace of resource being referenced
+                                            Note that when a namespace is specified, a gateway.networking.k8s.io/ReferenceGrant object is required in the referent namespace to allow that namespace's owner to accept the reference. See the ReferenceGrant documentation for details.
+                                            (Alpha) This field requires the CrossNamespaceVolumeDataSource feature gate to be enabled.
+                                            EOT
                                             "type" = "string"
                                           }
                                         }
@@ -6972,7 +10227,13 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "type" = "object"
                                       }
                                       "resources" = {
-                                        "description" = "resources represents the minimum resources the volume should have. If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements that are lower than previous value but must still be higher than capacity recorded in the status field of the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources"
+                                        "description" = <<-EOT
+                                        resources represents the minimum resources the volume should have.
+                                        If RecoverVolumeExpansionFailure feature is enabled users are allowed to specify resource requirements
+                                        that are lower than previous value but must still be higher than capacity recorded in the
+                                        status field of the claim.
+                                        More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources
+                                        EOT
                                         "properties" = {
                                           "limits" = {
                                             "additionalProperties" = {
@@ -6987,7 +10248,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                               "pattern" = "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
                                               "x-kubernetes-int-or-string" = true
                                             }
-                                            "description" = "Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+                                            "description" = <<-EOT
+                                            Limits describes the maximum amount of compute resources allowed.
+                                            More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                                            EOT
                                             "type" = "object"
                                           }
                                           "requests" = {
@@ -7003,7 +10267,12 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                               "pattern" = "^(\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\\+|-)?(([0-9]+(\\.[0-9]*)?)|(\\.[0-9]+))))?$"
                                               "x-kubernetes-int-or-string" = true
                                             }
-                                            "description" = "Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. Requests cannot exceed Limits. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/"
+                                            "description" = <<-EOT
+                                            Requests describes the minimum amount of compute resources required.
+                                            If Requests is omitted for a container, it defaults to Limits if that is explicitly specified,
+                                            otherwise to an implementation-defined value. Requests cannot exceed Limits.
+                                            More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                                            EOT
                                             "type" = "object"
                                           }
                                         }
@@ -7015,18 +10284,29 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                           "matchExpressions" = {
                                             "description" = "matchExpressions is a list of label selector requirements. The requirements are ANDed."
                                             "items" = {
-                                              "description" = "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                                              "description" = <<-EOT
+                                              A label selector requirement is a selector that contains values, a key, and an operator that
+                                              relates the key and values.
+                                              EOT
                                               "properties" = {
                                                 "key" = {
                                                   "description" = "key is the label key that the selector applies to."
                                                   "type" = "string"
                                                 }
                                                 "operator" = {
-                                                  "description" = "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                                                  "description" = <<-EOT
+                                                  operator represents a key's relationship to a set of values.
+                                                  Valid operators are In, NotIn, Exists and DoesNotExist.
+                                                  EOT
                                                   "type" = "string"
                                                 }
                                                 "values" = {
-                                                  "description" = "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                                                  "description" = <<-EOT
+                                                  values is an array of string values. If the operator is In or NotIn,
+                                                  the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                                  the values array must be empty. This array is replaced during a strategic
+                                                  merge patch.
+                                                  EOT
                                                   "items" = {
                                                     "type" = "string"
                                                   }
@@ -7045,7 +10325,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                             "additionalProperties" = {
                                               "type" = "string"
                                             }
-                                            "description" = "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+                                            "description" = <<-EOT
+                                            matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                                            map is equivalent to an element of matchExpressions, whose key field is "key", the
+                                            operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                            EOT
                                             "type" = "object"
                                           }
                                         }
@@ -7053,15 +10337,34 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                         "x-kubernetes-map-type" = "atomic"
                                       }
                                       "storageClassName" = {
-                                        "description" = "storageClassName is the name of the StorageClass required by the claim. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1"
+                                        "description" = <<-EOT
+                                        storageClassName is the name of the StorageClass required by the claim.
+                                        More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#class-1
+                                        EOT
                                         "type" = "string"
                                       }
                                       "volumeAttributesClassName" = {
-                                        "description" = "volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim. If specified, the CSI driver will create or update the volume with the attributes defined in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName, it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass will be applied to the claim but it's not allowed to reset this field to empty string once it is set. If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass will be set by the persistentvolume controller if it exists. If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource exists. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#volumeattributesclass (Alpha) Using this field requires the VolumeAttributesClass feature gate to be enabled."
+                                        "description" = <<-EOT
+                                        volumeAttributesClassName may be used to set the VolumeAttributesClass used by this claim.
+                                        If specified, the CSI driver will create or update the volume with the attributes defined
+                                        in the corresponding VolumeAttributesClass. This has a different purpose than storageClassName,
+                                        it can be changed after the claim is created. An empty string value means that no VolumeAttributesClass
+                                        will be applied to the claim but it's not allowed to reset this field to empty string once it is set.
+                                        If unspecified and the PersistentVolumeClaim is unbound, the default VolumeAttributesClass
+                                        will be set by the persistentvolume controller if it exists.
+                                        If the resource referred to by volumeAttributesClass does not exist, this PersistentVolumeClaim will be
+                                        set to a Pending state, as reflected by the modifyVolumeStatus field, until such as a resource
+                                        exists.
+                                        More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#volumeattributesclass
+                                        (Alpha) Using this field requires the VolumeAttributesClass feature gate to be enabled.
+                                        EOT
                                         "type" = "string"
                                       }
                                       "volumeMode" = {
-                                        "description" = "volumeMode defines what type of volume is required by the claim. Value of Filesystem is implied when not included in claim spec."
+                                        "description" = <<-EOT
+                                        volumeMode defines what type of volume is required by the claim.
+                                        Value of Filesystem is implied when not included in claim spec.
+                                        EOT
                                         "type" = "string"
                                       }
                                       "volumeName" = {
@@ -7084,7 +10387,12 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "description" = "fc represents a Fibre Channel resource that is attached to a kubelet's host machine and then exposed to the pod."
                             "properties" = {
                               "fsType" = {
-                                "description" = "fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified. TODO: how do we prevent errors in the filesystem from compromising the machine"
+                                "description" = <<-EOT
+                                fsType is the filesystem type to mount.
+                                Must be a filesystem type supported by the host operating system.
+                                Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
+                                TODO: how do we prevent errors in the filesystem from compromising the machine
+                                EOT
                                 "type" = "string"
                               }
                               "lun" = {
@@ -7093,7 +10401,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "integer"
                               }
                               "readOnly" = {
-                                "description" = "readOnly is Optional: Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts."
+                                "description" = <<-EOT
+                                readOnly is Optional: Defaults to false (read/write). ReadOnly here will force
+                                the ReadOnly setting in VolumeMounts.
+                                EOT
                                 "type" = "boolean"
                               }
                               "targetWWNs" = {
@@ -7104,7 +10415,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "array"
                               }
                               "wwids" = {
-                                "description" = "wwids Optional: FC volume world wide identifiers (wwids) Either wwids or combination of targetWWNs and lun must be set, but not both simultaneously."
+                                "description" = <<-EOT
+                                wwids Optional: FC volume world wide identifiers (wwids)
+                                Either wwids or combination of targetWWNs and lun must be set, but not both simultaneously.
+                                EOT
                                 "items" = {
                                   "type" = "string"
                                 }
@@ -7114,14 +10428,21 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "object"
                           }
                           "flexVolume" = {
-                            "description" = "flexVolume represents a generic volume resource that is provisioned/attached using an exec based plugin."
+                            "description" = <<-EOT
+                            flexVolume represents a generic volume resource that is
+                            provisioned/attached using an exec based plugin.
+                            EOT
                             "properties" = {
                               "driver" = {
                                 "description" = "driver is the name of the driver to use for this volume."
                                 "type" = "string"
                               }
                               "fsType" = {
-                                "description" = "fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". The default filesystem depends on FlexVolume script."
+                                "description" = <<-EOT
+                                fsType is the filesystem type to mount.
+                                Must be a filesystem type supported by the host operating system.
+                                Ex. "ext4", "xfs", "ntfs". The default filesystem depends on FlexVolume script.
+                                EOT
                                 "type" = "string"
                               }
                               "options" = {
@@ -7132,14 +10453,27 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "object"
                               }
                               "readOnly" = {
-                                "description" = "readOnly is Optional: defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts."
+                                "description" = <<-EOT
+                                readOnly is Optional: defaults to false (read/write). ReadOnly here will force
+                                the ReadOnly setting in VolumeMounts.
+                                EOT
                                 "type" = "boolean"
                               }
                               "secretRef" = {
-                                "description" = "secretRef is Optional: secretRef is reference to the secret object containing sensitive information to pass to the plugin scripts. This may be empty if no secret object is specified. If the secret object contains more than one secret, all secrets are passed to the plugin scripts."
+                                "description" = <<-EOT
+                                secretRef is Optional: secretRef is reference to the secret object containing
+                                sensitive information to pass to the plugin scripts. This may be
+                                empty if no secret object is specified. If the secret object
+                                contains more than one secret, all secrets are passed to the plugin
+                                scripts.
+                                EOT
                                 "properties" = {
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                 }
@@ -7156,7 +10490,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "description" = "flocker represents a Flocker volume attached to a kubelet's host machine. This depends on the Flocker control service being running"
                             "properties" = {
                               "datasetName" = {
-                                "description" = "datasetName is Name of the dataset stored as metadata -> name on the dataset for Flocker should be considered as deprecated"
+                                "description" = <<-EOT
+                                datasetName is Name of the dataset stored as metadata -> name on the dataset for Flocker
+                                should be considered as deprecated
+                                EOT
                                 "type" = "string"
                               }
                               "datasetUUID" = {
@@ -7167,23 +10504,46 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "object"
                           }
                           "gcePersistentDisk" = {
-                            "description" = "gcePersistentDisk represents a GCE Disk resource that is attached to a kubelet's host machine and then exposed to the pod. More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk"
+                            "description" = <<-EOT
+                            gcePersistentDisk represents a GCE Disk resource that is attached to a
+                            kubelet's host machine and then exposed to the pod.
+                            More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk
+                            EOT
                             "properties" = {
                               "fsType" = {
-                                "description" = "fsType is filesystem type of the volume that you want to mount. Tip: Ensure that the filesystem type is supported by the host operating system. Examples: \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified. More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk TODO: how do we prevent errors in the filesystem from compromising the machine"
+                                "description" = <<-EOT
+                                fsType is filesystem type of the volume that you want to mount.
+                                Tip: Ensure that the filesystem type is supported by the host operating system.
+                                Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
+                                More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk
+                                TODO: how do we prevent errors in the filesystem from compromising the machine
+                                EOT
                                 "type" = "string"
                               }
                               "partition" = {
-                                "description" = "partition is the partition in the volume that you want to mount. If omitted, the default is to mount by volume name. Examples: For volume /dev/sda1, you specify the partition as \"1\". Similarly, the volume partition for /dev/sda is \"0\" (or you can leave the property empty). More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk"
+                                "description" = <<-EOT
+                                partition is the partition in the volume that you want to mount.
+                                If omitted, the default is to mount by volume name.
+                                Examples: For volume /dev/sda1, you specify the partition as "1".
+                                Similarly, the volume partition for /dev/sda is "0" (or you can leave the property empty).
+                                More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
                               "pdName" = {
-                                "description" = "pdName is unique name of the PD resource in GCE. Used to identify the disk in GCE. More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk"
+                                "description" = <<-EOT
+                                pdName is unique name of the PD resource in GCE. Used to identify the disk in GCE.
+                                More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk
+                                EOT
                                 "type" = "string"
                               }
                               "readOnly" = {
-                                "description" = "readOnly here will force the ReadOnly setting in VolumeMounts. Defaults to false. More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk"
+                                "description" = <<-EOT
+                                readOnly here will force the ReadOnly setting in VolumeMounts.
+                                Defaults to false.
+                                More info: https://kubernetes.io/docs/concepts/storage/volumes#gcepersistentdisk
+                                EOT
                                 "type" = "boolean"
                               }
                             }
@@ -7193,10 +10553,20 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "object"
                           }
                           "gitRepo" = {
-                            "description" = "gitRepo represents a git repository at a particular revision. DEPRECATED: GitRepo is deprecated. To provision a container with a git repo, mount an EmptyDir into an InitContainer that clones the repo using git, then mount the EmptyDir into the Pod's container."
+                            "description" = <<-EOT
+                            gitRepo represents a git repository at a particular revision.
+                            DEPRECATED: GitRepo is deprecated. To provision a container with a git repo, mount an
+                            EmptyDir into an InitContainer that clones the repo using git, then mount the EmptyDir
+                            into the Pod's container.
+                            EOT
                             "properties" = {
                               "directory" = {
-                                "description" = "directory is the target directory name. Must not contain or start with '..'.  If '.' is supplied, the volume directory will be the git repository.  Otherwise, if specified, the volume will contain the git repository in the subdirectory with the given name."
+                                "description" = <<-EOT
+                                directory is the target directory name.
+                                Must not contain or start with '..'.  If '.' is supplied, the volume directory will be the
+                                git repository.  Otherwise, if specified, the volume will contain the git repository in
+                                the subdirectory with the given name.
+                                EOT
                                 "type" = "string"
                               }
                               "repository" = {
@@ -7214,18 +10584,31 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "object"
                           }
                           "glusterfs" = {
-                            "description" = "glusterfs represents a Glusterfs mount on the host that shares a pod's lifetime. More info: https://examples.k8s.io/volumes/glusterfs/README.md"
+                            "description" = <<-EOT
+                            glusterfs represents a Glusterfs mount on the host that shares a pod's lifetime.
+                            More info: https://examples.k8s.io/volumes/glusterfs/README.md
+                            EOT
                             "properties" = {
                               "endpoints" = {
-                                "description" = "endpoints is the endpoint name that details Glusterfs topology. More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod"
+                                "description" = <<-EOT
+                                endpoints is the endpoint name that details Glusterfs topology.
+                                More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod
+                                EOT
                                 "type" = "string"
                               }
                               "path" = {
-                                "description" = "path is the Glusterfs volume path. More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod"
+                                "description" = <<-EOT
+                                path is the Glusterfs volume path.
+                                More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod
+                                EOT
                                 "type" = "string"
                               }
                               "readOnly" = {
-                                "description" = "readOnly here will force the Glusterfs volume to be mounted with read-only permissions. Defaults to false. More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod"
+                                "description" = <<-EOT
+                                readOnly here will force the Glusterfs volume to be mounted with read-only permissions.
+                                Defaults to false.
+                                More info: https://examples.k8s.io/volumes/glusterfs/README.md#create-a-pod
+                                EOT
                                 "type" = "boolean"
                               }
                             }
@@ -7236,14 +10619,31 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "object"
                           }
                           "hostPath" = {
-                            "description" = "hostPath represents a pre-existing file or directory on the host machine that is directly exposed to the container. This is generally used for system agents or other privileged things that are allowed to see the host machine. Most containers will NOT need this. More info: https://kubernetes.io/docs/concepts/storage/volumes#hostpath --- TODO(jonesdl) We need to restrict who can use host directory mounts and who can/can not mount host directories as read/write."
+                            "description" = <<-EOT
+                            hostPath represents a pre-existing file or directory on the host
+                            machine that is directly exposed to the container. This is generally
+                            used for system agents or other privileged things that are allowed
+                            to see the host machine. Most containers will NOT need this.
+                            More info: https://kubernetes.io/docs/concepts/storage/volumes#hostpath
+                            ---
+                            TODO(jonesdl) We need to restrict who can use host directory mounts and who can/can not
+                            mount host directories as read/write.
+                            EOT
                             "properties" = {
                               "path" = {
-                                "description" = "path of the directory on the host. If the path is a symlink, it will follow the link to the real path. More info: https://kubernetes.io/docs/concepts/storage/volumes#hostpath"
+                                "description" = <<-EOT
+                                path of the directory on the host.
+                                If the path is a symlink, it will follow the link to the real path.
+                                More info: https://kubernetes.io/docs/concepts/storage/volumes#hostpath
+                                EOT
                                 "type" = "string"
                               }
                               "type" = {
-                                "description" = "type for HostPath Volume Defaults to \"\" More info: https://kubernetes.io/docs/concepts/storage/volumes#hostpath"
+                                "description" = <<-EOT
+                                type for HostPath Volume
+                                Defaults to ""
+                                More info: https://kubernetes.io/docs/concepts/storage/volumes#hostpath
+                                EOT
                                 "type" = "string"
                               }
                             }
@@ -7253,7 +10653,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "object"
                           }
                           "iscsi" = {
-                            "description" = "iscsi represents an ISCSI Disk resource that is attached to a kubelet's host machine and then exposed to the pod. More info: https://examples.k8s.io/volumes/iscsi/README.md"
+                            "description" = <<-EOT
+                            iscsi represents an ISCSI Disk resource that is attached to a
+                            kubelet's host machine and then exposed to the pod.
+                            More info: https://examples.k8s.io/volumes/iscsi/README.md
+                            EOT
                             "properties" = {
                               "chapAuthDiscovery" = {
                                 "description" = "chapAuthDiscovery defines whether support iSCSI Discovery CHAP authentication"
@@ -7264,11 +10668,21 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "boolean"
                               }
                               "fsType" = {
-                                "description" = "fsType is the filesystem type of the volume that you want to mount. Tip: Ensure that the filesystem type is supported by the host operating system. Examples: \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified. More info: https://kubernetes.io/docs/concepts/storage/volumes#iscsi TODO: how do we prevent errors in the filesystem from compromising the machine"
+                                "description" = <<-EOT
+                                fsType is the filesystem type of the volume that you want to mount.
+                                Tip: Ensure that the filesystem type is supported by the host operating system.
+                                Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
+                                More info: https://kubernetes.io/docs/concepts/storage/volumes#iscsi
+                                TODO: how do we prevent errors in the filesystem from compromising the machine
+                                EOT
                                 "type" = "string"
                               }
                               "initiatorName" = {
-                                "description" = "initiatorName is the custom iSCSI Initiator Name. If initiatorName is specified with iscsiInterface simultaneously, new iSCSI interface <target portal>:<volume name> will be created for the connection."
+                                "description" = <<-EOT
+                                initiatorName is the custom iSCSI Initiator Name.
+                                If initiatorName is specified with iscsiInterface simultaneously, new iSCSI interface
+                                <target portal>:<volume name> will be created for the connection.
+                                EOT
                                 "type" = "string"
                               }
                               "iqn" = {
@@ -7276,7 +10690,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "string"
                               }
                               "iscsiInterface" = {
-                                "description" = "iscsiInterface is the interface Name that uses an iSCSI transport. Defaults to 'default' (tcp)."
+                                "description" = <<-EOT
+                                iscsiInterface is the interface Name that uses an iSCSI transport.
+                                Defaults to 'default' (tcp).
+                                EOT
                                 "type" = "string"
                               }
                               "lun" = {
@@ -7285,21 +10702,31 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "integer"
                               }
                               "portals" = {
-                                "description" = "portals is the iSCSI Target Portal List. The portal is either an IP or ip_addr:port if the port is other than default (typically TCP ports 860 and 3260)."
+                                "description" = <<-EOT
+                                portals is the iSCSI Target Portal List. The portal is either an IP or ip_addr:port if the port
+                                is other than default (typically TCP ports 860 and 3260).
+                                EOT
                                 "items" = {
                                   "type" = "string"
                                 }
                                 "type" = "array"
                               }
                               "readOnly" = {
-                                "description" = "readOnly here will force the ReadOnly setting in VolumeMounts. Defaults to false."
+                                "description" = <<-EOT
+                                readOnly here will force the ReadOnly setting in VolumeMounts.
+                                Defaults to false.
+                                EOT
                                 "type" = "boolean"
                               }
                               "secretRef" = {
                                 "description" = "secretRef is the CHAP Secret for iSCSI target and initiator authentication"
                                 "properties" = {
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                 }
@@ -7307,7 +10734,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "x-kubernetes-map-type" = "atomic"
                               }
                               "targetPortal" = {
-                                "description" = "targetPortal is iSCSI Target Portal. The Portal is either an IP or ip_addr:port if the port is other than default (typically TCP ports 860 and 3260)."
+                                "description" = <<-EOT
+                                targetPortal is iSCSI Target Portal. The Portal is either an IP or ip_addr:port if the port
+                                is other than default (typically TCP ports 860 and 3260).
+                                EOT
                                 "type" = "string"
                               }
                             }
@@ -7319,22 +10749,39 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "object"
                           }
                           "name" = {
-                            "description" = "name of the volume. Must be a DNS_LABEL and unique within the pod. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names"
+                            "description" = <<-EOT
+                            name of the volume.
+                            Must be a DNS_LABEL and unique within the pod.
+                            More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                            EOT
                             "type" = "string"
                           }
                           "nfs" = {
-                            "description" = "nfs represents an NFS mount on the host that shares a pod's lifetime More info: https://kubernetes.io/docs/concepts/storage/volumes#nfs"
+                            "description" = <<-EOT
+                            nfs represents an NFS mount on the host that shares a pod's lifetime
+                            More info: https://kubernetes.io/docs/concepts/storage/volumes#nfs
+                            EOT
                             "properties" = {
                               "path" = {
-                                "description" = "path that is exported by the NFS server. More info: https://kubernetes.io/docs/concepts/storage/volumes#nfs"
+                                "description" = <<-EOT
+                                path that is exported by the NFS server.
+                                More info: https://kubernetes.io/docs/concepts/storage/volumes#nfs
+                                EOT
                                 "type" = "string"
                               }
                               "readOnly" = {
-                                "description" = "readOnly here will force the NFS export to be mounted with read-only permissions. Defaults to false. More info: https://kubernetes.io/docs/concepts/storage/volumes#nfs"
+                                "description" = <<-EOT
+                                readOnly here will force the NFS export to be mounted with read-only permissions.
+                                Defaults to false.
+                                More info: https://kubernetes.io/docs/concepts/storage/volumes#nfs
+                                EOT
                                 "type" = "boolean"
                               }
                               "server" = {
-                                "description" = "server is the hostname or IP address of the NFS server. More info: https://kubernetes.io/docs/concepts/storage/volumes#nfs"
+                                "description" = <<-EOT
+                                server is the hostname or IP address of the NFS server.
+                                More info: https://kubernetes.io/docs/concepts/storage/volumes#nfs
+                                EOT
                                 "type" = "string"
                               }
                             }
@@ -7345,14 +10792,24 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "object"
                           }
                           "persistentVolumeClaim" = {
-                            "description" = "persistentVolumeClaimVolumeSource represents a reference to a PersistentVolumeClaim in the same namespace. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims"
+                            "description" = <<-EOT
+                            persistentVolumeClaimVolumeSource represents a reference to a
+                            PersistentVolumeClaim in the same namespace.
+                            More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims
+                            EOT
                             "properties" = {
                               "claimName" = {
-                                "description" = "claimName is the name of a PersistentVolumeClaim in the same namespace as the pod using this volume. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims"
+                                "description" = <<-EOT
+                                claimName is the name of a PersistentVolumeClaim in the same namespace as the pod using this volume.
+                                More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#persistentvolumeclaims
+                                EOT
                                 "type" = "string"
                               }
                               "readOnly" = {
-                                "description" = "readOnly Will force the ReadOnly setting in VolumeMounts. Default false."
+                                "description" = <<-EOT
+                                readOnly Will force the ReadOnly setting in VolumeMounts.
+                                Default false.
+                                EOT
                                 "type" = "boolean"
                               }
                             }
@@ -7365,7 +10822,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "description" = "photonPersistentDisk represents a PhotonController persistent disk attached and mounted on kubelets host machine"
                             "properties" = {
                               "fsType" = {
-                                "description" = "fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified."
+                                "description" = <<-EOT
+                                fsType is the filesystem type to mount.
+                                Must be a filesystem type supported by the host operating system.
+                                Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
+                                EOT
                                 "type" = "string"
                               }
                               "pdID" = {
@@ -7382,11 +10843,18 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "description" = "portworxVolume represents a portworx volume attached and mounted on kubelets host machine"
                             "properties" = {
                               "fsType" = {
-                                "description" = "fSType represents the filesystem type to mount Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\". Implicitly inferred to be \"ext4\" if unspecified."
+                                "description" = <<-EOT
+                                fSType represents the filesystem type to mount
+                                Must be a filesystem type supported by the host operating system.
+                                Ex. "ext4", "xfs". Implicitly inferred to be "ext4" if unspecified.
+                                EOT
                                 "type" = "string"
                               }
                               "readOnly" = {
-                                "description" = "readOnly defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts."
+                                "description" = <<-EOT
+                                readOnly defaults to false (read/write). ReadOnly here will force
+                                the ReadOnly setting in VolumeMounts.
+                                EOT
                                 "type" = "boolean"
                               }
                               "volumeID" = {
@@ -7403,7 +10871,14 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "description" = "projected items for all in one resources secrets, configmaps, and downward API"
                             "properties" = {
                               "defaultMode" = {
-                                "description" = "defaultMode are the mode bits used to set permissions on created files by default. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
+                                "description" = <<-EOT
+                                defaultMode are the mode bits used to set permissions on created files by default.
+                                Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511.
+                                YAML accepts both octal and decimal values, JSON requires decimal values for mode bits.
+                                Directories within the path are not affected by this setting.
+                                This might be in conflict with other options that affect the file
+                                mode, like fsGroup, and the result can be other mode bits set.
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
@@ -7414,30 +10889,58 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "properties" = {
                                     "clusterTrustBundle" = {
                                       "description" = <<-EOT
-                                      ClusterTrustBundle allows a pod to access the `.spec.trustBundle` field of ClusterTrustBundle objects in an auto-updating file. 
-                                       Alpha, gated by the ClusterTrustBundleProjection feature gate. 
-                                       ClusterTrustBundle objects can either be selected by name, or by the combination of signer name and a label selector. 
-                                       Kubelet performs aggressive normalization of the PEM contents written into the pod filesystem.  Esoteric PEM features such as inter-block comments and block headers are stripped.  Certificates are deduplicated. The ordering of certificates within the file is arbitrary, and Kubelet may change the order over time.
+                                      ClusterTrustBundle allows a pod to access the `.spec.trustBundle` field
+                                      of ClusterTrustBundle objects in an auto-updating file.
+                                      
+                                      
+                                      Alpha, gated by the ClusterTrustBundleProjection feature gate.
+                                      
+                                      
+                                      ClusterTrustBundle objects can either be selected by name, or by the
+                                      combination of signer name and a label selector.
+                                      
+                                      
+                                      Kubelet performs aggressive normalization of the PEM contents written
+                                      into the pod filesystem.  Esoteric PEM features such as inter-block
+                                      comments and block headers are stripped.  Certificates are deduplicated.
+                                      The ordering of certificates within the file is arbitrary, and Kubelet
+                                      may change the order over time.
                                       EOT
                                       "properties" = {
                                         "labelSelector" = {
-                                          "description" = "Select all ClusterTrustBundles that match this label selector.  Only has effect if signerName is set.  Mutually-exclusive with name.  If unset, interpreted as \"match nothing\".  If set but empty, interpreted as \"match everything\"."
+                                          "description" = <<-EOT
+                                          Select all ClusterTrustBundles that match this label selector.  Only has
+                                          effect if signerName is set.  Mutually-exclusive with name.  If unset,
+                                          interpreted as "match nothing".  If set but empty, interpreted as "match
+                                          everything".
+                                          EOT
                                           "properties" = {
                                             "matchExpressions" = {
                                               "description" = "matchExpressions is a list of label selector requirements. The requirements are ANDed."
                                               "items" = {
-                                                "description" = "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values."
+                                                "description" = <<-EOT
+                                                A label selector requirement is a selector that contains values, a key, and an operator that
+                                                relates the key and values.
+                                                EOT
                                                 "properties" = {
                                                   "key" = {
                                                     "description" = "key is the label key that the selector applies to."
                                                     "type" = "string"
                                                   }
                                                   "operator" = {
-                                                    "description" = "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                                                    "description" = <<-EOT
+                                                    operator represents a key's relationship to a set of values.
+                                                    Valid operators are In, NotIn, Exists and DoesNotExist.
+                                                    EOT
                                                     "type" = "string"
                                                   }
                                                   "values" = {
-                                                    "description" = "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                                                    "description" = <<-EOT
+                                                    values is an array of string values. If the operator is In or NotIn,
+                                                    the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                                                    the values array must be empty. This array is replaced during a strategic
+                                                    merge patch.
+                                                    EOT
                                                     "items" = {
                                                       "type" = "string"
                                                     }
@@ -7456,7 +10959,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                               "additionalProperties" = {
                                                 "type" = "string"
                                               }
-                                              "description" = "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+                                              "description" = <<-EOT
+                                              matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                                              map is equivalent to an element of matchExpressions, whose key field is "key", the
+                                              operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                              EOT
                                               "type" = "object"
                                             }
                                           }
@@ -7464,11 +10971,20 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                           "x-kubernetes-map-type" = "atomic"
                                         }
                                         "name" = {
-                                          "description" = "Select a single ClusterTrustBundle by object name.  Mutually-exclusive with signerName and labelSelector."
+                                          "description" = <<-EOT
+                                          Select a single ClusterTrustBundle by object name.  Mutually-exclusive
+                                          with signerName and labelSelector.
+                                          EOT
                                           "type" = "string"
                                         }
                                         "optional" = {
-                                          "description" = "If true, don't block pod startup if the referenced ClusterTrustBundle(s) aren't available.  If using name, then the named ClusterTrustBundle is allowed not to exist.  If using signerName, then the combination of signerName and labelSelector is allowed to match zero ClusterTrustBundles."
+                                          "description" = <<-EOT
+                                          If true, don't block pod startup if the referenced ClusterTrustBundle(s)
+                                          aren't available.  If using name, then the named ClusterTrustBundle is
+                                          allowed not to exist.  If using signerName, then the combination of
+                                          signerName and labelSelector is allowed to match zero
+                                          ClusterTrustBundles.
+                                          EOT
                                           "type" = "boolean"
                                         }
                                         "path" = {
@@ -7476,7 +10992,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                           "type" = "string"
                                         }
                                         "signerName" = {
-                                          "description" = "Select all ClusterTrustBundles that match this signer name. Mutually-exclusive with name.  The contents of all selected ClusterTrustBundles will be unified and deduplicated."
+                                          "description" = <<-EOT
+                                          Select all ClusterTrustBundles that match this signer name.
+                                          Mutually-exclusive with name.  The contents of all selected
+                                          ClusterTrustBundles will be unified and deduplicated.
+                                          EOT
                                           "type" = "string"
                                         }
                                       }
@@ -7489,7 +11009,15 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "description" = "configMap information about the configMap data to project"
                                       "properties" = {
                                         "items" = {
-                                          "description" = "items if unspecified, each key-value pair in the Data field of the referenced ConfigMap will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the ConfigMap, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'."
+                                          "description" = <<-EOT
+                                          items if unspecified, each key-value pair in the Data field of the referenced
+                                          ConfigMap will be projected into the volume as a file whose name is the
+                                          key and content is the value. If specified, the listed keys will be
+                                          projected into the specified paths, and unlisted keys will not be
+                                          present. If a key is specified which is not present in the ConfigMap,
+                                          the volume setup will error unless it is marked optional. Paths must be
+                                          relative and may not contain the '..' path or start with '..'.
+                                          EOT
                                           "items" = {
                                             "description" = "Maps a string key to a path within a volume."
                                             "properties" = {
@@ -7498,12 +11026,24 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                                 "type" = "string"
                                               }
                                               "mode" = {
-                                                "description" = "mode is Optional: mode bits used to set permissions on this file. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
+                                                "description" = <<-EOT
+                                                mode is Optional: mode bits used to set permissions on this file.
+                                                Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511.
+                                                YAML accepts both octal and decimal values, JSON requires decimal values for mode bits.
+                                                If not specified, the volume defaultMode will be used.
+                                                This might be in conflict with other options that affect the file
+                                                mode, like fsGroup, and the result can be other mode bits set.
+                                                EOT
                                                 "format" = "int32"
                                                 "type" = "integer"
                                               }
                                               "path" = {
-                                                "description" = "path is the relative path of the file to map the key to. May not be an absolute path. May not contain the path element '..'. May not start with the string '..'."
+                                                "description" = <<-EOT
+                                                path is the relative path of the file to map the key to.
+                                                May not be an absolute path.
+                                                May not contain the path element '..'.
+                                                May not start with the string '..'.
+                                                EOT
                                                 "type" = "string"
                                               }
                                             }
@@ -7516,7 +11056,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                           "type" = "array"
                                         }
                                         "name" = {
-                                          "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                          "description" = <<-EOT
+                                          Name of the referent.
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion, kind, uid?
+                                          EOT
                                           "type" = "string"
                                         }
                                         "optional" = {
@@ -7554,7 +11098,14 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                                 "x-kubernetes-map-type" = "atomic"
                                               }
                                               "mode" = {
-                                                "description" = "Optional: mode bits used to set permissions on this file, must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
+                                                "description" = <<-EOT
+                                                Optional: mode bits used to set permissions on this file, must be an octal value
+                                                between 0000 and 0777 or a decimal value between 0 and 511.
+                                                YAML accepts both octal and decimal values, JSON requires decimal values for mode bits.
+                                                If not specified, the volume defaultMode will be used.
+                                                This might be in conflict with other options that affect the file
+                                                mode, like fsGroup, and the result can be other mode bits set.
+                                                EOT
                                                 "format" = "int32"
                                                 "type" = "integer"
                                               }
@@ -7563,7 +11114,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                                 "type" = "string"
                                               }
                                               "resourceFieldRef" = {
-                                                "description" = "Selects a resource of the container: only resources limits and requests (limits.cpu, limits.memory, requests.cpu and requests.memory) are currently supported."
+                                                "description" = <<-EOT
+                                                Selects a resource of the container: only resources limits and requests
+                                                (limits.cpu, limits.memory, requests.cpu and requests.memory) are currently supported.
+                                                EOT
                                                 "properties" = {
                                                   "containerName" = {
                                                     "description" = "Container name: required for volumes, optional for env vars"
@@ -7608,7 +11162,15 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "description" = "secret information about the secret data to project"
                                       "properties" = {
                                         "items" = {
-                                          "description" = "items if unspecified, each key-value pair in the Data field of the referenced Secret will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the Secret, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'."
+                                          "description" = <<-EOT
+                                          items if unspecified, each key-value pair in the Data field of the referenced
+                                          Secret will be projected into the volume as a file whose name is the
+                                          key and content is the value. If specified, the listed keys will be
+                                          projected into the specified paths, and unlisted keys will not be
+                                          present. If a key is specified which is not present in the Secret,
+                                          the volume setup will error unless it is marked optional. Paths must be
+                                          relative and may not contain the '..' path or start with '..'.
+                                          EOT
                                           "items" = {
                                             "description" = "Maps a string key to a path within a volume."
                                             "properties" = {
@@ -7617,12 +11179,24 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                                 "type" = "string"
                                               }
                                               "mode" = {
-                                                "description" = "mode is Optional: mode bits used to set permissions on this file. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
+                                                "description" = <<-EOT
+                                                mode is Optional: mode bits used to set permissions on this file.
+                                                Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511.
+                                                YAML accepts both octal and decimal values, JSON requires decimal values for mode bits.
+                                                If not specified, the volume defaultMode will be used.
+                                                This might be in conflict with other options that affect the file
+                                                mode, like fsGroup, and the result can be other mode bits set.
+                                                EOT
                                                 "format" = "int32"
                                                 "type" = "integer"
                                               }
                                               "path" = {
-                                                "description" = "path is the relative path of the file to map the key to. May not be an absolute path. May not contain the path element '..'. May not start with the string '..'."
+                                                "description" = <<-EOT
+                                                path is the relative path of the file to map the key to.
+                                                May not be an absolute path.
+                                                May not contain the path element '..'.
+                                                May not start with the string '..'.
+                                                EOT
                                                 "type" = "string"
                                               }
                                             }
@@ -7635,7 +11209,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                           "type" = "array"
                                         }
                                         "name" = {
-                                          "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                          "description" = <<-EOT
+                                          Name of the referent.
+                                          More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                          TODO: Add other useful fields. apiVersion, kind, uid?
+                                          EOT
                                           "type" = "string"
                                         }
                                         "optional" = {
@@ -7650,16 +11228,31 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "description" = "serviceAccountToken is information about the serviceAccountToken data to project"
                                       "properties" = {
                                         "audience" = {
-                                          "description" = "audience is the intended audience of the token. A recipient of a token must identify itself with an identifier specified in the audience of the token, and otherwise should reject the token. The audience defaults to the identifier of the apiserver."
+                                          "description" = <<-EOT
+                                          audience is the intended audience of the token. A recipient of a token
+                                          must identify itself with an identifier specified in the audience of the
+                                          token, and otherwise should reject the token. The audience defaults to the
+                                          identifier of the apiserver.
+                                          EOT
                                           "type" = "string"
                                         }
                                         "expirationSeconds" = {
-                                          "description" = "expirationSeconds is the requested duration of validity of the service account token. As the token approaches expiration, the kubelet volume plugin will proactively rotate the service account token. The kubelet will start trying to rotate the token if the token is older than 80 percent of its time to live or if the token is older than 24 hours.Defaults to 1 hour and must be at least 10 minutes."
+                                          "description" = <<-EOT
+                                          expirationSeconds is the requested duration of validity of the service
+                                          account token. As the token approaches expiration, the kubelet volume
+                                          plugin will proactively rotate the service account token. The kubelet will
+                                          start trying to rotate the token if the token is older than 80 percent of
+                                          its time to live or if the token is older than 24 hours.Defaults to 1 hour
+                                          and must be at least 10 minutes.
+                                          EOT
                                           "format" = "int64"
                                           "type" = "integer"
                                         }
                                         "path" = {
-                                          "description" = "path is the path relative to the mount point of the file to project the token into."
+                                          "description" = <<-EOT
+                                          path is the path relative to the mount point of the file to project the
+                                          token into.
+                                          EOT
                                           "type" = "string"
                                         }
                                       }
@@ -7680,23 +11273,39 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "description" = "quobyte represents a Quobyte mount on the host that shares a pod's lifetime"
                             "properties" = {
                               "group" = {
-                                "description" = "group to map volume access to Default is no group"
+                                "description" = <<-EOT
+                                group to map volume access to
+                                Default is no group
+                                EOT
                                 "type" = "string"
                               }
                               "readOnly" = {
-                                "description" = "readOnly here will force the Quobyte volume to be mounted with read-only permissions. Defaults to false."
+                                "description" = <<-EOT
+                                readOnly here will force the Quobyte volume to be mounted with read-only permissions.
+                                Defaults to false.
+                                EOT
                                 "type" = "boolean"
                               }
                               "registry" = {
-                                "description" = "registry represents a single or multiple Quobyte Registry services specified as a string as host:port pair (multiple entries are separated with commas) which acts as the central registry for volumes"
+                                "description" = <<-EOT
+                                registry represents a single or multiple Quobyte Registry services
+                                specified as a string as host:port pair (multiple entries are separated with commas)
+                                which acts as the central registry for volumes
+                                EOT
                                 "type" = "string"
                               }
                               "tenant" = {
-                                "description" = "tenant owning the given Quobyte volume in the Backend Used with dynamically provisioned Quobyte volumes, value is set by the plugin"
+                                "description" = <<-EOT
+                                tenant owning the given Quobyte volume in the Backend
+                                Used with dynamically provisioned Quobyte volumes, value is set by the plugin
+                                EOT
                                 "type" = "string"
                               }
                               "user" = {
-                                "description" = "user to map volume access to Defaults to serivceaccount user"
+                                "description" = <<-EOT
+                                user to map volume access to
+                                Defaults to serivceaccount user
+                                EOT
                                 "type" = "string"
                               }
                               "volume" = {
@@ -7711,40 +11320,76 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "object"
                           }
                           "rbd" = {
-                            "description" = "rbd represents a Rados Block Device mount on the host that shares a pod's lifetime. More info: https://examples.k8s.io/volumes/rbd/README.md"
+                            "description" = <<-EOT
+                            rbd represents a Rados Block Device mount on the host that shares a pod's lifetime.
+                            More info: https://examples.k8s.io/volumes/rbd/README.md
+                            EOT
                             "properties" = {
                               "fsType" = {
-                                "description" = "fsType is the filesystem type of the volume that you want to mount. Tip: Ensure that the filesystem type is supported by the host operating system. Examples: \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified. More info: https://kubernetes.io/docs/concepts/storage/volumes#rbd TODO: how do we prevent errors in the filesystem from compromising the machine"
+                                "description" = <<-EOT
+                                fsType is the filesystem type of the volume that you want to mount.
+                                Tip: Ensure that the filesystem type is supported by the host operating system.
+                                Examples: "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
+                                More info: https://kubernetes.io/docs/concepts/storage/volumes#rbd
+                                TODO: how do we prevent errors in the filesystem from compromising the machine
+                                EOT
                                 "type" = "string"
                               }
                               "image" = {
-                                "description" = "image is the rados image name. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it"
+                                "description" = <<-EOT
+                                image is the rados image name.
+                                More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
+                                EOT
                                 "type" = "string"
                               }
                               "keyring" = {
-                                "description" = "keyring is the path to key ring for RBDUser. Default is /etc/ceph/keyring. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it"
+                                "description" = <<-EOT
+                                keyring is the path to key ring for RBDUser.
+                                Default is /etc/ceph/keyring.
+                                More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
+                                EOT
                                 "type" = "string"
                               }
                               "monitors" = {
-                                "description" = "monitors is a collection of Ceph monitors. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it"
+                                "description" = <<-EOT
+                                monitors is a collection of Ceph monitors.
+                                More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
+                                EOT
                                 "items" = {
                                   "type" = "string"
                                 }
                                 "type" = "array"
                               }
                               "pool" = {
-                                "description" = "pool is the rados pool name. Default is rbd. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it"
+                                "description" = <<-EOT
+                                pool is the rados pool name.
+                                Default is rbd.
+                                More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
+                                EOT
                                 "type" = "string"
                               }
                               "readOnly" = {
-                                "description" = "readOnly here will force the ReadOnly setting in VolumeMounts. Defaults to false. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it"
+                                "description" = <<-EOT
+                                readOnly here will force the ReadOnly setting in VolumeMounts.
+                                Defaults to false.
+                                More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
+                                EOT
                                 "type" = "boolean"
                               }
                               "secretRef" = {
-                                "description" = "secretRef is name of the authentication secret for RBDUser. If provided overrides keyring. Default is nil. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it"
+                                "description" = <<-EOT
+                                secretRef is name of the authentication secret for RBDUser. If provided
+                                overrides keyring.
+                                Default is nil.
+                                More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
+                                EOT
                                 "properties" = {
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                 }
@@ -7752,7 +11397,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "x-kubernetes-map-type" = "atomic"
                               }
                               "user" = {
-                                "description" = "user is the rados user name. Default is admin. More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it"
+                                "description" = <<-EOT
+                                user is the rados user name.
+                                Default is admin.
+                                More info: https://examples.k8s.io/volumes/rbd/README.md#how-to-use-it
+                                EOT
                                 "type" = "string"
                               }
                             }
@@ -7766,7 +11415,12 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "description" = "scaleIO represents a ScaleIO persistent volume attached and mounted on Kubernetes nodes."
                             "properties" = {
                               "fsType" = {
-                                "description" = "fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". Default is \"xfs\"."
+                                "description" = <<-EOT
+                                fsType is the filesystem type to mount.
+                                Must be a filesystem type supported by the host operating system.
+                                Ex. "ext4", "xfs", "ntfs".
+                                Default is "xfs".
+                                EOT
                                 "type" = "string"
                               }
                               "gateway" = {
@@ -7778,14 +11432,24 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "string"
                               }
                               "readOnly" = {
-                                "description" = "readOnly Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts."
+                                "description" = <<-EOT
+                                readOnly Defaults to false (read/write). ReadOnly here will force
+                                the ReadOnly setting in VolumeMounts.
+                                EOT
                                 "type" = "boolean"
                               }
                               "secretRef" = {
-                                "description" = "secretRef references to the secret for ScaleIO user and other sensitive information. If this is not provided, Login operation will fail."
+                                "description" = <<-EOT
+                                secretRef references to the secret for ScaleIO user and other
+                                sensitive information. If this is not provided, Login operation will fail.
+                                EOT
                                 "properties" = {
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                 }
@@ -7797,7 +11461,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "boolean"
                               }
                               "storageMode" = {
-                                "description" = "storageMode indicates whether the storage for a volume should be ThickProvisioned or ThinProvisioned. Default is ThinProvisioned."
+                                "description" = <<-EOT
+                                storageMode indicates whether the storage for a volume should be ThickProvisioned or ThinProvisioned.
+                                Default is ThinProvisioned.
+                                EOT
                                 "type" = "string"
                               }
                               "storagePool" = {
@@ -7809,7 +11476,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "string"
                               }
                               "volumeName" = {
-                                "description" = "volumeName is the name of a volume already created in the ScaleIO system that is associated with this volume source."
+                                "description" = <<-EOT
+                                volumeName is the name of a volume already created in the ScaleIO system
+                                that is associated with this volume source.
+                                EOT
                                 "type" = "string"
                               }
                             }
@@ -7821,15 +11491,34 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "object"
                           }
                           "secret" = {
-                            "description" = "secret represents a secret that should populate this volume. More info: https://kubernetes.io/docs/concepts/storage/volumes#secret"
+                            "description" = <<-EOT
+                            secret represents a secret that should populate this volume.
+                            More info: https://kubernetes.io/docs/concepts/storage/volumes#secret
+                            EOT
                             "properties" = {
                               "defaultMode" = {
-                                "description" = "defaultMode is Optional: mode bits used to set permissions on created files by default. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. Defaults to 0644. Directories within the path are not affected by this setting. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
+                                "description" = <<-EOT
+                                defaultMode is Optional: mode bits used to set permissions on created files by default.
+                                Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511.
+                                YAML accepts both octal and decimal values, JSON requires decimal values
+                                for mode bits. Defaults to 0644.
+                                Directories within the path are not affected by this setting.
+                                This might be in conflict with other options that affect the file
+                                mode, like fsGroup, and the result can be other mode bits set.
+                                EOT
                                 "format" = "int32"
                                 "type" = "integer"
                               }
                               "items" = {
-                                "description" = "items If unspecified, each key-value pair in the Data field of the referenced Secret will be projected into the volume as a file whose name is the key and content is the value. If specified, the listed keys will be projected into the specified paths, and unlisted keys will not be present. If a key is specified which is not present in the Secret, the volume setup will error unless it is marked optional. Paths must be relative and may not contain the '..' path or start with '..'."
+                                "description" = <<-EOT
+                                items If unspecified, each key-value pair in the Data field of the referenced
+                                Secret will be projected into the volume as a file whose name is the
+                                key and content is the value. If specified, the listed keys will be
+                                projected into the specified paths, and unlisted keys will not be
+                                present. If a key is specified which is not present in the Secret,
+                                the volume setup will error unless it is marked optional. Paths must be
+                                relative and may not contain the '..' path or start with '..'.
+                                EOT
                                 "items" = {
                                   "description" = "Maps a string key to a path within a volume."
                                   "properties" = {
@@ -7838,12 +11527,24 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "type" = "string"
                                     }
                                     "mode" = {
-                                      "description" = "mode is Optional: mode bits used to set permissions on this file. Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511. YAML accepts both octal and decimal values, JSON requires decimal values for mode bits. If not specified, the volume defaultMode will be used. This might be in conflict with other options that affect the file mode, like fsGroup, and the result can be other mode bits set."
+                                      "description" = <<-EOT
+                                      mode is Optional: mode bits used to set permissions on this file.
+                                      Must be an octal value between 0000 and 0777 or a decimal value between 0 and 511.
+                                      YAML accepts both octal and decimal values, JSON requires decimal values for mode bits.
+                                      If not specified, the volume defaultMode will be used.
+                                      This might be in conflict with other options that affect the file
+                                      mode, like fsGroup, and the result can be other mode bits set.
+                                      EOT
                                       "format" = "int32"
                                       "type" = "integer"
                                     }
                                     "path" = {
-                                      "description" = "path is the relative path of the file to map the key to. May not be an absolute path. May not contain the path element '..'. May not start with the string '..'."
+                                      "description" = <<-EOT
+                                      path is the relative path of the file to map the key to.
+                                      May not be an absolute path.
+                                      May not contain the path element '..'.
+                                      May not start with the string '..'.
+                                      EOT
                                       "type" = "string"
                                     }
                                   }
@@ -7860,7 +11561,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "type" = "boolean"
                               }
                               "secretName" = {
-                                "description" = "secretName is the name of the secret in the pod's namespace to use. More info: https://kubernetes.io/docs/concepts/storage/volumes#secret"
+                                "description" = <<-EOT
+                                secretName is the name of the secret in the pod's namespace to use.
+                                More info: https://kubernetes.io/docs/concepts/storage/volumes#secret
+                                EOT
                                 "type" = "string"
                               }
                             }
@@ -7870,18 +11574,32 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "description" = "storageOS represents a StorageOS volume attached and mounted on Kubernetes nodes."
                             "properties" = {
                               "fsType" = {
-                                "description" = "fsType is the filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified."
+                                "description" = <<-EOT
+                                fsType is the filesystem type to mount.
+                                Must be a filesystem type supported by the host operating system.
+                                Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
+                                EOT
                                 "type" = "string"
                               }
                               "readOnly" = {
-                                "description" = "readOnly defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts."
+                                "description" = <<-EOT
+                                readOnly defaults to false (read/write). ReadOnly here will force
+                                the ReadOnly setting in VolumeMounts.
+                                EOT
                                 "type" = "boolean"
                               }
                               "secretRef" = {
-                                "description" = "secretRef specifies the secret to use for obtaining the StorageOS API credentials.  If not specified, default values will be attempted."
+                                "description" = <<-EOT
+                                secretRef specifies the secret to use for obtaining the StorageOS API
+                                credentials.  If not specified, default values will be attempted.
+                                EOT
                                 "properties" = {
                                   "name" = {
-                                    "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    "description" = <<-EOT
+                                    Name of the referent.
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    EOT
                                     "type" = "string"
                                   }
                                 }
@@ -7889,11 +11607,21 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                 "x-kubernetes-map-type" = "atomic"
                               }
                               "volumeName" = {
-                                "description" = "volumeName is the human-readable name of the StorageOS volume.  Volume names are only unique within a namespace."
+                                "description" = <<-EOT
+                                volumeName is the human-readable name of the StorageOS volume.  Volume
+                                names are only unique within a namespace.
+                                EOT
                                 "type" = "string"
                               }
                               "volumeNamespace" = {
-                                "description" = "volumeNamespace specifies the scope of the volume within StorageOS.  If no namespace is specified then the Pod's namespace will be used.  This allows the Kubernetes name scoping to be mirrored within StorageOS for tighter integration. Set VolumeName to any name to override the default behaviour. Set to \"default\" if you are not using namespaces within StorageOS. Namespaces that do not pre-exist within StorageOS will be created."
+                                "description" = <<-EOT
+                                volumeNamespace specifies the scope of the volume within StorageOS.  If no
+                                namespace is specified then the Pod's namespace will be used.  This allows the
+                                Kubernetes name scoping to be mirrored within StorageOS for tighter integration.
+                                Set VolumeName to any name to override the default behaviour.
+                                Set to "default" if you are not using namespaces within StorageOS.
+                                Namespaces that do not pre-exist within StorageOS will be created.
+                                EOT
                                 "type" = "string"
                               }
                             }
@@ -7903,7 +11631,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "description" = "vsphereVolume represents a vSphere volume attached and mounted on kubelets host machine"
                             "properties" = {
                               "fsType" = {
-                                "description" = "fsType is filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified."
+                                "description" = <<-EOT
+                                fsType is filesystem type to mount.
+                                Must be a filesystem type supported by the host operating system.
+                                Ex. "ext4", "xfs", "ntfs". Implicitly inferred to be "ext4" if unspecified.
+                                EOT
                                 "type" = "string"
                               }
                               "storagePolicyID" = {
@@ -7934,9 +11666,13 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                     }
                     "walCompression" = {
                       "description" = <<-EOT
-                      Configures compression of the write-ahead log (WAL) using Snappy. 
-                       WAL compression is enabled by default for Prometheus >= 2.20.0 
-                       Requires Prometheus v2.11.0 and above.
+                      Configures compression of the write-ahead log (WAL) using Snappy.
+                      
+                      
+                      WAL compression is enabled by default for Prometheus >= 2.20.0
+                      
+                      
+                      Requires Prometheus v2.11.0 and above.
                       EOT
                       "type" = "boolean"
                     }
@@ -7950,15 +11686,29 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                               "description" = "List of headers that can be added to HTTP responses."
                               "properties" = {
                                 "contentSecurityPolicy" = {
-                                  "description" = "Set the Content-Security-Policy header to HTTP responses. Unset if blank."
+                                  "description" = <<-EOT
+                                  Set the Content-Security-Policy header to HTTP responses.
+                                  Unset if blank.
+                                  EOT
                                   "type" = "string"
                                 }
                                 "strictTransportSecurity" = {
-                                  "description" = "Set the Strict-Transport-Security header to HTTP responses. Unset if blank. Please make sure that you use this with care as this header might force browsers to load Prometheus and the other applications hosted on the same domain and subdomains over HTTPS. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security"
+                                  "description" = <<-EOT
+                                  Set the Strict-Transport-Security header to HTTP responses.
+                                  Unset if blank.
+                                  Please make sure that you use this with care as this header might force
+                                  browsers to load Prometheus and the other applications hosted on the same
+                                  domain and subdomains over HTTPS.
+                                  https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+                                  EOT
                                   "type" = "string"
                                 }
                                 "xContentTypeOptions" = {
-                                  "description" = "Set the X-Content-Type-Options header to HTTP responses. Unset if blank. Accepted value is nosniff. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options"
+                                  "description" = <<-EOT
+                                  Set the X-Content-Type-Options header to HTTP responses.
+                                  Unset if blank. Accepted value is nosniff.
+                                  https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
+                                  EOT
                                   "enum" = [
                                     "",
                                     "NoSniff",
@@ -7966,7 +11716,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "type" = "string"
                                 }
                                 "xFrameOptions" = {
-                                  "description" = "Set the X-Frame-Options header to HTTP responses. Unset if blank. Accepted values are deny and sameorigin. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options"
+                                  "description" = <<-EOT
+                                  Set the X-Frame-Options header to HTTP responses.
+                                  Unset if blank. Accepted values are deny and sameorigin.
+                                  https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
+                                  EOT
                                   "enum" = [
                                     "",
                                     "Deny",
@@ -7975,21 +11729,32 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "type" = "string"
                                 }
                                 "xXSSProtection" = {
-                                  "description" = "Set the X-XSS-Protection header to all responses. Unset if blank. https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection"
+                                  "description" = <<-EOT
+                                  Set the X-XSS-Protection header to all responses.
+                                  Unset if blank.
+                                  https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
+                                  EOT
                                   "type" = "string"
                                 }
                               }
                               "type" = "object"
                             }
                             "http2" = {
-                              "description" = "Enable HTTP/2 support. Note that HTTP/2 is only supported with TLS. When TLSConfig is not configured, HTTP/2 will be disabled. Whenever the value of the field changes, a rolling update will be triggered."
+                              "description" = <<-EOT
+                              Enable HTTP/2 support. Note that HTTP/2 is only supported with TLS.
+                              When TLSConfig is not configured, HTTP/2 will be disabled.
+                              Whenever the value of the field changes, a rolling update will be triggered.
+                              EOT
                               "type" = "boolean"
                             }
                           }
                           "type" = "object"
                         }
                         "maxConnections" = {
-                          "description" = "Defines the maximum number of simultaneous connections A zero value means that Prometheus doesn't accept any incoming connection."
+                          "description" = <<-EOT
+                          Defines the maximum number of simultaneous connections
+                          A zero value means that Prometheus doesn't accept any incoming connection.
+                          EOT
                           "format" = "int32"
                           "minimum" = 0
                           "type" = "integer"
@@ -8012,7 +11777,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -8034,7 +11803,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -8052,14 +11825,22 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                               "type" = "object"
                             }
                             "cipherSuites" = {
-                              "description" = "List of supported cipher suites for TLS versions up to TLS 1.2. If empty, Go default cipher suites are used. Available cipher suites are documented in the go documentation: https://golang.org/pkg/crypto/tls/#pkg-constants"
+                              "description" = <<-EOT
+                              List of supported cipher suites for TLS versions up to TLS 1.2. If empty,
+                              Go default cipher suites are used. Available cipher suites are documented
+                              in the go documentation: https://golang.org/pkg/crypto/tls/#pkg-constants
+                              EOT
                               "items" = {
                                 "type" = "string"
                               }
                               "type" = "array"
                             }
                             "clientAuthType" = {
-                              "description" = "Server policy for client authentication. Maps to ClientAuth Policies. For more detail on clientAuth options: https://golang.org/pkg/crypto/tls/#ClientAuthType"
+                              "description" = <<-EOT
+                              Server policy for client authentication. Maps to ClientAuth Policies.
+                              For more detail on clientAuth options:
+                              https://golang.org/pkg/crypto/tls/#ClientAuthType
+                              EOT
                               "type" = "string"
                             }
                             "client_ca" = {
@@ -8073,7 +11854,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -8095,7 +11880,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                       "type" = "string"
                                     }
                                     "name" = {
-                                      "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                      "description" = <<-EOT
+                                      Name of the referent.
+                                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                      TODO: Add other useful fields. apiVersion, kind, uid?
+                                      EOT
                                       "type" = "string"
                                     }
                                     "optional" = {
@@ -8113,7 +11902,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                               "type" = "object"
                             }
                             "curvePreferences" = {
-                              "description" = "Elliptic curves that will be used in an ECDHE handshake, in preference order. Available curves are documented in the go documentation: https://golang.org/pkg/crypto/tls/#CurveID"
+                              "description" = <<-EOT
+                              Elliptic curves that will be used in an ECDHE handshake, in preference
+                              order. Available curves are documented in the go documentation:
+                              https://golang.org/pkg/crypto/tls/#CurveID
+                              EOT
                               "items" = {
                                 "type" = "string"
                               }
@@ -8127,7 +11920,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                                   "type" = "string"
                                 }
                                 "name" = {
-                                  "description" = "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                  "description" = <<-EOT
+                                  Name of the referent.
+                                  More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                  TODO: Add other useful fields. apiVersion, kind, uid?
+                                  EOT
                                   "type" = "string"
                                 }
                                 "optional" = {
@@ -8150,7 +11947,12 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                               "type" = "string"
                             }
                             "preferServerCipherSuites" = {
-                              "description" = "Controls whether the server selects the client's most preferred cipher suite, or the server's most preferred cipher suite. If true then the server's preference, as expressed in the order of elements in cipherSuites, is used."
+                              "description" = <<-EOT
+                              Controls whether the server selects the
+                              client's most preferred cipher suite, or the server's most preferred
+                              cipher suite. If true then the server's preference, as expressed in
+                              the order of elements in cipherSuites, is used.
+                              EOT
                               "type" = "boolean"
                             }
                           }
@@ -8167,17 +11969,27 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                   "type" = "object"
                 }
                 "status" = {
-                  "description" = "Most recent observed status of the Prometheus cluster. Read-only. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status"
+                  "description" = <<-EOT
+                  Most recent observed status of the Prometheus cluster. Read-only.
+                  More info:
+                  https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+                  EOT
                   "properties" = {
                     "availableReplicas" = {
-                      "description" = "Total number of available pods (ready for at least minReadySeconds) targeted by this Prometheus deployment."
+                      "description" = <<-EOT
+                      Total number of available pods (ready for at least minReadySeconds)
+                      targeted by this Prometheus deployment.
+                      EOT
                       "format" = "int32"
                       "type" = "integer"
                     }
                     "conditions" = {
                       "description" = "The current state of the Prometheus deployment."
                       "items" = {
-                        "description" = "Condition represents the state of the resources associated with the Prometheus, Alertmanager or ThanosRuler resource."
+                        "description" = <<-EOT
+                        Condition represents the state of the resources associated with the
+                        Prometheus, Alertmanager or ThanosRuler resource.
+                        EOT
                         "properties" = {
                           "lastTransitionTime" = {
                             "description" = "lastTransitionTime is the time of the last update to the current status property."
@@ -8189,7 +12001,13 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "string"
                           }
                           "observedGeneration" = {
-                            "description" = "ObservedGeneration represents the .metadata.generation that the condition was set based upon. For instance, if `.metadata.generation` is currently 12, but the `.status.conditions[].observedGeneration` is 9, the condition is out of date with respect to the current state of the instance."
+                            "description" = <<-EOT
+                            ObservedGeneration represents the .metadata.generation that the
+                            condition was set based upon. For instance, if `.metadata.generation` is
+                            currently 12, but the `.status.conditions[].observedGeneration` is 9, the
+                            condition is out of date with respect to the current state of the
+                            instance.
+                            EOT
                             "format" = "int64"
                             "type" = "integer"
                           }
@@ -8220,11 +12038,17 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                       "x-kubernetes-list-type" = "map"
                     }
                     "paused" = {
-                      "description" = "Represents whether any actions on the underlying managed objects are being performed. Only delete actions will be performed."
+                      "description" = <<-EOT
+                      Represents whether any actions on the underlying managed objects are
+                      being performed. Only delete actions will be performed.
+                      EOT
                       "type" = "boolean"
                     }
                     "replicas" = {
-                      "description" = "Total number of non-terminated pods targeted by this Prometheus deployment (their labels match the selector)."
+                      "description" = <<-EOT
+                      Total number of non-terminated pods targeted by this Prometheus deployment
+                      (their labels match the selector).
+                      EOT
                       "format" = "int32"
                       "type" = "integer"
                     }
@@ -8237,7 +12061,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                       "items" = {
                         "properties" = {
                           "availableReplicas" = {
-                            "description" = "Total number of available pods (ready for at least minReadySeconds) targeted by this shard."
+                            "description" = <<-EOT
+                            Total number of available pods (ready for at least minReadySeconds)
+                            targeted by this shard.
+                            EOT
                             "format" = "int32"
                             "type" = "integer"
                           }
@@ -8256,7 +12083,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                             "type" = "integer"
                           }
                           "updatedReplicas" = {
-                            "description" = "Total number of non-terminated pods targeted by this shard that have the desired spec."
+                            "description" = <<-EOT
+                            Total number of non-terminated pods targeted by this shard
+                            that have the desired spec.
+                            EOT
                             "format" = "int32"
                             "type" = "integer"
                           }
@@ -8287,7 +12117,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusagents_monito
                       "type" = "integer"
                     }
                     "updatedReplicas" = {
-                      "description" = "Total number of non-terminated pods targeted by this Prometheus deployment that have the desired version spec."
+                      "description" = <<-EOT
+                      Total number of non-terminated pods targeted by this Prometheus deployment
+                      that have the desired version spec.
+                      EOT
                       "format" = "int32"
                       "type" = "integer"
                     }

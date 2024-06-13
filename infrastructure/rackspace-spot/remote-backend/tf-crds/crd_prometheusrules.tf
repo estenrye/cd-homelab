@@ -4,8 +4,8 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusrules_monitor
     "kind" = "CustomResourceDefinition"
     "metadata" = {
       "annotations" = {
-        "controller-gen.kubebuilder.io/version" = "v0.13.0"
-        "operator.prometheus.io/version" = "0.73.2"
+        "controller-gen.kubebuilder.io/version" = "v0.14.0"
+        "operator.prometheus.io/version" = "0.74.0"
       }
       "name" = "prometheusrules.monitoring.coreos.com"
     }
@@ -32,11 +32,22 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusrules_monitor
               "description" = "PrometheusRule defines recording and alerting rules for a Prometheus instance"
               "properties" = {
                 "apiVersion" = {
-                  "description" = "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+                  "description" = <<-EOT
+                  APIVersion defines the versioned schema of this representation of an object.
+                  Servers should convert recognized schemas to the latest internal value, and
+                  may reject unrecognized values.
+                  More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+                  EOT
                   "type" = "string"
                 }
                 "kind" = {
-                  "description" = "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+                  "description" = <<-EOT
+                  Kind is a string value representing the REST resource this object represents.
+                  Servers may infer this from the endpoint the client submits requests to.
+                  Cannot be updated.
+                  In CamelCase.
+                  More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+                  EOT
                   "type" = "string"
                 }
                 "metadata" = {
@@ -56,7 +67,11 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusrules_monitor
                             "type" = "string"
                           }
                           "limit" = {
-                            "description" = "Limit the number of alerts an alerting rule and series a recording rule can produce. Limit is supported starting with Prometheus >= 2.31 and Thanos Ruler >= 0.24."
+                            "description" = <<-EOT
+                            Limit the number of alerts an alerting rule and series a recording
+                            rule can produce.
+                            Limit is supported starting with Prometheus >= 2.31 and Thanos Ruler >= 0.24.
+                            EOT
                             "type" = "integer"
                           }
                           "name" = {
@@ -65,24 +80,37 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusrules_monitor
                             "type" = "string"
                           }
                           "partial_response_strategy" = {
-                            "description" = "PartialResponseStrategy is only used by ThanosRuler and will be ignored by Prometheus instances. More info: https://github.com/thanos-io/thanos/blob/main/docs/components/rule.md#partial-response"
+                            "description" = <<-EOT
+                            PartialResponseStrategy is only used by ThanosRuler and will
+                            be ignored by Prometheus instances.
+                            More info: https://github.com/thanos-io/thanos/blob/main/docs/components/rule.md#partial-response
+                            EOT
                             "pattern" = "^(?i)(abort|warn)?$"
                             "type" = "string"
                           }
                           "rules" = {
                             "description" = "List of alerting and recording rules."
                             "items" = {
-                              "description" = "Rule describes an alerting or recording rule See Prometheus documentation: [alerting](https://www.prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) or [recording](https://www.prometheus.io/docs/prometheus/latest/configuration/recording_rules/#recording-rules) rule"
+                              "description" = <<-EOT
+                              Rule describes an alerting or recording rule
+                              See Prometheus documentation: [alerting](https://www.prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) or [recording](https://www.prometheus.io/docs/prometheus/latest/configuration/recording_rules/#recording-rules) rule
+                              EOT
                               "properties" = {
                                 "alert" = {
-                                  "description" = "Name of the alert. Must be a valid label value. Only one of `record` and `alert` must be set."
+                                  "description" = <<-EOT
+                                  Name of the alert. Must be a valid label value.
+                                  Only one of `record` and `alert` must be set.
+                                  EOT
                                   "type" = "string"
                                 }
                                 "annotations" = {
                                   "additionalProperties" = {
                                     "type" = "string"
                                   }
-                                  "description" = "Annotations to add to each alert. Only valid for alerting rules."
+                                  "description" = <<-EOT
+                                  Annotations to add to each alert.
+                                  Only valid for alerting rules.
+                                  EOT
                                   "type" = "object"
                                 }
                                 "expr" = {
@@ -116,7 +144,10 @@ resource "kubernetes_manifest" "customresourcedefinition_prometheusrules_monitor
                                   "type" = "object"
                                 }
                                 "record" = {
-                                  "description" = "Name of the time series to output to. Must be a valid metric name. Only one of `record` and `alert` must be set."
+                                  "description" = <<-EOT
+                                  Name of the time series to output to. Must be a valid metric name.
+                                  Only one of `record` and `alert` must be set.
+                                  EOT
                                   "type" = "string"
                                 }
                               }
