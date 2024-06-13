@@ -13,7 +13,7 @@ terraform {
 
         spot = {
             source = "rackerlabs/spot"
-            version = "0.0.8"
+            version = "0.0.9"
         }
     }
 }
