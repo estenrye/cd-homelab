@@ -3,6 +3,84 @@ grafana:
   # -- Deploy Grafana if enabled. See [upstream readme](https://github.com/grafana/helm-charts/tree/main/charts/grafana#configuration) for full values reference.
   enabled: true
 
+  admin:
+    existingSecret: grafana-admin
+    userKey: username
+    passwordKey: password
+  
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+        - name: 'default'
+          orgId: 1
+          folder: ''
+          folderUid: 'default'
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/default
+        - name: 'gatewayapistate'
+          orgId: 1
+          folder: 'Gateway API State'
+          folderUid: 'gateway-api-state'
+          type: file
+          disableDeletion: true
+          editable: false
+          options:
+            path: /var/lib/grafana/dashboards/gatewayapistate
+  
+  dashboards:
+    gatewayapistate:
+      gatewayclasses:
+        url: https://raw.githubusercontent.com/estenrye/cd-homelab/a163e774aedaf6275fb21d4644b7aabff36dc72c/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/gateway-api-state/gatewayclasses.json
+        datasource: Mimir
+      gateways:
+        url: https://raw.githubusercontent.com/estenrye/cd-homelab/a163e774aedaf6275fb21d4644b7aabff36dc72c/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/gateway-api-state/gateways.json
+        datasource: Mimir
+      grpcroutes:
+        url: https://raw.githubusercontent.com/estenrye/cd-homelab/a163e774aedaf6275fb21d4644b7aabff36dc72c/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/gateway-api-state/grpcroutes.json
+        datasource: Mimir
+      httproutes:
+        url: https://raw.githubusercontent.com/estenrye/cd-homelab/a163e774aedaf6275fb21d4644b7aabff36dc72c/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/gateway-api-state/httproutes.json
+        datasource: Mimir
+      tcproutes:
+        url: https://raw.githubusercontent.com/estenrye/cd-homelab/a163e774aedaf6275fb21d4644b7aabff36dc72c/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/gateway-api-state/tcproutes.json
+        datasource: Mimir
+      udproutes:
+        url: https://raw.githubusercontent.com/estenrye/cd-homelab/a163e774aedaf6275fb21d4644b7aabff36dc72c/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/gateway-api-state/udproutes.json
+        datasource: Mimir
+      tlsroutes:
+        url: https://raw.githubusercontent.com/estenrye/cd-homelab/a163e774aedaf6275fb21d4644b7aabff36dc72c/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/gateway-api-state/tlsroutes.json
+        datasource: Mimir
+    default:
+      # https://grafana.com/grafana/dashboards/11022-envoy-global/
+      envoy-global:
+        gnetId: 11022
+        revision: 1
+        datasource: Mimir
+      # https://grafana.com/grafana/dashboards/6693-envoy-proxy/
+      envoy-proxy:
+        gnetId: 6693
+        revision: 1
+        datasource: Mimir
+      # https://grafana.com/grafana/dashboards/11021-envoy-clusters/
+      envoy-clusters:
+        gnetId: 11021
+        revision: 1
+        datasource: Mimir
+      # https://grafana.com/grafana/dashboards/20842-cert-manager-kubernetes/
+      cert-manager:
+        url: https://raw.githubusercontent.com/estenrye/cd-homelab/a163e774aedaf6275fb21d4644b7aabff36dc72c/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/cert-manager.json
+        datasource: Mimir
+      external-dns:
+        url: https://raw.githubusercontent.com/estenrye/cd-homelab/a163e774aedaf6275fb21d4644b7aabff36dc72c/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/external-dns.json
+        datasource: Mimir
+      onepassword-operator:
+        url: https://raw.githubusercontent.com/estenrye/cd-homelab/a163e774aedaf6275fb21d4644b7aabff36dc72c/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/1password.json
+        datasource: Mimir
+
   # -- Grafana data sources config. Connects to all three by default
   datasources:
     datasources.yaml:

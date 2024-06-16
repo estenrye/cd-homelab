@@ -4,7 +4,7 @@ resource "kubernetes_manifest" "grafana_admin_password" {
     "kind"       = "OnePasswordItem"
     "metadata" = {
       "name"      = "grafana-admin"
-      "namespace" = "monitoring"
+      "namespace" = kubernetes_namespace.grafana_lgtm.metadata.0.name
     }
     "spec" = {
       "itemPath" = var.opitem_grafana_admin_credentials
@@ -12,27 +12,27 @@ resource "kubernetes_manifest" "grafana_admin_password" {
   }
 }
 
-resource helm_release grafana {
-    name = "grafana"
-    namespace = "monitoring"
-    repository = "https://grafana.github.io/helm-charts"
-    chart     = "grafana"
-    version   = "6.16.2"
-    create_namespace = true
-    skip_crds = true
+# resource helm_release grafana {
+#     name = "grafana"
+#     namespace = "monitoring"
+#     repository = "https://grafana.github.io/helm-charts"
+#     chart     = "grafana"
+#     version   = "6.16.2"
+#     create_namespace = true
+#     skip_crds = true
     
-    values = [
-        file("${path.module}/helm/grafana.yaml")
-    ]
-}
+#     values = [
+#         file("${path.module}/helm/grafana.yaml")
+#     ]
+# }
 
 resource "kubernetes_manifest" "reference_grant_grafana" {
     manifest = {
         apiVersion = "gateway.networking.k8s.io/v1alpha2"
         kind = "ReferenceGrant"
         metadata = {
-            name = "grafana"
-            namespace = "monitoring"
+            name = "lgtm-grafana"
+            namespace = kubernetes_namespace.grafana_lgtm.metadata.0.name
         }
         spec = {
             from = [
@@ -77,8 +77,8 @@ resource "kubernetes_manifest" "http_route_grafana" {
                     {
                         group = ""
                         kind = "Service"
-                        name = "grafana"
-                        namespace = "monitoring"
+                        name = "lgtm-grafana"
+                        namespace = kubernetes_namespace.grafana_lgtm.metadata.0.name
                         port = 80
                         weight = 1
                     }
@@ -97,47 +97,47 @@ resource "kubernetes_manifest" "http_route_grafana" {
   }
 }
 
-resource "kubernetes_manifest" "http_route_prometheus" {
-  manifest = {
-    apiVersion = "gateway.networking.k8s.io/v1"
-    kind = "HTTPRoute"
-    metadata = {
-      name = format("prometheus-%s-%s", var.cluster_name, replace(var.top_level_domain, ".", "-"))
-      namespace = resource.kubernetes_manifest.gateway_eg.manifest.metadata.namespace
-    }
-    spec = {
-        parentRefs = [
-            {
-                name = resource.kubernetes_manifest.gateway_eg.manifest.metadata.name
-                namespace = resource.kubernetes_manifest.gateway_eg.manifest.metadata.namespace
-                kind = "Gateway"
-            }
-        ]
-        hostnames = [
-            format("prometheus.%s.%s", var.cluster_name, var.top_level_domain)
-        ]
-        rules = [
-            {
-                backendRefs = [
-                    {
-                        group = ""
-                        kind = "Service"
-                        name = "kube-prometheus-stack-prometheus"
-                        namespace = "monitoring"
-                        port = 9090
-                        weight = 1
-                    }
-                ]
-                matches = [
-                    {
-                        path = {
-                            type = "PathPrefix"
-                            value = "/"
-                        }
-                    }
-                ]
-            }
-        ]
-    }
-  }
-}
+# resource "kubernetes_manifest" "http_route_prometheus" {
+#   manifest = {
+#     apiVersion = "gateway.networking.k8s.io/v1"
+#     kind = "HTTPRoute"
+#     metadata = {
+#       name = format("prometheus-%s-%s", var.cluster_name, replace(var.top_level_domain, ".", "-"))
+#       namespace = resource.kubernetes_manifest.gateway_eg.manifest.metadata.namespace
+#     }
+#     spec = {
+#         parentRefs = [
+#             {
+#                 name = resource.kubernetes_manifest.gateway_eg.manifest.metadata.name
+#                 namespace = resource.kubernetes_manifest.gateway_eg.manifest.metadata.namespace
+#                 kind = "Gateway"
+#             }
+#         ]
+#         hostnames = [
+#             format("prometheus.%s.%s", var.cluster_name, var.top_level_domain)
+#         ]
+#         rules = [
+#             {
+#                 backendRefs = [
+#                     {
+#                         group = ""
+#                         kind = "Service"
+#                         name = "kube-prometheus-stack-prometheus"
+#                         namespace = "monitoring"
+#                         port = 9090
+#                         weight = 1
+#                     }
+#                 ]
+#                 matches = [
+#                     {
+#                         path = {
+#                             type = "PathPrefix"
+#                             value = "/"
+#                         }
+#                     }
+#                 ]
+#             }
+#         ]
+#     }
+#   }
+# }
