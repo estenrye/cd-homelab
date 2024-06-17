@@ -13,7 +13,7 @@ resource helm_release open_feature_operator {
   create_namespace = true
   skip_crds = true
   
-#   values = [
-#     file("${path.module}/helm/open-feature-operator.yaml")
-#   ]
-# }
+  values = [
+    file("${path.module}/helm/open-feature-operator.yaml")
+  ]
+}
