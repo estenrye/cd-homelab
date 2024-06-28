@@ -46,16 +46,56 @@ resource "helm_release" "grafana_pyroscope" {
   ]
 }
 
-resource "helm_release" "grafana_alloy" {
-  name = "alloy"
+resource "helm_release" "k8s_monitoring" {
+  name = "k8s-monitoring"
   namespace = kubernetes_namespace.grafana_lgtm.metadata.0.name
   repository = "https://grafana.github.io/helm-charts"
-  chart     = "alloy"
-  version   = "0.2.0"
+  chart     = "k8s-monitoring"
+  version   = "1.2.1"
   create_namespace = true
-  skip_crds = true
+  skip_crds = false
   
   values = [
-    file("${path.module}/helm/grafana-alloy.yaml")
+    file("${path.module}/helm/k8s-monitoring.yaml")
   ]
+
+  set {
+    name = "cluster.name"
+    value = var.cluster_name
+  }
+
+  set {
+    name = "externalServices.prometheus.host"
+    value = format("http://%s-mimir-distributor:9095", helm_release.grafana_lgtm.name)
+  }
+
+  set {
+    name = "externalServices.loki.host"
+    value = format("http://%s-loki-distributor:9095", helm_release.grafana_lgtm.name)
+  }
+
+  set {
+    name = "externalServices.tempo.host"
+    value = format("http://%s-tempo-distributor:9095", helm_release.grafana_lgtm.name)
+  }
+  
+  set {
+    name = "externalServices.pyroscope.host"
+    value = "http://pyroscope-distributor:4040"
+  }
+
 }
+
+# resource "helm_release" "grafana_alloy" {
+#   name = "alloy"
+#   namespace = kubernetes_namespace.grafana_lgtm.metadata.0.name
+#   repository = "https://grafana.github.io/helm-charts"
+#   chart     = "alloy"
+#   version   = "0.2.0"
+#   create_namespace = true
+#   skip_crds = true
+  
+#   values = [
+#     file("${path.module}/helm/grafana-alloy.yaml")
+#   ]
+# }

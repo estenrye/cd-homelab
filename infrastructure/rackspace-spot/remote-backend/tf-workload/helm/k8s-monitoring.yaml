@@ -1,0 +1,50 @@
+externalServices:
+  prometheus:
+    authMode: none
+    secret:
+      create: false
+      name: k8s-monitoring-prometheus
+      namespace: grafana-lgtm
+  loki:
+    authMode: none
+    secret:
+      create: false
+      name: k8s-monitoring-loki
+      namespace: grafana-lgtm
+  tempo:
+    authMode: none
+    secret:
+      create: false
+      name: k8s-monitoring-tempo
+      namespace: grafana-lgtm
+  pyroscope:
+    authMode: none
+    secret:
+      create: false
+      name: k8s-monitoring-pyroscope
+      namespace: grafana-lgtm
+
+apiserver:
+  enabled: true
+
+kubeControllerManager:
+  enabled: true
+
+kubeProxy:
+  enabled: true
+
+kubeScheduler:
+  enabled: true
+
+journal:
+  enabled: true
+
+traces:
+  enabled: true
+
+profiles:
+  enabled: true
+
+
+zipkin:
+  enabled: false
