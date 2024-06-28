@@ -114,6 +114,14 @@ grafana:
               datasourceUid: prom
             serviceMap:
               datasourceUid: prom
+        - name: Pyroscope
+          uid: pyroscope
+          type: pyroscope
+          url: http://pyroscope-query-frontend:4040
+          isDefault: false
+          jsonData:
+            querying:
+              backendType: Phlare
 
 loki:
   # -- Deploy Loki if enabled. See [upstream readme](https://github.com/grafana/helm-charts/tree/main/charts/loki-distributed#values) for full values reference.
