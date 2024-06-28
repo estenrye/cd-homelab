@@ -4,6 +4,6 @@ resource "helm_release" "kubernetes_replicator" {
   repository = "https://helm.mittwald.de"
   chart     = "kubernetes-replicator"
   version   = "2.9.2"
-  create_namespace = true
+  create_namespace = false
   skip_crds = true
 }

@@ -1,16 +1,10 @@
-resource kubernetes_namespace "envoy_gateway_system" {
-    metadata {
-        name = "envoy-gateway-system"
-    }
-}
-
 resource kubernetes_manifest "issuer_envoy_selfsigned" {
     manifest = {
         apiVersion = "cert-manager.io/v1"
         kind       = "Issuer"
         metadata = {
             name = "envoy-selfsigned-issuer"
-            namespace = "envoy-gateway-system"
+            namespace = kubernetes_namespace.namespace["envoy_gateway_system"].metadata[0].name
         }
         spec = {
             selfSigned = {}
@@ -24,7 +18,7 @@ resource kubernetes_manifest "certificate_envoy_gateway_ca" {
         kind       = "Certificate"
         metadata = {
             name = "envoy-gateway-ca"
-            namespace = "envoy-gateway-system"
+            namespace = kubernetes_namespace.namespace["envoy_gateway_system"].metadata[0].name
         }
         spec = {
             isCA = true
@@ -52,7 +46,7 @@ resource kubernetes_manifest "issuer_eg_issuer" {
         kind       = "Issuer"
         metadata = {
             name = "eg-issuer"
-            namespace = "envoy-gateway-system"
+            namespace = kubernetes_namespace.namespace["envoy_gateway_system"].metadata[0].name
         }
         spec = {
             ca = {
@@ -68,7 +62,7 @@ resource "kubernetes_manifest" "certificate_envoy_gateway" {
         kind       = "Certificate"
         metadata = {
             name = "envoy-gateway"
-            namespace = "envoy-gateway-system"
+            namespace = kubernetes_namespace.namespace["envoy_gateway_system"].metadata[0].name
             labels = {
                 "app.kubernetes.io/name" = "envoy-gateway"
             }
@@ -110,7 +104,7 @@ resource "kubernetes_manifest" "certificate_envoy" {
         kind       = "Certificate"
         metadata = {
             name = "envoy"
-            namespace = "envoy-gateway-system"
+            namespace = kubernetes_namespace.namespace["envoy_gateway_system"].metadata[0].name
             labels = {
                 "app.kubernetes.io/name" = "envoy"
             }
@@ -149,7 +143,7 @@ resource kubernetes_manifest "certificate_envoy_rate_limit" {
         kind       = "Certificate"
         metadata = {
             name = "envoy-rate-limit"
-            namespace = "envoy-gateway-system"
+            namespace = kubernetes_namespace.namespace["envoy_gateway_system"].metadata[0].name
             labels = {
                 "app.kubernetes.io/name" = "envoy-rate-limit"
             }
@@ -187,7 +181,7 @@ resource kubernetes_manifest "certificate_envoy_rate_limit" {
 
 resource "helm_release" "envoy_gateway_system" {
   name = "envoy-gateway-system"
-  namespace = "envoy-gateway-system"
+  namespace = kubernetes_namespace.namespace["envoy_gateway_system"].metadata[0].name
   repository = "oci://docker.io/envoyproxy"
   chart     = "gateway-helm"
   version   = "v1.0.0"

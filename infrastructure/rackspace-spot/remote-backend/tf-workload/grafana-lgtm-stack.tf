@@ -1,30 +1,10 @@
-resource "kubernetes_namespace" "grafana_lgtm" {
-  metadata {
-    name = "grafana-lgtm"
-  }
-}
-
-resource "kubernetes_manifest" "lgtm-s3-bucket" {
-  manifest = {
-    apiVersion = "onepassword.com/v1"
-    kind       = "OnePasswordItem"
-    metadata = {
-      name      = "s3-bucket-credentials"
-      namespace = resource.kubernetes_namespace.grafana_lgtm.metadata.0.name
-    }
-    spec = {
-      itemPath = var.opitem_lgtm_s3_credentials_path
-    }
-  }
-}
-
 resource "helm_release" "grafana_lgtm" {
   name = "lgtm"
-  namespace = kubernetes_namespace.grafana_lgtm.metadata.0.name
+  namespace = kubernetes_namespace.namespace["lgtm"].metadata[0].name
   repository = "https://grafana.github.io/helm-charts"
   chart     = "lgtm-distributed"
   version   = "1.0.1"
-  create_namespace = true
+  create_namespace = false
   skip_crds = true
   
   values = [
@@ -34,12 +14,12 @@ resource "helm_release" "grafana_lgtm" {
 
 resource "helm_release" "grafana_pyroscope" {
   name = "pyroscope"
-  namespace = kubernetes_namespace.grafana_lgtm.metadata.0.name
+  namespace = kubernetes_namespace.namespace["lgtm"].metadata[0].name
   repository = "https://grafana.github.io/helm-charts"
   chart     = "pyroscope"
   version   = "1.5.1"
-  create_namespace = true
-  skip_crds = true
+  create_namespace = false
+  skip_crds = false
   
   values = [
     file("${path.module}/helm/grafana-pyroscope.yaml")
@@ -48,11 +28,11 @@ resource "helm_release" "grafana_pyroscope" {
 
 resource "helm_release" "k8s_monitoring" {
   name = "k8s-monitoring"
-  namespace = kubernetes_namespace.grafana_lgtm.metadata.0.name
+  namespace = kubernetes_namespace.namespace["lgtm"].metadata[0].name
   repository = "https://grafana.github.io/helm-charts"
   chart     = "k8s-monitoring"
   version   = "1.2.1"
-  create_namespace = true
+  create_namespace = false
   skip_crds = false
   
   values = [
@@ -88,7 +68,7 @@ resource "helm_release" "k8s_monitoring" {
 
 # resource "helm_release" "grafana_alloy" {
 #   name = "alloy"
-#   namespace = kubernetes_namespace.grafana_lgtm.metadata.0.name
+#   namespace = kubernetes_namespace.namespace["lgtm"].metadata[0].name
 #   repository = "https://grafana.github.io/helm-charts"
 #   chart     = "alloy"
 #   version   = "0.2.0"

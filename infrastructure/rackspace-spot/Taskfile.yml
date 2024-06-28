@@ -113,7 +113,6 @@ tasks:
   tf:
     desc: Plan the Terraform workspace.
     dir: "{{ .USER_WORKING_DIR }}"
-    internal: true
     cmds:
       - |
         echo "path: {{ .USER_WORKING_DIR }}"

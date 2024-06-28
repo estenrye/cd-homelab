@@ -4,7 +4,7 @@ resource "kubernetes_manifest" "envoy_proxy_configuration" {
         kind       = "EnvoyProxy"
         metadata = {
             name = "custom-proxy-config"
-            namespace = "envoy-gateway-system"
+            namespace = kubernetes_namespace.namespace["envoy_gateway_system"].metadata[0].name
         }
         spec = {
             provider = {
@@ -36,24 +36,10 @@ resource kubernetes_manifest gateway_class_envoy {
                 group = "gateway.envoyproxy.io"
                 kind = "EnvoyProxy"
                 name = "custom-proxy-config"
-                namespace = "envoy-gateway-system"
+                namespace = kubernetes_namespace.namespace["envoy_gateway_system"].metadata[0].name
             }
         }
     }
-}
-
-resource "kubernetes_manifest" "cloudflare_dns_credentials" {
-  manifest = {
-    "apiVersion" = "onepassword.com/v1"
-    "kind"       = "OnePasswordItem"
-    "metadata" = {
-      "name"      = "cloudflare-dns-credentials"
-      "namespace" = "envoy-gateway-system"
-    }
-    "spec" = {
-      "itemPath" = var.opitem_dns_credentials
-    }
-  }
 }
 
 resource kubernetes_manifest le_cluster_issuer {
@@ -62,7 +48,7 @@ resource kubernetes_manifest le_cluster_issuer {
         kind       = "Issuer"
         metadata = {
             name = "letsencrypt-prod"
-            namespace = "envoy-gateway-system"
+            namespace = kubernetes_namespace.namespace["envoy_gateway_system"].metadata[0].name
         }
         spec = {
             acme = {
@@ -94,7 +80,7 @@ resource kubernetes_manifest gateway_eg {
         kind       = "Gateway"
         metadata = {
             name = "eg"
-            namespace = "envoy-gateway-system"
+            namespace = kubernetes_namespace.namespace["envoy_gateway_system"].metadata[0].name
             annotations = {
                 "cert-manager.io/issuer" = "letsencrypt-prod"
                 "cert-manager.io/revision-history-limit" = "3"

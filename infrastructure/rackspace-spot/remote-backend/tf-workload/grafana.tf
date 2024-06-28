@@ -1,38 +1,10 @@
-resource "kubernetes_manifest" "grafana_admin_password" {
-  manifest = {
-    "apiVersion" = "onepassword.com/v1"
-    "kind"       = "OnePasswordItem"
-    "metadata" = {
-      "name"      = "grafana-admin"
-      "namespace" = kubernetes_namespace.grafana_lgtm.metadata.0.name
-    }
-    "spec" = {
-      "itemPath" = var.opitem_grafana_admin_credentials
-    }
-  }
-}
-
-# resource helm_release grafana {
-#     name = "grafana"
-#     namespace = "monitoring"
-#     repository = "https://grafana.github.io/helm-charts"
-#     chart     = "grafana"
-#     version   = "6.16.2"
-#     create_namespace = true
-#     skip_crds = true
-    
-#     values = [
-#         file("${path.module}/helm/grafana.yaml")
-#     ]
-# }
-
 resource "kubernetes_manifest" "reference_grant_grafana" {
     manifest = {
         apiVersion = "gateway.networking.k8s.io/v1alpha2"
         kind = "ReferenceGrant"
         metadata = {
             name = "lgtm-grafana"
-            namespace = kubernetes_namespace.grafana_lgtm.metadata.0.name
+            namespace = kubernetes_namespace.namespace["lgtm"].metadata[0].name
         }
         spec = {
             from = [
@@ -78,7 +50,7 @@ resource "kubernetes_manifest" "http_route_grafana" {
                         group = ""
                         kind = "Service"
                         name = "lgtm-grafana"
-                        namespace = kubernetes_namespace.grafana_lgtm.metadata.0.name
+                        namespace = "grafana-lgtm"
                         port = 80
                         weight = 1
                     }

@@ -1,18 +1,12 @@
-resource "kubernetes_namespace" "onepassword" {
-  metadata {
-    name = "1password"
-  }
-}
-
 data "onepassword_item" "op_credentials" {
-  vault = var.opitem_connect_credentials_vault
-  title = var.opitem_connect_credentials_title
+  vault = var.connect_credentials.vault
+  title = var.connect_credentials.item
 }
 
 resource "kubernetes_secret_v1" "op_token" {
   metadata {
     name = "onepassword-token"
-    namespace = "1password"
+    namespace = kubernetes_namespace.namespace["one_password"].metadata[0].name
   }
 
   # TODO: parameterize the section and field names into variables.
@@ -31,7 +25,7 @@ resource "kubernetes_secret_v1" "op_token" {
 resource "kubernetes_secret_v1" "op_credentials" {
   metadata {
     name = "op-credentials"
-    namespace = "1password"
+    namespace = kubernetes_namespace.namespace["one_password"].metadata[0].name
   }
   # TODO: parameterize the section and field names into variables.
 
@@ -50,14 +44,30 @@ resource "kubernetes_secret_v1" "op_credentials" {
 
 resource "helm_release" "onepassword_connect" {
   name = "connect"
-  namespace = kubernetes_namespace.onepassword.metadata.0.name
+  namespace = kubernetes_namespace.namespace["one_password"].metadata[0].name
   repository = "https://1password.github.io/connect-helm-charts"
   chart     = "connect"
   version   = "1.15.0"
-  create_namespace = true
+  create_namespace = false
   skip_crds = true
   
   values = [
     file("${path.module}/helm/onepassword-connect.yaml")
   ]
+}
+
+resource "kubernetes_manifest" "onepassword_item" {
+  for_each = var.op_items
+
+  manifest = {
+    apiVersion = "onepassword.com/v1"
+    kind       = "OnePasswordItem"
+    metadata = {
+      name      = each.value.name
+      namespace = each.value.namespace
+    }
+    spec = {
+      itemPath = "/vaults/${each.value.vault}/items/${each.value.item}"
+    }
+  }
 }
