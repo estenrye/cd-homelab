@@ -1,10 +1,10 @@
 resources:
   requests:
     memory: 4096Mi
-    cpu: 3000m
+    cpu: 5000m
   limits:
     memory: 7168Mi
-    cpu: 6000m
+    cpu: 8000m
 minecraftServer:
   version: 1.20.1
   type: "FABRIC"
