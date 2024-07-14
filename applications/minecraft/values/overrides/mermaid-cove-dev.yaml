@@ -25,6 +25,8 @@ minecraftServer:
   # A list of Modrinth project slugs with optional version after colon
   modrinth:
     projects:
+      # https://modrinth.com/mod/architectury-api
+      - lhGA9TYQ
       # https://modrinth.com/mod/fabric-api
       - P7dR8mSH
       # https://modrinth.com/mod/trinkets
