@@ -184,7 +184,7 @@ resource "helm_release" "envoy_gateway_system" {
   namespace = kubernetes_namespace.namespace["envoy_gateway_system"].metadata[0].name
   repository = "oci://docker.io/envoyproxy"
   chart     = "gateway-helm"
-  version   = "v1.0.0"
+  version   = "v1.1.0"
   create_namespace = true
 
   values = [
