@@ -1,0 +1,256 @@
+---
+grafana:
+  # -- Deploy Grafana if enabled. See [upstream readme](https://github.com/grafana/helm-charts/tree/main/charts/grafana#configuration) for full values reference.
+  enabled: true
+
+  admin:
+    existingSecret: grafana-admin
+    userKey: username
+    passwordKey: password
+  
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+        - name: 'default'
+          orgId: 1
+          folder: ''
+          folderUid: 'default'
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/default
+        - name: 'gatewayapistate'
+          orgId: 1
+          folder: 'Gateway API State'
+          folderUid: 'gateway-api-state'
+          type: file
+          disableDeletion: true
+          editable: false
+          options:
+            path: /var/lib/grafana/dashboards/gatewayapistate
+  
+  dashboards:
+    gatewayapistate:
+      gatewayclasses:
+        url: https://raw.githubusercontent.com/estenrye/cd-homelab/a163e774aedaf6275fb21d4644b7aabff36dc72c/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/gateway-api-state/gatewayclasses.json
+        datasource: Mimir
+      gateways:
+        url: https://raw.githubusercontent.com/estenrye/cd-homelab/a163e774aedaf6275fb21d4644b7aabff36dc72c/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/gateway-api-state/gateways.json
+        datasource: Mimir
+      grpcroutes:
+        url: https://raw.githubusercontent.com/estenrye/cd-homelab/a163e774aedaf6275fb21d4644b7aabff36dc72c/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/gateway-api-state/grpcroutes.json
+        datasource: Mimir
+      httproutes:
+        url: https://raw.githubusercontent.com/estenrye/cd-homelab/a163e774aedaf6275fb21d4644b7aabff36dc72c/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/gateway-api-state/httproutes.json
+        datasource: Mimir
+      tcproutes:
+        url: https://raw.githubusercontent.com/estenrye/cd-homelab/a163e774aedaf6275fb21d4644b7aabff36dc72c/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/gateway-api-state/tcproutes.json
+        datasource: Mimir
+      udproutes:
+        url: https://raw.githubusercontent.com/estenrye/cd-homelab/a163e774aedaf6275fb21d4644b7aabff36dc72c/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/gateway-api-state/udproutes.json
+        datasource: Mimir
+      tlsroutes:
+        url: https://raw.githubusercontent.com/estenrye/cd-homelab/a163e774aedaf6275fb21d4644b7aabff36dc72c/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/gateway-api-state/tlsroutes.json
+        datasource: Mimir
+    default:
+      # https://grafana.com/grafana/dashboards/11022-envoy-global/
+      envoy-global:
+        gnetId: 11022
+        revision: 1
+        datasource: Mimir
+      # https://grafana.com/grafana/dashboards/6693-envoy-proxy/
+      envoy-proxy:
+        gnetId: 6693
+        revision: 1
+        datasource: Mimir
+      # https://grafana.com/grafana/dashboards/11021-envoy-clusters/
+      envoy-clusters:
+        gnetId: 11021
+        revision: 1
+        datasource: Mimir
+      # https://grafana.com/grafana/dashboards/20842-cert-manager-kubernetes/
+      cert-manager:
+        url: https://raw.githubusercontent.com/estenrye/cd-homelab/a163e774aedaf6275fb21d4644b7aabff36dc72c/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/cert-manager.json
+        datasource: Mimir
+      external-dns:
+        url: https://raw.githubusercontent.com/estenrye/cd-homelab/a163e774aedaf6275fb21d4644b7aabff36dc72c/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/external-dns.json
+        datasource: Mimir
+      onepassword-operator:
+        url: https://raw.githubusercontent.com/estenrye/cd-homelab/a163e774aedaf6275fb21d4644b7aabff36dc72c/infrastructure/rackspace-spot/remote-backend/tf-workload/dashboards/1password.json
+        datasource: Mimir
+
+  # -- Grafana data sources config. Connects to all three by default
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      # -- Datasources linked to the Grafana instance. Override if you disable any components.
+      datasources:
+        # https://grafana.com/docs/grafana/latest/datasources/loki/#provision-the-loki-data-source
+        - name: Loki
+          uid: loki
+          type: loki
+          url: http://{{ .Release.Name }}-loki-gateway
+          isDefault: false
+        # https://grafana.com/docs/grafana/latest/datasources/prometheus/#provision-the-data-source
+        - name: Mimir
+          uid: prom
+          type: prometheus
+          url: http://{{ .Release.Name }}-mimir-nginx/prometheus
+          isDefault: true
+        # https://grafana.com/docs/grafana/latest/datasources/tempo/configure-tempo-data-source/#provision-the-data-source
+        - name: Tempo
+          uid: tempo
+          type: tempo
+          url: http://{{ .Release.Name }}-tempo-query-frontend:3100
+          isDefault: false
+          jsonData:
+            tracesToLogsV2:
+              datasourceUid: loki
+            lokiSearch:
+              datasourceUid: loki
+            tracesToMetrics:
+              datasourceUid: prom
+            serviceMap:
+              datasourceUid: prom
+        - name: Pyroscope
+          uid: pyroscope
+          type: pyroscope
+          url: http://pyroscope-query-frontend:4040
+          isDefault: false
+          jsonData:
+            querying:
+              backendType: Phlare
+
+loki:
+  # -- Deploy Loki if enabled. See [upstream readme](https://github.com/grafana/helm-charts/tree/main/charts/loki-distributed#values) for full values reference.
+  enabled: true
+  global:
+    extraEnvFrom:
+      - secretRef:
+          name: s3-bucket-credentials
+
+  storage:
+    bucket_names:
+      chunks:  rye-ninja-loki-chunks
+      ruler:   rye-ninja-loki-ruler
+      admin:   rye-ninja-loki-admin
+    type: s3
+    s3:
+      endpoint: s3.us-central-1.wasabisys.com
+      region: us-central-1
+# -- Mimir chart values. Resources are set to a minimum by default.
+mimir:
+  # -- Deploy Mimir if enabled. See [upstream values.yaml](https://github.com/grafana/mimir/blob/main/operations/helm/charts/mimir-distributed/values.yaml) for full values reference.
+  enabled: true
+  global:
+    extraEnvFrom:
+      - secretRef:
+          name: s3-bucket-credentials
+  structuredConfig:
+    admin_client:
+      type: s3
+      s3:
+        endpoint: s3.us-central-1.wasabisys.com
+        region: us-central-1
+        bucket_name: rye-ninja-mimir-admin-client
+    alertmanager_storage:
+      backend: s3
+      s3:
+        endpoint: s3.us-central-1.wasabisys.com
+        region: us-central-1
+        bucket_name: rye-ninja-mimir-alert-manager
+    blocks_storage:
+      backend: s3
+      s3:
+        endpoint: s3.us-central-1.wasabisys.com
+        region: us-central-1
+        bucket_name: rye-ninja-mimir-blocks-storage
+    ruler_storage:
+      backend: s3
+      s3:
+        endpoint: s3.us-central-1.wasabisys.com
+        region: us-central-1
+        bucket_name: rye-ninja-mimir-ruler-storage
+  alertmanager:
+    resources:
+      requests:
+        cpu: 20m
+    persistentVolume:
+      enabled: true
+      size: 5Gi
+  compactor:
+    resources:
+      requests:
+        cpu: 20m
+    persistentVolume:
+      enabled: true
+      size: 5Gi
+  distributor:
+    resources:
+      requests:
+        cpu: 20m
+  ingester:
+    replicas: 2
+    zoneAwareReplication:
+      enabled: false
+    resources:
+      requests:
+        cpu: 20m
+    persistentVolume:
+      enabled: true
+      size: 5Gi
+  overrides_exporter:
+    resources:
+      requests:
+        cpu: 20m
+  querier:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 20m
+  query_frontend:
+    resources:
+      requests:
+        cpu: 20m
+  query_scheduler:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 20m
+  ruler:
+    resources:
+      requests:
+        cpu: 20m
+  store_gateway:
+    zoneAwareReplication:
+      enabled: false
+    resources:
+      requests:
+        cpu: 20m
+    persistentVolume:
+      enabled: true
+      size: 5Gi
+  minio:
+    enabled: false
+  rollout_operator:
+    resources:
+      requests:
+        cpu: 20m
+
+tempo:
+  # -- Deploy Tempo if enabled.  See [upstream readme](https://github.com/grafana/helm-charts/blob/main/charts/tempo-distributed/README.md#values) for full values reference.
+  enabled: true
+  extraEnvFrom:
+    - secretRef:
+        name: s3-bucket-credentials
+  storage:
+    backend: s3
+    s3:
+      endpoint: s3.us-central-1.wasabisys.com
+      region: us-central-1
+      bucket_name: rye-ninja-tempo
+
+  ingester:
+    replicas: 1
