@@ -155,24 +155,32 @@ mimir:
         endpoint: s3.us-central-1.wasabisys.com
         region: us-central-1
         bucket_name: rye-ninja-mimir-admin-client
+        access_key_id: "${AWS_ACCESS_KEY_ID}"
+        secret_access_key: "${AWS_SECRET_ACCESS_KEY}"
     alertmanager_storage:
       backend: s3
       s3:
         endpoint: s3.us-central-1.wasabisys.com
         region: us-central-1
         bucket_name: rye-ninja-mimir-alert-manager
+        access_key_id: "${AWS_ACCESS_KEY_ID}"
+        secret_access_key: "${AWS_SECRET_ACCESS_KEY}"
     blocks_storage:
       backend: s3
       s3:
         endpoint: s3.us-central-1.wasabisys.com
         region: us-central-1
         bucket_name: rye-ninja-mimir-blocks-storage
+        access_key_id: "${AWS_ACCESS_KEY_ID}"
+        secret_access_key: "${AWS_SECRET_ACCESS_KEY}"
     ruler_storage:
       backend: s3
       s3:
         endpoint: s3.us-central-1.wasabisys.com
         region: us-central-1
         bucket_name: rye-ninja-mimir-ruler-storage
+        access_key_id: "${AWS_ACCESS_KEY_ID}"
+        secret_access_key: "${AWS_SECRET_ACCESS_KEY}"
   alertmanager:
     resources:
       requests:
