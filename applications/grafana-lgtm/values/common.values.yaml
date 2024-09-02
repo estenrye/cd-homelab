@@ -3,6 +3,19 @@ grafana:
   # -- Deploy Grafana if enabled. See [upstream readme](https://github.com/grafana/helm-charts/tree/main/charts/grafana#configuration) for full values reference.
   enabled: true
 
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod-clusterissuer-dns01
+    hosts:
+      - host: grafana.rye.ninja
+        paths:
+    tls:
+      - secretName: grafana-rye-ninja-tls
+        hosts:
+          - grafana.rye.ninja
+
   admin:
     existingSecret: grafana-admin
     userKey: username
