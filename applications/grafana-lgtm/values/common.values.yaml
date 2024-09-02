@@ -9,8 +9,7 @@ grafana:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prod-clusterissuer-dns01
     hosts:
-      - host: grafana.rye.ninja
-        paths:
+      - grafana.rye.ninja
     tls:
       - secretName: grafana-rye-ninja-tls
         hosts:
