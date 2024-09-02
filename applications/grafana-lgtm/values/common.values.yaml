@@ -10,6 +10,7 @@ grafana:
       cert-manager.io/cluster-issuer: letsencrypt-prod-clusterissuer-dns01
     hosts:
       - grafana.rye.ninja
+
     tls:
       - secretName: grafana-rye-ninja-tls
         hosts:
@@ -128,7 +129,7 @@ grafana:
               datasourceUid: prom
         - name: Pyroscope
           uid: pyroscope
-          type: pyroscope
+          type: grafana-pyroscope-datasource
           url: http://pyroscope-query-frontend:4040
           isDefault: false
           jsonData:
