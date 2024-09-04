@@ -26,7 +26,7 @@ helmCharts:
   valuesFile: memcached.results-cache.values.yaml
 - name: loki
   repo: https://grafana.github.io/helm-charts
-  version: 6.5.1
+  version: 6.12.0
   releaseName: loki
   valuesFile: loki.values.yaml
 
