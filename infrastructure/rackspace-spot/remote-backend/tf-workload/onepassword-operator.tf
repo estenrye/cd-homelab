@@ -47,7 +47,7 @@ resource "helm_release" "onepassword_connect" {
   namespace = kubernetes_namespace.namespace["one_password"].metadata[0].name
   repository = "https://1password.github.io/connect-helm-charts"
   chart     = "connect"
-  version   = "1.15.0"
+  version   = "1.15.1"
   create_namespace = false
   skip_crds = true
   
