@@ -3,7 +3,7 @@ name: cloudflared
 description: A Helm chart for Kubernetes
 dependencies:
   - name: cloudflare-tunnel
-    version: 0.3.0
+    version: 0.3.2
     repository: https://cloudflare.github.io/helm-charts
 
 # A chart can be either an 'application' or a 'library' chart.
