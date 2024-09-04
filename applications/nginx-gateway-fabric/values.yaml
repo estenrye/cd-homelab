@@ -60,7 +60,7 @@ nginx-gateway-fabric:
     ## The NGINX image to use
     image:
       repository: ghcr.io/nginxinc/nginx-gateway-fabric/nginx
-      tag: 1.1.0
+      tag: 1.4.0
       pullPolicy: IfNotPresent
 
     ## The lifecycle of the nginx container.
