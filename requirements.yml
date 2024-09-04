@@ -4,7 +4,7 @@ collections:
   - name: ansible.posix
     version: 1.5.4
   - name: community.aws
-    version: 4.1.1
+    version: 8.0.0
   - name: community.crypto
     version: 2.21.1
   - name: community.general
