@@ -3,7 +3,7 @@ resource "helm_release" "grafana_lgtm" {
   namespace = kubernetes_namespace.namespace["lgtm"].metadata[0].name
   repository = "https://grafana.github.io/helm-charts"
   chart     = "lgtm-distributed"
-  version   = "1.0.1"
+  version   = "2.1.0"
   create_namespace = false
   skip_crds = true
   
