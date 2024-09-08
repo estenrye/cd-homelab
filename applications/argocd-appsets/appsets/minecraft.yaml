@@ -87,12 +87,12 @@ spec:
                       external-dns.alpha.kubernetes.io/hostname: "map.{{.instanceName}}.minecraft.{{.dnsZone}}"
                       external-dns.alpha.kubernetes.io/ttl: "120"
                     hosts:
-                      - name: map.{{.instanceName}}.minecraft.rye.ninja
+                      - name: map.{{.instanceName}}.minecraft.{{.dnsZone}}
                         path: /
                     tls:
                       - secretName: map-tls
                         hosts:
-                          - map.{{.instanceName}}.minecraft.rye.ninja
+                          - map.{{.instanceName}}.minecraft.{{.dnsZone}}
             serviceAnnotations:
               external-dns.alpha.kubernetes.io/hostname: "{{.instanceName}}.minecraft.{{.dnsZone}}"
             rconServiceAnnotations:
