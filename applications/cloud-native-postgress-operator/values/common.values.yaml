@@ -1,0 +1,59 @@
+replicaCount: 1
+
+crds:
+  # -- Specifies whether the CRDs should be created when installing the chart.
+  create: true
+
+# -- Operator configuration.
+config:
+  # -- Specifies whether the secret should be created.
+  create: true
+  # -- The name of the configmap/secret to use.
+  name: cnpg-controller-manager-config
+  # -- Specifies whether it should be stored in a secret, instead of a configmap.
+  secret: false
+  # -- The content of the configmap/secret, see
+  # https://cloudnative-pg.io/documentation/current/operator_conf/#available-options
+  # for all the available options.
+  data:
+    WATCH_NAMESPACE: namespace-a,namespace-b
+
+# -- Additinal arguments to be added to the operator's args list.
+additionalArgs: []
+
+resources: {}
+  # If you want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  #
+  # limits:
+  #   cpu: 100m
+  #   memory: 200Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 100Mi'
+
+monitoring:
+
+  # -- Specifies whether the monitoring should be enabled. Requires Prometheus Operator CRDs.
+  podMonitorEnabled: false
+  # -- Metrics relabel configurations to apply to samples before ingestion.
+  podMonitorMetricRelabelings: []
+  # -- Relabel configurations to apply to samples before scraping.
+  podMonitorRelabelings: []
+  # -- Additional labels for the podMonitor
+  podMonitorAdditionalLabels: {}
+
+  grafanaDashboard:
+    create: false
+    # -- Allows overriding the namespace where the ConfigMap will be created, defaulting to the same one as the Release.
+    namespace: ""
+    # -- The name of the ConfigMap containing the dashboard.
+    configMapName: "cnpg-grafana-dashboard"
+    # -- Label that ConfigMaps should have to be loaded as dashboards.  DEPRECATED: Use labels instead.
+    sidecarLabel: "grafana_dashboard"
+    # -- Label value that ConfigMaps should have to be loaded as dashboards.  DEPRECATED: Use labels instead.
+    sidecarLabelValue: "1"
+    # -- Labels that ConfigMaps should have to get configured in Grafana.
+    labels: {}
+    # -- Annotations that ConfigMaps can have to get configured in Grafana.
+    annotations: {}

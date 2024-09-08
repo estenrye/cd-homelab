@@ -162,6 +162,18 @@ mimir:
       - secretRef:
           name: s3-bucket-credentials
 
+  # ingress:
+  #   enabled: true
+  #   ingressClassName: nginx
+  #   annotations:
+  #     cert-manager.io/cluster-issuer: letsencrypt-prod-clusterissuer-dns01
+  #   hosts:
+  #     - mimir.rye.ninja
+  #   tls:
+  #     - secretName: mimir-rye-ninja-tls
+  #       hosts:
+  #         - mimir.rye.ninja
+  
   # -- Configuration is loaded from the secret called 'externalConfigSecretName'. If 'useExternalConfig' is true, then the configuration is not generated, just consumed.
   useExternalConfig: true
   
