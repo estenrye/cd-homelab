@@ -1,0 +1,12 @@
+resources:
+  requests:
+    memory: 1024Mi
+    cpu: 2000m
+  limits:
+    memory: 2048Mi
+    cpu: 4000m
+
+minecraftServer:
+  version: 1.21.1
+  whitelist: esten_rye,DracoIam
+  ops: esten_rye,DracoIam

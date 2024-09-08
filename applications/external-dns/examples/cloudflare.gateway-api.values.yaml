@@ -26,18 +26,18 @@ external-dns:
           name: dns-credentials
           key: password
           optional: false
-    - name: EXTERNAL_DNS_DOMAIN_FILTER
-      valueFrom:
-        secretKeyRef:
-          name: dns-credentials
-          key: zone_name
-          optional: false
-    - name: EXTERNAL_DNS_ZONE_ID_FILTER
-      valueFrom:
-        secretKeyRef:
-          name: dns-credentials
-          key: zone_id
-          optional: false
+    # - name: EXTERNAL_DNS_DOMAIN_FILTER
+    #   valueFrom:
+    #     secretKeyRef:
+    #       name: dns-credentials
+    #       key: zone_name
+    #       optional: false
+    # - name: EXTERNAL_DNS_ZONE_ID_FILTER
+    #   valueFrom:
+    #     secretKeyRef:
+    #       name: dns-credentials
+    #       key: zone_id
+    #       optional: false
     - name: EXTERNAL_DNS_TXT_OWNER_ID
       value: cluster-name
   # resources:

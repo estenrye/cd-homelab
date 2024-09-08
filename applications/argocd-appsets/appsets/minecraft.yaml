@@ -10,9 +10,14 @@ spec:
   - list:
       elements:
       - instanceName: arrendelle-winter
+        dnsZone: rye.ninja
         server: https://k8s.home-lab.usmnblm01.rye.ninja:6443
       - instanceName: mermaid-cove-dev
+        dnsZone: rye.ninja
         server: https://k8s.home-lab.usmnblm01.rye.ninja:6443
+      - instanceName: baked-goods
+        dnsZone: citsell.com
+        server: https://vcp-53276741-cb49-4847-8801-af8fee33a174.cloud-1703064191.spot.rackspace.com
   template:
     metadata:
       name: '{{.instanceName}}-minecraft' # 'name' field of the Secret
@@ -23,7 +28,7 @@ spec:
       sources:
       - chart: minecraft
         repoURL: https://itzg.github.io/minecraft-server-charts/
-        targetRevision: 4.11.0
+        targetRevision: 4.23.0
         helm:
           releaseName: "{{.instanceName}}"
           valueFiles:
@@ -79,7 +84,7 @@ spec:
                     annotations:
                       cert-manager.io/cluster-issuer: letsencrypt-prod-clusterissuer-dns01
                       kubernetes.io/tls-acme: "true"
-                      external-dns.alpha.kubernetes.io/hostname: "map.{{.instanceName}}.minecraft.rye.ninja"
+                      external-dns.alpha.kubernetes.io/hostname: "map.{{.instanceName}}.minecraft.{{.dnsZone}}"
                       external-dns.alpha.kubernetes.io/ttl: "120"
                     hosts:
                       - name: map.{{.instanceName}}.minecraft.rye.ninja
@@ -89,9 +94,9 @@ spec:
                         hosts:
                           - map.{{.instanceName}}.minecraft.rye.ninja
             serviceAnnotations:
-              external-dns.alpha.kubernetes.io/hostname: "{{.instanceName}}.minecraft.rye.ninja"
+              external-dns.alpha.kubernetes.io/hostname: "{{.instanceName}}.minecraft.{{.dnsZone}}"
             rconServiceAnnotations:
-              external-dns.alpha.kubernetes.io/hostname: "rcon.{{.instanceName}}.minecraft.rye.ninja"
+              external-dns.alpha.kubernetes.io/hostname: "rcon.{{.instanceName}}.minecraft.{{.dnsZone}}"
       - repoURL: git@github.com:estenrye/cd-homelab.git
         targetRevision: HEAD
         ref: valuesrepo
