@@ -21,6 +21,9 @@ spec:
       - instanceName: family-minecraft
         dnsZone: rye.ninja
         server: https://vcp-53276741-cb49-4847-8801-af8fee33a174.cloud-1703064191.spot.rackspace.com
+      - instanceName: bakery
+        dnsZone: citsell.com
+        server: https://vcp-53276741-cb49-4847-8801-af8fee33a174.cloud-1703064191.spot.rackspace.com
   template:
     metadata:
       name: '{{.instanceName}}-minecraft' # 'name' field of the Secret
