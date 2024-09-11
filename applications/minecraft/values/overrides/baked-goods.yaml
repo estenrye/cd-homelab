@@ -10,3 +10,4 @@ minecraftServer:
   version: 1.21.1
   whitelist: esten_rye,DracoIam
   ops: esten_rye,DracoIam
+  downloadWorldUrl: https://s3.us-east-1.wasabisys.com/minecraft-backups/baked-goods/world-20240909-033929.tgz
