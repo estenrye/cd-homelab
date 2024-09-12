@@ -5,7 +5,7 @@ namespace: kube-prometheus-stack
 helmCharts:
   - repo: https://prometheus-community.github.io/helm-charts
     name: kube-prometheus-stack
-    version: 58.5.0
+    version: 62.7.0
     releaseName: kps
     valuesFile: values.yaml
     includeCRDs: true
