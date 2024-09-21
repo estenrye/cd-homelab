@@ -1,13 +1,15 @@
 resources:
   requests:
-    memory: 1024Mi
-    cpu: 2000m
+    memory: 8192Mi
+    cpu: 5000m
   limits:
-    memory: 2048Mi
-    cpu: 4000m
+    memory: 10240Mi
+    cpu: 8000m
 
 minecraftServer:
   version: 1.21.1
   whitelist: esten_rye,DracoIam
   ops: esten_rye,DracoIam
   downloadWorldUrl: https://s3.us-east-1.wasabisys.com/minecraft-backups/baked-goods/world-20240909-033929.tgz
+  memory: 8192M
+  jvmXXOpts: "-Xmx8192M"
