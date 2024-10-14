@@ -1,0 +1,6 @@
+repo-root-for-plan-enrichment: modules/
+deep-analysis: true
+output:
+  - sarif
+  - cli
+

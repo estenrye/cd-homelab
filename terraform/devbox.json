@@ -1,0 +1,53 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.12.0/.schema/devbox.schema.json",
+  "packages": [
+    "opentofu@1.8.2",
+    "tflint@0.52.0",
+    "trivy@0.54.1",
+    "checkov@3.2.243",
+    "terragrunt@0.66.9",
+    "_1password@2.29.0",
+    "python@3.12.4",
+    "kubernetes-helm@3.15.4",
+    "jq@1.7.1",
+    "yq@3.4.3",
+    "tfk8s@0.1.10",
+    "awscli2@2.17.42",
+    "aws-nuke@2.25.0"
+  ],
+  "env": {
+    "VENV_DIR":   ".venv",
+    "KUBECONFIG": "${HOME}/.kube/config"
+  },
+  "shell": {
+    "init_hook": [
+      ". $VENV_DIR/bin/activate"
+    ],
+    "scripts": {
+      "login_aws_sso": [
+        "aws sso login --sso-session ryezone-labs"
+      ],
+      "format": [
+        "tofu fmt --recursive",
+        "terragrunt hclfmt"
+      ],
+      "validate": [
+        "terragrunt run-all validate --terragrunt-working-dir live/aws"
+      ],
+      "lint": [
+        "tflint --init",
+        "tflint -f compact --recursive"
+      ],
+      "scan": [
+        "mkdir -p .tmp/scans .tmp/scans/checkov/directory",
+        "terragrunt run-all plan --terragrunt-working-dir live/aws",
+        "checkov -d . --output-file-path .tmp/scans/checkov",
+        "trivy fs --config trivy.yaml . -f table --exit-code 0",
+        "trivy fs --config trivy.yaml . -f sarif -o .tmp/scans/trivy.sarif"
+      ],
+      "scan_aws" : [
+        "AWS_PROFILE=ops-opex-terraform-core-automation trivy aws --update-cache"
+      ]
+    }
+  }
+}
