@@ -1,0 +1,17 @@
+regions:
+- us-east-2
+
+account-blocklist:
+- "673127022430"
+- "022499006853"
+
+accounts:
+  # ops-opex-terraform-core-automation
+  "022499006855":
+    resource-types:
+      targets:
+      - DynamoDBTable
+      - DynamoDBTableItem
+      - S3Bucket
+      - S3Object
+      - KMSKey

@@ -1,2 +1,10 @@
 Brewfile.lock.json
 .DS_Store
+
+.terragrunt-cache
+.terraform.lock.hcl
+.devbox
+.venv
+.tmp
+
+devbox.lock

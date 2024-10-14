@@ -1,0 +1,26 @@
+timeout: 10m
+dependency-tree: true
+list-all-pkgs: true
+exit-code: 1
+severity:
+  - MEDIUM
+  - HIGH
+  - CRITICAL
+scan:
+  skip-dirs:
+    - .devbox
+    - .tmp
+    - .venv
+
+  scanners:
+    - vuln
+    - secret
+    - misconfig
+    - license
+
+vulnerability:
+  pkgs:
+    type:
+      - os
+      - library
+  ignore-unfixed: true
