@@ -10,8 +10,13 @@ locals {
     dynamodb_table            = "terragrunt-tfstate-locks"
   }
 
+  onepassword_account = "ryefamily.1password.com"
   onepassword_service_account_token = {
-    account   = "ryefamily.1password.com"
     item_path = "op://Home_Lab/op_service_account_token/credential"
+  }
+
+  phoenixnap = {
+    client_id_item_path     = "op://Home_Lab/bmc-api-credentials/username"
+    client_secret_item_path = "op://Home_Lab/bmc-api-credentials/credential"
   }
 }

@@ -37,5 +37,7 @@ provider "aws" {
   region = "${local.region.region}"
   profile = "${local.account.profile}"
 }
+
+provider "onepassword" {}
 EOF
 }

@@ -7,8 +7,17 @@ terraform {
     commands = ["plan", "apply", "destroy"]
     env_vars = {
       OP_SERVICE_ACCOUNT_TOKEN = run_cmd("op", "read", "--account",
-        local.global.onepassword_service_account_token.account,
-      local.global.onepassword_service_account_token.item_path)
+        local.global.onepassword_account,
+        local.global.onepassword_service_account_token.item_path
+      )
+      PNAP_CLIENT_ID = run_cmd("op", "read", "--account",
+        local.global.onepassword_account,
+        local.global.phoenixnap.client_id_item_path,
+      )
+      PNAP_CLIENT_SECRET = run_cmd("op", "read", "--account",
+        local.global.onepassword_account,
+        local.global.phoenixnap.client_secret_item_path,
+      )
     }
   }
 }
@@ -29,12 +38,4 @@ remote_state {
     dynamodb_table            = local.global.terragrunt_state.dynamodb_table
     disable_bucket_update     = true
   }
-}
-
-generate "onepassword_provider_config" {
-  path      = "provider_onepassword.tf"
-  if_exists = "overwrite_terragrunt"
-  contents  = <<EOF
-provider "onepassword" {}
-EOF
 }

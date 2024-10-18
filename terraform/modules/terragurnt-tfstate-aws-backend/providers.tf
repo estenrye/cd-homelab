@@ -18,7 +18,7 @@ terraform {
     }
 
     onepassword = {
-      source  = "1Password/onepassword"
+      source  = "registry.terraform.io/1Password/onepassword"
       version = "2.1.2"
     }
   }
