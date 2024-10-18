@@ -19,8 +19,8 @@
     "VENV_DIR":   ".venv",
     "KUBECONFIG": "${HOME}/.kube/config",
     "TG_AWS_PROFILE": "ops-opex-terraform-core-automation",
-    "TG_S3_BUCKET_URI": "s3://terragrunt-tfstate-rye-ninja",
-    "TG_DYNAMODB_TABLE": "terragrunt-tfstate-rye-ninja"
+    "TG_S3_BUCKET_NAME": "terragrunt-tfstate-rye-ninja",
+    "TG_DYNAMODB_TABLE": "terragrunt-tfstate-locks"
   },
   "shell": {
     "init_hook": [
