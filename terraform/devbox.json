@@ -20,7 +20,10 @@
     "KUBECONFIG": "${HOME}/.kube/config",
     "TG_AWS_PROFILE": "ops-opex-terraform-core-automation",
     "TG_S3_BUCKET_NAME": "terragrunt-tfstate-rye-ninja",
-    "TG_DYNAMODB_TABLE": "terragrunt-tfstate-locks"
+    "TG_DYNAMODB_TABLE": "terragrunt-tfstate-locks",
+    "OP_ACCOUNT": "ryefamily.1password.com",
+    "PNAP_BMC_CLIENT_ID_OP_ITEM_PATH": "op://Home_Lab/bmc-api-credentials/username",
+    "PNAP_BMC_CLIENT_SECRET_OP_ITEM_PATH": "op://Home_Lab/bmc-api-credentials/credential"
   },
   "shell": {
     "init_hook": [
