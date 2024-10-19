@@ -1,3 +1,13 @@
+variable location {
+    type = string
+    description = "This is the location of the resource."
+}
+
+variable default_cidr {
+    type = string
+    description = "This is the default CIDR for the network."
+}
+
 variable tags {
     type = map(object({
         is_billing_tag = bool
@@ -14,4 +24,30 @@ variable "ssh_keys" {
     }))
     default = {}
     description = "This is a map of ssh keys to create."
+}
+
+variable storage_network_enabled {
+    type = bool
+    default = false
+    description = "This is a flag to enable the storage network."
+}
+
+variable "storage_network" {
+    type = object({
+        description = string
+        location = string
+        vlan_id = number
+        path_suffix = string
+        capacity_in_gb = number
+        tags = map(string)
+    })
+    default = {
+        description = ""
+        location = ""
+        vlan_id = 0
+        path_suffix = ""
+        capacity_in_gb = 0
+        tags = {}
+    }
+    description = "This is a map of storage network configuration to create."
 }
