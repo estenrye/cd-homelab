@@ -59,5 +59,16 @@ variable public_networks {
         ip_blocks = map(string)
         tags = map(string)
     }))
+    default = {}
     description = "This is a map of public network configuration to create."
+}
+
+variable private_networks {
+    type = map(object({
+        description = string
+        cidr = string
+        vlan_id = number
+    }))
+    default = {}
+    description = "This is a map of private network configuration to create."
 }

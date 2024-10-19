@@ -24,7 +24,6 @@ inputs = {
     description = "Fun Storage Network"
     location    = local.region.region
     vlan_id     = 1234
-    cidr        = "10.20.1.0/24"
     path_suffix    = "/cinder"
     capacity_in_gb = 1000
     tags = {
@@ -42,6 +41,14 @@ inputs = {
       ip_blocks = {
         block_1 = "/29"
       }
+    }
+  }
+
+  private_networks = {
+    private = {
+      description = "Private Network"
+      vlan_id     = 20
+      cidr        = "10.20.3.0/24"
     }
   }
 }
