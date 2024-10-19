@@ -31,6 +31,19 @@ inputs = {
       costcenter = "12345"
     }
   }
+
+  public_networks = {
+    public = {
+      description = "Public Network"
+      vlan_id     = 10
+      tags = {
+        costcenter = "12345"
+      }
+      ip_blocks = {
+        block_1 = "/29"
+      }
+    }
+  }
 }
 
 include "root" {

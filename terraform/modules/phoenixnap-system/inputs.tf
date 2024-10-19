@@ -51,3 +51,13 @@ variable "storage_network" {
     }
     description = "This is a map of storage network configuration to create."
 }
+
+variable public_networks {
+    type = map(object({
+        description = string
+        vlan_id = number
+        ip_blocks = map(string)
+        tags = map(string)
+    }))
+    description = "This is a map of public network configuration to create."
+}
