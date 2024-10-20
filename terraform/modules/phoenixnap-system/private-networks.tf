@@ -1,4 +1,5 @@
 resource pnap_private_network this {
+    depends_on = [ pnap_private_network.default ]
     for_each = var.private_networks
 
     name = each.key

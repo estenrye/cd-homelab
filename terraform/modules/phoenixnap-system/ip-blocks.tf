@@ -21,6 +21,7 @@ locals {
 }
 
 resource pnap_ip_block "this" {
+    depends_on = [ pnap_private_network.default ]
     for_each = local.ip_blocks_map
     
     description = each.key
