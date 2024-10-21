@@ -38,3 +38,17 @@ resource pnap_ip_block "this" {
         }
     }
 }
+
+module "cidr_expand" {
+  source = "git::https://github.com/binxio/terraform-cidr-expand.git?ref=1.1.0"
+  for_each = resource.pnap_ip_block.this
+
+  cidr = each.value.cidr
+}
+
+locals {
+    public_ip_addresses = flatten([for ip_block in module.cidr_expand : ip_block.ip_addresses])
+}
+output "public_ip_addresses" {
+    value = local.public_ip_addresses
+}
