@@ -1,5 +1,5 @@
 collections:
   - name: community.general
-    version: 8.1.0
+    version: 9.5.1
   - name: onepassword.connect
     version: 2.3.0
