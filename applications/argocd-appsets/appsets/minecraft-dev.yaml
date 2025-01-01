@@ -10,7 +10,7 @@ spec:
   - list:
       elements:
       - instanceName: pokehaan-craft
-        server: https://vcp-af0c7880-3b7b-4e14-a92c-d8417acf9c63.cloud-1703064191.spot.rackspace.com
+        server: https://hcp-2cd3084e-58c8-49d3-b49e-8d19dd573e4f.spot.rackspace.com
   template:
     metadata:
       name: '{{.instanceName}}-minecraft' # 'name' field of the Secret
