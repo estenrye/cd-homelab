@@ -20,7 +20,7 @@ spec:
         server: https://vcp-53276741-cb49-4847-8801-af8fee33a174.cloud-1703064191.spot.rackspace.com
       - instanceName: family-minecraft
         dnsZone: rye.ninja
-        server: https://vcp-53276741-cb49-4847-8801-af8fee33a174.cloud-1703064191.spot.rackspace.com
+        server: https://hcp-2cd3084e-58c8-49d3-b49e-8d19dd573e4f.spot.rackspace.com
       - instanceName: bakery
         dnsZone: citsell.com
         server: https://vcp-53276741-cb49-4847-8801-af8fee33a174.cloud-1703064191.spot.rackspace.com
