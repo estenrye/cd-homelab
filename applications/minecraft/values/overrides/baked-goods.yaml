@@ -8,6 +8,7 @@ resources:
 
 minecraftServer:
   version: 1.21.3
+  type: "PAPER"
   whitelist: esten_rye,DracoIam
   ops: esten_rye,DracoIam
   downloadWorldUrl: https://s3.us-east-1.wasabisys.com/minecraft-backups/baked-goods/world-20241110-200849.tgz
