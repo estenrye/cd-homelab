@@ -3,11 +3,11 @@ minecraftServer:
   modrinth:
     projects:
       # https://modrinth.com/plugin/waypoints
-      - 1c2olKOU
+      - K4tng5ly
       # https://modrinth.com/plugin/bluemap
-      - swbUV1cr
+      - Zpzf0Xab
       # https://modrinth.com/plugin/commandapi
-      - ExxvCi0y
+      - 1jNJFhmj
       # https://modrinth.com/plugin/unifiedmetrics
       # - p1ewR5kV
     # Downloads Modrinth project dependencies marked as optional
