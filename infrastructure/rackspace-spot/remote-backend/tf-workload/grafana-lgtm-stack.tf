@@ -17,7 +17,7 @@ resource "helm_release" "grafana_pyroscope" {
   namespace = kubernetes_namespace.namespace["lgtm"].metadata[0].name
   repository = "https://grafana.github.io/helm-charts"
   chart     = "pyroscope"
-  version   = "1.5.1"
+  version   = "1.12.0"
   create_namespace = false
   skip_crds = false
   
