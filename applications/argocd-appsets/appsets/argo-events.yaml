@@ -22,7 +22,7 @@ spec:
       project: "default"
       sources:
       - chart: argo-events
-        repoURL: oci://ghcr.io/argoproj/argo-helm
+        repoURL: https://argoproj.github.io/argo-helm
         targetRevision: 2.4.13
         helm:
           releaseName: argo-events
