@@ -4,8 +4,6 @@ metadata:
   name: argo-events
   namespace: argocd
 spec:
-  goTemplate: true
-  goTemplateOptions: ["missingkey=error"]
   generators:
   - clusters:
       selector:
