@@ -8,3 +8,7 @@ terraform {
     }
   }
 }
+
+provider pnap {
+  config_file_path = var.config_file_path
+}
