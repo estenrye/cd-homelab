@@ -28,7 +28,7 @@ spec:
           releaseName: argo-events
           valueFiles:
             - $valuesrepo/applications/argo-events/values.yaml
-          valuesObject:
+          valuesObject: {}
       - repoURL: git@github.com:estenrye/cd-homelab.git
         targetRevision: HEAD
         ref: valuesrepo
