@@ -19,9 +19,9 @@ configs:
     oidc.config: |
       name: JumpCloud
       issuer: https://oauth.id.jumpcloud.com/
-      clientID: $argocd-oidc-credentials:username
+      clientID: 1201c71a-e346-4c24-9cab-824b878384e4
       cliClientID: 1201c71a-e346-4c24-9cab-824b878384e4
-      clientSecret: $argocd-oidc-credentials:credential
+      enablePKCEAuthentication: true
       requestedScopes:
       - openid
       - profile
