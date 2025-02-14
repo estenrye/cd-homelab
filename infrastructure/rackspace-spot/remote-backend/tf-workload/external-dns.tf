@@ -3,7 +3,7 @@ resource "helm_release" "external_dns" {
   namespace = kubernetes_namespace.namespace["external_dns"].metadata[0].name
   repository = "https://kubernetes-sigs.github.io/external-dns/"
   chart     = "external-dns"
-  version   = "1.14.4"
+  version   = "1.15.2"
   create_namespace = true
   skip_crds = true
   
