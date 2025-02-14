@@ -92,6 +92,7 @@ controller:
       enabled: false
 
 dex:
+  logLevel: debug
   metrics:
     enabled: true
     serviceMonitor:
