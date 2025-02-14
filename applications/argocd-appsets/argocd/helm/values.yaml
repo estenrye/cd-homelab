@@ -22,14 +22,12 @@ configs:
       - groups
     
     dex.config: |
-      # Setting staticClients allows Argo Workflows to use Argo CD's Dex installation for authentication
       staticClients:
-        # This is the OIDC client ID in plaintext
-        - id: argo-workflows-sso
+        - id: 'argo-workflows-sso'
           name: Argo Workflow
           redirectURIs:
             - https://argo-workflows.rye.ninja/oauth2/callback
-          secret: $argocd-dex-static-clients-secrets:argo-workflows-sso
+          secretEnv: DEX_CLIENT_SECRET_ARGO_WORKFLOWS_SSO
   rbac:
     policy.csv: |
       g, ACL_ArgoCD_Global-Administrator, role:admin
@@ -98,6 +96,10 @@ dex:
     enabled: true
     serviceMonitor:
       enabled: false
+  envFrom: 
+  - secretRef:
+      name: argocd-dex-static-clients-secrets
+
 
 
 server:
