@@ -90,6 +90,8 @@ spec:
     kind: APIService
   - group: scheduling.k8s.io
     kind: PriorityClass
+  - group: policy
+    kind: PodDisruptionBudget
 
   # Allow all namespaced-scoped resources to be created, except for ResourceQuota, LimitRange, NetworkPolicy
   namespaceResourceBlacklist:
