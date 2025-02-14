@@ -17,7 +17,7 @@ spec:
     spec:
       project: "platform"
       source:
-      - path: manifests/base/crds/full
+      - path: /manifests/base/crds/full
         repoURL: https://github.com/argoproj/argo-workflows
         targetRevision: v3.7.0
       destination:
