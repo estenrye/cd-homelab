@@ -17,7 +17,7 @@ spec:
     spec:
       project: "platform"
       source:
-        path: applications/argo-event-bus
+        path: applications/argo-events/event-bus-manifest
         repoURL: git@github.com:estenrye/cd-homelab.git
         targetRevision: HEAD
       destination:
