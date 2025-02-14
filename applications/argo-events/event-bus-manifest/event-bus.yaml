@@ -31,6 +31,6 @@ spec:
               # topologyKey: topology.kubernetes.io/zone
 
       persistence:
-        storageClassName: standard
+        storageClassName: ssd
         accessMode: ReadWriteOnce
         volumeSize: 20Gi
