@@ -1,3 +1,6 @@
+global:
+  domain: argocd.rye.ninja
+
 configs:
   cm:
     url: https://argocd.rye.ninja
