@@ -1,0 +1,23 @@
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: high-priority
+value: 1000000
+globalDefault: false
+preemptionPolicy: PreemptLowerPriority
+description: |
+  This priority class is used for jobs that need to be prioritized 
+  above other workloads, and may need to discard existing work 
+  by preempting running pods.
+  
+  Pods with preemptionPolicy: PreemptLowerPriority will be placed in the scheduling 
+  queue ahead of lower-priority pods, and they can preempt other pods. 
+  
+  A preempting pod waiting to be scheduled will stay in the scheduling 
+  queue, until sufficient resources are free, and it can be scheduled. 
+  Preempting pods, like other pods, are subject to scheduler back-off. 
+  This means that if the scheduler tries these pods and they cannot be 
+  scheduled, they will be retried with lower frequency, allowing other 
+  pods with lower priority to be scheduled before them.
+
+  Preempting pods may still be preempted by other, high-priority pods.
