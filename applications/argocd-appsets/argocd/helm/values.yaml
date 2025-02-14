@@ -12,6 +12,10 @@ configs:
     ## Ref: https://argo-cd.readthedocs.io/en/latest/operator-manual/rbac/#exec-resource
     exec.enabled: false
 
+    # -- Enable Status Badge
+    ## Ref: https://argo-cd.readthedocs.io/en/stable/user-guide/status-badge/
+    statusbadge.enabled: true
+
     oidc.config: |
       name: JumpCloud
       issuer: https://oauth.id.jumpcloud.com/
