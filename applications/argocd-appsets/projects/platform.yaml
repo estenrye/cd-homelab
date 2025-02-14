@@ -88,7 +88,7 @@ spec:
     kind: GatewayClass
   - group: apiregistration.k8s.io
     kind: APIService
-  - group: scheduling.k8s.io/v1
+  - group: scheduling.k8s.io
     kind: PriorityClass
 
   # Allow all namespaced-scoped resources to be created, except for ResourceQuota, LimitRange, NetworkPolicy
