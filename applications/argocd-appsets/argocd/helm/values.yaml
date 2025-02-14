@@ -42,6 +42,10 @@ configs:
             # command: [sh, -c, find . -name env.yaml]
 
   repositories:
+    argo-workflows:
+      name: argo-workflows
+      url:  https://github.com/argoproj/argo-workflows
+      type: git
     cd-homelab:
       name: cd-homelab
       url: git@github.com:estenrye/cd-homelab
