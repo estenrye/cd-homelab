@@ -23,11 +23,11 @@ configs:
     
     dex.config: |
       staticClients:
-        - id: 'argo-workflows-sso'
+        - id: argo-workflows-sso
           name: Argo Workflow
           redirectURIs:
             - https://argo-workflows.rye.ninja/oauth2/callback
-          secretEnv: DEX_CLIENT_SECRET_ARGO_WORKFLOWS_SSO
+          secret: $argocd-dex-static-clients-secrets:argo-workflows-sso
   rbac:
     policy.csv: |
       g, ACL_ArgoCD_Global-Administrator, role:admin
@@ -96,9 +96,9 @@ dex:
     enabled: true
     serviceMonitor:
       enabled: false
-  envFrom: 
-  - secretRef:
-      name: argocd-dex-static-clients-secrets
+  # envFrom: 
+  # - secretRef:
+  #     name: argocd-dex-static-clients-secrets
 
 
 
