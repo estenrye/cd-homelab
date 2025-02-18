@@ -16,7 +16,7 @@ spec:
       sources:
       - repoURL: git@github.com:estenrye/cd-homelab.git
         targetRevision: new-argocd-server
-        path: overlays/argo-cluster/argocd 
+        path: applications/cert-manager
       destination:
         server: '{{server}}' # 'server' field of the secret
         namespace: cert-manager
