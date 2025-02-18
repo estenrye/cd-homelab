@@ -16,7 +16,7 @@ openshift: false
 # -- Create clusterroles that extend existing clusterroles to interact with argo-events crds
 # Only applies for cluster-wide installation (`controller.rbac.namespaced: false`)
 ## Ref: https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles
-createAggregateRoles: false
+createAggregateRoles: true
 
 ## Custom resource configuration
 crds:
@@ -319,7 +319,7 @@ controller:
   ## Events controller metrics configuration
   metrics:
     # -- Deploy metrics service
-    enabled: false
+    enabled: true
     service:
       # -- Metrics service annotations
       annotations: {}
@@ -329,7 +329,7 @@ controller:
       servicePort: 8082
     serviceMonitor:
       # -- Enable a prometheus ServiceMonitor
-      enabled: false
+      enabled: true
       # -- Prometheus ServiceMonitor interval
       interval: 30s
       # -- Prometheus [RelabelConfigs] to apply to samples before scraping

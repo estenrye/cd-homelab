@@ -1,0 +1,70 @@
+apiVersion: argoproj.io/v1beta1
+kind: ArgoCD
+metadata:
+  name: argocd
+  namespace: argocd
+spec:
+  version: v2.14.2
+  statusBadgeEnabled: true
+  resourceTrackingMethod: annotation+label
+  oidcConfig: |
+    name: JumpCloud
+    issuer: https://oauth.id.jumpcloud.com/
+    clientID: 959927a1-c12f-4e63-83b4-b40f04f2c5e7
+    cliClientID: 959927a1-c12f-4e63-83b4-b40f04f2c5e7
+    enablePKCEAuthentication: true
+    requestedScopes:
+    - openid
+    - profile
+    - email
+    - groups
+  ha:
+    enabled: true
+    resources: {}
+  kustomizeBuildOptions: --enable-helm
+  kustomizeVersions: 
+  - path: /usr/local/bin/kustomize-5.1.0
+    version: v5.1.0
+  monitoring:
+    enabled: true
+  notifications:
+    enabled: true
+  prometheus:
+    enabled: false
+  rbac:
+    defaultPolicy: role:readonly
+    policy: |
+      g, ACL_ArgoCD_Global-Administrator, role:admin
+    scopes: '[groups, email]'
+  repo:
+    enabled: true
+    logFormat: json
+    logLevel: info
+  # redis:
+  #   enabled: true
+  server:
+    enabled: true
+    enableRolloutsUI: true
+    logFormat: json
+    logLevel: info
+    autoscale:
+      enabled: true
+    grpc:
+      ingress:
+        annotations:
+          cert-manager.io/cluster-issuer: zerossl-production
+        enabled: true
+        ingressClassName: haproxy
+        tls:
+          - hosts: []
+            secretName: argocd-grpc-ingress-tls
+    ingress:
+      annotations:
+        cert-manager.io/cluster-issuer: zerossl-production
+      enabled: true
+      ingressClassName: haproxy
+      path: /
+      tls:
+        - hosts: []
+          secretName: argocd-ingress-tls
+    insecure: true

@@ -1,0 +1,21 @@
+grafana:
+  enabled: false
+
+alertmanager:
+  enabled: false
+
+prometheus:
+  # Enable Pod Disruption Budget with minimum 1 replica available
+  podDisruptionBudget:
+    enabled: true
+    minAvailable: 1
+  prometheusSpec:
+    # Disables addition of matchLabels to serviceMonitorSelector based on helm deployment name (release: kube-prometheus)
+    # False will enable all ServiceMonitors to be selected for target discovery across all Namespaces
+    serviceMonitorSelectorNilUsesHelmValues: false
+    # Scrape Interval for Targets
+    scrapeInterval: 1m
+    # Add an external label to with cluster name
+    externalLabels:
+      cluster: "{{ .Values.clusterName }}"
+    replicas: 1

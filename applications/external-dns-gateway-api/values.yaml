@@ -1,0 +1,52 @@
+logLevel: debug
+logFormat: json
+interval: 1m
+triggerLoopOnEvent: true
+registry: txt
+txtPrefix: edns.
+sources:
+  - ingress
+  - service
+  - crd
+  - gateway-grpcroute
+  - gateway-httproute
+  - gateway-tlsroute
+  - gateway-udproute
+  - gateway-tcproute
+policy: sync
+provider: cloudflare
+# txtOwnerId: cluster-name
+env:
+  - name: CF_API_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: dns-credentials
+        key: password
+        optional: false
+  - name: EXTERNAL_DNS_DOMAIN_FILTER
+    valueFrom:
+      secretKeyRef:
+        name: dns-credentials
+        key: zone_name
+        optional: false
+  - name: EXTERNAL_DNS_ZONE_ID_FILTER
+    valueFrom:
+      secretKeyRef:
+        name: dns-credentials
+        key: zone_id
+        optional: false
+serviceMonitor:
+  enabled: true
+  interval: 1m
+  scrapeTimeout: 30s
+
+extraArgs:
+  - --ingress-class=haproxy
+
+# resources:
+#   limits:
+#     cpu: 200m
+#     memory: 200Mi
+#   requests:
+#     cpu: 100m
+#     memory: 100Mi

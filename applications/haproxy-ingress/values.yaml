@@ -1,0 +1,109 @@
+controller:
+  kind: DaemonSet
+  extraArgs:
+    configmap: $(POD_NAMESPACE)/haproxy-ingress
+  daemonset:
+    useHostPort: true
+    hostPorts:
+      http: 80
+      https: 443
+  # haproxy-ingress resources
+  # resources:
+  #   limits:
+  #     cpu: 50m
+  #     memory: 1500Mi
+  #   requests:
+  #     cpu: 10m
+  #     memory: 900Mi
+  ingressClass: haproxy
+  ingressClassResource:
+    enabled: true
+  kubernetesGateway:
+    enabled: true
+    gatewayControllerName: haproxy.org/gateway-controller 
+  config:
+    # timeout-client: "10m"
+    # timeout-connect: "10s"
+    # timeout-server: "10m"
+    # timeout-http-request: "10m"
+    # timeout-http-keep-alive: "10m"
+    http-port: "30080"
+    https-port: "30443"
+    max-connections: "10000"
+  containerPorts:
+    http: 30080
+    https: 30443
+  enableStaticPorts: true
+  publishService:
+    enabled: true
+  service:
+    httpPorts:
+    - port: 80
+      targetPort: http
+    # nodePort:
+    httpsPorts:
+    - port: 443
+      targetPort: https
+    # nodePort:
+    extraPorts: []
+    # - port: 8080
+    #   targetPort: 8080
+    #   nodePort: 30012
+    externalTrafficPolicy: Local
+    healthCheckNodePort: 0
+    type: LoadBalancer
+  haproxy:
+    enabled: true
+    image:
+      registry: docker.io
+      repository: haproxy
+      tag: "2.9.12-alpine"
+      pullPolicy: IfNotPresent
+    # resources:
+    #   limits:
+    #     cpu: 400m
+    #     memory: 2000Mi
+    #   requests:
+    #     cpu: 150m
+    #     memory: 750Mi
+  stats:
+    enabled: true
+    service:
+      type: ClusterIP
+  metrics:
+    enabled: true
+    embedded: false
+    # resources:
+    #   limits:
+    #     cpu: 400m
+    #     memory: 300Mi
+    #   requests:
+    #     cpu: 150m
+    #     memory: 150Mi
+  serviceMonitor:
+    enabled: true
+    labels:
+      release: prometheus
+    metrics:
+      relabelings:
+      - replacement: cl1
+        targetLabel: cluster
+      - sourceLabels: [__meta_kubernetes_pod_node_name]
+        targetLabel: hostname
+    ctrlMetrics:
+      relabelings:
+      - replacement: cl1
+        targetLabel: cluster
+      - sourceLabels: [__meta_kubernetes_pod_node_name]
+        targetLabel: hostname
+  logs:
+    enabled: true
+    # resources:
+    #   limits:
+    #     cpu: 100m
+    #     memory: 50Mi
+    #   requests:
+    #     cpu: 2m
+    #     memory: 6Mi
+defaultBackend:
+  enabled: false
