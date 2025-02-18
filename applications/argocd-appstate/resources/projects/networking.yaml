@@ -21,6 +21,8 @@ spec:
     server: '*'
   - namespace: external-dns
     server: '*'
+  - namespace: gateway-api
+    server: '*'
   - namespace: haproxy-ingress
     server: '*'
 
