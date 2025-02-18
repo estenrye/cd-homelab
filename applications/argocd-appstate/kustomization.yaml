@@ -5,3 +5,4 @@ resources:
   - resources/projects/argocd.yaml
   - resources/projects/networking.yaml
   - resources/applications/argocd-appstate.yaml
+  - resources/applications/argocd.yaml
