@@ -18,6 +18,10 @@ spec:
     - profile
     - email
     - groups
+  applicationSet:
+    enabled: true
+    sourceNamespaces:
+    - argocd
   ha:
     enabled: true
     resources: {}
