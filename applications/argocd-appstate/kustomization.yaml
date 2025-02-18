@@ -6,3 +6,4 @@ resources:
   - resources/projects/networking.yaml
   - resources/applications/argocd-appstate.yaml
   - resources/applications/argocd.yaml
+  - resources/applicationsets/cert-manager.yaml
