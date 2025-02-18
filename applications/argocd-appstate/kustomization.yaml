@@ -7,3 +7,4 @@ resources:
   - resources/applications/argocd-appstate.yaml
   - resources/applications/argocd.yaml
   - resources/applicationsets/cert-manager.yaml
+  - resources/applicationsets/cert-manager-cluster-issuer.yaml
