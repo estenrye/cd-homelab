@@ -11,7 +11,7 @@ spec:
   sources:
   - repoURL: git@github.com:estenrye/cd-homelab.git
     targetRevision: new-argocd-server
-    path: applications/argocd
+    path: overlays/argo-server/argocd
 
   destination:
     server: https://kubernetes.default.svc
