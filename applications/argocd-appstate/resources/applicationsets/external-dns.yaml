@@ -16,7 +16,7 @@ spec:
       sources:
       - repoURL: git@github.com:estenrye/cd-homelab.git
         targetRevision: new-argocd-server
-        path: applications/external-dns
+        path: applications/external-dns-gateway-api
       destination:
         server: '{{server}}' # 'server' field of the secret
         namespace: external-dns
