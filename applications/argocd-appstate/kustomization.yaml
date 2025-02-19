@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - resources/projects/argocd.yaml
   - resources/projects/networking.yaml
+  - resources/projects/secrets.yaml
   - resources/applications/argocd-appstate.yaml
   - resources/applications/argocd.yaml
   - resources/applicationsets/cert-manager.yaml
