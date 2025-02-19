@@ -60,12 +60,12 @@ kustomize build --enable-helm applications/sealed-secrets | kubectl apply -f -
 kubectl create secret generic op-credentials -n 1password \
   --from-literal=1password-credentials.json=`op read --account ryefamily.1password.com op://Home_lab/1Password-Connect-Credentials-File-usmnblm01.rye.ninja/1password-credentials.json | base64` \
   --dry-run=client -o yaml | kubeseal --controller-namespace=kubeseal --controller-name=sealed-secrets -o yaml \
-  > overlays/argo-cluster/1password/resources/sealed-secrets-credentials.yaml
+  > overlays/in-cluster/1password/resources/sealed-secrets-credentials.yaml
 
 kubectl create secret generic onepassword-token -n 1password \
   --from-literal=token=`op read --account ryefamily.1password.com op://Home_Lab/1Password-Connect-Token-usmnblm01.rye.ninja/credential` \
   --dry-run=client -o yaml | kubeseal --controller-namespace=kubeseal --controller-name=sealed-secrets -o yaml \
-  > overlays/argo-cluster/1password/resources/sealed-secrets-token.yaml
+  > overlays/in-cluster/1password/resources/sealed-secrets-token.yaml
 
 # Deploy the 1Password Operator and Secrets Injector
 kustomize build --enable-helm overlays/argo-cluster/1password | kubectl apply -f -
