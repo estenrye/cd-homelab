@@ -13,4 +13,4 @@ resources:
   - resources/applicationsets/gateway-api.yaml
   - resources/applicationsets/haproxy-ingress.yaml
   - resources/applications/1password.yaml
-  - resources/applications/sealed-secrets.yaml
+  - resources/applicationsets/sealed-secrets.yaml
