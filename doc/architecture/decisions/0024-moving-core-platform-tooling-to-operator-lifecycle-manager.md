@@ -68,7 +68,7 @@ kubectl create secret generic onepassword-token -n 1password \
   > overlays/in-cluster/1password/resources/sealed-secrets-token.yaml
 
 # Deploy the 1Password Operator and Secrets Injector
-kustomize build --enable-helm overlays/argo-cluster/1password | kubectl apply -f -
+kustomize build --enable-helm overlays/in-cluster/1password | kubectl apply -f -
 
 # Deploy the Kube-Prometheus Stack
 # Run Twice
@@ -87,7 +87,7 @@ kubectl apply -k applications/gateway-api
 kustomize build --enable-helm applications/haproxy-ingress | kubectl apply -f -
 
 # Deploy External DNS
-kustomize build --enable-helm overlays/argo-cluster/external-dns | kubectl apply -f -
+kustomize build --enable-helm overlays/in-cluster/external-dns | kubectl apply -f -
 
 # Deploy Argo CD
 kustomize build --enable-helm overlays/argo-cluster/argocd | kubectl apply -f - 
