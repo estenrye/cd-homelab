@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - resources/projects/argocd.yaml
+  - resources/projects/databases.yaml
   - resources/projects/networking.yaml
   - resources/projects/observability.yaml
   - resources/projects/secrets.yaml
@@ -11,6 +12,7 @@ resources:
   - resources/applications/argocd.yaml
   - resources/applications/argo-events.yaml
   - resources/applications/argo-events-bus.yaml
+  - resources/applications/cloud-native-postgres-operator.yaml
   - resources/applicationsets/cert-manager.yaml
   - resources/applicationsets/cert-manager-cluster-issuer.yaml
   - resources/applicationsets/external-dns.yaml
