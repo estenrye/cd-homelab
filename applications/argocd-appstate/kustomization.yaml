@@ -7,6 +7,8 @@ resources:
   - resources/projects/secrets.yaml
   - resources/applications/argocd-appstate.yaml
   - resources/applications/argocd.yaml
+  - resources/applications/argo-events.yaml
+  - resources/applications/argo-events-bus.yaml
   - resources/applicationsets/cert-manager.yaml
   - resources/applicationsets/cert-manager-cluster-issuer.yaml
   - resources/applicationsets/external-dns.yaml
