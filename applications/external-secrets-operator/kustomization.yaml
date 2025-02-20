@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
 - resources/subscription.yaml
 - resources/namespace.yaml
-- resources/operatorgroup.yaml
+- resources/operatorconfig.yaml
