@@ -13,6 +13,7 @@ metadata:
     component: server
     chart: consul-helm
 spec:
+  ingressClassName: haproxy
   tls:
     - hosts:
         - consul-server.cluster.infra.rye.ninja
