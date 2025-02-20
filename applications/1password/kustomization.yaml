@@ -11,13 +11,8 @@ helmCharts:
     version: 1.17.0
     releaseName: connect
     includeCRDs: true
-    valuesInline:
-      operator:
-        create: true
-        autoRestart: true
-      connect:
-        ingress:
-          enabled: false
+    valuesInline: {}
+    valuesFile: values.yaml
 
   - name: secrets-injector
     repo: https://1password.github.io/connect-helm-charts/

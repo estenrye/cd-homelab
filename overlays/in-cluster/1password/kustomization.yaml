@@ -5,3 +5,17 @@ resources:
   - resources/sealed-secrets-credentials.yaml
   - resources/sealed-secrets-token.yaml
   - ../../../applications/1password
+
+patches:
+- patch: |
+    - op: replace
+      path: /spec/rules/0/host
+      value: connect.rspot.rye.ninja
+    - op: replace
+      path: /spec/tls/0/hosts/0
+      value: connect.rspot.rye.ninja
+  target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: connect

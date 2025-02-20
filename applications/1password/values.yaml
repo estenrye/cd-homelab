@@ -1,0 +1,13 @@
+operator:
+  create: true
+  autoRestart: true
+connect:
+  ingress:
+    enabled: true
+    ingressClassName: haproxy
+    hosts:
+      - host: example.cluster.infra.rye.ninja
+    tls:
+      - hosts:
+          - example.cluster.infra.rye.ninja
+        secretName: connect-tls
