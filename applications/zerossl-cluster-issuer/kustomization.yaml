@@ -5,3 +5,5 @@ resources:
   - resources/onepassworditem.cloudflare-dns01.yaml
   - resources/onepassworditem.zerossl-eab.yaml
   - resources/clusterissuer.yaml
+  - resources/externalsecret.dns-credentials.yaml
+  - resources/externalsecret.zerossl-eab.yaml
