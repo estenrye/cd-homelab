@@ -16,7 +16,7 @@ spec:
     externalAccountBinding:
       keyID: ZlO3V9ZBwEtfRpYK4sSqaw
       keySecretRef:
-        name: zero-ssl-eabsecret
+        name: eab-credentials-zerossl
         key: credential
       keyAlgorithm: HS256
 
@@ -28,5 +28,5 @@ spec:
       dns01:
         cloudflare:
           apiTokenSecretRef:
-            name: letsencrypt-cloudflare-dns01-credentials
-            key: password
+            name: dns-credentials-cloudflare
+            key: token
