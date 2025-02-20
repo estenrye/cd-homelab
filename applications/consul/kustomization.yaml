@@ -8,7 +8,7 @@ resources:
   - resources/namespace.yaml
   - resources/ingress.server.yaml
   - resources/servicemonitor.yaml
-  - resources/uuid.gossip-encryption-key.yaml
+  - resources/password.gossip-encryption-key.yaml
   - resources/uuid.bootstrap-acl-token.yaml
   - resources/externalsecret.gossip-encryption-key.yaml
   - resources/externalsecret.bootstrap-acl-token.yaml
