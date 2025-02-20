@@ -5,3 +5,4 @@ resources:
 - resources/subscription.yaml
 - resources/namespace.yaml
 - resources/operatorconfig.yaml
+- resources/clustersecretstore.onepassword.yaml
