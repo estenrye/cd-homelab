@@ -6,6 +6,5 @@ resources:
   - resources/catalog_source.yaml
   - resources/operator_group.yaml
   - resources/subscription.yaml
-  - resources/onepassworditem.oidc-credentials.yaml
   - resources/onepassworditem.ssh-credentials.yaml
   - resources/argocd.yaml
