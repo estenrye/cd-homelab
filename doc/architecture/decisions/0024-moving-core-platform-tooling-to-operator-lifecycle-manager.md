@@ -100,6 +100,64 @@ kubectl apply -k applications/argo-events-bus
 
 
 ```
-## Consequences
+## Adding a new cluster to Argo CD
+
+```bash
+export KUBECONFIG=~/.kube/config
+export CLUSTER_NAME=cluster-name
+export CONNECT_HOST='https://connect.rspot.rye.ninja'
+
+operator-sdk olm install
+kubectl apply -k applications/sealed-secrets
+
+# Create an overlay for the External Secrets Operator
+mkdir -p overlays/$CLUSTER_NAME/external-secrets-operator/resources
+cat <<EOF > overlays/$CLUSTER_NAME/external-secrets-operator/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: external-secrets-operator
+resources:
+  - ../../../applications/external-secrets-operator
+  - resources/provider-auth-secret.yaml
+
+patches:
+- patch: |
+    - op: replace
+      path: /spec/provider/onepassword/connectHost
+      value: $CONNECT_HOST
+  target:
+    group: external-secrets.io
+    version: v1beta1
+    kind: ClusterSecretStore
+    name: onepassword
+EOF
+
+kubectl create secret generic onepassword-token -n external-secrets-operator \
+  --from-literal=token=`op read --account ryefamily.1password.com op://Home_Lab/1Password-Connect-Token-usmnblm01.rye.ninja/credential` \
+  --dry-run=client -o yaml | kubeseal --controller-namespace=kubeseal --controller-name=sealed-secrets -o yaml \
+  > overlays/$CLUSTER_NAME/external-secrets-operator/resources/provider-auth-secret.yaml
+
+# Create an overlay for the External DNS Operator
+mkdir -p overlays/$CLUSTER_NAME/external-dns
+cat <<EOF > overlays/$CLUSTER_NAME/external-secrets-operator/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: external-dns
+resources:
+  - ../../../applications/external-dns-gateway-api
+
+patches:
+- patch: |
+    - op: add
+      path: /spec/template/spec/containers/0/args/0
+      value: --txt-owner-id=$CLUSTER_NAME.rspot.rye.ninja
+  target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: external-dns
+EOF
+
+```
 
 What becomes easier or more difficult to do and any risks introduced by the change that will need to be mitigated.

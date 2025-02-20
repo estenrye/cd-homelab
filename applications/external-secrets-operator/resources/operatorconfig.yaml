@@ -3,6 +3,8 @@ kind: OperatorConfig
 metadata:
   name: cluster
   namespace: external-secrets-operator
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   replicaCount: 1
   extendedMetricLabels: true

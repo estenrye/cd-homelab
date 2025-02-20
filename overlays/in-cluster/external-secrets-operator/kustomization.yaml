@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: external-secrets-operator
+resources:
+  - ../../../applications/external-secrets-operator
+  - resources/provider-auth-secret.yaml
+
+patches:
+- patch: |
+    - op: replace
+      path: /spec/provider/onepassword/connectHost
+      value: https://connect.rspot.rye.ninja
+  target:
+    group: external-secrets.io
+    version: v1beta1
+    kind: ClusterSecretStore
+    name: onepassword
