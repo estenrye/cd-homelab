@@ -20,3 +20,4 @@ resources:
   - resources/applicationsets/haproxy-ingress.yaml
   - resources/applicationsets/kube-prometheus-stack.yaml
   - resources/applicationsets/sealed-secrets.yaml
+  - resources/applicationsets/external-secrets-operator.yaml
