@@ -15,6 +15,7 @@ resources:
 
 helmCharts:
   - name: consul
+    namespace: consul-vault
     repo: https://helm.releases.hashicorp.com
     version: 1.6.2
     releaseName: consul
