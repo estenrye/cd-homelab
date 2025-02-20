@@ -1,0 +1,31 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: argocd
+resources:
+  - ../../../applications/consul
+
+patches:
+- patch: |
+    - op: replace
+      path: /spec/rules/0/host
+      value: consul-ui.rspot.rye.ninja
+    - op: replace
+      path: /spec/tls/0/hosts/0
+      value: consul-ui.rspot.rye.ninja
+  target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: consul-consul-ui
+- patch: |
+    - op: replace
+      path: /spec/rules/0/host
+      value: consul-server.rspot.rye.ninja
+    - op: replace
+      path: /spec/tls/0/hosts/0
+      value: consul-server.rspot.rye.ninja
+  target:
+    group: networking.k8s.io
+    version: v1
+    kind: Ingress
+    name: consul-consul-server

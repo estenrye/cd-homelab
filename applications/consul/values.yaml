@@ -1,0 +1,89 @@
+global:
+  argocd: 
+    enabled: true
+  datacenter: mk
+  gossipEncryption:
+    autoGenerate: true
+  acls:
+    manageSystemACLs: true
+  metrics:
+    enabled: true
+    enableAgentMetrics: true
+    agentMetricsRetention: 5m
+
+server:
+  storageClass: ssd
+  storage: 10Gi
+  topologySpreadConstraints:
+  priorityClassName: "high-priority-nonprempting"
+  replicas: 3
+  bootstrapExpect: 3
+  disruptionBudget:
+    maxUnavailable: 0
+  exposeService:
+    enabled: true
+    type: NodePort
+  resources:
+    requests:
+      memory: 3072Mi
+      cpu: 2
+    limits:
+      memory: 6144Mi
+      cpu: 4
+  extraConfig: |
+    {
+      "limits": {
+        "http_max_conns_per_client": 20000 
+      }
+    }
+
+client:
+  enabled: false
+  resources:
+    limits:
+      memory: 250Mi
+      cpu: 250m
+
+ui:
+  enabled: true
+  service:
+    type: NodePort
+  ingress:
+    enabled: true
+    ingressClassName: haproxy
+    pathType: Prefix
+    annotations: |
+      'cert-manager.io/cluster-issuer': zerossl-production
+      'external-dns.alpha.kubernetes.io/ttl': "60"
+    hosts:
+      - host: consul-ui.cluster.infra.rye.ninja
+        paths:
+          - /
+    tls:
+      - hosts:
+          - consul-ui.cluster.infra.rye.ninja
+        secretName: consul-ui-tls
+
+dns:
+  enabled: false
+
+syncCatalog:
+  enabled: false
+
+connectInject:
+  enabled: false
+
+tests:
+  enabled: false
+
+meshGateway:
+  enabled: false
+
+ingressGateways:
+  enabled: false
+
+terminatingGateways:
+  enabled: false
+
+prometheus:
+  enabled: false

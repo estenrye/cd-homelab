@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: consul-consul-server
+  annotations:
+    cert-manager.io/cluster-issuer: zerossl-production
+    external-dns.alpha.kubernetes.io/ttl: "60"
+    haproxy-ingress.github.io/timeout-connect: 65s
+    haproxy-ingress.github.io/timeout-http-request: 65s
+    haproxy-ingress.github.io/max-connections: "10000"
+  labels:
+    app: consul
+    component: server
+    chart: consul-helm
+spec:
+  tls:
+    - hosts:
+        - consul-server.cluster.infra.rye.ninja
+      secretName: consul-server-tls
+  rules:
+  - host: consul-server.cluster.infra.rye.ninja
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: consul-consul-expose-servers
+            port:
+              number: 8500

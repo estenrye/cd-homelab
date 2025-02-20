@@ -1,0 +1,20 @@
+# https://helm.releases.hashicorp.com
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: consul-vault
+
+resources:
+  - resources/namespace.yaml
+  - resources/ingress.server.yaml
+  - resources/servicemonitor.yaml
+
+helmCharts:
+  - name: consul
+    repo: https://helm.releases.hashicorp.com
+    version: 1.6.2
+    releaseName: consul
+    includeCRDs: true
+    valuesFile: values.yaml
+    valuesInline: {}
+    

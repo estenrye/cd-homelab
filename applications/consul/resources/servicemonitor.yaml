@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: consul
+spec:
+  selector:
+    matchLabels:
+      app: consul
+  namespaceSelector:
+    matchNames:
+    - consul-vault
+  endpoints:
+  - port: http
+    scheme: http
+    interval: 60s
+    path: /v1/agent/metrics
+    authorization:
+      credentials:
+        key: token
+        name: consul-consul-bootstrap-acl-token
