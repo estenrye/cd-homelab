@@ -15,7 +15,7 @@ spec:
       labels:
         rye.ninja/appset: consul
     spec:
-      project: "datastores"
+      project: "databases"
       sources:
       - repoURL: git@github.com:estenrye/cd-homelab.git
         targetRevision: new-argocd-server

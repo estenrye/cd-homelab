@@ -21,6 +21,8 @@ spec:
     server: '*'
   - namespace: operators
     server: '*'
+  - namespace: consul-vault
+    server: '*'
 
 
   # Deny all cluster-scoped resources from being created, except for Namespace
