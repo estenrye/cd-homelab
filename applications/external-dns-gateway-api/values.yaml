@@ -20,19 +20,19 @@ env:
   - name: CF_API_TOKEN
     valueFrom:
       secretKeyRef:
-        name: dns-credentials
-        key: password
+        name: dns-credentials-cloudflare
+        key: token
         optional: false
   - name: EXTERNAL_DNS_DOMAIN_FILTER
     valueFrom:
       secretKeyRef:
-        name: dns-credentials
+        name: dns-credentials-cloudflare
         key: zone_name
         optional: false
   - name: EXTERNAL_DNS_ZONE_ID_FILTER
     valueFrom:
       secretKeyRef:
-        name: dns-credentials
+        name: dns-credentials-cloudflare
         key: zone_id
         optional: false
 serviceMonitor:
