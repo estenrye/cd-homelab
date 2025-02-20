@@ -5,6 +5,7 @@ namespace: external-dns
 resources:
   - resources/namespace.yaml
   - resources/onepassworditem.yaml
+  - resources/externalsecret.dns-credentials.yaml
 
 helmCharts:
   - name: external-dns
