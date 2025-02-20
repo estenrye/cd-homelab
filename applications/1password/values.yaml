@@ -5,6 +5,8 @@ connect:
   ingress:
     enabled: true
     ingressClassName: haproxy
+    annotations:
+      cert-manager.io/cluster-issuer: zerossl-production
     hosts:
       - host: example.cluster.infra.rye.ninja
     tls:
