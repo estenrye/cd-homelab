@@ -3,7 +3,9 @@ global:
     enabled: true
   datacenter: mk
   gossipEncryption:
-    autoGenerate: true
+    autoGenerate: false
+    secretName: consul-gossip-encryption-key
+    secretKey: gossip-key
   acls:
     manageSystemACLs: true
   metrics:
