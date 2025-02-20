@@ -3,4 +3,5 @@ kind: Kustomization
 namespace: external-secrets-operator
 
 resources:
-- resources/subscription.yaml 
+- resources/namespace.yaml
+- resources/operatorconfig.yaml

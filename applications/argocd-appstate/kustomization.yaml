@@ -21,3 +21,4 @@ resources:
   - resources/applicationsets/kube-prometheus-stack.yaml
   - resources/applicationsets/sealed-secrets.yaml
   - resources/applicationsets/external-secrets-operator.yaml
+  - resources/applicationsets/external-secrets-operator-config.yaml
