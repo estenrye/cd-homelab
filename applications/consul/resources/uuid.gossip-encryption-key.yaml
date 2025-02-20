@@ -1,5 +1,11 @@
 apiVersion: generators.external-secrets.io/v1alpha1
-kind: UUID
+kind: Password
 metadata:
-  name: consul-gossip-encryption-key
-spec: {}
+  name: my-password
+spec:
+  length: 32
+  digits: 5
+  symbols: 5
+  symbolCharacters: "-_$@"
+  noUpper: false
+  allowRepeat: true

@@ -5,7 +5,7 @@ global:
   gossipEncryption:
     autoGenerate: false
     secretName: consul-gossip-encryption-key
-    secretKey: uuid
+    secretKey: password
   acls:
     manageSystemACLs: true
     bootstrapToken:
