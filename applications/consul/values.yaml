@@ -5,9 +5,12 @@ global:
   gossipEncryption:
     autoGenerate: false
     secretName: consul-gossip-encryption-key
-    secretKey: gossip-key
+    secretKey: uuid
   acls:
     manageSystemACLs: true
+    bootstrapToken:
+      secretName: consul-bootstrap-acl-token
+      secretKey: uuid
   metrics:
     enabled: true
     enableAgentMetrics: true
