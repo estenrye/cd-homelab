@@ -20,7 +20,7 @@ server:
   storageClass: ssd
   storage: 10Gi
   topologySpreadConstraints:
-  priorityClassName: "high-priority-nonprempting"
+  priorityClassName: "high-priority-nonpreempting"
   replicas: 3
   bootstrapExpect: 3
   disruptionBudget:
