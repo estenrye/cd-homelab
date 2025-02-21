@@ -29,3 +29,15 @@ spec:
     limits:
       memory: "1Gi"
       cpu: '2'
+
+  backup:
+    barmanObjectStore:
+      destinationPath: /postgres/argo-workflows
+      s3Credentials:
+        accessKeyId:
+          name: argo-workflows-barman
+          key: accessKeyId
+        secretAccessKey:
+          name: argo-workflows-barman
+          key: secretAccessKey
+    retentionPolicy: 30d
