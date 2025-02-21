@@ -6,15 +6,15 @@ resources:
   - resources/namespace.yaml
   - resources/cpng.cluster.yaml
   - resources/externalsecret.s3-credentials.yaml
-  # - resources/service.metrics.yaml
-  # - resources/servicemonitor.yaml
+  - resources/service.metrics.yaml
+  - resources/servicemonitor.yaml
 
-# helmCharts:
-#   - name: argo-workflows
-#     namespace: argo-workflows
-#     repo: https://argoproj.github.io/argo-helm
-#     version: 0.45.7
-#     releaseName: argo-workflows
-#     includeCRDs: true
-#     valuesInline: {}
-#     valuesFile: values.yaml
+helmCharts:
+  - name: argo-workflows
+    namespace: argo-workflows
+    repo: https://argoproj.github.io/argo-helm
+    version: 0.45.7
+    releaseName: argo-workflows
+    includeCRDs: true
+    valuesInline: {}
+    valuesFile: values.yaml

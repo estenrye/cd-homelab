@@ -126,7 +126,7 @@ controller:
   # podPortName: http
   metricsConfig:
     # -- Enables prometheus metrics server
-    enabled: false
+    enabled: true
     # -- Path is the path where metrics are emitted. Must start with a "/".
     path: /metrics
     # -- Frequency at which prometheus scrapes metrics
@@ -146,7 +146,7 @@ controller:
     # -- Service metrics port name
     servicePortName: metrics
     # -- Flag to enable headless service
-    headlessService: false
+    headlessService: true
     # -- When true, honorLabels preserves the metric’s labels when they collide with the target’s labels.
     ## Ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#honorlabels
     honorLabels: false
@@ -169,41 +169,30 @@ controller:
         - ALL
   # -- enable Workflow Archive to store the status of workflows. Postgres and MySQL (>= 5.7.8) are available.
   ## Ref: https://argo-workflows.readthedocs.io/en/stable/workflow-archive/
-  persistence: {}
-  # connectionPool:
-  #   maxIdleConns: 100
-  #   maxOpenConns: 0
+  persistence:
+  connectionPool:
+    maxIdleConns: 100
+    maxOpenConns: 0
   # # save the entire workflow into etcd and DB
-  # nodeStatusOffLoad: false
+  nodeStatusOffLoad: true
   # # enable archiving of old workflows
-  # archive: false
-  # postgresql:
-  #   host: localhost
-  #   port: 5432
-  #   database: postgres
-  #   tableName: argo_workflows
-  #   # the database secrets must be in the same namespace of the controller
-  #   userNameSecret:
-  #     name: argo-postgres-config
-  #     key: username
-  #   passwordSecret:
-  #     name: argo-postgres-config
-  #     key: password
-  #   ssl: true
-  #   # sslMode must be one of: disable, require, verify-ca, verify-full
-  #   # you can find more information about those ssl options here: https://godoc.org/github.com/lib/pq
-  #   sslMode: require
-  # mysql:
-  #   host: localhost
-  #   port: 3306
-  #   database: argo
-  #   tableName: argo_workflows
-  #   userNameSecret:
-  #     name: argo-mysql-config
-  #     key: username
-  #   passwordSecret:
-  #     name: argo-mysql-config
-  #     key: password
+  archive: true
+  postgresql:
+    host: postgres-rw.argo-workflows
+    port: 5432
+    database: app
+    tableName: argo_workflows
+    # the database secrets must be in the same namespace of the controller
+    userNameSecret:
+      name: postgres-app
+      key: username
+    passwordSecret:
+      name: postgres-app
+      key: password
+    ssl: true
+    # sslMode must be one of: disable, require, verify-ca, verify-full
+    # you can find more information about those ssl options here: https://godoc.org/github.com/lib/pq
+    sslMode: require
 
   # -- Default values that will apply to all Workflows from this controller, unless overridden on the Workflow-level.
   # Only valid for 2.7+
