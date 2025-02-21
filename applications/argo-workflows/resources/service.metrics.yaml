@@ -4,6 +4,7 @@ metadata:
   labels:
     app: workflow-controller
   name: workflow-controller-metrics
+  namespace: argo-workflows
 spec:
   clusterIP: None
   ports:
