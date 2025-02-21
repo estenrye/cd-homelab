@@ -23,6 +23,8 @@ spec:
     server: '*'
   - namespace: argo-workflows
     server: '*'
+  - namespace: default
+    server: '*'
 
   # Deny all cluster-scoped resources from being created, except for Namespace
   clusterResourceWhitelist:
