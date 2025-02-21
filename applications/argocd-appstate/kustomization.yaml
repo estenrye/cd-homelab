@@ -12,6 +12,7 @@ resources:
   - resources/applications/argocd.yaml
   - resources/applications/argo-events.yaml
   - resources/applications/argo-events-bus.yaml
+  - resources/applications/argo-workflows.yaml
   - resources/applications/cloud-native-postgres-operator.yaml
   - resources/applicationsets/cert-manager.yaml
   - resources/applicationsets/cert-manager-cluster-issuer.yaml
@@ -22,4 +23,3 @@ resources:
   - resources/applicationsets/sealed-secrets.yaml
   - resources/applicationsets/external-secrets-operator.yaml
   - resources/applicationsets/consul.yaml
-  - resources/applicationsets/argo-workflows.yaml
