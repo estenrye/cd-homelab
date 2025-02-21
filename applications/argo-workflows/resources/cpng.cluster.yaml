@@ -1,0 +1,31 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: cluster-example
+spec:
+  instances: 3
+
+  affinity:
+    enablePodAntiAffinity: true # Default value
+    topologyKey: kubernetes.io/hostname # Default value
+    podAntiAffinityType: preferred # Default value
+
+  priorityClassName: high-priority-nonpreempting
+  enablePDB: true
+  
+  storage:
+    size: 5Gi
+    storageClass: ssd
+    resizeInUseVolumes: true
+
+  postgresql:
+    parameters:
+      shared_buffers: "256MB"
+
+  resources:
+    requests:
+      memory: "1024Mi"
+      cpu: 2
+    limits:
+      memory: "1024Mi"
+      cpu: 2

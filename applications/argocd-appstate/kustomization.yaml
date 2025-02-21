@@ -22,3 +22,4 @@ resources:
   - resources/applicationsets/sealed-secrets.yaml
   - resources/applicationsets/external-secrets-operator.yaml
   - resources/applicationsets/consul.yaml
+  - resources/applicationsets/argo-workflows.yaml
