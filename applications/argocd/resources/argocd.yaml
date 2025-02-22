@@ -72,3 +72,18 @@ spec:
         - hosts: []
           secretName: argocd-ingress-tls
     insecure: true
+  sso:
+    dex:
+      env:
+        - name: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: clientSecret
+              name: argo-workflows-sso
+      config: |
+        staticClients:
+          - id: argo-workflows-sso
+            name: Argo Workflow
+            redirectURIs:
+              - 'https://argo-workflows.rspot.rye.ninja/oauth2/callback'
+            secretEnv: ARGO_WORKFLOWS_SSO_CLIENT_SECRET

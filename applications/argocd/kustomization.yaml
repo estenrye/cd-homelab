@@ -8,3 +8,5 @@ resources:
   - resources/subscription.yaml
   - resources/onepassworditem.ssh-credentials.yaml
   - resources/argocd.yaml
+  - resources/uuid.argo-workflows-sso-client-secret.yaml
+  - resources/externalsecret.argo-workflows-sso-client-secret.yaml
