@@ -25,6 +25,8 @@ spec:
     server: '*'
   - namespace: default
     server: '*'
+  - namespace: workflows
+    server: '*'
 
   # Deny all cluster-scoped resources from being created, except for Namespace
   clusterResourceWhitelist:
@@ -40,6 +42,10 @@ spec:
     kind: ValidatingWebhookConfiguration
   - group: admissionregistration.k8s.io
     kind: MutatingWebhookConfiguration
+  - group: external-secrets.io
+    kind: ClusterExternalSecret
+  - group: generators.external-secrets.io
+    kind: ClusterGenerator
 
   # Allow all namespaced-scoped resources to be created, except for ResourceQuota, LimitRange, NetworkPolicy
   namespaceResourceBlacklist:
