@@ -78,8 +78,8 @@ spec:
         - name: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
-              key: clientSecret
-              name: argo-workflows-sso
+              key: clientsecret
+              name: argo-workflows-sso-client-secret
       config: |
         staticClients:
           - id: argo-workflows-sso
