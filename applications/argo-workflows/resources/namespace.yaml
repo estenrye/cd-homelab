@@ -4,3 +4,8 @@ metadata:
   name: argo-workflows
   labels:
     argo-workflows-oidc: "true"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: workflows
