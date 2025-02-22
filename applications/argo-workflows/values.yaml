@@ -621,8 +621,8 @@ server:
     # -- Enable an ingress resource
     enabled: true
     # -- Additional ingress annotations
-    annotations: |
-      'cert-manager.io/cluster-issuer': zerossl-production
+    annotations:
+      cert-manager.io/cluster-issuer: zerossl-production
     # -- Additional ingress labels
     labels: {}
     # -- Defines which ingress controller will implement the resource
