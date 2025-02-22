@@ -78,7 +78,7 @@ spec:
         - name: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
-              key: clientsecret
+              key: uuid
               name: argo-workflows-sso-client-secret
       config: |
         staticClients:
