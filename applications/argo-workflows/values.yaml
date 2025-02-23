@@ -681,7 +681,7 @@ server:
     enabled: false
     # -- Domains for the Google Managed Certificate
     domains:
-    - argoworkflows.example.com
+    - argoworkflows.${K_INFRA_NAME:-cluster}.${K_ZONE_NAME:-example.com}
 
   ## Create a Google FrontendConfig Custom Resource, for use with the GKE Ingress Controller
   ## https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-features#configuring_ingress_features_through_frontendconfig_parameters
@@ -706,7 +706,7 @@ server:
     # -- Create SSO configuration. If you set `true` , please also set `.Values.server.authMode` as `sso`.
     enabled: true
     # -- The root URL of the OIDC identity provider
-    issuer: https://argo-cd.mydomain.com/api/dex
+    issuer: https://argo-cd.${K_INFRA_NAME}.${K_ZONE_NAME}/api/dex
     clientId:
       # -- Name of secret to retrieve the app OIDC client ID
       name: argo-workflows-sso-client-secret
@@ -718,7 +718,7 @@ server:
       # -- Key of a secret to retrieve the app OIDC client secret
       key: clientSecret
     # -- The OIDC redirect URL. Should be in the form <argo-root-url>/oauth2/callback.
-    redirectUrl: "https://argoworkflows.example.com/oauth2/callback"
+    redirectUrl: "https://argoworkflows.${K_INFRA_NAME}.${K_ZONE_NAME}/oauth2/callback"
     rbac:
       # -- Adds ServiceAccount Policy to server (Cluster)Role.
       enabled: true

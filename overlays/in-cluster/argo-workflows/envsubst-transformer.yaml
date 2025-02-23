@@ -1,0 +1,14 @@
+apiVersion: kustomize-krm-envsubst/v1alpha
+kind: Envsubst
+metadata:
+  name: envsubst
+  annotations:
+    config.kubernetes.io/function: |
+      exec:
+        path: ../../../transformers/envsubst/kustomize-krm-envsubst.sh
+includedVariableNames:
+  - K_ZONE_NAME
+  - K_INFRA_NAME
+values:
+  K_ZONE_NAME: rye.ninja
+  K_INFRA_NAME: rspot

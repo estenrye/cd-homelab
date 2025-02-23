@@ -25,7 +25,7 @@ spec:
   ha:
     enabled: true
     resources: {}
-  kustomizeBuildOptions: --enable-helm
+  kustomizeBuildOptions: --enable-helm --enable-alpha-plugins --enable-exec
   kustomizeVersions: 
   - path: /usr/local/bin/kustomize-5.1.0
     version: v5.1.0
