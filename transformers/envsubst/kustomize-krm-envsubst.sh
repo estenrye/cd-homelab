@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 KRM_VERSION="v0.10.0"
