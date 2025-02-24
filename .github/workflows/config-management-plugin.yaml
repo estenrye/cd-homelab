@@ -12,11 +12,11 @@ jobs:
       fail-fast: false
       matrix:
         job:
-          - { kubectl_version: 1.28.15 }
-          - { kubectl_version: 1.29.13 }
-          - { kubectl_version: 1.30.9 }
-          - { kubectl_version: 1.31.5 }
-          - { kubectl_version: 1.32.1 }
+          - { kubectl_version: v1.28.15 }
+          - { kubectl_version: v1.29.13 }
+          - { kubectl_version: v1.30.10 }
+          - { kubectl_version: v1.31.6 }
+          - { kubectl_version: v1.32.2 }
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Login to GHCR
