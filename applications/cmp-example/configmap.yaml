@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: example-config
+    namespace: default
+data:
+    key1: ${K_INFRA_NAME}
+    key2: ${K_ZONE_NAME}

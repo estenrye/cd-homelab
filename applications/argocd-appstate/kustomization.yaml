@@ -14,6 +14,7 @@ resources:
   - resources/applications/argo-events-bus.yaml
   - resources/applications/argo-workflows.yaml
   - resources/applications/cloud-native-postgres-operator.yaml
+  - resources/applications/cmp-example.yaml
   - resources/applicationsets/cert-manager.yaml
   - resources/applicationsets/cert-manager-cluster-issuer.yaml
   - resources/applicationsets/external-dns.yaml
