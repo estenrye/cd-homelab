@@ -7,6 +7,6 @@ spec:
     command: 
       - sh
       - -c
-      - kustomize build --enable-alpha-plugins --enable-exec --enable-helm
+      - kustomize build --enable-alpha-plugins --enable-exec --enable-helm --as-current-user
   preserveFileMode: false
   provideGitCreds: false
