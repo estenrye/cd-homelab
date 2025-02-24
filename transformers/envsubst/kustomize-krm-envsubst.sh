@@ -20,4 +20,5 @@ if [ -f $SCRIPT_DIR/bin/$KUSTOMIZE_KRM_ENVSUBST ]; then
   tar -xvf $SCRIPT_DIR/bin/krm_envsubst.tar.gz -C $SCRIPT_DIR/bin
 fi
 
+set -e
 $KUSTOMIZE_KRM_ENVSUBST $@
