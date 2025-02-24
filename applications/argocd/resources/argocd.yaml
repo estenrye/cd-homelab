@@ -47,6 +47,7 @@ spec:
     sidecarContainers:
       - name: kustomize-helm-envsubst
         image: estenrye/argocd-cmp:v1.29.13
+        command: [/var/run/argocd/argocd-cmp-server]
         imagePullPolicy: IfNotPresent
         securityContext:
           runAsNonRoot: true
