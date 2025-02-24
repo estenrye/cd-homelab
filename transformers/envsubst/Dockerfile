@@ -1,4 +1,4 @@
-FROM scratch as transformers
+FROM scratch AS transformers
 ARG KRM_VERSION=v0.10.0
 ARG KUBECTL_VERSION=v1.31.5
 
