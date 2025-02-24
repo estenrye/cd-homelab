@@ -40,6 +40,13 @@ spec:
     policy: |
       g, ACL_ArgoCD_Global-Administrator, role:admin
     scopes: '[groups, email]'
+  configManagementPlugins: |
+    kustomize-helm-envsubst.yaml: |
+      apiVersion: argoproj.io/v1alpha1
+      kind: ConfigManagementPlugin
+      metadata:
+        name: kustomize-helm-envsubst
+      spec:
   repo:
     enabled: true
     logFormat: json
