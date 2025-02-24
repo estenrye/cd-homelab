@@ -8,17 +8,19 @@ metadata:
     name: argo-workflows
 spec:
   project: argocd
-  sources:
-  - repoURL: git@github.com:estenrye/cd-homelab.git
+  source:
+    repoURL: git@github.com:estenrye/cd-homelab.git
     targetRevision: new-argocd-server
     path: applications/argo-workflows
+
+    plugin:
+      name: kustomize-helm-envsubst
 
   destination:
     server: https://kubernetes.default.svc
     namespace: argo-workflows
 
-  plugin:
-    name: kustomize-helm-envsubst
+
 
   # Sync policy
   syncPolicy:
