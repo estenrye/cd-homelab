@@ -8,7 +8,5 @@ spec:
       - sh
       - -c
       - kustomize build --enable_alpha_plugins --enable-exec --enable-helm
-  discover:
-    fileName: envsubst-transformer.yaml
   preserveFileMode: false
   provideGitCreds: false
