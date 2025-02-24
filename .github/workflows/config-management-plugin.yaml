@@ -18,6 +18,8 @@ jobs:
           - { kubectl_version: v1.31.6 }
           - { kubectl_version: v1.32.2 }
     steps:
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Login to GHCR
         uses: docker/login-action@v3
@@ -43,8 +45,8 @@ jobs:
           push: true 
           platforms: linux/amd64,linux/arm64,linux/aarch64
           tags: |
-            docker.io/${{ github.repository_owner }}/argocd-cmp:${{ matrix.job.kubectl_version }}
-            ghcr.io/${{ github.repository_owner }}/argocd-cmp:${{ matrix.job.kubectl_version }}
+            docker.io/${{ github.repository_owner }}/argocd-cmp:${{env.RELEASE_VERSION}}-${{ matrix.job.kubectl_version }}
+            ghcr.io/${{ github.repository_owner }}/argocd-cmp:${{env.RELEASE_VERSION}}-${{ matrix.job.kubectl_version }}
           labels: |
             maintainer=${{ github.repository_owner }} <github.com/${{ github.repository_owner }}>
             version=${{ matrix.job.kubectl_version }}

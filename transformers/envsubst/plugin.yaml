@@ -4,12 +4,11 @@ metadata:
   name: kustomize-helm-envsubst
 spec:
   generate:
-    command: [sh, -c]
-    args:
-      - kustomize
-      - build
-      - --enable_alpha_plugins
-      - --enable-exec
-      - --enable-helm
+    command: 
+      - sh
+      - -c
+      - kustomize build --enable_alpha_plugins --enable-exec --enable-helm
+  discover:
+    fileName: envsubst-transformer.yaml
   preserveFileMode: false
   provideGitCreds: false
