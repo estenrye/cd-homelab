@@ -1,12 +1,15 @@
 #!/bin/bash
-set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 KRM_VERSION="v0.10.0"
 KRM_OS=`uname -o`
 KRM_ARCH=`uname -m`
 
-KUSTOMIZE_KRM_ENVSUBST="$SCRIPT_DIR/bin/kustomize-krm-envsubst"
+KUSTOMIZE_KRM_ENVSUBST=`which kustomize-krm-envsubst`
+
+if [ -z $KUSTOMIZE_KRM_ENVSUBST ]; then
+  KUSTOMIZE_KRM_ENVSUBST="$SCRIPT_DIR/bin/kustomize-krm-envsubst"
+fi
 
 if [ -f $SCRIPT_DIR/bin/$KUSTOMIZE_KRM_ENVSUBST ]; then
   $SCRIPT_DIR/bin/$KUSTOMIZE_KRM_ENVSUBST $@

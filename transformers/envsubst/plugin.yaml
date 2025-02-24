@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ConfigManagementPlugin
+metadata:
+  name: kustomize-helm-envsubst
+spec:
+  generate:
+    command: [sh, -c]
+    args:
+      - kustomize
+      - build
+      - --enable_alpha_plugins
+      - --enable-exec
+      - --enable-helm
+  preserveFileMode: false
+  provideGitCreds: false
