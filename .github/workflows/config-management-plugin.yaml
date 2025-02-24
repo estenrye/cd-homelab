@@ -39,7 +39,7 @@ jobs:
         uses: docker/build-push-action@v6.14.0
         with:
           context: transformers/envsubst
-          file: Dockerfile
+          file: transformers/envsubst/Dockerfile
           push: true 
           platforms: linux/amd64,linux/arm64,linux/aarch64
           tags: |
