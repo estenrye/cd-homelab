@@ -60,9 +60,10 @@ spec:
           # mitigate path traversal attacks.
           - mountPath: /tmp
             name: cmp-tmp
-        volumes:
-          - emptyDir: {}
-            name: cmp-tmp
+    volumes:
+      - emptyDir: {}
+        name: cmp-tmp
+
   # redis:
   #   enabled: true
   server:
