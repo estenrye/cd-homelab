@@ -76,9 +76,8 @@ spec:
         command: [/var/run/argocd/argocd-cmp-server]
         image: mgoltzsche/podman:latest
         securityContext:
-          privileged: true
-          runAsNonRoot: true
-          runAsUser: 1000
+          privileged: false
+          runAsUser: 999
         volumeMounts:
           - mountPath: /var/run/argocd
             name: var-files
