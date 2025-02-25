@@ -57,12 +57,7 @@ spec:
           command: 
             - sh
             - -c
-          args:
-            - kustomize
-            - build
-            - --enable-alpha-plugins
-            - --enable-helm
-            - --as-current-user
+            - kustomize build --enable-alpha-plugins --enable-exec --enable-helm --as-current-user
         allowConcurrency: true
         lockRepo: false
         preserveFileMode: false
