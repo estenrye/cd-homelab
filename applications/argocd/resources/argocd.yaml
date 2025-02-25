@@ -59,7 +59,7 @@ spec:
         securityContext:
           privileged: true
           runAsNonRoot: false
-          runAsUser: 999
+          # runAsUser: 999
         volumeMounts:
           - mountPath: /var/run/argocd
             name: var-files
