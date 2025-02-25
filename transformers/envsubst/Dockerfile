@@ -44,4 +44,4 @@ RUN apk add --update --no-cache py3-pip && \
 
 COPY plugin.yaml /home/argocd/cmp-server/config/plugin.yaml
 
-ENTRYPOINT [ "/usr/local/bin/kustomize-krm-envsubt" ]
+ENTRYPOINT [ "/usr/local/bin/kustomize-krm-envsubst" ]
