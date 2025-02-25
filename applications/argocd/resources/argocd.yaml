@@ -74,11 +74,11 @@ spec:
     sidecarContainers:
       - name: kustomize-docker
         command: [/var/run/argocd/argocd-cmp-server]
-        image: mgoltzsche/podman:minimal
+        image: mgoltzsche/podman:latest
         securityContext:
           privileged: true
           runAsNonRoot: true
-          runAsUser: 999
+          runAsUser: 1000
         volumeMounts:
           - mountPath: /var/run/argocd
             name: var-files
