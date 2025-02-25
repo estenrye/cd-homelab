@@ -12,7 +12,7 @@ spec:
     targetRevision: new-argocd-server
     path: applications/cmp-example
     plugin:
-      name: kustomize-docker
+      name: kustomize-krm-envsubst
   destination:
     server: https://kubernetes.default.svc
     namespace: argo-workflows
