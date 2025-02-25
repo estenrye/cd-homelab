@@ -8,7 +8,7 @@ ARG TARGETARCH
 ARG KUBECTL_VERSION=v1.31.5
 WORKDIR /go/src/kubernetes-json-schema
 RUN git init
-RUN git remote add -f origin https://github.com/yannh/kubernetes-json-schema.git
+RUN git remote add origin https://github.com/yannh/kubernetes-json-schema.git
 RUN git config core.sparseCheckout true
 RUN echo <<EOF > .git/info/sparse-checkout
 ${KUBECTL_VERSION}/
