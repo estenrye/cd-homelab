@@ -47,49 +47,17 @@ spec:
       metadata:
         name: kustomize-helm-envsubst
       spec:
-    kustomize-docker.yaml: |
-      apiVersion: argoproj.io/v1alpha1
-      kind: ConfigManagementPlugin
-      metadata:
-        name: kustomize-docker
-      spec:
-        generate:
-          command: 
-            - sh
-            - -c
-            - kustomize build --enable-alpha-plugins --enable-exec --enable-helm --as-current-user
-        allowConcurrency: true
-        lockRepo: false
-        preserveFileMode: false
-        provideGitCreds: false
   repo:
     enabled: true
     logFormat: json
     logLevel: info
     sidecarContainers:
-      - name: kustomize-docker
-        command: [/var/run/argocd/argocd-cmp-server]
-        image: mgoltzsche/podman:latest
-        securityContext:
-          privileged: false
-          runAsUser: 999
-        volumeMounts:
-          - mountPath: /var/run/argocd
-            name: var-files
-          - mountPath: /home/argocd/cmp-server/plugins
-            name: plugins
-          - mountPath: /home/argocd/cmp-server/config/plugin.yaml
-            subPath: kustomize-docker.yaml
-            name: plugins
-          # Starting with v2.4, do NOT mount the same tmp volume as the repo-server container. The filesystem separation helps 
-          # mitigate path traversal attacks.
-          - mountPath: /tmp
-            name: kustomize-docker-tmp
       - name: kustomize-helm-envsubst
-        image: estenrye/argocd-cmp:argo-cmp-v0.1.5-v1.29.13
+        image: estenrye/argocd-cmp:argo-cmp-v0.1.9-v1.29.13
         command: [/var/run/argocd/argocd-cmp-server]
         imagePullPolicy: IfNotPresent
         securityContext:
+          privileged: true
           runAsNonRoot: true
           runAsUser: 999
         volumeMounts:
