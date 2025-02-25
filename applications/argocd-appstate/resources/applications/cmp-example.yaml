@@ -11,8 +11,8 @@ spec:
     repoURL: git@github.com:estenrye/cd-homelab.git
     targetRevision: new-argocd-server
     path: applications/cmp-example
-    # plugin:
-    #   name: kustomize-helm-envsubst
+    plugin:
+      name: kustomize-docker
   destination:
     server: https://kubernetes.default.svc
     namespace: argo-workflows
