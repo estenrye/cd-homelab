@@ -77,8 +77,8 @@ spec:
         image: mgoltzsche/podman:minimal
         securityContext:
           privileged: true
-          # runAsUser: podman
-          # runAsGroup: podman
+          runAsNonRoot: true
+          runAsUser: 999
         volumeMounts:
           - mountPath: /var/run/argocd
             name: var-files
