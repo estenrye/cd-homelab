@@ -58,7 +58,7 @@ spec:
         imagePullPolicy: IfNotPresent
         securityContext:
           privileged: true
-          runAsNonRoot: true
+          runAsNonRoot: false
           runAsUser: 999
         volumeMounts:
           - mountPath: /var/run/argocd
