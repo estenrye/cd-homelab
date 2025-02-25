@@ -8,7 +8,7 @@ metadata:
     #     image: estenrye/argocd-cmp:argo-cmp-v0.1.9-v1.32.2
     config.kubernetes.io/function: |
       exec:
-        ../../../transformers/envsubst/kustomize-krm-envsubst.sh
+        path: ../../../transformers/envsubst/kustomize-krm-envsubst.sh
 includedVariableNames:
   - K_ZONE_NAME
   - K_INFRA_NAME
