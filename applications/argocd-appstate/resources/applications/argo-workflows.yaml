@@ -11,7 +11,7 @@ spec:
   source:
     repoURL: git@github.com:estenrye/cd-homelab.git
     targetRevision: new-argocd-server
-    path: applications/argo-workflows
+    path: overlays/in-cluster/argo-workflows
     plugin:
       name: kustomize-helm-envsubst
   destination:
