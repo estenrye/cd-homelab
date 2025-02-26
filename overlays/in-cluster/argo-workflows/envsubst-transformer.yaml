@@ -4,8 +4,8 @@ metadata:
   name: envsubst
   annotations:
     config.kubernetes.io/function: |
-      container:
-        image: estenrye/argocd-cmp:argo-cmp-v0.1.9-v1.29.13
+      exec:
+        path: /usr/local/bin/kustomize-krm-envsubst
 includedVariableNames:
   - K_ZONE_NAME
   - K_INFRA_NAME
