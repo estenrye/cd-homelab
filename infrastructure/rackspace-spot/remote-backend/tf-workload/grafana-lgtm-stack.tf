@@ -31,7 +31,7 @@ resource "helm_release" "k8s_monitoring" {
   namespace = kubernetes_namespace.namespace["lgtm"].metadata[0].name
   repository = "https://grafana.github.io/helm-charts"
   chart     = "k8s-monitoring"
-  version   = "1.2.1"
+  version   = "1.6.27"
   create_namespace = false
   skip_crds = false
   
