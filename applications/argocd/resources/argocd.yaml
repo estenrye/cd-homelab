@@ -104,6 +104,7 @@ spec:
           secretName: argocd-ingress-tls
     insecure: true
   sso:
+    provider: dex
     dex:
       env:
         - name: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
