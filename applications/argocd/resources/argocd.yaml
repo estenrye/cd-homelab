@@ -106,6 +106,7 @@ spec:
   sso:
     provider: dex
     dex:
+      openShiftOAuth: false
       env:
         - name: ARGO_WORKFLOWS_SSO_CLIENT_SECRET
           valueFrom:
