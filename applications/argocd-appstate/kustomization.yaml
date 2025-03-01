@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - resources/projects/argocd.yaml
   - resources/projects/databases.yaml
+  - resources/projects/identity.yaml
   - resources/projects/networking.yaml
   - resources/projects/observability.yaml
   - resources/projects/secrets.yaml
@@ -20,6 +21,7 @@ resources:
   - resources/applicationsets/external-dns.yaml
   - resources/applicationsets/gateway-api.yaml
   - resources/applicationsets/haproxy-ingress.yaml
+  - resources/applicationsets/keycloak-operator.yaml
   - resources/applicationsets/kube-prometheus-stack.yaml
   - resources/applicationsets/sealed-secrets.yaml
   - resources/applicationsets/external-secrets-operator.yaml
