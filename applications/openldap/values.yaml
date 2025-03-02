@@ -64,7 +64,7 @@ extraLabels: {}
 service:
   annotations: {}
   # Disable if you do not want to expose port on service
-  enableLdapPort: false
+  enableLdapPort: true
   enableSslLdapPort: true
 
   type: ClusterIP
@@ -81,7 +81,7 @@ service:
 serviceReadOnly:
   annotations: {}
   # Disable if you do not want to expose port on service
-  enableLdapPort: false
+  enableLdapPort: true
   enableSslLdapPort: true
 
   # Control ports used in statefulset
