@@ -1,0 +1,40 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: openldap-tls
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  isCA: true
+  subject:
+    countries:
+      - US
+    provinces:
+      - Minnesota
+    localities:
+      - Bloominton
+    organizations:
+      - Ryezone Labs
+    organizationalUnits:
+      - OpenLDAP
+  commonName: ldap.${K_INFRA_NAME}.${K_ZONE_NAME}
+  dnsNames:
+    - ldap.${K_INFRA_NAME}.${K_ZONE_NAME}
+    - ldap-readonly.${K_INFRA_NAME}.${K_ZONE_NAME}
+    - openldap.openldap.svc.cluster.local
+    - openldap.openldap
+    - openldap
+    - openldap-headless.openldap.svc.cluster.local
+    - openldap-headless.openldap
+    - openldap-headless
+    - openldap-readonly.openldap.svc.cluster.local
+    - openldap-readonly.openldap
+    - openldap-readonly
+  secretName: openldap-tls
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: ldap-ca
+    kind: Issuer
+    group: cert-manager.io

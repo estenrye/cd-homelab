@@ -1,0 +1,28 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: selfsigned-ca
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  isCA: true
+  subject:
+    countries:
+      - US
+    provinces:
+      - Minnesota
+    localities:
+      - Bloominton
+    organizations:
+      - Ryezone Labs
+    organizationalUnits:
+      - Identity CA
+  commonName: ldap.ca.${K_INFRA_NAME}.${K_ZONE_NAME}
+  secretName: selfsigned-ca
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: self-signed-root-ca
+    kind: Issuer
+    group: cert-manager.io
