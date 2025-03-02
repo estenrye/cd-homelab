@@ -21,15 +21,6 @@ spec:
   dnsNames:
     - ldap.${K_INFRA_NAME}.${K_ZONE_NAME}
     - ldap-readonly.${K_INFRA_NAME}.${K_ZONE_NAME}
-    - openldap.openldap.svc.cluster.local
-    - openldap.openldap
-    - openldap
-    - openldap-headless.openldap.svc.cluster.local
-    - openldap-headless.openldap
-    - openldap-headless
-    - openldap-readonly.openldap.svc.cluster.local
-    - openldap-readonly.openldap
-    - openldap-readonly
   secretName: openldap-tls
   privateKey:
     algorithm: ECDSA
