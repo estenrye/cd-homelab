@@ -255,17 +255,17 @@ extraEnvVarsCM:
 extraEnvVarsSecret:
 ## @param extraVolumes Optionally specify extra list of additional volumes for the OPENLDAP  pod(s)
 ##
-extraVolumes:
-  - name: custom-trust-bundle
-    configMap:
-      name: self-signed-ca
+# extraVolumes:
+#   - name: custom-trust-bundle
+#     configMap:
+#       name: self-signed-ca
 ## @param extraVolumeMounts Optionally specify extra list of additional volumeMounts for the OPENLDAP  container(s)
 ##
-extraVolumeMounts:
-- name: custom-trust-bundle
-  mountPath: /etc/ssl/certs/ca-certificates.crt
-  subPath: root-certs.pem
-  readOnly: true
+# extraVolumeMounts:
+# - name: custom-trust-bundle
+#   mountPath: /etc/ssl/certs/ca-certificates.crt
+#   subPath: root-certs.pem
+#   readOnly: true
 ## @param sidecars Add additional sidecar containers to the OPENLDAP  pod(s)
 ## e.g:
 ## sidecars:
@@ -437,15 +437,15 @@ ltb-passwd:
   enabled : true
   image:
     tag: 5.2.3
-  volumes:
-    - name: custom-trust-bundle
-      configMap:
-        name: self-signed-ca
-  volumeMounts:
-    - name: custom-trust-bundle
-      mountPath: /etc/ssl/certs/ca-certificates.crt
-      subPath: root-certs.pem
-      readOnly: true
+  # volumes:
+  #   - name: custom-trust-bundle
+  #     configMap:
+  #       name: self-signed-ca
+  # volumeMounts:
+  #   - name: custom-trust-bundle
+  #     mountPath: /etc/ssl/certs/ca-certificates.crt
+  #     subPath: root-certs.pem
+  #     readOnly: true
   ingress:
     enabled: true
     annotations:
@@ -478,15 +478,16 @@ phpldapadmin:
     tag: 0.9.0
   env:
     PHPLDAPADMIN_LDAP_CLIENT_TLS_REQCERT: "never"
-  volumes:
-    - name: custom-trust-bundle
-      configMap:
-        name: self-signed-ca
-  volumeMounts:
-    - name: custom-trust-bundle
-      mountPath: /etc/ssl/certs/ca-certificates.crt
-      subPath: root-certs.pem
-      readOnly: true
+    # LDAP_HOST: ldap.${K_INFRA_NAME}.${K_ZONE_NAME}
+  # volumes:
+  #   - name: custom-trust-bundle
+  #     configMap:
+  #       name: self-signed-ca
+  # volumeMounts:
+  #   - name: custom-trust-bundle
+  #     mountPath: /etc/ssl/certs/ca-certificates.crt
+  #     subPath: root-certs.pem
+  #     readOnly: true
   ingress:
     enabled: true
     annotations:
