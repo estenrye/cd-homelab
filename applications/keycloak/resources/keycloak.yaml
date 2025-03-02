@@ -7,7 +7,7 @@ spec:
     database: app
     host: postgres-rw.keycloak
     vendor: postgres
-    userNameSecret:
+    usernameSecret:
       name: postgres-app
       key: username
     passwordSecret:
