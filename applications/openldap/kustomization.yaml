@@ -20,6 +20,7 @@ resources:
   - resources/issuer.self-signed-root-ca.yaml
   - resources/issuer.ldap.yaml
   - resources/password.generator.yaml
+  - resources/bundle.self-signed-ca.yaml
 
 patches:
 - patch: |
