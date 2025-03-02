@@ -16,10 +16,12 @@ spec:
         rye.ninja/appset: openldap
     spec:
       project: "identity"
-      sources:
-      - repoURL: git@github.com:estenrye/cd-homelab.git
+      source:
+        repoURL: git@github.com:estenrye/cd-homelab.git
         targetRevision: new-argocd-server
-        path: applications/openldap
+        path: overlays/{{name}}/openldap
+        plugin:
+          name: kustomize-helm-envsubst
       destination:
         server: '{{server}}' # 'server' field of the secret
         namespace: openldap
