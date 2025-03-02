@@ -6,7 +6,9 @@ spec:
   sources:
     - useDefaultCAs: true
     - secret:
-        name: selfsigned-ca
+        selector:
+          matchLabels:
+            rye.ninja/ldap-trust-enabled: "true"
         key: ca.crt
   target:
     configMap:

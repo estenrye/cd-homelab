@@ -5,6 +5,9 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
+  secretTemplate:
+    labels:
+      rye.ninja/ldap-trust-enabled: "true"
   isCA: true
   subject:
     countries:
