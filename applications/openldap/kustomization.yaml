@@ -14,13 +14,14 @@ helmCharts:
 
 resources:
   - resources/namespace.yaml
-  - resources/certificate.openldap.yaml
-  - resources/certificate.self-signed-ca.yaml
+  # - resources/certificate.openldap.yaml
+  # - resources/certificate.self-signed-ca.yaml
   - resources/externalsecret.admin-password.yaml
-  - resources/issuer.self-signed-root-ca.yaml
-  - resources/issuer.ldap.yaml
+  # - resources/issuer.self-signed-root-ca.yaml
+  # - resources/issuer.ldap.yaml
   - resources/password.generator.yaml
-  - resources/bundle.self-signed-ca.yaml
+  # - resources/bundle.self-signed-ca.yaml
+  - resources/certificate.public.openldap.yaml
 
 patches:
 - patch: |
