@@ -18,6 +18,7 @@ resources:
   - resources/applications/cmp-example.yaml
   - resources/applicationsets/cert-manager.yaml
   - resources/applicationsets/cert-manager-cluster-issuer.yaml
+  - resources/applicationsets/trust-manager.yaml
   - resources/applicationsets/external-dns.yaml
   - resources/applicationsets/gateway-api.yaml
   - resources/applicationsets/haproxy-ingress.yaml
