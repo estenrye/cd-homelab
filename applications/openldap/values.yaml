@@ -258,7 +258,7 @@ extraEnvVarsSecret:
 extraVolumes:
   - name: custom-trust-bundle
     configMap:
-      name: selfsigned-ca
+      name: self-signed-ca
 ## @param extraVolumeMounts Optionally specify extra list of additional volumeMounts for the OPENLDAP  container(s)
 ##
 extraVolumeMounts:
