@@ -255,10 +255,17 @@ extraEnvVarsCM:
 extraEnvVarsSecret:
 ## @param extraVolumes Optionally specify extra list of additional volumes for the OPENLDAP  pod(s)
 ##
-extraVolumes: []
+extraVolumes:
+  - name: custom-trust-bundle
+    configMap:
+      name: selfsigned-ca
 ## @param extraVolumeMounts Optionally specify extra list of additional volumeMounts for the OPENLDAP  container(s)
 ##
-extraVolumeMounts: []
+extraVolumeMounts:
+- name: custom-trust-bundle
+  mountPath: /etc/ssl/certs/ca-certificates.crt
+  subPath: root-certs.pem
+  readOnly: true
 ## @param sidecars Add additional sidecar containers to the OPENLDAP  pod(s)
 ## e.g:
 ## sidecars:
