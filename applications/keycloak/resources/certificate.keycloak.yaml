@@ -1,0 +1,30 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: keycloak-tls
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  isCA: false
+  subject:
+    countries:
+      - US
+    provinces:
+      - Minnesota
+    localities:
+      - Bloominton
+    organizations:
+      - Ryezone Labs
+    organizationalUnits:
+      - Keycloak
+  commonName: keycloak.${K_INFRA_NAME}.${K_ZONE_NAME}
+  dnsNames:
+    - keycloak.${K_INFRA_NAME}.${K_ZONE_NAME}
+  secretName: keycloak-tls
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: zerossl-production
+    kind: ClusterIssuer
+    group: cert-manager.io

@@ -23,6 +23,7 @@ resources:
   - resources/applicationsets/gateway-api.yaml
   - resources/applicationsets/haproxy-ingress.yaml
   - resources/applicationsets/keycloak-operator.yaml
+  - resources/applicationsets/keycloak.yaml
   - resources/applicationsets/kube-prometheus-stack.yaml
   - resources/applicationsets/openldap.yaml
   - resources/applicationsets/sealed-secrets.yaml

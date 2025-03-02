@@ -19,6 +19,8 @@ spec:
   destinations:
   - namespace: keycloak-operator
     server: '*'
+  - namespace: keycloak
+    server: '*'
   - namespace: openldap
     server: '*'
   - namespace: operators
