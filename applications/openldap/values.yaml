@@ -437,6 +437,15 @@ ltb-passwd:
   enabled : true
   image:
     tag: 5.2.3
+  volumes:
+    - name: custom-trust-bundle
+      configMap:
+        name: self-signed-ca
+  volumeMounts:
+    - name: custom-trust-bundle
+      mountPath: /etc/ssl/certs/ca-certificates.crt
+      subPath: root-certs.pem
+      readOnly: true
   ingress:
     enabled: true
     annotations:
@@ -469,6 +478,15 @@ phpldapadmin:
     tag: 0.9.0
   env:
     PHPLDAPADMIN_LDAP_CLIENT_TLS_REQCERT: "never"
+  volumes:
+    - name: custom-trust-bundle
+      configMap:
+        name: self-signed-ca
+  volumeMounts:
+    - name: custom-trust-bundle
+      mountPath: /etc/ssl/certs/ca-certificates.crt
+      subPath: root-certs.pem
+      readOnly: true
   ingress:
     enabled: true
     annotations:
