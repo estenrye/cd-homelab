@@ -16,8 +16,10 @@ spec:
     additionalFormats:
       jks:
         key: bundle.jks
+        password: changeit
       pkcs12:
         key: bundle.p12
+        password: ''
     namespaceSelector:
       matchLabels:
         rye.ninja/ldap-trust-enabled: "true"
