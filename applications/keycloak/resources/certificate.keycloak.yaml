@@ -20,7 +20,6 @@ spec:
   commonName: keycloak.${K_INFRA_NAME}.${K_ZONE_NAME}
   dnsNames:
     - keycloak.${K_INFRA_NAME}.${K_ZONE_NAME}
-    - admin.keycloak.${K_INFRA_NAME}.${K_ZONE_NAME}
   secretName: keycloak-tls
   privateKey:
     algorithm: ECDSA
