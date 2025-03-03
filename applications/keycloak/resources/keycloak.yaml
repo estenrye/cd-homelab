@@ -20,7 +20,8 @@ spec:
   ingress:
     className: haproxy
     annotations:
-      cert-manager.io/cluster-issuer: zerossl-production
+      haproxy-ingress.github.io/ssl-passthrough: "true"
+      haproxy-ingress.github.io/ssl-redirect: "true"
   hostname:
     hostname: keycloak.${K_INFRA_NAME}.${K_ZONE_NAME}
   proxy:
