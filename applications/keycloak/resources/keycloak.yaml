@@ -17,6 +17,8 @@ spec:
   http:
     httpEnabled: true
     tlsSecret: keycloak-tls
+  ingress:
+    className: haproxy
   hostname:
     hostname: keycloak.${K_INFRA_NAME}.${K_ZONE_NAME}
   proxy:
