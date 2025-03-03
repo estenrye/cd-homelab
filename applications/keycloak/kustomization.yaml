@@ -3,7 +3,6 @@ kind: Kustomization
 namespace: keycloak-operator
 
 resources:
-  - resources/namespace.yaml
   - resources/certificate.keycloak.yaml
   - resources/externalsecret.s3-credentials.yaml
   - resources/postgres.yaml
