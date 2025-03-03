@@ -19,6 +19,5 @@ spec:
     tlsSecret: keycloak-tls
   hostname:
     hostname: keycloak.${K_INFRA_NAME}.${K_ZONE_NAME}
-    admin: admin.keycloak.${K_INFRA_NAME}.${K_ZONE_NAME}
   proxy:
     headers: xforwarded
