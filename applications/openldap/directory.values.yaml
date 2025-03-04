@@ -1,26 +1,26 @@
 global:
-  ldapDomain: "dc=${K_INFRA_NAME},dc=${K_ZONE_NAME}"
+  ldapDomain: "dc=${K_INFRA_NAME}.${K_ZONE_NAME}"
 
 customLdifFiles:
   00-root.ldif: |-
     # Root creation
-    dn: dc=${K_INFRA_NAME},dc=${K_ZONE_NAME}
+    dn: dc=${K_INFRA_NAME}.${K_ZONE_NAME}
     objectClass: dcObject
     objectClass: organization
     o: Example, Inc
   01-ou-users.ldif: |-
     # Users OU
-    dn: ou=users,dc=${K_INFRA_NAME},dc=${K_ZONE_NAME}
+    dn: ou=users,dc=${K_INFRA_NAME}.${K_ZONE_NAME}
     objectClass: organizationalUnit
     ou: users
   02-ou-groups.ldif: |-
     # Groups OU
-    dn: ou=groups,dc=${K_INFRA_NAME},dc=${K_ZONE_NAME}
+    dn: ou=groups,dc=${K_INFRA_NAME}.${K_ZONE_NAME}
     objectClass: organizationalUnit
     ou: groups
   03-ou-machines.ldif: |-
     # Machines OU
-    dn: ou=machines,dc=${K_INFRA_NAME},dc=${K_ZONE_NAME}
+    dn: ou=machines,dc=${K_INFRA_NAME}.${K_ZONE_NAME}
     objectClass: organizationalUnit
     ou: machines
 #   01-default-group.ldif: |-
