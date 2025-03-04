@@ -4,6 +4,7 @@ namespace: haproxy-ingress
 
 resources:
   - resources/namespace.yaml
+  - resources/certificate.default.yaml
 
 helmCharts:
   - name: haproxy-ingress
