@@ -18,11 +18,7 @@ spec:
     httpEnabled: true
     tlsSecret: keycloak-tls
   ingress:
-    className: haproxy
-    # annotations:
-      # haproxy-ingress.github.com/backend-protocol: "h1-ssl"
-      # haproxy-ingress.github.io/ssl-passthrough: "true"
-      # haproxy-ingress.github.io/ssl-redirect: "true"
+    enabled: false
   hostname:
     hostname: keycloak.${K_INFRA_NAME}.${K_ZONE_NAME}
   proxy:
