@@ -19,7 +19,7 @@ spec:
     tlsSecret: keycloak-tls
   ingress:
     className: haproxy
-    annotations:
+    # annotations:
       # haproxy-ingress.github.com/backend-protocol: "h1-ssl"
       # haproxy-ingress.github.io/ssl-passthrough: "true"
       # haproxy-ingress.github.io/ssl-redirect: "true"
