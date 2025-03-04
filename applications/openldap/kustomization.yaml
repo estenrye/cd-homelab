@@ -11,6 +11,8 @@ helmCharts:
     includeCRDs: true
     valuesInline: {}
     valuesFile: values.yaml
+    additionalValuesFiles:
+      - directory.values.yaml
 
 resources:
   - resources/namespace.yaml
