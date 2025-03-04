@@ -13,10 +13,10 @@ spec:
         rye.ninja/appset: haproxy-ingress
     spec:
       project: "networking"
-      sources:
-      - repoURL: git@github.com:estenrye/cd-homelab.git
+      source:
+        repoURL: git@github.com:estenrye/cd-homelab.git
         targetRevision: new-argocd-server
-        path: applications/haproxy-ingress
+        path: overlays/{{name}}/haproxy-ingress
       destination:
         server: '{{server}}' # 'server' field of the secret
         namespace: haproxy-ingress
