@@ -20,6 +20,7 @@ spec:
   ingress:
     className: haproxy
     annotations:
+      haproxy-ingress.github.com/secure-backends: "true"
       # haproxy-ingress.github.io/ssl-passthrough: "true"
       # haproxy-ingress.github.io/ssl-redirect: "true"
   hostname:
