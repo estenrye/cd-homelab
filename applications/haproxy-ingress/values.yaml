@@ -2,14 +2,14 @@ controller:
   kind: DaemonSet
   extraArgs:
     configmap: $(POD_NAMESPACE)/haproxy-ingress
-    default-ssl-certificate: /etc/haproxy/certs/default/tls.crt
-  extraVolumes:
-    - name: default-tls
-      secret:
-        secretName: haproxy-default-tls
-  extraVolumeMounts:
-    - name: default-tls
-      mountPath: /etc/haproxy/certs/default
+    default-ssl-certificate: $(POD_NAMESPACE)/haproxy-default-tls
+  # extraVolumes:
+  #   - name: default-tls
+  #     secret:
+  #       secretName: haproxy-default-tls
+  # extraVolumeMounts:
+  #   - name: default-tls
+  #     mountPath: /etc/haproxy/certs/default
   daemonset:
     useHostPort: true
     hostPorts:
