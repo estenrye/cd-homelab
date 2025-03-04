@@ -17,6 +17,8 @@ spec:
         repoURL: git@github.com:estenrye/cd-homelab.git
         targetRevision: new-argocd-server
         path: overlays/{{name}}/haproxy-ingress
+        plugin:
+          name: kustomize-helm-envsubst
       destination:
         server: '{{server}}' # 'server' field of the secret
         namespace: haproxy-ingress
