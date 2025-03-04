@@ -7,3 +7,4 @@ resources:
   - resources/externalsecret.s3-credentials.yaml
   - resources/postgres.yaml
   - resources/keycloak.yaml
+  - resources/ingress.yaml
