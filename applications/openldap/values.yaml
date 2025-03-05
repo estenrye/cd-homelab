@@ -13,7 +13,7 @@ global:
   ##
   #imagePullSecrets: [""]
   ## ldapDomain , can be explicit (e.g dc=toto,c=ca) or domain based (e.g example.com)
-  ldapDomain: "dc=rye,dc=ninja"
+  ldapDomain: "dc=rye.ninja"
   # Specifies an existing secret to be used for admin and config user passwords. The expected key are LDAP_ADMIN_PASSWORD and LDAP_CONFIG_ADMIN_PASSWORD.
   existingSecret: "ldap-admin-password"
   adminUser: "admin"
