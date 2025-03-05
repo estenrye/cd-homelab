@@ -1,29 +1,34 @@
 global:
-  ldapDomain: "dc=${K_ZONE_NAME}"
+  ldapDomain: "dc=rye,dc=ninja"
+
+env:
+ LDAP_SKIP_DEFAULT_TREE: "yes"
+ LDAP_ALLOW_ANON_BINDING: 'no'
 
 customLdifFiles:
   00-root.ldif: |-
     # Root creation
-    dn: dc=${K_ZONE_NAME}
+    dn: dc=rye,dc=ninja
+    dc: rye.ninja
     objectClass: dcObject
   01-org.ldif: |-
     # Organization creation
-    dn: o=${K_INFRA_NAME},dc=${K_ZONE_NAME}
+    dn: o=rspot,dc=rye,dc=ninja
     objectClass: organization
-    o: Ryezone Labs (${K_INFRA_NAME}.${K_ZONE_NAME})
+    o: rspot
   02-ou-users.ldif: |-
     # Users OU
-    dn: ou=users,o=${K_INFRA_NAME},dc=${K_ZONE_NAME}
+    dn: ou=users,o=rspot,dc=rye,dc=ninja
     objectClass: organizationalUnit
     ou: users
   02-ou-groups.ldif: |-
     # Groups OU
-    dn: ou=groups,dc=${K_INFRA_NAME},dc=${K_ZONE_NAME}
+    dn: ou=groups,o=rspot,dc=rye,dc=ninja
     objectClass: organizationalUnit
     ou: groups
   03-ou-machines.ldif: |-
     # Machines OU
-    dn: ou=machines,dc=${K_INFRA_NAME},dc=${K_ZONE_NAME}
+    dn: ou=machines,o=rspot,dc=rye,dc=ninja
     objectClass: organizationalUnit
     ou: machines
 #   01-default-group.ldif: |-
