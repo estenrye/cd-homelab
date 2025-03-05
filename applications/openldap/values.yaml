@@ -106,7 +106,7 @@ env:
  BITNAMI_DEBUG: "true"
  # higher -> less verbose. See https://www.openldap.org/doc/admin26/slapdconfig.html
  LDAP_LOGLEVEL: "256"
- LDAP_REQUIRE_TLS: "true"
+ LDAP_REQUIRE_TLS: "false"
  LDAPTLS_REQCERT: "never"
  LDAP_ENABLE_TLS: "yes"
  LDAP_SKIP_DEFAULT_TREE: "no"
