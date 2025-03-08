@@ -17,7 +17,7 @@ helmCharts:
 configMapGenerator:
 - name: rye-ninja-ldif
   files:
-    # - 00000-root.ldif
+    - resources/ldif/00000-root.ldif
     - resources/ldif/00001-ou-infra.ldif
     - resources/ldif/00002-ou-users.ldif
     - resources/ldif/00003-ou-groups.ldif

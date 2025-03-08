@@ -2,5 +2,6 @@
 dn: dc=rye.ninja
 dc: rye.ninja
 o: Ryezone Labs
-objectClass: organization
-objectClass: dcObject
+objectclass: top
+objectclass: organization
+objectclass: dcObject
