@@ -1,0 +1,4 @@
+# Machines OU
+dn: ou=machines,ou=rspot,dc=rye.ninja
+objectclass: organizationalUnit
+ou: machines

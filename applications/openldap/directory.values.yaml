@@ -5,86 +5,88 @@ env:
  LDAP_SKIP_DEFAULT_TREE: "yes"
  LDAP_ALLOW_ANON_BINDING: 'no'
 
-customLdifFiles:
-  00000-root.ldif: |-
-    # Root creation
-    dn: dc=rye.ninja
-    dc: rye.ninja
-    o: Ryezone Labs
-    objectclass: organization
-    objectclass: top
-  00001-org.ldif: |-
-    # Organization creation
-    dn: ou=rspot,dc=rye.ninja
-    objectclass: organizationalUnit
-    ou: rspot
-  00002-ou-users.ldif: |-
-    # Users OU
-    dn: ou=users,ou=rspot,dc=rye.ninja
-    objectclass: organizationalUnit
-    ou: users
-  00002-ou-groups.ldif: |-
-    # Groups OU
-    dn: ou=groups,ou=rspot,dc=rye.ninja
-    objectclass: organizationalUnit
-    ou: groups
-  00003-ou-machines.ldif: |-
-    # Machines OU
-    dn: ou=machines,ou=rspot,dc=rye.ninja
-    objectclass: organizationalUnit
-    ou: machines
-  00004-ou-devops.ldif: |-
-    # DevOps OU
-    dn: cn=devops,ou=groups,ou=rspot,dc=rye.ninja
-    objectClass: top
-    objectClass: posixGroup
-    gidNumber: 20000
-  00005-ou-readonly.ldif: |-
-    # ReadOnly OU
-    dn: cn=readonly,ou=groups,ou=rspot,dc=rye.ninja
-    objectClass: top
-    objectClass: posixGroup
-    gidNumber: 20001
-  00100-user-dadmin.ldif: |-
-    # User: devops-oadmin
-    dn: cn=devops-admin,ou=users,dc=rye.ninja
-    givenName: DevOps
-    sn: Admin
-    displayName: DevOps Admin
-    cn: devops-admin
-    uid: devops-admin
-    uidnumber: 1000
-    gidnumber: 1000
-    homedirectory: /home/devops-admin
-    objectclass: inetOrgPerson
-    objectclass: posixAccount
-    objectclass: shadowAccount
-    # userpassword: bitnami1
-  00101-member-devops.ldif: |-
-    # Member: devops-admin
-    dn: cn=devops,ou=groups,ou=rspot,dc=rye.ninja
-    changetype: modify
-    add: memberuid
-    memberuid: devops-admin
+customLdifCm: rye-ninja-ldif
 
-  00120-user-user01.ldif: |-
-    # User: read-only
-    dn: cn=read-only,ou=users,dc=rye.ninja
-    givenName: Read
-    sn: Only
-    displayName: Read Only
-    cn: read-only
-    uid: read-only
-    uidnumber: 1001
-    gidnumber: 1001
-    homedirectory: /home/read-only
-    objectclass: inetOrgPerson
-    objectclass: posixAccount
-    objectclass: shadowAccount
-    # userpassword: bitnami1# 
-  00121-member-readonly.ldif: |-
-    # Member: read-only
-    dn: cn=readonly,ou=groups,ou=rspot,dc=rye.ninja
-    changetype: modify
-    add: memberuid
-    memberuid: read-only
+# customLdifFiles:
+#   # 00000-root.ldif: |-
+#   #   # Root creation
+#   #   dn: dc=rye.ninja
+#   #   dc: rye.ninja
+#   #   o: Ryezone Labs
+#   #   objectClass: organization
+#   #   objectClass: dcObject
+#   00001-org.ldif: |-
+#     # Organization creation
+#     dn: ou=rspot,dc=rye.ninja
+#     objectclass: organizationalUnit
+#     ou: rspot
+#   00002-ou-users.ldif: |-
+#     # Users OU
+#     dn: ou=users,ou=rspot,dc=rye.ninja
+#     objectclass: organizationalUnit
+#     ou: users
+#   00002-ou-groups.ldif: |-
+#     # Groups OU
+#     dn: ou=groups,ou=rspot,dc=rye.ninja
+#     objectclass: organizationalUnit
+#     ou: groups
+#   00003-ou-machines.ldif: |-
+#     # Machines OU
+#     dn: ou=machines,ou=rspot,dc=rye.ninja
+#     objectclass: organizationalUnit
+#     ou: machines
+#   00004-ou-devops.ldif: |-
+#     # DevOps OU
+#     dn: cn=devops,ou=groups,ou=rspot,dc=rye.ninja
+#     objectClass: top
+#     objectClass: posixGroup
+#     gidNumber: 20000
+#   00005-ou-readonly.ldif: |-
+#     # ReadOnly OU
+#     dn: cn=readonly,ou=groups,ou=rspot,dc=rye.ninja
+#     objectClass: top
+#     objectClass: posixGroup
+#     gidNumber: 20001
+#   00100-user-dadmin.ldif: |-
+#     # User: devops-oadmin
+#     dn: cn=devops-admin,ou=users,dc=rye.ninja
+#     givenName: DevOps
+#     sn: Admin
+#     displayName: DevOps Admin
+#     cn: devops-admin
+#     uid: devops-admin
+#     uidnumber: 1000
+#     gidnumber: 1000
+#     homedirectory: /home/devops-admin
+#     objectclass: inetOrgPerson
+#     objectclass: posixAccount
+#     objectclass: shadowAccount
+#     # userpassword: bitnami1
+#   00101-member-devops.ldif: |-
+#     # Member: devops-admin
+#     dn: cn=devops,ou=groups,ou=rspot,dc=rye.ninja
+#     changetype: modify
+#     add: memberuid
+#     memberuid: devops-admin
+
+#   00120-user-user01.ldif: |-
+#     # User: read-only
+#     dn: cn=read-only,ou=users,dc=rye.ninja
+#     givenName: Read
+#     sn: Only
+#     displayName: Read Only
+#     cn: read-only
+#     uid: read-only
+#     uidnumber: 1001
+#     gidnumber: 1001
+#     homedirectory: /home/read-only
+#     objectclass: inetOrgPerson
+#     objectclass: posixAccount
+#     objectclass: shadowAccount
+#     # userpassword: bitnami1# 
+#   00121-member-readonly.ldif: |-
+#     # Member: read-only
+#     dn: cn=readonly,ou=groups,ou=rspot,dc=rye.ninja
+#     changetype: modify
+#     add: memberuid
+#     memberuid: read-only

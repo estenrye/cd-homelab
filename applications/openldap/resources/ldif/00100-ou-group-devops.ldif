@@ -1,0 +1,5 @@
+# DevOps OU
+dn: cn=devops,ou=groups,ou=rspot,dc=rye.ninja
+objectClass: top
+objectClass: posixGroup
+gidNumber: 20000

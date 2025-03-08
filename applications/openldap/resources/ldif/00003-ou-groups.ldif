@@ -1,0 +1,4 @@
+# Groups OU
+dn: ou=groups,ou=rspot,dc=rye.ninja
+objectclass: organizationalUnit
+ou: groups

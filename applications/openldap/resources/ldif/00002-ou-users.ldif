@@ -1,0 +1,4 @@
+# Users OU
+dn: ou=users,ou=rspot,dc=rye.ninja
+objectclass: organizationalUnit
+ou: users

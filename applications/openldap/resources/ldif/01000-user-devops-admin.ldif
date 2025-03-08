@@ -1,0 +1,20 @@
+# User: devops-oadmin
+dn: cn=devops-admin,ou=users,dc=rye.ninja
+givenName: DevOps
+sn: Admin
+displayName: DevOps Admin
+cn: devops-admin
+uid: devops-admin
+uidnumber: 1000
+gidnumber: 1000
+homedirectory: /home/devops-admin
+objectclass: inetOrgPerson
+objectclass: posixAccount
+objectclass: shadowAccount
+# userpassword: bitnami1
+
+# Member: devops-admin
+dn: cn=devops,ou=groups,ou=rspot,dc=rye.ninja
+changetype: modify
+add: memberuid
+memberuid: devops-admin

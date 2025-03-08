@@ -1,0 +1,20 @@
+# User: read-only
+dn: cn=readonly,ou=users,dc=rye.ninja
+givenName: Read
+sn: Only
+displayName: Read Only
+cn: readonly
+uid: readonly
+uidnumber: 1001
+gidnumber: 1001
+homedirectory: /home/readonly
+objectclass: inetOrgPerson
+objectclass: posixAccount
+objectclass: shadowAccount
+# userpassword: bitnami1# 
+
+# Member: readonly
+dn: cn=readonly,ou=groups,ou=rspot,dc=rye.ninja
+changetype: modify
+add: memberuid
+memberuid: readonly
