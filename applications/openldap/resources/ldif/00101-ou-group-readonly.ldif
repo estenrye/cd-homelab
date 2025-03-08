@@ -3,3 +3,4 @@ dn: cn=readonly,ou=groups,ou=rspot,dc=rye.ninja
 objectClass: top
 objectClass: posixGroup
 gidNumber: 20001
+changetype: add

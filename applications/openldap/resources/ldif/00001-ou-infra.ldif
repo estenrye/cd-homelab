@@ -2,3 +2,4 @@
 dn: ou=rspot,dc=rye.ninja
 objectclass: organizationalUnit
 ou: rspot
+changetype: add

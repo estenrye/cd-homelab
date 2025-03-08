@@ -5,3 +5,4 @@ o: Ryezone Labs
 objectclass: top
 objectclass: organization
 objectclass: dcObject
+changetype: add

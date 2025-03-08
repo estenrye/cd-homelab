@@ -11,6 +11,7 @@ homedirectory: /home/readonly
 objectclass: inetOrgPerson
 objectclass: posixAccount
 objectclass: shadowAccount
+changetype: add
 # userpassword: bitnami1# 
 
 # Member: readonly

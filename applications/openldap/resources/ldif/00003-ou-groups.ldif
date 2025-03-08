@@ -2,3 +2,4 @@
 dn: ou=groups,ou=rspot,dc=rye.ninja
 objectclass: organizationalUnit
 ou: groups
+changetype: add
