@@ -18,14 +18,14 @@ configMapGenerator:
 - name: rye-ninja-ldif
   files:
     # - 00000-root.ldif
-    - 00001-ou-infra.ldif
-    - 00002-ou-users.ldif
-    - 00003-ou-groups.ldif
-    - 00004-ou-machines.ldif
-    - 00100-ou-group-devops.ldif
-    - 00101-ou-group-readonly.ldif
-    - 01000-user-devops-admin.ldif
-    - 01001-user-readonly.ldif
+    - resources/ldif/00001-ou-infra.ldif
+    - resources/ldif/00002-ou-users.ldif
+    - resources/ldif/00003-ou-groups.ldif
+    - resources/ldif/00004-ou-machines.ldif
+    - resources/ldif/00100-ou-group-devops.ldif
+    - resources/ldif/00101-ou-group-readonly.ldif
+    - resources/ldif/01000-user-devops-admin.ldif
+    - resources/ldif/01001-user-readonly.ldif
 
 resources:
   - resources/namespace.yaml
