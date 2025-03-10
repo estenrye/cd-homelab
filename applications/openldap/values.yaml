@@ -43,8 +43,8 @@ image:
   #repository: bitnami/openldap
   #tag: 2.6.3
   # Temporary fix
-  repository: jpgouin/openldap
-  tag: 2.6.9-fix
+  repository: bitnami/openldap
+  tag: 2.6.9
   pullPolicy: IfNotPresent
   pullSecrets: []
 
