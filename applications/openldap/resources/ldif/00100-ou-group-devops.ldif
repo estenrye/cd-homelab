@@ -1,6 +1,4 @@
 # DevOps OU
-dn: cn=devops,ou=groups,ou=rspot,dc=rye.ninja
-objectClass: top
+dn: cn=devops,ou=groups,ou=rspot,dc=rye,dc=ninja
 objectClass: posixGroup
 gidNumber: 20000
-changetype: add

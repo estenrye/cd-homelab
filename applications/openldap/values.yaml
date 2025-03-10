@@ -13,7 +13,7 @@ global:
   ##
   #imagePullSecrets: [""]
   ## ldapDomain , can be explicit (e.g dc=toto,c=ca) or domain based (e.g example.com)
-  ldapDomain: "dc=rye.ninja"
+  ldapDomain: "dc=rye,dc=ninja"
   # Specifies an existing secret to be used for admin and config user passwords. The expected key are LDAP_ADMIN_PASSWORD and LDAP_CONFIG_ADMIN_PASSWORD.
   existingSecret: "ldap-admin-password"
   adminUser: "admin"
@@ -103,13 +103,13 @@ serviceReadOnly:
 # Be careful, do not modify the following values unless you know exactly what your are doing
 env:
  # set this to "true" to enable bootstrap debugging
- BITNAMI_DEBUG: "true"
+ BITNAMI_DEBUG: "yes"
  # higher -> less verbose. See https://www.openldap.org/doc/admin26/slapdconfig.html
  LDAP_LOGLEVEL: "256"
  LDAP_REQUIRE_TLS: "false"
  LDAPTLS_REQCERT: "never"
  LDAP_ENABLE_TLS: "yes"
- LDAP_SKIP_DEFAULT_TREE: "false"
+ LDAP_SKIP_DEFAULT_TREE: "yes"
  LDAP_ALLOW_ANON_BINDING: 'no'
 
 

@@ -1,8 +1,6 @@
 # Root creation
-dn: dc=rye.ninja
-dc: rye.ninja
-o: Ryezone Labs
-objectclass: top
+dn: dc=rye,dc=ninja
 objectclass: organization
 objectclass: dcObject
-changetype: add
+dc: rye
+o: Ryezone Labs

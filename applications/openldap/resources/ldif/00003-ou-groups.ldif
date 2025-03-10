@@ -1,5 +1,4 @@
 # Groups OU
-dn: ou=groups,ou=rspot,dc=rye.ninja
+dn: ou=groups,ou=rspot,dc=rye,dc=ninja
 objectclass: organizationalUnit
 ou: groups
-changetype: add

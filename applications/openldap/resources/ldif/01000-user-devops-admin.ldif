@@ -1,5 +1,5 @@
 # User: devops-oadmin
-dn: cn=devops-admin,ou=users,dc=rye.ninja
+dn: cn=devops-admin,ou=users,ou=rspot,dc=rye,dc=ninja
 givenName: DevOps
 sn: Admin
 displayName: DevOps Admin
@@ -11,11 +11,10 @@ homedirectory: /home/devops-admin
 objectclass: inetOrgPerson
 objectclass: posixAccount
 objectclass: shadowAccount
-changetype: add
 # userpassword: bitnami1
 
 # Member: devops-admin
-dn: cn=devops,ou=groups,ou=rspot,dc=rye.ninja
+dn: cn=devops,ou=groups,ou=rspot,dc=rye,dc=ninja
 changetype: modify
 add: memberuid
 memberuid: devops-admin

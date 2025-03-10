@@ -1,5 +1,4 @@
 # Machines OU
-dn: ou=machines,ou=rspot,dc=rye.ninja
+dn: ou=machines,ou=rspot,dc=rye,dc=ninja
 objectclass: organizationalUnit
 ou: machines
-changetype: add

@@ -1,6 +1,4 @@
 # ReadOnly OU
-dn: cn=readonly,ou=groups,ou=rspot,dc=rye.ninja
-objectClass: top
+dn: cn=readonly,ou=groups,ou=rspot,dc=rye,dc=ninja
 objectClass: posixGroup
 gidNumber: 20001
-changetype: add
