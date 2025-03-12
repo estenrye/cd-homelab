@@ -111,7 +111,6 @@ env:
  LDAP_ENABLE_TLS: "yes"
  LDAP_SKIP_DEFAULT_TREE: "yes"
  LDAP_ALLOW_ANON_BINDING: 'no'
- LDAP_DATA_DIR: "/bitnami/openldap"
 
 
 # Pod Disruption Budget for Stateful Set
