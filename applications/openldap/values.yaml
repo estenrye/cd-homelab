@@ -43,10 +43,10 @@ image:
   #repository: bitnami/openldap
   #tag: 2.6.3
   # Temporary fix
-  repository: bitnami/openldap
-  tag: 2.6.9
-  pullPolicy: IfNotPresent
-  pullSecrets: []
+  # repository: bitnami/openldap
+  # tag: 2.6.9
+  # pullPolicy: IfNotPresent
+  # pullSecrets: []
 
 # Set the container log level
 # Valid log levels: none, error, warning, info (default), debug, trace
