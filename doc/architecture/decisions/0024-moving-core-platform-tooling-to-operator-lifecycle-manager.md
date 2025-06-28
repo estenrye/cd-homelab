@@ -98,7 +98,8 @@ kustomize build --enable-helm applications/argo-events | kubectl apply -f -
 # Deploy the Argo Events Bus
 kubectl apply -k applications/argo-events-bus 
 
-
+# Deploy the ArgoCD Application State
+kubectl apply -k applications/argocd-appstate
 ```
 ## Adding a new cluster to Argo CD
 
