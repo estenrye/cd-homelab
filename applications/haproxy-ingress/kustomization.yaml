@@ -5,6 +5,7 @@ namespace: haproxy-ingress
 resources:
   - resources/namespace.yaml
   - resources/certificate.default.yaml
+  - resources/horizontal-pod-autoscaler.yaml
 
 helmCharts:
   - name: haproxy-ingress

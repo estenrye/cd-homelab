@@ -1,43 +1,96 @@
 controller:
-  kind: DaemonSet
-  extraArgs:
-    configmap: $(POD_NAMESPACE)/haproxy-ingress
-    default-ssl-certificate: $(POD_NAMESPACE)/haproxy-default-tls
-  # extraVolumes:
-  #   - name: default-tls
-  #     secret:
-  #       secretName: haproxy-default-tls
-  # extraVolumeMounts:
-  #   - name: default-tls
-  #     mountPath: /etc/haproxy/certs/default
-  daemonset:
-    useHostPort: true
-    hostPorts:
-      http: 80
-      https: 443
+  kind: Deployment
+  tolerations:
+  # - effect: NoSchedule
+  #   key: system-critical
+  #   operator: Exists
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: haproxy-ingress
+            topologyKey: kubernetes.io/hostname
+          weight: 100
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: kubernetes.io/zone
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/name: haproxy-ingress
+  minAvailable: 1
   # haproxy-ingress resources
-  # resources:
-  #   limits:
-  #     cpu: 50m
-  #     memory: 1500Mi
-  #   requests:
-  #     cpu: 10m
-  #     memory: 900Mi
+  resources:
+    limits:
+      cpu: 4000m
+      memory: 7000Mi
+    requests:
+      cpu: 2000m
+      memory: 3500Mi
   ingressClass: haproxy
   ingressClassResource:
     enabled: true
   kubernetesGateway:
     enabled: true
-    gatewayControllerName: haproxy.org/gateway-controller 
+    gatewayControllerName: haproxy.org/gateway-controller
+  autoscaling:
+    enabled: false 
+    useExternalHPA: true
+  terminationGracePeriodSeconds: 90
+  lifecycle:
+    preStop:
+      exec:
+        command:
+        - /bin/sh
+        - -c
+        - |
+          echo "Draining HAProxy backend servers before shutdown..."
+          servers=$(echo "show servers state" | socat /var/run/haproxy/admin.sock stdio | tail -n +3 | awk '($2 != "" && $4 != "") {print $2 "/" $4}')
+          for srv in $servers; do
+            echo "Draining server: $srv"
+            echo "set server $srv state drain" | socat /var/run/haproxy/admin.sock stdio || true
+          done
+          sleep 60
+  extraArgs: 
+    track-old-instances: "true"
   config:
-    # timeout-client: "10m"
-    # timeout-connect: "10s"
-    # timeout-server: "10m"
-    # timeout-http-request: "10m"
-    # timeout-http-keep-alive: "10m"
+    use-proxy-protocol: "true"
+    tcp-service-proxy-protocol: 'true'
+    timeout-client: "10m"
+    timeout-connect: "10s"
+    timeout-server: "10m"
+    timeout-http-request: "10m"
+    timeout-http-keep-alive: "10m"
     http-port: "30080"
     https-port: "30443"
     max-connections: "10000"
+    close-sessions-duration: "60s"
+    timeout-stop: "60s"
+    config-global: |-
+      no log
+      log 127.0.0.1:514 len 1024 format rfc5424 syslog
+    config-frontend: |-
+      # parse UUID [RFC 4122](https://www.rfc-editor.org/rfc/rfc4122.html)
+      http-request set-var(txn.trace_id) uuid(4),regsub(\"^([^-]{8})-([^-]{4})-([^-]{4})-([^-]{4})-([^-]{12})$\",\"\1\2\3\4\5\")
+      http-request set-var(txn.parent_id) uuid(4),regsub(\"^([^-]{8})-([^-]{4})-([^-]{4})-([^-]{4})-([^-]{12})$\",\"\1\2\3\")
+      unique-id-format 00-%[var(txn.trace_id)]-%[var(txn.parent_id)]-03
+      unique-id-header traceparent
+      # return traceparent to the client
+      http-after-response set-header traceparent %ID
+      log global
+      option dontlognull
+      option http-ignore-probes
+      option log-separate-errors
+      option log-health-checks
+    config-proxy: |
+      _front__tls
+        option tcplog
+        log global
+        option dontlognull
+        option log-separate-errors
+        option log-health-checks
   containerPorts:
     http: 30080
     https: 30443
@@ -61,26 +114,26 @@ controller:
     healthCheckNodePort: 0
     type: LoadBalancer
   haproxy:
-    enabled: true
-    image:
-      registry: docker.io
-      repository: haproxy
-      tag: "2.9.12-alpine"
-      pullPolicy: IfNotPresent
+    enabled: false
+    # image:
+    #   registry: docker.io
+    #   repository: haproxy
+    #   tag: "2.9.12-alpine"
+    #   pullPolicy: IfNotPresent
     # resources:
     #   limits:
-    #     cpu: 400m
-    #     memory: 2000Mi
+    #     cpu: 1700m
+    #     memory: 3000Mi
     #   requests:
-    #     cpu: 150m
-    #     memory: 750Mi
+    #     cpu: 1500m
+    #     memory: 2800Mi
   stats:
     enabled: true
     service:
       type: ClusterIP
   metrics:
     enabled: true
-    embedded: false
+    embedded: true
     # resources:
     #   limits:
     #     cpu: 400m
@@ -92,26 +145,59 @@ controller:
     enabled: true
     labels:
       release: prometheus
+    interval: 30s
     metrics:
+      # metricRelabelings:
+      # # Drop all per-server HAProxy metrics — highest churn
+      # - sourceLabels: [__name__]
+      #   regex: 'haproxy_server_.*'
+      #   action: drop
+      # # Drop all backend metrics — still high cardinality
+      # - sourceLabels: [__name__]
+      #   regex: 'haproxy_backend_.*'
+      #   action: drop
+      # # Drop frontend metrics we don't use
+      # - sourceLabels: [__name__]
+      #   regex: 'haproxy_frontend_bytes_(in|out)_total'
+      #   action: drop
+      # - sourceLabels: [__name__]
+      #   regex: 'haproxy_frontend_http_requests_total'
+      #   action: drop
+      # # Drop global metrics not used for dashboards/alerts
+      # - sourceLabels: [__name__]
+      #   regex: 'haproxy_process_.*'
+      #   action: drop
+      # # Drop any unexpected custom/undocumented ones
+      # - sourceLabels: [__name__]
+      #   regex: 'haproxy_.*_errors_total'
+      #   action: drop
       relabelings:
-      - replacement: cl1
-        targetLabel: cluster
-      - sourceLabels: [__meta_kubernetes_pod_node_name]
-        targetLabel: hostname
-    ctrlMetrics:
-      relabelings:
-      - replacement: cl1
-        targetLabel: cluster
-      - sourceLabels: [__meta_kubernetes_pod_node_name]
-        targetLabel: hostname
+      # Drop high-cardinality labels (like `server`)
+      - regex: server
+        action: labeldrop
   logs:
     enabled: true
-    # resources:
-    #   limits:
-    #     cpu: 100m
-    #     memory: 50Mi
-    #   requests:
-    #     cpu: 2m
-    #     memory: 6Mi
+    resources:
+      limits:
+        cpu: 40m
+        memory: 600Mi
+      requests:
+        cpu: 20m
+        memory: 300Mi
+    probes: true
+  livenessProbe:
+    path: /healthz
+    port: 10253
+    timeoutSeconds: 5
+    failureThreshold: 3
+    periodSeconds: 10
+    initialDelaySeconds: 60
+  readinessProbe:
+    path: /healthz
+    port: 10253
+    timeoutSeconds: 5
+    failureThreshold: 3
+    periodSeconds: 10
+    initialDelaySeconds: 10
 defaultBackend:
   enabled: false
