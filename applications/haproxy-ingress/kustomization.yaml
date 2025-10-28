@@ -7,6 +7,15 @@ resources:
   - resources/certificate.default.yaml
   - resources/horizontal-pod-autoscaler.yaml
 
+patches:
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: haproxy-ingress
+      namespace: haproxy-ingress
+    path: patches/remove-deployment-replicas.yaml
+
 helmCharts:
   - name: haproxy-ingress
     namespace: haproxy-ingress
