@@ -16,6 +16,12 @@ spec:
         rye.ninja/appset: consul
     spec:
       project: "databases"
+      ignoreDifferences:
+      - group: apps
+        kind: StatefulSet
+        jqPathExpressions:
+          - .spec.template.spec.volumeClaimTemplates[] | select(.name == "data-consul-vault") | .apiVersion
+          - .spec.template.spec.volumeClaimTemplates[] | select(.name == "data-consul-vault") | .kind
       sources:
       - repoURL: git@github.com:estenrye/cd-homelab.git
         targetRevision: new-argocd-server
