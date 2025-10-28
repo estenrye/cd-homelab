@@ -30,3 +30,4 @@ resources:
   - resources/applicationsets/external-secrets-operator.yaml
   - resources/applicationsets/consul.yaml
   - resources/applicationsets/kubernetes-replicator.yaml
+  - resources/applicationsets/prometheus-adapter.yaml
