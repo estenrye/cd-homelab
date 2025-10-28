@@ -43,6 +43,7 @@ spec:
         name: haproxy_total_connections
       target:
         averageValue: 5k
+        type: AverageValue
     type: Pods
   minReplicas: 2
   maxReplicas: 15
