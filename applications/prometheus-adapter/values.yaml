@@ -15,23 +15,23 @@ topologySpreadConstraints:
     matchLabels:
       app.kubernetes.io/name: prometheus-adapter
 
-affinity:
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: role
-          operator: In
-          values:
-          - system-critical
-  podAntiAffinity:
-    preferredDuringSchedulingIgnoredDuringExecution:
-    - podAffinityTerm:
-        labelSelector:
-          matchLabels:
-            app.kubernetes.io/name: prometheus-adapter
-        topologyKey: kubernetes.io/hostname
-      weight: 100
+# affinity:
+#   nodeAffinity:
+#     requiredDuringSchedulingIgnoredDuringExecution:
+#       nodeSelectorTerms:
+#       - matchExpressions:
+#         - key: role
+#           operator: In
+#           values:
+#           - system-critical
+#   podAntiAffinity:
+#     preferredDuringSchedulingIgnoredDuringExecution:
+#     - podAffinityTerm:
+#         labelSelector:
+#           matchLabels:
+#             app.kubernetes.io/name: prometheus-adapter
+#         topologyKey: kubernetes.io/hostname
+#       weight: 100
 
 podDisruptionBudget:
   enabled: true
