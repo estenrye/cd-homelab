@@ -22,6 +22,13 @@ spec:
       destination:
         server: '{{server}}' # 'server' field of the secret
         namespace: haproxy-ingress
+      ignoreDifferences:
+      - group: apps
+        kind: Deployment
+        name: haproxy-ingress
+        namespace: consul-vault
+        jqPathExpressions:
+          - .spec.replicas
       syncPolicy:
         automated: # automated sync by default retries failed attempts 5 times with following delays between attempts ( 5s, 10s, 20s, 40s, 80s ); retry controlled using `retry` field.
           prune: true # Specifies if resources should be pruned during auto-syncing ( false by default ).
