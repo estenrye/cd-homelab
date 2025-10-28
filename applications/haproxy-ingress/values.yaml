@@ -56,8 +56,8 @@ controller:
   extraArgs: 
     track-old-instances: "true"
   config:
-    use-proxy-protocol: "true"
-    tcp-service-proxy-protocol: 'true'
+    # use-proxy-protocol: "true"
+    # tcp-service-proxy-protocol: 'true'
     timeout-client: "10m"
     timeout-connect: "10s"
     timeout-server: "10m"
