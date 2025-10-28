@@ -19,6 +19,8 @@ spec:
       ignoreDifferences:
       - group: apps
         kind: StatefulSet
+        name: consul-consul-server
+        namespace: consul-vault
         jqPathExpressions:
           - .spec.template.spec.volumeClaimTemplates[] | select(.name == "data-consul-vault") | .apiVersion
           - .spec.template.spec.volumeClaimTemplates[] | select(.name == "data-consul-vault") | .kind
