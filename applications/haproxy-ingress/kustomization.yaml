@@ -6,6 +6,7 @@ resources:
   - resources/namespace.yaml
   - resources/certificate.default.yaml
   - resources/horizontal-pod-autoscaler.yaml
+  - resources/gatewayclass.yaml
 
 patches:
   - target:
