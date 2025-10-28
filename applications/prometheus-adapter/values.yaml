@@ -1,0 +1,54 @@
+replicas: 1
+
+metricsRelistInterval: 5m
+
+# tolerations:
+# - key: "system-critical"
+#   operator: "Exists"
+#   effect: "NoSchedule"
+
+topologySpreadConstraints:
+- maxSkew: 1
+  topologyKey: topology.kubernetes.io/zone
+  whenUnsatisfiable: ScheduleAnyway
+  labelSelector:
+    matchLabels:
+      app.kubernetes.io/name: prometheus-adapter
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: role
+          operator: In
+          values:
+          - system-critical
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+    - podAffinityTerm:
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: prometheus-adapter
+        topologyKey: kubernetes.io/hostname
+      weight: 100
+
+podDisruptionBudget:
+  enabled: true
+  maxUnavailable: 1
+  unhealthyPodEvictionPolicy: AlwaysAllow
+
+rules:
+  custom:
+  - seriesQuery: 'haproxy_frontend_current_sessions{namespace!="", pod!=""}'
+    resources:
+      overrides:
+        namespace: { resource: "namespace" }
+        pod: { resource: "pod" }
+    name:
+      matches: "^(.*)_current_sessions"
+      as: "haproxy_total_connections"
+    metricsQuery: sum(haproxy_frontend_current_sessions{<<.LabelMatchers>>}) by (namespace, pod)
+
+prometheus:
+  url: http://prometheus-operated.monitoring.svc
