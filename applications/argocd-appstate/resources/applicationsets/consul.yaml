@@ -22,8 +22,8 @@ spec:
         name: consul-consul-server
         namespace: consul-vault
         jqPathExpressions:
-          - .spec.template.spec.volumeClaimTemplates[] | .apiVersion
-          - .spec.template.spec.volumeClaimTemplates[] | .kind
+          - .spec.volumeClaimTemplates[] | .apiVersion
+          - .spec.volumeClaimTemplates[] | .kind
       sources:
       - repoURL: git@github.com:estenrye/cd-homelab.git
         targetRevision: new-argocd-server
