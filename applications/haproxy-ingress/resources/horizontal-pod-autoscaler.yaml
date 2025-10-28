@@ -39,7 +39,8 @@ spec:
         type: Utilization
     type: Resource
   - pods:
-      metric: haproxy_total_connections
+      metric:
+        name: haproxy_total_connections
       target:
         averageValue: 5k
     type: Pods
