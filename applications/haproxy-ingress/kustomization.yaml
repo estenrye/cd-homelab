@@ -21,7 +21,7 @@ helmCharts:
   - name: haproxy-ingress
     namespace: haproxy-ingress
     repo: https://haproxy-ingress.github.io/charts
-    version: 0.14.7
+    version: 0.15.0
     releaseName: haproxy-ingress
     includeCRDs: true
     valuesInline: {}
