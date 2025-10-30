@@ -34,7 +34,7 @@ controller:
     enabled: true
   kubernetesGateway:
     enabled: true
-    gatewayControllerName: haproxy.org/gateway-controller
+    gatewayControllerName: haproxy-ingress.github.io/controller
   autoscaling:
     enabled: false 
     useExternalHPA: true
