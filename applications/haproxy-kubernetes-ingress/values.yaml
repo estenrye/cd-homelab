@@ -86,8 +86,8 @@ controller:
             echo "set server $srv state drain" | socat /var/run/haproxy/admin.sock stdio || true
           done
           sleep 60
-  extraArgs: 
-    track-old-instances: "true"
+  # extraArgs: 
+  #   track-old-instances: "true"
   config:
     # use-proxy-protocol: "true"
     # tcp-service-proxy-protocol: 'true'
