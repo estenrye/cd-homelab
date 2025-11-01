@@ -18,7 +18,7 @@ controller:
           weight: 100
   topologySpreadConstraints:
   - maxSkew: 1
-    topologyKey: kubernetes.io/zone
+    topologyKey: kubernetes.io/hostname
     whenUnsatisfiable: DoNotSchedule
     labelSelector:
       matchLabels:
