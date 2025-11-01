@@ -24,12 +24,12 @@ spec:
           name: kustomize-helm-envsubst
       destination:
         server: '{{server}}' # 'server' field of the secret
-        namespace: haproxy-kubernetes-ingress
+        namespace: haproxy-controller
       ignoreDifferences:
       - group: apps
         kind: Deployment
         name: haproxy-ingress
-        namespace: haproxy-kubernetes-ingress
+        namespace: haproxy-controller
         jqPathExpressions:
           - .spec.replicas
       syncPolicy:
