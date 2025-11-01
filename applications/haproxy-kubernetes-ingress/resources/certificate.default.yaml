@@ -1,0 +1,30 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: haproxy-default-tls
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  isCA: false
+  subject:
+    countries:
+      - US
+    provinces:
+      - Minnesota
+    localities:
+      - Bloominton
+    organizations:
+      - Ryezone Labs
+    organizationalUnits:
+      - Default
+  commonName: "*.${K_INFRA_NAME}.${K_ZONE_NAME}"
+  dnsNames:
+    - "*.${K_INFRA_NAME}.${K_ZONE_NAME}"
+  secretName: haproxy-default-tls
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: zerossl-production
+    kind: ClusterIssuer
+    group: cert-manager.io

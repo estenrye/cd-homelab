@@ -1,35 +1,35 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: haproxy-ingress
+  name: haproxy-kubernetes-ingress
   namespace: argocd
 spec:
   generators:
   - clusters:
       selector:
         matchLabels:
-          rye.ninja/ingress-operator: "haproxy-ingress"
+          rye.ninja/ingress-operator: "haproxy-kubernetes-ingress"
   template:
     metadata:
-      name: 'haproxy-ingress-{{name}}' # 'name' field of the Secret
+      name: 'haproxy-kubernetes-ingress-{{name}}' # 'name' field of the Secret
       labels:
-        rye.ninja/appset: haproxy-ingress
+        rye.ninja/appset: haproxy-kubernetes-ingress
     spec:
       project: "networking"
       source:
         repoURL: git@github.com:estenrye/cd-homelab.git
         targetRevision: new-argocd-server
-        path: overlays/{{name}}/haproxy-ingress
+        path: overlays/{{name}}/haproxy-kubernetes-ingress
         plugin:
           name: kustomize-helm-envsubst
       destination:
         server: '{{server}}' # 'server' field of the secret
-        namespace: haproxy-ingress
+        namespace: haproxy-kubernetes-ingress
       ignoreDifferences:
       - group: apps
         kind: Deployment
         name: haproxy-ingress
-        namespace: haproxy-ingress
+        namespace: haproxy-kubernetes-ingress
         jqPathExpressions:
           - .spec.replicas
       syncPolicy:

@@ -1,0 +1,53 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: haproxy-ingress-hpa
+  namespace: haproxy-ingress
+spec:
+  behavior:
+    scaleDown:
+      policies:
+      - periodSeconds: 60
+        type: Percent
+        value: 20
+      - periodSeconds: 60
+        type: Pods
+        value: 1
+      stabilizationWindowSeconds: 300
+      selectPolicy: Min
+    scaleUp:
+      policies:
+      - periodSeconds: 15
+        type: Pods
+        value: 2
+      - periodSeconds: 15
+        type: Percent
+        value: 100
+      selectPolicy: Max
+      stabilizationWindowSeconds: 0
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 80
+        type: Utilization
+    type: Resource
+  - resource:
+      name: memory
+      target:
+        averageUtilization: 80
+        type: Utilization
+    type: Resource
+  - pods:
+      metric:
+        name: haproxy_total_connections
+      target:
+        averageValue: 5k
+        type: AverageValue
+    type: Pods
+  minReplicas: 2
+  maxReplicas: 15
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: haproxy-ingress

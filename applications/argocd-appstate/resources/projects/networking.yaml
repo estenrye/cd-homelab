@@ -25,6 +25,8 @@ spec:
     server: '*'
   - namespace: haproxy-ingress
     server: '*'
+  - namespace: haproxy-kubernetes-ingress
+    server: '*'
 
   # Deny all cluster-scoped resources from being created, except for Namespace
   clusterResourceWhitelist:

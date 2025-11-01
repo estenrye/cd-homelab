@@ -1,0 +1,136 @@
+controller:
+  defaultTLSSecret:
+    secret: haproxy-default-tls
+  kind: Deployment
+  tolerations: []
+  # - effect: NoSchedule
+  #   key: system-critical
+  #   operator: Exists
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: kubernetes-ingress
+                app.kubernetes.io/instance: kubernetes-ingress
+            topologyKey: kubernetes.io/hostname
+          weight: 100
+  topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: kubernetes.io/zone
+    whenUnsatisfiable: DoNotSchedule
+    labelSelector:
+      matchLabels:
+        app.kubernetes.io/name: kubernetes-ingress
+        app.kubernetes.io/instance: kubernetes-ingress
+  minAvailable: 1
+  # haproxy-ingress resources
+  resources:
+    limits:
+      cpu: 3000m
+      memory: 1024Mi
+    requests:
+      cpu: 2000m
+      memory: 512Mi
+  ingressClass: haproxy
+  ingressClassResource:
+    default: true
+  kubernetesGateway:
+    enabled: true
+    gatewayControllerName: haproxy.org/gateway-controller
+  autoscaling:
+    enabled: false 
+    useExternalHPA: true
+  keda:
+    enabled: false
+    minReplicas: 2
+    maxReplicas: 20
+    pollingInterval: 30
+    cooldownPeriod: 300
+    restoreToOriginalReplicaCount: false
+    # fallback:
+    #   failureThreshold: 3
+    #   replicas: 6
+    #   behavior: static
+    scaledObject:
+      annotations: {}
+    horizontalPodAutoscalerConfig: {}
+    # name: ""
+    # behavior:
+    #  scaleDown:
+    #    stabilizationWindowSeconds: 300
+    #    policies:
+    #    - type: Percent
+    #      value: 100
+    #      periodSeconds: 15
+    triggers: []
+    #  - type: prometheus
+    #    metadata:
+    #      serverAddress: http://<prometheus-host>:9090
+    #      metricName: haproxy_process_idle_time_percent
+    #      threshold: '50'
+    #      query: avg(100-avg_over_time(haproxy_process_idle_time_percent{container="kubernetes-ingress-controller",service="mytest-kubernetes-ingress"}[2m]))
+  terminationGracePeriodSeconds: 90
+  lifecycle:
+    preStop:
+      exec:
+        command:
+        - /bin/sh
+        - -c
+        - |
+          echo "Draining HAProxy backend servers before shutdown..."
+          servers=$(echo "show servers state" | socat /var/run/haproxy/admin.sock stdio | tail -n +3 | awk '($2 != "" && $4 != "") {print $2 "/" $4}')
+          for srv in $servers; do
+            echo "Draining server: $srv"
+            echo "set server $srv state drain" | socat /var/run/haproxy/admin.sock stdio || true
+          done
+          sleep 60
+  extraArgs: 
+    track-old-instances: "true"
+  config:
+    # use-proxy-protocol: "true"
+    # tcp-service-proxy-protocol: 'true'
+    timeout-client: "10m"
+    timeout-connect: "10s"
+    timeout-server: "10m"
+    timeout-http-request: "10m"
+    timeout-http-keep-alive: "10m"
+    max-connections: "10000"
+    close-sessions-duration: "60s"
+    timeout-stop: "60s"
+    config-global: |-
+      no log
+      log 127.0.0.1:514 len 1024 format rfc5424 syslog
+    config-frontend: |-
+      # parse UUID [RFC 4122](https://www.rfc-editor.org/rfc/rfc4122.html)
+      http-request set-var(txn.trace_id) uuid(4),regsub(\"^([^-]{8})-([^-]{4})-([^-]{4})-([^-]{4})-([^-]{12})$\",\"\1\2\3\4\5\")
+      http-request set-var(txn.parent_id) uuid(4),regsub(\"^([^-]{8})-([^-]{4})-([^-]{4})-([^-]{4})-([^-]{12})$\",\"\1\2\3\")
+      unique-id-format 00-%[var(txn.trace_id)]-%[var(txn.parent_id)]-03
+      unique-id-header traceparent
+      # return traceparent to the client
+      http-after-response set-header traceparent %ID
+      log global
+      option dontlognull
+      option http-ignore-probes
+      option log-separate-errors
+      option log-health-checks
+    config-proxy: |
+      _front__tls
+        option tcplog
+        log global
+        option dontlognull
+        option log-separate-errors
+        option log-health-checks
+  publishService:
+    enabled: true
+  service:
+    type: LoadBalancer
+  serviceMonitor:
+    enabled: true
+  logging:
+    level: info
+    traffic:
+      address: stdout
+      format: raw
+      facility: daemon
