@@ -22,6 +22,7 @@ resources:
   - resources/applicationsets/external-dns.yaml
   - resources/applicationsets/gateway-api.yaml
   - resources/applicationsets/haproxy-ingress.yaml
+  - resources/applicationsets/haproxy-kubernetes-ingress.yaml
   - resources/applicationsets/keycloak-operator.yaml
   - resources/applicationsets/keycloak.yaml
   - resources/applicationsets/kube-prometheus-stack.yaml
