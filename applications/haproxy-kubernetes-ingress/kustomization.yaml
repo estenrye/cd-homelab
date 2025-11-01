@@ -5,8 +5,8 @@ namespace: haproxy-controller
 resources:
   - resources/namespace.yaml
   - resources/certificate.default.yaml
+  - resources/gatewayclass.yaml
   # - resources/horizontal-pod-autoscaler.yaml
-  # - resources/gatewayclass.yaml
 
 # patches:
 #   - target:
