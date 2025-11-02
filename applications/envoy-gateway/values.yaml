@@ -1,0 +1,17 @@
+config:
+  envoyGateway:
+    extensionApis:
+      enableBackend: true
+    logging:
+      level:
+        default: debug
+deployment:
+  replicas: 2
+  envoyGateway:
+    resources:
+      limits:
+        cpu: 700m
+        memory: 128Mi
+      requests:
+        cpu: 10m
+        memory: 64Mi

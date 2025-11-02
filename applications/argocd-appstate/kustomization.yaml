@@ -32,3 +32,4 @@ resources:
   - resources/applicationsets/consul.yaml
   - resources/applicationsets/kubernetes-replicator.yaml
   - resources/applicationsets/prometheus-adapter.yaml
+  - resources/applicationsets/envoy-gateway.yaml

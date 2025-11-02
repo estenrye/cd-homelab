@@ -19,6 +19,8 @@ spec:
   destinations:
   - namespace: cert-manager
     server: '*'
+  - namespace: envoy-gateway-system
+    server: '*'
   - namespace: external-dns
     server: '*'
   - namespace: gateway-api
