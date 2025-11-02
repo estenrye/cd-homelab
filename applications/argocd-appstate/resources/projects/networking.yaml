@@ -29,6 +29,8 @@ spec:
     server: '*'
   - namespace: haproxy-controller
     server: '*'
+  - namespace: kube-system
+    server: '*'
 
   # Deny all cluster-scoped resources from being created, except for Namespace
   clusterResourceWhitelist:
