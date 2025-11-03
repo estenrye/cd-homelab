@@ -1,0 +1,69 @@
+installCRDs: true
+extendedMetricLabels: true
+openshiftFinalizers: false
+# -- Specifies the number of concurrent ExternalSecret Reconciles external-secret executes at
+# a time.
+concurrent: 1
+# -- Specifies Log Params to the External Secrets Operator
+log:
+  level: info
+  timeEncoding: epoch
+resources:
+   requests:
+     cpu: 100m
+     memory: 96Mi
+   limits:
+     cpu: 200m
+     memory: 256Mi
+
+serviceMonitor:
+  # -- Specifies whether to create a ServiceMonitor resource for collecting Prometheus metrics
+  enabled: true
+  renderMode: skipIfMissing
+grafanaDashboard:
+  enabled: false
+livenessProbe:
+  enabled: true
+  spec:
+    # -- Address for liveness probe.
+    address: ""
+    # -- Specify the maximum amount of time to wait for a probe to respond before considering it fails.
+    timeoutSeconds: 5
+    # -- Number of consecutive probe failures that should occur before considering the probe as failed.
+    failureThreshold: 5
+    # -- Period in seconds for K8s to start performing probes.
+    periodSeconds: 10
+    # -- Number of successful probes to mark probe successful.
+    successThreshold: 1
+    # -- Delay in seconds for the container to start before performing the initial probe.
+    initialDelaySeconds: 10
+    # -- Handler for liveness probe.
+    httpGet:
+      # -- Set this value to 8082 to active liveness probes.
+      # @schema type: [string, integer]
+      port: 8082
+      # -- Path for liveness probe.
+      path: /healthz
+
+webhook:
+  
+  certManager:
+    enabled: true
+    addInjectorAnnotations: true
+    cert:
+      issuerRef:
+        name: selfsigned-issuer      
+        kind: Issuer
+        group: cert-manager.io
+  resources: {}
+  # requests:
+  #   cpu: 10m
+  #   memory: 32Mi
+
+certController:
+  resources: {}
+  # requests:
+  #   cpu: 10m
+  #   memory: 32Mi
+
+priorityClassName: "medium-priority"
