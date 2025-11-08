@@ -4,6 +4,7 @@ namespace: argocd
 
 resources:
   - resources/namespace.yaml
+  - resources/in-cluster.secret.yaml
   - resources/issuer.yaml
   - resources/certificate.yaml
   - resources/gateway.yaml
