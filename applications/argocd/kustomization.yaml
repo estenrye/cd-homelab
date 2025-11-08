@@ -72,18 +72,18 @@ patches:
       kind: TLSRoute
       name: argocd
     patch: |-
-      - op: add
+      - op: replace
         path: /spec/hostnames/0
         value: argocd.rspot.rye.ninja
-  - target:
-      group: gateway.networking.k8s.io
-      version: v1
-      kind: GRPCRoute
-      name: argocd
-    patch: |-
-      - op: add
-        path: /spec/hostnames/0
-        value: argocd.rspot.rye.ninja
+  # - target:
+  #     group: gateway.networking.k8s.io
+  #     version: v1
+  #     kind: GRPCRoute
+  #     name: argocd
+  #   patch: |-
+  #     - op: replace
+  #       path: /spec/hostnames/0
+  #       value: argocd.rspot.rye.ninja
   - target:
       group: ""
       version: v1
