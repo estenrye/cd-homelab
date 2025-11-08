@@ -6,8 +6,8 @@ metadata:
 spec:
   parentRefs:
     - name: eg-argocd
-  # hostnames:
-  #   - "argocd.${K_INFRA_NAME}.${K_ZONE_NAME}"
+  hostnames:
+    - "argocd.${K_INFRA_NAME}.${K_ZONE_NAME}"
   rules:
     - backendRefs:
         - group: ""

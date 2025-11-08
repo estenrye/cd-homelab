@@ -4,8 +4,8 @@ metadata:
   name: argocd
   namespace: argocd
 spec:
-  # hostnames:
-  #   - 'grpc.argocd.${K_INFRA_NAME}.${K_ZONE_NAME}'
+  hostnames:
+    - 'grpc.argocd.${K_INFRA_NAME}.${K_ZONE_NAME}'
   parentRefs:
     - name: eg-argocd
   rules:
