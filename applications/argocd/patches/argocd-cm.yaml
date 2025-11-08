@@ -1,0 +1,28 @@
+- op: add
+  path: /data/url
+  value: https://argocd.${K_INFRA_NAME}.${K_ZONE_NAME}
+- op: add
+  path: /data/oidc.config
+  value: |
+    name: JumpCloud
+    issuer: https://oauth.id.jumpcloud.com/
+    clientID: 959927a1-c12f-4e63-83b4-b40f04f2c5e7
+    cliClientID: 959927a1-c12f-4e63-83b4-b40f04f2c5e7
+    enablePKCEAuthentication: true
+    requestedScopes:
+    - openid
+    - profile
+    - email
+    - groups
+- op: add
+  path: /data/statusbadge.enabled
+  value: "true"
+- op: add
+  path: /data/application.resourceTrackingMethod
+  value: "annotation+label"
+- op: add
+  path: /data/kustomize.buildOptions
+  value: "--enable-helm --enable-alpha-plugins --enable-exec"
+- op: add
+  path: /data/kustomize.path.v5.1.0
+  value: /usr/local/bin/kustomize-5.1.0

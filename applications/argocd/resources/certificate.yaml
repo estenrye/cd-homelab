@@ -1,0 +1,87 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: argocd-server-tls
+  namespace: argocd
+spec:
+  commonName: 'argocd.${K_INFRA_NAME}.${K_ZONE_NAME}'
+  dnsNames:
+  - 'argocd.${K_INFRA_NAME}.${K_ZONE_NAME}'
+  isCA: false
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: zerossl-production
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  secretName: argocd-server-tls
+  subject:
+    countries:
+    - US
+    localities:
+    - Bloominton
+    organizationalUnits:
+    - Default
+    organizations:
+    - Ryezone Labs
+    provinces:
+    - Minnesota
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: argocd-repo-server-tls
+  namespace: argocd
+spec:
+  commonName: argocd-repo-server
+  dnsNames:
+  - argocd-repo-server
+  - argocd-repo-server.argocd.svc
+  - argocd-repo-server.argocd.svc.cluster.local
+  isCA: false
+  issuerRef:
+    name: selfsigned-issuer
+    kind: Issuer
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  secretName: argocd-repo-server-tls
+  subject:
+    countries:
+    - US
+    localities:
+    - Bloominton
+    organizationalUnits:
+    - Default
+    organizations:
+    - Ryezone Labs
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: argocd-dex-server-tls
+  namespace: argocd
+spec:
+  commonName: argocd-dex-server
+  dnsNames:
+  - argocd-dex-server
+  - argocd-dex-server.argocd.svc
+  - argocd-dex-server.argocd.svc.cluster.local
+  isCA: false
+  issuerRef:
+    name: selfsigned-issuer
+    kind: Issuer
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  secretName: argocd-dex-server-tls
+  subject:
+    countries:
+    - US
+    localities:
+    - Bloominton
+    organizationalUnits:
+    - Default
+    organizations:
+    - Ryezone Labs

@@ -1,12 +1,77 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: argocd
 
 resources:
   - resources/namespace.yaml
-  - resources/catalog_source.yaml
-  - resources/operator_group.yaml
-  - resources/subscription.yaml
-  - resources/onepassworditem.ssh-credentials.yaml
-  - resources/argocd.yaml
-  - resources/uuid.argo-workflows-sso-client-secret.yaml
-  - resources/externalsecret.argo-workflows-sso-client-secret.yaml
+  - resources/issuer.yaml
+  - resources/certificate.yaml
+  - resources/gateway.yaml
+  - resources/tlsroute.yaml
+  - resources/grpcroute.yaml
+  - resources/kustomize-helm-envsubst.cm.yaml
+  - https://raw.githubusercontent.com/argoproj/argo-cd/refs/tags/v3.1.9/manifests/ha/install.yaml
+  - resources/externalsecret.ssh-credentials.yaml
+  # - resources/uuid.argo-workflows-sso-client-secret.yaml
+  # - resources/externalsecret.argo-workflows-sso-client-secret.yaml
+
+patches:
+  - target:
+      group: ""
+      version: v1
+      kind: ConfigMap
+      name: argocd-cmd-params-cm
+    path: patches/argocd-cmd-params-cm.yaml
+
+  - target:
+      group: ""
+      version: v1
+      kind: ConfigMap
+      name: argocd-cm
+    path: patches/argocd-cm.yaml
+
+  - target:
+      group: ""
+      version: v1
+      kind: ConfigMap
+      name: argocd-rbac-cm
+    path: patches/argocd-rbac-cm.yaml
+
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: argocd-repo-server
+    path: patches/argocd-repo-server.deployment.yaml
+
+# Patches to modify generated resources
+  - target:
+      group: cert-manager.io
+      version: v1
+      kind: Certificate
+      name: argocd-server-tls
+    patch: |-
+      - op: replace
+        path: /spec/commonName
+        value: argocd.rspot.rye.ninja
+      - op: replace
+        path: /spec/dnsNames/0
+        value: argocd.rspot.rye.ninja
+  - target:
+      group: gateway.networking.k8s.io
+      version: v1
+      kind: Gateway
+      name: eg-argocd
+    patch: |-
+      - op: replace
+        path: /spec/listeners/0/hostname
+        value: argocd.rspot.rye.ninja
+  - target:
+      group: ""
+      version: v1
+      kind: ConfigMap
+      name: argocd-cm
+    patch: |-
+      - op: replace
+        path: /data/url
+        value: https://argocd.rspot.rye.ninja

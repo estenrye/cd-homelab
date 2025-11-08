@@ -1,0 +1,32 @@
+- op: add
+  path: /spec/template/spec/containers/-
+  value:
+    name: kustomize-helm-envsubst
+    image: estenrye/argocd-cmp:argo-cmp-v0.1.9-v1.29.13
+    command: [/var/run/argocd/argocd-cmp-server]
+    imagePullPolicy: IfNotPresent
+    securityContext:
+      privileged: true
+      runAsNonRoot: false
+      runAsUser: 999
+    volumeMounts:
+      - mountPath: /var/run/argocd
+        name: var-files
+      - mountPath: /home/argocd/cmp-server/plugins
+        name: plugins
+      - mountPath: /home/argocd/cmp-server/plugins/plugin.yaml
+        name: kustomize-helm-envsubst-config
+        subPath: plugin.yaml
+      - mountPath: /tmp
+        name: kustomize-docker-tmp
+- op: add
+  path: /spec/template/spec/volumes/-
+  value:
+    name: kustomize-docker-tmp
+    emptyDir: {}
+- op: add
+  path: /spec/template/spec/volumes/-
+  value:
+    configMap:
+      name: kustomize-helm-envsubst-cm
+    name: kustomize-helm-envsubst-config

@@ -1,0 +1,7 @@
+- op: add
+  path: /data
+  value:
+    policy.csv: |
+      g, ACL_ArgoCD_Global-Administrator, role:admin
+    scopes: '[groups, email]'
+    policy.default: role:readonly

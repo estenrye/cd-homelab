@@ -1,0 +1,9 @@
+- op: add
+  path: /data/controller.repo.server.strict.tls
+  value: 'true'
+- op: add
+  path: /data/server.repo.server.strict.tls
+  value: 'true'
+- op: add
+  path: /data/server.dex.server.strict.tls
+  value: 'true'

@@ -1,6 +1,6 @@
 # Root creation
 dn: dc=rye,dc=ninja
-objectclass: organization
+objectclass: organizationalUnit
 objectclass: dcObject
 dc: rye
-o: Ryezone Labs
+ou: Ryezone Labs
