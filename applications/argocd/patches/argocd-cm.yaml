@@ -26,3 +26,7 @@
 - op: add
   path: /data/kustomize.path.v5.1.0
   value: /usr/local/bin/kustomize-5.1.0
+- op: add
+  path: /data/cluster
+  value: |
+    inClusterEnabled: "false"
