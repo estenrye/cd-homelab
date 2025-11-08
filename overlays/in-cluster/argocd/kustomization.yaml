@@ -5,21 +5,33 @@ resources:
   - ../../../applications/argocd
 
 patches:
-- patch: |
-    - op: add
-      path: /spec/server/ingress/tls/0/hosts/0
-      value: argocd.rspot.rye.ninja
-    - op: add
-      path: /spec/server/host
-      value: argocd.rspot.rye.ninja
-    - op: add
-      path: /spec/server/grpc/ingress/tls/0/hosts/0
-      value: argocd-grpc.rspot.rye.ninja
-    - op: add
-      path: /spec/server/grpc/host
-      value: argocd-grpc.rspot.rye.ninja
-  target:
-    group: argoproj.io
-    version: v1beta1
-    kind: ArgoCD
-    name: argocd
+  - target:
+      group: cert-manager.io
+      version: v1
+      kind: Certificate
+      name: argocd-server-tls
+    patch: |-
+      - op: replace
+        path: /spec/commonName
+        value: argocd.rspot.rye.ninja
+      - op: replace
+        path: /spec/dnsNames/0
+        value: argocd.rspot.rye.ninja
+  - target:
+      group: gateway.networking.k8s.io
+      version: v1
+      kind: Gateway
+      name: eg-argocd
+    patch: |-
+      - op: replace
+        path: /spec/listeners/0/hostname
+        value: argocd.rspot.rye.ninja
+  - target:
+      group: ""
+      version: v1
+      kind: ConfigMap
+      name: argocd-cm
+    patch: |-
+      - op: replace
+        path: /data/url
+        value: https://argocd.rspot.rye.ninja
