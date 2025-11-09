@@ -1,7 +1,7 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: connect-api-tls
+  name: op-connect-tls
   namespace: 1password
 spec:
   commonName: 'connect-api.${K_INFRA_NAME}.${K_ZONE_NAME}'
@@ -15,7 +15,7 @@ spec:
   privateKey:
     algorithm: ECDSA
     size: 256
-  secretName: connect-api-tls
+  secretName: op-connect-tls
   subject:
     countries:
     - US
