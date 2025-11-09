@@ -27,6 +27,15 @@ patches:
         path: /spec/listeners/0/hostname
         value: argocd.rspot.rye.ninja
   - target:
+      group: gateway.networking.k8s.io
+      version: v1alpha2
+      kind: TLSRoute
+      name: argocd
+    patch: |-
+      - op: replace
+        path: /spec/hostnames/0
+        value: argocd.rspot.rye.ninja
+  - target:
       group: ""
       version: v1
       kind: ConfigMap

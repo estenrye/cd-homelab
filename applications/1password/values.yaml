@@ -2,6 +2,9 @@ operator:
   create: true
   autoRestart: true
 connect:
+  tls:
+    secretName: connect-api-tls
+    enabled: true
   ingress:
     enabled: true
     ingressClassName: haproxy

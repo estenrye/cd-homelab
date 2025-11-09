@@ -4,6 +4,9 @@ namespace: 1password
 
 resources:
   - resources/namespace.yaml
+  - resources/certificate.yaml
+  - resources/gateway.yaml
+  - resources/tlsroute.yaml
 
 helmCharts:
   - name: connect

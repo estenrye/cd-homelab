@@ -1,0 +1,29 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: connect-api-tls
+  namespace: 1password
+spec:
+  commonName: 'connect-api.${K_INFRA_NAME}.${K_ZONE_NAME}'
+  dnsNames:
+  - 'connect-api.${K_INFRA_NAME}.${K_ZONE_NAME}'
+  isCA: false
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: zerossl-production
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  secretName: connect-api-tls
+  subject:
+    countries:
+    - US
+    localities:
+    - Bloominton
+    organizationalUnits:
+    - Default
+    organizations:
+    - Ryezone Labs
+    provinces:
+    - Minnesota

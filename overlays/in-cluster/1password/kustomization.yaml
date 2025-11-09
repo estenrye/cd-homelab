@@ -7,6 +7,28 @@ resources:
   - ../../../applications/1password
 
 patches:
+- target:
+    group: cert-manager.io
+    version: v1
+    kind: Certificate
+    name: connect-api-tls
+  patch: |-
+    - op: replace
+      path: /spec/commonName
+      value: connect-api.rspot.rye.ninja
+    - op: replace
+      path: /spec/dnsNames/0
+      value: connect-api.rspot.rye.ninja
+- target:
+    group: gateway.networking.k8s.io
+    version: v1
+    kind: Gateway
+    name: eg-connect-api
+  patch: |-
+    - op: replace
+      path: /spec/listeners/0/hostname
+      value: connect-api.rspot.rye.ninja
+
 - patch: |
     - op: replace
       path: /spec/rules/0/host
