@@ -50,5 +50,5 @@ spec:
       - group: "externalsecrets.io"
         kind: "ExternalSecret"
         jsonPointers:
-        - "/metadata/annotations/argocd.argoproj.io~1tracking-id"
-        - "/metadata/labels/argocd.argoproj.io~1instance"
+        - /metadata/annotations
+        - /metadata/labels
