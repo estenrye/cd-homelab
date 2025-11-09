@@ -9,7 +9,6 @@ resources:
 patches:
 - target:
     group: cert-manager.io
-    version: v1
     kind: Certificate
     name: connect-api-tls
   patch: |-
@@ -21,14 +20,20 @@ patches:
       value: connect-api.rspot.rye.ninja
 - target:
     group: gateway.networking.k8s.io
-    version: v1
     kind: Gateway
     name: eg-connect-api
   patch: |-
     - op: replace
       path: /spec/listeners/0/hostname
       value: connect-api.rspot.rye.ninja
-
+- target:
+    group: gateway.networking.k8s.io
+    kind: TLSRoute
+    name: connect-api
+  patch: |-
+    - op: replace
+      path: /spec/hostnames/0
+      value: connect-api.rspot.rye.ninja
 - patch: |
     - op: replace
       path: /spec/rules/0/host
