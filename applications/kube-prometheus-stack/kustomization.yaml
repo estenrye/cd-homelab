@@ -2,5 +2,5 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - https://raw.githubusercontent.com/prometheus-community/helm-charts/refs/tags/prometheus-operator-crds-24.0.2/charts/prometheus-operator-crds/charts/crds/templates/crd-podmonitors.yaml
-  - https://raw.githubusercontent.com/prometheus-community/helm-charts/refs/tags/prometheus-operator-crds-24.0.2/charts/prometheus-operator-crds/charts/crds/templates/crd-servicemonitors.yaml
+  # - https://raw.githubusercontent.com/prometheus-community/helm-charts/refs/tags/prometheus-operator-crds-24.0.2/charts/prometheus-operator-crds/charts/crds/templates/crd-podmonitors.yaml
+  # - https://raw.githubusercontent.com/prometheus-community/helm-charts/refs/tags/prometheus-operator-crds-24.0.2/charts/prometheus-operator-crds/charts/crds/templates/crd-servicemonitors.yaml
