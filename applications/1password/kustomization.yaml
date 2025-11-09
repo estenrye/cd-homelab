@@ -4,14 +4,11 @@ namespace: 1password
 
 resources:
   - resources/namespace.yaml
-  - resources/certificate.yaml
-  - resources/gateway.yaml
-  - resources/tlsroute.yaml
 
 helmCharts:
   - name: connect
     repo: https://1password.github.io/connect-helm-charts/
-    version: 1.17.0
+    version: 2.0.5
     releaseName: connect
     includeCRDs: true
     valuesInline: {}

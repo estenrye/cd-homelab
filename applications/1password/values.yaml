@@ -3,16 +3,6 @@ operator:
   autoRestart: true
 connect:
   tls:
-    secretName: connect-api-tls
-    enabled: true
+    enabled: false
   ingress:
-    enabled: true
-    ingressClassName: haproxy
-    annotations:
-      cert-manager.io/cluster-issuer: zerossl-production
-    hosts:
-      - host: example.cluster.infra.rye.ninja
-    tls:
-      - hosts:
-          - example.cluster.infra.rye.ninja
-        secretName: connect-tls
+    enabled: false
