@@ -16,7 +16,7 @@ spec:
   
   storage:
     size: 5Gi
-    storageClass: ssd
+    storageClass: ssdv2-performance
     resizeInUseVolumes: true
 
   postgresql:
