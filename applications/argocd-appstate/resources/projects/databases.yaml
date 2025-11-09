@@ -19,8 +19,6 @@ spec:
   destinations:
   - namespace: cnpg-system
     server: '*'
-  - namespace: operators
-    server: '*'
   - namespace: consul-vault
     server: '*'
 
