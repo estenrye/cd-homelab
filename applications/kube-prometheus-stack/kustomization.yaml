@@ -5,11 +5,11 @@ namespace: monitoring
 resources:
   - resources/namespace.yaml
 
-helmCharts:
-  - name: kube-prometheus-stack
-    repo: https://prometheus-community.github.io/helm-charts
-    version: 69.3.1
-    releaseName: kube-prometheus
-    includeCRDs: true
-    valuesInline: {}
-    valuesFile: values.yaml
+# helmCharts:
+#   - name: kube-prometheus-stack
+#     repo: https://prometheus-community.github.io/helm-charts
+#     version: 69.3.1
+#     releaseName: kube-prometheus
+#     includeCRDs: true
+#     valuesInline: {}
+#     valuesFile: values.yaml

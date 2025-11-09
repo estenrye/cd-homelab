@@ -75,7 +75,7 @@ kustomize build --enable-helm overlays/in-cluster/1password | kubectl apply -f -
 kustomize build --enable-helm applications/kube-prometheus-stack | kubectl apply --server-side -f -
 
 # Deploy Cert-Manager
-kubectl apply -k applications/cert-manager
+kustomize build --enable-helm applications/cert-manager | kubectl apply -f -
 
 # Deploy Cluster Issuer
 kubectl apply -k applications/zerossl-cluster-issuer
@@ -90,7 +90,7 @@ kustomize build --enable-helm applications/haproxy-ingress | kubectl apply -f -
 kustomize build --enable-helm overlays/in-cluster/external-dns | kubectl apply -f -
 
 # Deploy Argo CD
-kustomize build --enable-helm overlays/argo-cluster/argocd | kubectl apply -f - 
+kustomize build --enable-helm overlays/argo-cluster/argocd | kubectl apply -f --server-side - 
 
 # Deploy Argo Events
 kustomize build --enable-helm applications/argo-events | kubectl apply -f -
