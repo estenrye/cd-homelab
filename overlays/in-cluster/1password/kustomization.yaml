@@ -10,7 +10,7 @@ patches:
 - target:
     group: cert-manager.io
     kind: Certificate
-    name: connect-api-tls
+    name: op-connect-tls
   patch: |-
     - op: replace
       path: /spec/commonName
