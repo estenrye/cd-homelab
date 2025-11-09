@@ -15,7 +15,7 @@ spec:
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: operators
+    namespace: cnpg-system
 
   # Sync policy
   syncPolicy:
