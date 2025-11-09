@@ -15,7 +15,7 @@ spec:
   enablePDB: true
   
   storage:
-    size: 5Gi
+    size: 10Gi
     storageClass: ssdv2-performance
     resizeInUseVolumes: true
 
