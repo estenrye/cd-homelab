@@ -5,7 +5,9 @@ metadata:
   namespace: argocd
 spec:
   parentRefs:
-    - name: eg-argocd
+    - group: gateway.networking.k8s.io	
+      kind: Gateway	
+      name: eg-argocd
   hostnames:
     - "argocd.${K_INFRA_NAME}.${K_ZONE_NAME}"
   rules:
