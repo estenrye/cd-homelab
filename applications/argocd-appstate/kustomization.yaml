@@ -25,7 +25,6 @@ resources:
   - resources/applicationsets/haproxy-kubernetes-ingress.yaml
   - resources/applicationsets/keycloak-operator.yaml
   - resources/applicationsets/keycloak.yaml
-  - resources/applicationsets/kube-prometheus-stack.yaml
   - resources/applicationsets/openldap.yaml
   - resources/applicationsets/sealed-secrets.yaml
   - resources/applicationsets/external-secrets-operator.yaml
@@ -33,3 +32,4 @@ resources:
   - resources/applicationsets/kubernetes-replicator.yaml
   - resources/applicationsets/prometheus-adapter.yaml
   - resources/applicationsets/envoy-gateway.yaml
+  - resources/applicationsets/opentelemetry-operator.yaml
