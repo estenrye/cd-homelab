@@ -7,7 +7,7 @@ spec:
   terminationGracePeriodSeconds: 600
   hostNetwork: true
   image: otel/opentelemetry-collector-k8s:0.139.0
-  serviceAccount: opentelemetry-targetallocator-sa
+  # serviceAccount: opentelemetry-targetallocator-sa
   ports:  
     - name: metrics
       port: 8888
