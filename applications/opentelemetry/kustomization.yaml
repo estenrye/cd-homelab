@@ -6,3 +6,7 @@ resources:
   - https://raw.githubusercontent.com/prometheus-community/helm-charts/refs/tags/prometheus-operator-crds-24.0.2/charts/kube-prometheus-stack/charts/crds/crds/crd-podmonitors.yaml
   - https://raw.githubusercontent.com/prometheus-community/helm-charts/refs/tags/prometheus-operator-crds-24.0.2/charts/kube-prometheus-stack/charts/crds/crds/crd-servicemonitors.yaml
   - https://github.com/open-telemetry/opentelemetry-operator/releases/download/v0.139.0/opentelemetry-operator.yaml
+  - resources/opentelemetry-targetallocator.clusterrole.yaml
+  - resources/opentelemetry-targetallocator-cr.clusterrole.yaml
+  - resources/opentelemetry-targetallocator.sa.yaml
+  - resources/opentelemetry-targetallocator.sa.clusterrolebinding.yaml
