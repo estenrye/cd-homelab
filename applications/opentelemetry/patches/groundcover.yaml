@@ -13,5 +13,5 @@
         new_name: groundcover_host_cpu_load_avg5m
 
 - op: add
-  path: /spec/config/service/pipelines/traces/processors/0
+  path: /spec/config/service/pipelines/metrics/processors/0
   value: metricstransform/rename
