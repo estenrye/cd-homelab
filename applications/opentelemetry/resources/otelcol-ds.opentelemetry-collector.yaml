@@ -90,15 +90,18 @@ spec:
           receivers: [otlp, hostmetrics]
           # Need custom otelcollector image with the envoyalsreceiver included to enable this
           # receivers: [otlp, hostmetrics,  envoyals]
-          processors: [k8sattributes, memory_limiter]
+          processors: [memory_limiter]
+          # processors: [k8sattributes, memory_limiter]
           exporters: [debug]
         logs:
           receivers: [otlp]
           # receivers: [otlp, hostmetrics,  envoyals]
-          processors: [k8sattributes, memory_limiter]
+          processors: [memory_limiter]
+          # processors: [k8sattributes, memory_limiter]
           exporters: [debug]
         traces:
           receivers: [otlp]
           # receivers: [otlp, hostmetrics,  envoyals]
-          processors: [k8sattributes, memory_limiter]
+          processors: [memory_limiter]
+          # processors: [k8sattributes, memory_limiter]
           exporters: [debug]
