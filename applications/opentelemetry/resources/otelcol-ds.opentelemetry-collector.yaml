@@ -11,8 +11,10 @@ spec:
       # Receive metrics from the Envoy Access Log Service
       # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/envoyalsreceiver
       # https://gateway.envoyproxy.io/v1.5/tasks/observability/proxy-accesslog/#ggrpc-access-log-serviceals-sink
-      envoyals:
-        endpoint: 0.0.0.0:4319
+      # Needs custom otelcollector image with the envoyalsreceiver included
+      # https://github.com/open-telemetry/opentelemetry-collector/tree/main/cmd/builder
+      # envoyals:
+      #   endpoint: 0.0.0.0:4319
       hostmetrics:
         scrapers:
           # cpu:
