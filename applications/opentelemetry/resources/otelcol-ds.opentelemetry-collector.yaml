@@ -11,18 +11,22 @@ spec:
       port: 8888
       hostPort: 8888
       protocol: TCP
+      targetPort: 8888
     - name: otlp-grpc
       port: 4317
       hostPort: 4317
       protocol: TCP
+      targetPort: 4317
     - name: otlp-http
       port: 4318
       hostPort: 4318
       protocol: TCP
+      targetPort: 4318
     - name: envoyals
       port: 4319
       hostPort: 4319
       protocol: TCP
+      targetPort: 4319
   config:
     receivers:
       # Receive metrics from the Envoy Access Log Service
