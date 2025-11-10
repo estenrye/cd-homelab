@@ -43,8 +43,18 @@ spec:
 
     service:
       pipelines:
-        traces:
+        metrics:
           receivers: [otlp, hostmetrics]
+          # receivers: [otlp, hostmetrics,  envoyals]
+          processors: [memory_limiter]
+          exporters: [debug]
+        logs:
+          receivers: [otlp]
+          # receivers: [otlp, hostmetrics,  envoyals]
+          processors: [memory_limiter]
+          exporters: [debug]
+        traces:
+          receivers: [otlp]
           # receivers: [otlp, hostmetrics,  envoyals]
           processors: [memory_limiter]
           exporters: [debug]
