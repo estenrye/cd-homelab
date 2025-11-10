@@ -1,0 +1,17 @@
+- op: add
+  path: /spec/config/processors/metricstransform~1rename
+  value:
+    transforms:
+      - include: system.cpu.load_average.15m
+        action: update
+        new_name: groundcover_host_cpu_load_avg15
+      - include: system.cpu.load_average.1m
+        action: update
+        new_name: groundcover_host_cpu_load_avg1m
+      - include: system.cpu.load_average.5m
+        action: update
+        new_name: groundcover_host_cpu_load_avg5m
+
+- op: add
+  path: /spec/config/service/pipelines/traces/processors/0
+  value: metricstransform/rename

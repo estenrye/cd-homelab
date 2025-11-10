@@ -10,3 +10,11 @@ resources:
   - resources/opentelemetry-targetallocator-cr.clusterrole.yaml
   - resources/opentelemetry-targetallocator.sa.yaml
   - resources/opentelemetry-targetallocator.sa.clusterrolebinding.yaml
+  - resources/otelcol-ds.opentelemetry-collector.yaml
+
+patches:
+  - target:
+      group: opentelemetry.io
+      kind: OpenTelemetryCollector
+      name: otelcol-ds
+    path: patches/groundcover.yaml
