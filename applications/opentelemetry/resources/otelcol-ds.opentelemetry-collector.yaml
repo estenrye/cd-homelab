@@ -6,21 +6,24 @@ spec:
   mode: daemonset
   terminationGracePeriodSeconds: 600
   hostNetwork: true
+  ports:  
+    - name: metrics
+      port: 8888
+      hostPort: 8888
+      protocol: TCP
+    - name: otlp-grpc
+      port: 4317
+      hostPort: 4317
+      protocol: TCP
+    - name: otlp-http
+      port: 4318
+      hostPort: 4318
+      protocol: TCP
+    - name: envoyals
+      port: 4319
+      hostPort: 4319
+      protocol: TCP
   config:
-    ports:  
-      - name: metrics
-        port: 8888
-        protocol: TCP
-      - name: otlp-grpc
-        port: 4317
-        hostPort: 4317
-        protocol: TCP
-      - name: otlp-http
-        port: 4318
-        protocol: TCP
-      - name: envoyals
-        port: 4319
-        protocol: TCP
     receivers:
       # Receive metrics from the Envoy Access Log Service
       # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/envoyalsreceiver
