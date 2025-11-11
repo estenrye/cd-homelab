@@ -12,9 +12,9 @@
         action: update
         new_name: groundcover_host_cpu_load_avg5m
 - op: add
-  path: /spec/config/processors/attributes~1env
+  path: /spec/config/processors/resource
   value:
-    actions:
+    attributes:
       - key: env_type
         value: "k8s"
         action: insert
