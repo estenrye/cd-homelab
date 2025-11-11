@@ -49,7 +49,16 @@ spec:
           # process:
           # processes:
           # paging:
-      otlp:
+    kubeletstats:
+      collection_interval: 10s
+      auth_type: 'serviceAccount'
+      endpoint: '${env:K8S_NODE_NAME}:10250'
+      insecure_skip_verify: true
+      metric_groups:
+        - node
+        - pod
+        - container
+    otlp:
         protocols:
           grpc:
             endpoint: 0.0.0.0:4317
@@ -91,7 +100,7 @@ spec:
           receivers: [otlp, hostmetrics]
           # Need custom otelcollector image with the envoyalsreceiver included to enable this
           # receivers: [otlp, hostmetrics,  envoyals]
-          processors: [k8sattributes, memory_limiter]
+          processors: [kubeletstats, k8sattributes, memory_limiter]
           exporters: [debug]
         logs:
           receivers: [otlp]
