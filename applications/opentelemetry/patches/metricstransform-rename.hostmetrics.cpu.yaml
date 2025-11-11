@@ -1,3 +1,4 @@
+
 - op: add
   path: /spec/config/processors/transform~1metrics/metric_statements/-
   value:
@@ -5,6 +6,7 @@
     conditions:
       - metric.name == "system.cpu.utilization"
     statements:
+      - delete_key(attributes, "cpu")
       - aggregate_on_attribute_value("sum", "state", ["idle"], "idle")
       - aggregate_on_attribute_value("sum", "state", ["interrupt"], "interrupt")
       - aggregate_on_attribute_value("sum", "state", ["nice"], "nice")
