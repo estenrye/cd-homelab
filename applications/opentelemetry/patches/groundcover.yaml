@@ -24,7 +24,8 @@
     error_mode: "ignore"
     metric_statements:
       - statements:
-          - replace_all_patterns(resource.attributes, "k8s.node.name", "host_name")
+          - replace_all_patterns(resource.attributes, "key", "k8s\\.node\\.name", "host_name")
+          - delete_key(resource.attributes, "k8s\\.node\\.name")
 - op: add
   path: /spec/config/service/pipelines/metrics/processors/1
   value: metricstransform/rename
