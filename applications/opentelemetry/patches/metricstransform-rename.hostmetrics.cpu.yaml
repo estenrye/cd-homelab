@@ -2,11 +2,18 @@
 - op: add
   path: /spec/config/processors/transform~1metrics/metric_statements/-
   value:
-    context: metric
+    context: datapoint
     conditions:
       - metric.name == "system.cpu.utilization"
     statements:
       - delete_key(attributes, "cpu")
+- op: add
+  path: /spec/config/processors/transform~1metrics/metric_statements/-
+  value:
+    context: metric
+    conditions:
+      - metric.name == "system.cpu.utilization"
+    statements:
       - aggregate_on_attribute_value("sum", "state", ["idle"], "idle")
       - aggregate_on_attribute_value("sum", "state", ["interrupt"], "interrupt")
       - aggregate_on_attribute_value("sum", "state", ["nice"], "nice")
