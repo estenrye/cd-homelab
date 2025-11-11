@@ -8,6 +8,11 @@ spec:
   hostNetwork: true
   image: otel/opentelemetry-collector-k8s:0.139.0
   serviceAccount: opentelemetry-collector
+  env:
+    - name: K8S_NODE_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: spec.nodeName
   ports:  
     - name: metrics
       port: 8888
