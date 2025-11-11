@@ -116,7 +116,7 @@ spec:
             os.build.id:
               enabled: true
             os.description:
-              enabled: true
+              enabled: false
             os.name:
               enabled: false
             os.version:
