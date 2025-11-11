@@ -27,23 +27,23 @@
           - replace_all_patterns(resource.attributes, "key", "k8s\\.node\\.name", "host_name")
           - delete_key(resource.attributes, "k8s\\.node\\.name")
 - op: add
-  path: /spec/config/service/pipelines/metrics/processors/1
+  path: /spec/config/service/pipelines/metrics/processors/-
   value: metricstransform/rename
 - op: add
-  path: /spec/config/service/pipelines/metrics/processors/1
+  path: /spec/config/service/pipelines/metrics/processors/-
   value: attributes/env
 - op: add
-  path: /spec/config/service/pipelines/metrics/processors/1
+  path: /spec/config/service/pipelines/metrics/processors/-
   value: transform/metrics
 - op: add
-  path: /spec/config/service/pipelines/logs/processors/1
+  path: /spec/config/service/pipelines/logs/processors/-
   value: attributes/env
 - op: add
-  path: /spec/config/service/pipelines/logs/processors/1
+  path: /spec/config/service/pipelines/logs/processors/-
   value: transform/metrics
 - op: add
-  path: /spec/config/service/pipelines/traces/processors/1
+  path: /spec/config/service/pipelines/traces/processors/-
   value: attributes/env
 - op: add
-  path: /spec/config/service/pipelines/traces/processors/1
+  path: /spec/config/service/pipelines/traces/processors/-
   value: transform/metrics
