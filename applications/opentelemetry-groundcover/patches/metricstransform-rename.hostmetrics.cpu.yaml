@@ -4,7 +4,7 @@
 - op: add
   path: /spec/config/processors/metricstransform~1rename/transforms/-
   value:
-    include: system.cpu.utilization
+    include: system.cpu.logical.count
     action: update
     new_name: groundcover_host_cpu_usage_percent
 

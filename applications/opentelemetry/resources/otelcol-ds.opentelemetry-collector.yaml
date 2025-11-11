@@ -58,7 +58,7 @@ spec:
           cpu:
             metrics:
               system.cpu.time:
-                enabled: true
+                enabled: false
               system.cpu.frequency:
                 enabled: false
               system.cpu.logical.count:
