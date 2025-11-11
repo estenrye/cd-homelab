@@ -1,0 +1,19 @@
+- op: replace
+  path: /spec/config/receivers/hostmetrics/scrapers/cpu/metrics/system.cpu.logical.count/enabled
+  value: true
+- op: add
+  path: /spec/config/processors/metricstransform~1rename/transforms/-
+  value:
+    include: system.cpu.utilization
+    action: update
+    new_name: groundcover_host_cpu_usage_percent
+
+- op: replace
+  path: /spec/config/receivers/hostmetrics/scrapers/cpu/metrics/system.cpu.utilization/enabled
+  value: true
+- op: add
+  path: /spec/config/processors/metricstransform~1rename/transforms/-
+  value:
+    include: system.cpu.utilization
+    action: update
+    new_name: groundcover_host_cpu_usage_percent

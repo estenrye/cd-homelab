@@ -56,6 +56,17 @@ spec:
         root_path: /hostfs
         scrapers:
           cpu:
+            metrics:
+              system.cpu.time:
+                enabled: true
+              system.cpu.frequency:
+                enabled: false
+              system.cpu.logical.count:
+                enabled: false
+              system.cpu.physical.count:
+                enabled: false
+              system.cpu.utilization:
+                enabled: true
           # disk:
           # filesystem:
           load:
@@ -82,6 +93,11 @@ spec:
     processors:
       resource:
         attributes: []
+      metricstransform/rename:
+        transforms: []
+      transform/metrics:
+        error_mode: "ignore"
+        metric_statements: []
       memory_limiter:
         check_interval: 1s
         limit_percentage: 75
@@ -163,15 +179,15 @@ spec:
           # receivers: [otlp, hostmetrics, kubeletstats]
           # Need custom otelcollector image with the envoyalsreceiver included to enable this
           # receivers: [kubeletstats, otlp, hostmetrics,  envoyals]
-          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter]
+          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter, metricstransform/rename, transform/metrics]
           exporters: [debug]
         logs:
           receivers: [otlp]
           # receivers: [otlp, hostmetrics,  envoyals]
-          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter]
+          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter, transform/metrics]
           exporters: [debug]
         traces:
           receivers: [otlp]
           # receivers: [otlp, hostmetrics,  envoyals]
-          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter]
+          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter, transform/metrics]
           exporters: [debug]

@@ -1,0 +1,6 @@
+- op: add
+  path: /spec/config/processors/resource/attributes/-
+  value:
+    key: env_type
+    value: "k8s"
+    action: insert
