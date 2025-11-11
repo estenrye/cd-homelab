@@ -1,0 +1,24 @@
+- op: add
+  path: /spec/config/processors/resource/attributes/-
+  value:
+    key: cluster
+    value: "zzz-arch-test-in-cluster"
+    action: insert
+- op: add
+  path: /spec/config/processors/resource/attributes/-
+  value:
+    key: clusterId
+    value: "zzz-arch-test-in-cluster"
+    action: insert
+- op: add
+  path: /spec/config/processors/resource/attributes/-
+  value:
+    key: cloud_provider
+    value: "Rackspace-SPOT"
+    action: insert
+- op: add
+  path: /spec/config/processors/resource/attributes/-
+  value:
+    key: region
+    value: "us-central-dfw-2"
+    action: insert
