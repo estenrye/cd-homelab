@@ -36,14 +36,14 @@
   path: /spec/config/service/pipelines/metrics/processors/-
   value: transform/metrics
 - op: add
-  path: /spec/config/service/pipelines/logs/processors/-
-  value: attributes/env
+  path: /spec/config/service/pipelines/logs/processors/0
+  value: resource
 - op: add
-  path: /spec/config/service/pipelines/logs/processors/-
-  value: transform/metrics
+  path: /spec/config/service/pipelines/logs/processors/0
+  value: resource
 - op: add
-  path: /spec/config/service/pipelines/traces/processors/-
-  value: attributes/env
+  path: /spec/config/service/pipelines/traces/processors/0
+  value: resource
 - op: add
   path: /spec/config/service/pipelines/traces/processors/-
   value: transform/metrics
