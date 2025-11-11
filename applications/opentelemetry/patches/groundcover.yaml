@@ -12,11 +12,11 @@
         action: update
         new_name: groundcover_host_cpu_load_avg5m
 - op: add
-  path: /spec/config/processors/resource/attributes
+  path: /spec/config/processors/resource/attributes/-
   value:
-      - key: env_type
-        value: "k8s"
-        action: insert
+    key: env_type
+    value: "k8s"
+    action: insert
 - op: add
   path: /spec/config/processors/transform~1metrics
   value:
@@ -28,9 +28,6 @@
 - op: add
   path: /spec/config/service/pipelines/metrics/processors/-
   value: metricstransform/rename
-- op: add
-  path: /spec/config/service/pipelines/metrics/processors/-
-  value: attributes/env
 - op: add
   path: /spec/config/service/pipelines/metrics/processors/-
   value: transform/metrics

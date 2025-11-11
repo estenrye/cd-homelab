@@ -80,6 +80,8 @@ spec:
             http:
               endpoint: 0.0.0.0:4318
     processors:
+      resource:
+        attributes: []
       memory_limiter:
         check_interval: 1s
         limit_percentage: 75
@@ -161,15 +163,15 @@ spec:
           # receivers: [otlp, hostmetrics, kubeletstats]
           # Need custom otelcollector image with the envoyalsreceiver included to enable this
           # receivers: [kubeletstats, otlp, hostmetrics,  envoyals]
-          processors: [resourcedetection/system, k8sattributes, memory_limiter]
+          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter]
           exporters: [debug]
         logs:
           receivers: [otlp]
           # receivers: [otlp, hostmetrics,  envoyals]
-          processors: [ resourcedetection/system, k8sattributes, memory_limiter]
+          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter]
           exporters: [debug]
         traces:
           receivers: [otlp]
           # receivers: [otlp, hostmetrics,  envoyals]
-          processors: [resourcedetection/system, k8sattributes, memory_limiter]
+          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter]
           exporters: [debug]
