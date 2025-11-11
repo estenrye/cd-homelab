@@ -1,3 +1,15 @@
 - op: add
   path: /spec/config/processors/transform~1metrics/metric_statements/-
-  value: extract_sum_metric(false, ".idle") where metric.name == "system.cpu.utilization" and datapoint.attributes["state"] == "idle"
+  value:
+    context: metric
+    conditions:
+      - metric.name == "system.cpu.utilization"
+    statements:
+      - aggregate_on_attribute_value("sum", "state", ["idle"], "idle")
+      - aggregate_on_attribute_value("sum", "state", ["interrupt"], "interrupt")
+      - aggregate_on_attribute_value("sum", "state", ["nice"], "nice")
+      - aggregate_on_attribute_value("sum", "state", ["softirq"], "softirq")
+      - aggregate_on_attribute_value("sum", "state", ["steal"], "steal")
+      - aggregate_on_attribute_value("sum", "state", ["system"], "system")
+      - aggregate_on_attribute_value("sum", "state", ["user"], "user")
+      - aggregate_on_attribute_value("sum", "state", ["wait"], "wait")
