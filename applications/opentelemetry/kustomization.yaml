@@ -10,6 +10,9 @@ resources:
   - resources/opentelemetry-targetallocator-cr.clusterrole.yaml
   - resources/opentelemetry-targetallocator.sa.yaml
   - resources/opentelemetry-targetallocator.sa.clusterrolebinding.yaml
+  - resources/opentelemetry-collector.clusterrole.yaml
+  - resources/opentelemetry-collector.sa.yaml
+  - resources/opentelemetry-collector.clusterrolebinding.yaml
   - resources/otelcol-ds.opentelemetry-collector.yaml
 
 patches:
