@@ -97,10 +97,10 @@ spec:
     service:
       pipelines:
         metrics:
-          receivers: [otlp, hostmetrics]
+          receivers: [otlp, hostmetrics, kubeletstats]
           # Need custom otelcollector image with the envoyalsreceiver included to enable this
-          # receivers: [otlp, hostmetrics,  envoyals]
-          processors: [kubeletstats, k8sattributes, memory_limiter]
+          # receivers: [kubeletstats, otlp, hostmetrics,  envoyals]
+          processors: [k8sattributes,  memory_limiter]
           exporters: [debug]
         logs:
           receivers: [otlp]
