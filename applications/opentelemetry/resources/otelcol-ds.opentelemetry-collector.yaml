@@ -120,7 +120,7 @@ spec:
         logs:
           receivers: [otlp]
           # receivers: [otlp, hostmetrics,  envoyals]
-          processors: resourcedetection/system, [k8sattributes, memory_limiter]
+          processors: [ resourcedetection/system, k8sattributes, memory_limiter]
           exporters: [debug]
         traces:
           receivers: [otlp]
