@@ -33,5 +33,8 @@ rules:
   - apiGroups: ['']
     resources: ['nodes/stats']
     verbs: ['get', 'watch', 'list']
+  - apiGroups: [""]
+    resources: ["nodes"]
+    verbs: ["get", "list"]
 ---
 

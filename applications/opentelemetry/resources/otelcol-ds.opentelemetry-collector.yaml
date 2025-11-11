@@ -79,6 +79,10 @@ spec:
         check_interval: 1s
         limit_percentage: 75
         spike_limit_percentage: 15
+      resourcedetection/system:
+        detectors: [k8snode, docker, system]
+        system:
+          hostname_sources: ["os"]
       k8sattributes:
         auth_type: 'serviceAccount'
         extract:
@@ -111,15 +115,15 @@ spec:
           # receivers: [otlp, hostmetrics, kubeletstats]
           # Need custom otelcollector image with the envoyalsreceiver included to enable this
           # receivers: [kubeletstats, otlp, hostmetrics,  envoyals]
-          processors: [k8sattributes, memory_limiter]
+          processors: [resourcedetection/system, k8sattributes, memory_limiter]
           exporters: [debug]
         logs:
           receivers: [otlp]
           # receivers: [otlp, hostmetrics,  envoyals]
-          processors: [k8sattributes, memory_limiter]
+          processors: resourcedetection/system, [k8sattributes, memory_limiter]
           exporters: [debug]
         traces:
           receivers: [otlp]
           # receivers: [otlp, hostmetrics,  envoyals]
-          processors: [k8sattributes, memory_limiter]
+          processors: [resourcedetection/system, k8sattributes, memory_limiter]
           exporters: [debug]
