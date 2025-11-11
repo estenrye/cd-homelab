@@ -92,25 +92,25 @@ spec:
             host.arch:
               enabled: true
             host.cpu.cache.l2.size:
-              enabled: true
+              enabled: false
             host.cpu.family:
-              enabled: true
+              enabled: false
             host.cpu.model.id:
-              enabled: true
+              enabled: false
             host.cpu.model.name:
               enabled: true
             host.cpu.stepping:
-              enabled: true
+              enabled: false
             host.cpu.vendor.id:
-              enabled: true
+              enabled: false
             host.id:
-              enabled: true
+              enabled: false
             host.interface:
-              enabled: true
+              enabled: false
             host.ip:
-              enabled: true
+              enabled: false
             host.mac:
-              enabled: true
+              enabled: false
             host.name:
               enabled: false
             os.build.id:
