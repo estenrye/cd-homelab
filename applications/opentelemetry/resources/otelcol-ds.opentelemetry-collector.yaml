@@ -89,14 +89,38 @@ spec:
         system:
           hostname_sources: ["os"]
           resource_attributes:
-            host.name:
-              enabled: false
             host.arch:
               enabled: true
+            host.cpu.cache.l2.size:
+              enabled: true
+            host.cpu.family:
+              enabled: true
+            host.cpu.model.id:
+              enabled: true
+            host.cpu.model.name:
+              enabled: true
+            host.cpu.stepping:
+              enabled: true
+            host.cpu.vendor.id:
+              enabled: true
+            host.id:
+              enabled: true
+            host.interface:
+              enabled: true
+            host.ip:
+              enabled: true
+            host.mac:
+              enabled: true
+            host.name:
+              enabled: false
+            os.build.id:
+              enabled: true
+            os.description:
+              enabled: true
             os.name:
-              enabled: true
+              enabled: false
             os.version:
-              enabled: true
+              enabled: false
             os.type:
               enabled: true
         k8snode:
