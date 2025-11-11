@@ -88,6 +88,17 @@ spec:
         detectors: [k8snode, docker, system]
         system:
           hostname_sources: ["os"]
+          resource_attributes:
+            host.name:
+              enabled: false
+            host.arch:
+              enabled: true
+            os.name:
+              enabled: true
+            os.version:
+              enabled: true
+            os.type:
+              enabled: true
         k8snode:
           resource_attributes:
             k8s.node.name:
