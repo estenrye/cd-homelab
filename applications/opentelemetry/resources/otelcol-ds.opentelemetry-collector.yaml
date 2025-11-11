@@ -29,6 +29,15 @@ spec:
       hostPort: 4319
       protocol: TCP
       targetPort: 4319
+  volumeMounts:
+    - name: hostfs
+      mountPath: /hostfs
+      readOnly: true
+      mountPropagation: HostToContainer
+  volumes:
+    - name: hostfs
+      hostPath:
+        path: /
   config:
     receivers:
       # Receive metrics from the Envoy Access Log Service
@@ -39,6 +48,7 @@ spec:
       # envoyals:
       #   endpoint: 0.0.0.0:4319
       hostmetrics:
+        root_path: /hostfs
         scrapers:
           # cpu:
           # disk:
