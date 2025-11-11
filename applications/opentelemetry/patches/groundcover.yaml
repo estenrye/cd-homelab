@@ -19,14 +19,30 @@
         value: "k8s"
         action: insert
 - op: add
+  path: /spec/config/processors/transform~1metrics
+  value:
+    error_mode: "ignore"
+    metric_statements:
+      - statements:
+          - replace_all_patterns(resource.attributes, "k8s.node.name", "host_name")
+- op: add
   path: /spec/config/service/pipelines/metrics/processors/1
   value: metricstransform/rename
 - op: add
   path: /spec/config/service/pipelines/metrics/processors/1
   value: attributes/env
 - op: add
+  path: /spec/config/service/pipelines/metrics/processors/1
+  value: transform/metrics
+- op: add
   path: /spec/config/service/pipelines/logs/processors/1
   value: attributes/env
 - op: add
+  path: /spec/config/service/pipelines/logs/processors/1
+  value: transform/metrics
+- op: add
   path: /spec/config/service/pipelines/traces/processors/1
   value: attributes/env
+- op: add
+  path: /spec/config/service/pipelines/traces/processors/1
+  value: transform/metrics
