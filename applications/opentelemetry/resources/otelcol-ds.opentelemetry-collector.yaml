@@ -88,6 +88,12 @@ spec:
         detectors: [k8snode, docker, system]
         system:
           hostname_sources: ["os"]
+        k8snode:
+          resource_attributes:
+            k8s.node.name:
+              enabled: true
+            k8s.node.uid:
+              enabled: false
       k8sattributes:
         auth_type: 'serviceAccount'
         extract:
