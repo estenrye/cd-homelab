@@ -1,0 +1,3 @@
+- op: add
+  path: /spec/config/processors/transform~1metrics/metric_statements/-
+  value: extract_sum_metric(false, ".idle") where metric.name == "system.cpu.utilization" and datapoint.attributes["state"] == "idle"
