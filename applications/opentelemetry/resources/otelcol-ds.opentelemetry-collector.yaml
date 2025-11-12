@@ -95,6 +95,12 @@ spec:
         attributes: []
       metricstransform/rename:
         transforms: []
+      filter/ottl:
+        error_mode: "ignore"
+        traces: []
+        metrics: []
+        logs: []
+        profiles: []
       transform/metrics:
         error_mode: "ignore"
         metric_statements: []
@@ -179,15 +185,15 @@ spec:
           # receivers: [otlp, hostmetrics, kubeletstats]
           # Need custom otelcollector image with the envoyalsreceiver included to enable this
           # receivers: [kubeletstats, otlp, hostmetrics,  envoyals]
-          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter, metricstransform/rename, transform/metrics]
+          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter, metricstransform/rename, transform/metrics, filter]
           exporters: [debug]
         logs:
           receivers: [otlp]
           # receivers: [otlp, hostmetrics,  envoyals]
-          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter, transform/metrics]
+          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter, transform/metrics, filter]
           exporters: [debug]
         traces:
           receivers: [otlp]
           # receivers: [otlp, hostmetrics,  envoyals]
-          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter, transform/metrics]
+          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter, transform/metrics, filter]
           exporters: [debug]
