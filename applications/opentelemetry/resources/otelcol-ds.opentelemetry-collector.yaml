@@ -97,10 +97,16 @@ spec:
         transforms: []
       filter/ottl:
         error_mode: "ignore"
-        traces: {}
-        metrics: {}
-        logs: {}
-        profiles: {}
+        traces:
+          span: []
+          spanevent: []
+        metrics:
+          metric: []
+          datapoint: []
+        logs: 
+          log_record: []
+        profiles:
+          profile: []
       transform/metrics:
         error_mode: "ignore"
         metric_statements: []
