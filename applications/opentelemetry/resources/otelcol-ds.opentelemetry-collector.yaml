@@ -97,10 +97,10 @@ spec:
         transforms: []
       filter/ottl:
         error_mode: "ignore"
-        traces: []
-        metrics: []
-        logs: []
-        profiles: []
+        traces: {}
+        metrics: {}
+        logs: {}
+        profiles: {}
       transform/metrics:
         error_mode: "ignore"
         metric_statements: []
