@@ -24,6 +24,14 @@
       - copy_metric(name="groundcover_host_cpu_load_avg15", description="CPU Load Average over 15 minutes") where metric.name == "system.cpu.load_average.15m"
       - copy_metric(name="groundcover_host_cpu_load_avg1", description="CPU Load Average over 1 minute") where metric.name == "system.cpu.load_average.1m"
       - copy_metric(name="groundcover_host_cpu_load_avg5", description="CPU Load Average over 5 minutes") where metric.name == "system.cpu.load_average.5m"
+      - copy_metric(name="groundcover_host_cpu_usage_percent", description="Percentage of used CPU in the current host") where metric.name == "system.cpu.usage_percent"
+      - copy_metric(name="groundcover_host_cpu_usage_m_cpu", description="CPU Usage in the current host") where metric.name == "system.cpu.usage_mcpu"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_usage_m_cpu" and attributes["state"] != "usage"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_usage_percent" and attributes["state"] != "usage"
 - op: add
   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
   value: metric.name == "groundcover_host_cpu_idle_spent_seconds_total" and attributes["state"] != "idle"
