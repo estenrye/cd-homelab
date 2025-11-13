@@ -3,14 +3,14 @@
   value:
     context: metric
     statements:
-      - copy_metric("groundcover_host_cpu_idle_spent_percent") where metric.name == "system.cpu.utilization_percent"
-      - copy_metric("groundcover_host_cpu_interrupt_spent_percent") where metric.name == "system.cpu.utilization_percent"
-      - copy_metric("groundcover_host_cpu_nice_spent_percent") where metric.name == "system.cpu.utilization_percent"
-      - copy_metric("groundcover_host_cpu_softirq_spent_percent") where metric.name == "system.cpu.utilization_percent"
-      - copy_metric("groundcover_host_cpu_steal_spent_percent") where metric.name == "system.cpu.utilization_percent"
-      - copy_metric("groundcover_host_cpu_system_spent_percent") where metric.name == "system.cpu.utilization_percent"
-      - copy_metric("groundcover_host_cpu_user_spent_percent") where metric.name == "system.cpu.utilization_percent"
-      - copy_metric("groundcover_host_cpu_iowait_spent_percent") where metric.name == "system.cpu.utilization_percent"
+      - copy_metric(name="groundcover_host_cpu_idle_spent_percent", desc="Percentage of CPU time spent idle") where metric.name == "system.cpu.utilization_percent"
+      - copy_metric(name="groundcover_host_cpu_interrupt_spent_percent", desc="Percentage of CPU time spent handling interrupts") where metric.name == "system.cpu.utilization_percent"
+      - copy_metric(name="groundcover_host_cpu_nice_spent_percent", desc="Percentage of CPU time spent on niced processes") where metric.name == "system.cpu.utilization_percent"
+      - copy_metric(name="groundcover_host_cpu_softirq_spent_percent", desc="Percentage of CPU time spent handling software interrupts") where metric.name == "system.cpu.utilization_percent"
+      - copy_metric(name="groundcover_host_cpu_steal_spent_percent", desc="Percentage of CPU time stolen by the hypervisor") where metric.name == "system.cpu.utilization_percent"
+      - copy_metric(name="groundcover_host_cpu_system_spent_percent", desc="Percentage of CPU time spent in system mode") where metric.name == "system.cpu.utilization_percent"
+      - copy_metric(name="groundcover_host_cpu_user_spent_percent", desc="Percentage of CPU time spent in user mode") where metric.name == "system.cpu.utilization_percent"
+      - copy_metric(name="groundcover_host_cpu_iowait_spent_percent", desc="Percentage of CPU time spent waiting for I/O") where metric.name == "system.cpu.utilization_percent"
 - op: add
   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
   value: metric.name == "groundcover_host_cpu_idle_spent_percent" and attributes["state"] != "idle"
