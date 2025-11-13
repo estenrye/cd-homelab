@@ -56,6 +56,7 @@
       - metric.name == "system.cpu.usage_percent"
     statements:
       - aggregate_on_attribute_value("mean", "state", ["idle"], "idle")
+      - scale_metric(100.0, "Percentage")
       - aggregate_on_attribute_value("mean", "state", ["interrupt", "nice", "softirq", "steal", "system", "user", "wait"], "usage")
       - scale_metric(100.0, "Percentage")
 - op: add
