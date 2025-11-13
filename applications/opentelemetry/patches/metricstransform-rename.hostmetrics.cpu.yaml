@@ -4,8 +4,8 @@
   value:
     context: metric
     statements:
-      - copy_metric("system.cpu.utilization_cores") where metric.name == "system.cpu.utilization"
-      - copy_metric("system.cpu.utilization_percent") where metric.name == "system.cpu.utilization"
+      - copy_metric(name="system.cpu.utilization_cores", description="Number of logical CPU cores utilized in each CPU state.") where metric.name == "system.cpu.utilization"
+      - copy_metric(name="system.cpu.utilization_percent", description="Percentage of CPU time spent in each CPU state.") where metric.name == "system.cpu.utilization"
 - op: add
   path: /spec/config/processors/transform~1metrics/metric_statements/-
   value:
