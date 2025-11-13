@@ -3,80 +3,89 @@
   value:
     context: metric
     statements:
-      - copy_metric(name="groundcover_host_cpu_idle_spent_seconds_total", description="Total CPU time spent idle") where metric.name == "system.cpu.time_seconds"
-      - copy_metric(name="groundcover_host_cpu_interrupt_spent_seconds_total", description="Total CPU time spent handling interrupts") where metric.name == "system.cpu.time_seconds"
-      - copy_metric(name="groundcover_host_cpu_nice_spent_seconds_total", description="Total CPU time spent on niced processes") where metric.name == "system.cpu.time_seconds"
-      - copy_metric(name="groundcover_host_cpu_softirq_spent_seconds_total", description="Total CPU time spent handling software interrupts") where metric.name == "system.cpu.time_seconds"
-      - copy_metric(name="groundcover_host_cpu_steal_spent_seconds_total", description="Total CPU time stolen by the hypervisor") where metric.name == "system.cpu.time_seconds"
-      - copy_metric(name="groundcover_host_cpu_system_spent_seconds_total", description="Total CPU time spent in system mode") where metric.name == "system.cpu.time_seconds"
-      - copy_metric(name="groundcover_host_cpu_user_spent_seconds_total", description="Total CPU time spent in user mode") where metric.name == "system.cpu.time_seconds"
-      - copy_metric(name="groundcover_host_cpu_iowait_spent_seconds_total", description="Total CPU time spent waiting for I/O") where metric.name == "system.cpu.time_seconds"
-      - copy_metric(name="groundcover_host_cpu_idle_spent_percent", description="Percentage of CPU time spent idle") where metric.name == "system.cpu.utilization_percent"
-      - copy_metric(name="groundcover_host_cpu_interrupt_spent_percent", description="Percentage of CPU time spent handling interrupts") where metric.name == "system.cpu.utilization_percent"
-      - copy_metric(name="groundcover_host_cpu_nice_spent_percent", description="Percentage of CPU time spent on niced processes") where metric.name == "system.cpu.utilization_percent"
-      - copy_metric(name="groundcover_host_cpu_softirq_spent_percent", description="Percentage of CPU time spent handling software interrupts") where metric.name == "system.cpu.utilization_percent"
-      - copy_metric(name="groundcover_host_cpu_steal_spent_percent", description="Percentage of CPU time stolen by the hypervisor") where metric.name == "system.cpu.utilization_percent"
-      - copy_metric(name="groundcover_host_cpu_system_spent_percent", description="Percentage of CPU time spent in system mode") where metric.name == "system.cpu.utilization_percent"
-      - copy_metric(name="groundcover_host_cpu_user_spent_percent", description="Percentage of CPU time spent in user mode") where metric.name == "system.cpu.utilization_percent"
-      - copy_metric(name="groundcover_host_cpu_iowait_spent_percent", description="Percentage of CPU time spent waiting for I/O") where metric.name == "system.cpu.utilization_percent"
-      - copy_metric(name="groundcover_host_cpu_num_cores", description="Number of CPU cores on the host") where metric.name == "system.cpu.logical.count"
       - copy_metric(name="groundcover_host_cpu_capacity_m_cpu", description="CPU Capacity in the current host") where metric.name == "system.cpu.logical_mcpu"
-      - copy_metric(name="groundcover_host_cpu_load_avg15", description="CPU Load Average over 15 minutes") where metric.name == "system.cpu.load_average.15m"
-      - copy_metric(name="groundcover_host_cpu_load_avg1", description="CPU Load Average over 1 minute") where metric.name == "system.cpu.load_average.1m"
       - copy_metric(name="groundcover_host_cpu_load_avg5", description="CPU Load Average over 5 minutes") where metric.name == "system.cpu.load_average.5m"
       - copy_metric(name="groundcover_host_cpu_usage_percent", description="Percentage of used CPU in the current host") where metric.name == "system.cpu.usage_percent"
+      - copy_metric(name="groundcover_host_cpu_load_avg15", description="CPU Load Average over 15 minutes") where metric.name == "system.cpu.load_average.15m"
       - copy_metric(name="groundcover_host_cpu_usage_m_cpu", description="CPU Usage in the current host") where metric.name == "system.cpu.usage_mcpu"
-- op: add
-  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
-  value: metric.name == "groundcover_host_cpu_usage_m_cpu" and attributes["state"] != "usage"
+      - copy_metric(name="groundcover_host_cpu_load_avg1", description="CPU Load Average over 1 minute") where metric.name == "system.cpu.load_average.1m"
+      # groundcover_host_cpu_load_norm15
+      # groundcover_host_cpu_load_norm5
+      # groundcover_host_cpu_load_norm1
+      - copy_metric(name="groundcover_host_cpu_irq_spent_seconds_total", description="Total time spent handling hardware interrupts") where metric.name == "system.cpu.time_seconds"
+      - copy_metric(name="groundcover_host_cpu_idle_spent_percent", description="Percentage of CPU time spent idle") where metric.name == "system.cpu.utilization_percent"
+      - copy_metric(name="groundcover_host_cpu_iowait_spent_seconds_total", description="Total CPU time spent waiting for I/O") where metric.name == "system.cpu.time_seconds"
+      - copy_metric(name="groundcover_host_cpu_softirq_spent_seconds_total", description="Total CPU time spent handling software interrupts") where metric.name == "system.cpu.time_seconds"
+      - copy_metric(name="groundcover_host_cpu_interrupt_spent_percent", description="Percentage of CPU time spent handling interrupts") where metric.name == "system.cpu.utilization_percent"
+      - aggregate_on_attribute_value("sum", "state", ["interrupt", "softirq""], "interrupt") where metric.name == "groundcover_host_cpu_interrupt_spent_percent"
+      - copy_metric(name="groundcover_host_cpu_iowait_spent_percent", description="Percentage of CPU time spent waiting for I/O") where metric.name == "system.cpu.utilization_percent"
+      - copy_metric(name="groundcover_host_cpu_guest_spent_seconds_total", description="Total CPU time spent handling guest processes") where metric.name == "system.cpu.time_seconds"
+      - copy_metric(name="groundcover_host_cpu_user_spent_percent", description="Percentage of CPU time spent in user mode") where metric.name == "system.cpu.utilization_percent"
+      - copy_metric(name="groundcover_host_cpu_guest_nice_spent_percent", description="Percentage of CPU time spent on niced processes") where metric.name == "system.cpu.utilization_percent"
+      - copy_metric(name="groundcover_host_cpu_steal_spent_seconds_total", description="Total CPU time stolen by the hypervisor") where metric.name == "system.cpu.time_seconds"
+      - copy_metric(name="groundcover_host_cpu_idle_spent_seconds_total", description="Total CPU time spent idle") where metric.name == "system.cpu.time_seconds"
+      - copy_metric(name="groundcover_host_cpu_system_spent_seconds_total", description="Total CPU time spent in system mode") where metric.name == "system.cpu.time_seconds"
+      - copy_metric(name="groundcover_host_cpu_nice_spent_seconds_total", description="Total CPU time spent on niced processes") where metric.name == "system.cpu.time_seconds"
+      - copy_metric(name="groundcover_host_cpu_stolen_spent_percent", description="Percentage of CPU time stolen by the hypervisor") where metric.name == "system.cpu.utilization_percent"
+      - copy_metric(name="groundcover_host_cpu_system_spent_percent", description="Percentage of CPU time spent in system mode") where metric.name == "system.cpu.utilization_percent"
+      - copy_metric(name="groundcover_host_cpu_user_spent_seconds_total", description="Total CPU time spent in user mode") where metric.name == "system.cpu.time_seconds"
+      - copy_metric(name="groundcover_host_cpu_num_cores", description="Number of CPU cores on the host") where metric.name == "system.cpu.logical.count"
+      - copy_metric(name="groundcover_host_cpu_guest_spent_percent", description="Percentage of CPU time spent handling guest processes") where metric.name == "system.cpu.utilization_percent"
+
 - op: add
   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
   value: metric.name == "groundcover_host_cpu_usage_percent" and attributes["state"] != "usage"
 - op: add
   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
-  value: metric.name == "groundcover_host_cpu_idle_spent_seconds_total" and attributes["state"] != "idle"
+  value: metric.name == "groundcover_host_cpu_usage_m_cpu" and attributes["state"] != "usage"
 - op: add
   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
-  value: metric.name == "groundcover_host_cpu_interrupt_spent_seconds_total" and attributes["state"] != "interrupt"
-- op: add
-  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
-  value: metric.name == "groundcover_host_cpu_nice_spent_seconds_total" and attributes["state"] != "nice"
-- op: add
-  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
-  value: metric.name == "groundcover_host_cpu_softirq_spent_seconds_total" and attributes["state"] != "softirq"
-- op: add
-  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
-  value: metric.name == "groundcover_host_cpu_steal_spent_seconds_total" and attributes["state"] != "steal"
-- op: add
-  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
-  value: metric.name == "groundcover_host_cpu_user_spent_seconds_total" and attributes["state"] != "user"
-- op: add
-  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
-  value: metric.name == "groundcover_host_cpu_iowait_spent_seconds_total" and attributes["state"] != "wait"
-- op: add
-  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
-  value: metric.name == "groundcover_host_cpu_system_spent_seconds_total" and attributes["state"] != "system"
+  value: metric.name == "groundcover_host_cpu_irq_spent_seconds_total" and attributes["state"] != "interrupt"
 - op: add
   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
   value: metric.name == "groundcover_host_cpu_idle_spent_percent" and attributes["state"] != "idle"
 - op: add
   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_iowait_spent_seconds_total" and attributes["state"] != "wait"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_softirq_spent_seconds_total" and attributes["state"] != "softirq"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
   value: metric.name == "groundcover_host_cpu_interrupt_spent_percent" and attributes["state"] != "interrupt"
-- op: add
-  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
-  value: metric.name == "groundcover_host_cpu_nice_spent_percent" and attributes["state"] != "nice"
-- op: add
-  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
-  value: metric.name == "groundcover_host_cpu_softirq_spent_percent" and attributes["state"] != "softirq"
-- op: add
-  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
-  value: metric.name == "groundcover_host_cpu_steal_spent_percent" and attributes["state"] != "steal"
-- op: add
-  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
-  value: metric.name == "groundcover_host_cpu_user_spent_percent" and attributes["state"] != "user"
 - op: add
   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
   value: metric.name == "groundcover_host_cpu_iowait_spent_percent" and attributes["state"] != "wait"
 - op: add
   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_guest_spent_seconds_total" and attributes["state"] != "guest"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_user_spent_percent" and attributes["state"] != "user"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_guest_nice_spent_percent" and attributes["state"] != "nice"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_steal_spent_seconds_total" and attributes["state"] != "steal"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_idle_spent_seconds_total" and attributes["state"] != "idle"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_system_spent_seconds_total" and attributes["state"] != "system"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_nice_spent_seconds_total" and attributes["state"] != "nice"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_stolen_spent_percent" and attributes["state"] != "steal"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
   value: metric.name == "groundcover_host_cpu_system_spent_percent" and attributes["state"] != "system"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_user_spent_seconds_total" and attributes["state"] != "user"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_guest_spent_percent" and attributes["state"] != "guest"
