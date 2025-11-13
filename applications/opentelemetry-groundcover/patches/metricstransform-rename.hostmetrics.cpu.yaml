@@ -6,7 +6,7 @@
       - copy_metric(name="groundcover_host_cpu_idle_spent_seconds_total", description="Total CPU time spent idle") where metric.name == "system.cpu.time_seconds"
       - copy_metric(name="groundcover_host_cpu_interrupt_spent_seconds_total", description="Total CPU time spent handling interrupts") where metric.name == "system.cpu.time_seconds"
       - copy_metric(name="groundcover_host_cpu_nice_spent_seconds_total", description="Total CPU time spent on niced processes") where metric.name == "system.cpu.time_seconds"
-      # - copy_metric(name="groundcover_host_cpu_softirq_spent_seconds_total", description="Total CPU time spent handling software interrupts") where metric.name == "system.cpu.time_seconds"
+      - copy_metric(name="groundcover_host_cpu_softirq_spent_seconds_total", description="Total CPU time spent handling software interrupts") where metric.name == "system.cpu.time_seconds"
       # - copy_metric(name="groundcover_host_cpu_steal_spent_seconds_total", description="Total CPU time stolen by the hypervisor") where metric.name == "system.cpu.time_seconds"
       # - copy_metric(name="groundcover_host_cpu_system_spent_seconds_total", description="Total CPU time spent in system mode") where metric.name == "system.cpu.time_seconds"
       # - copy_metric(name="groundcover_host_cpu_user_spent_seconds_total", description="Total CPU time spent in user mode") where metric.name == "system.cpu.time_seconds"
