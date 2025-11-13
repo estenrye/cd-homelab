@@ -24,30 +24,30 @@
       - copy_metric(name="groundcover_host_cpu_load_avg15", description="CPU Load Average over 15 minutes") where metric.name == "system.cpu.load_average.15m"
       - copy_metric(name="groundcover_host_cpu_load_avg1", description="CPU Load Average over 1 minute") where metric.name == "system.cpu.load_average.1m"
       - copy_metric(name="groundcover_host_cpu_load_avg5", description="CPU Load Average over 5 minutes") where metric.name == "system.cpu.load_average.5m"
-# - op: add
-#   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
-#   value: metric.name == "groundcover_host_cpu_idle_spent_seconds_total" and attributes["state"] != "idle"
-# - op: add
-#   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
-#   value: metric.name == "groundcover_host_cpu_interrupt_spent_seconds_total" and attributes["state"] != "interrupt"
-# - op: add
-#   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
-#   value: metric.name == "groundcover_host_cpu_nice_spent_seconds_total" and attributes["state"] != "nice"
-# - op: add
-#   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
-#   value: metric.name == "groundcover_host_cpu_softirq_spent_seconds_total" and attributes["state"] != "softirq"
-# - op: add
-#   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
-#   value: metric.name == "groundcover_host_cpu_steal_spent_seconds_total" and attributes["state"] != "steal"
-# - op: add
-#   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
-#   value: metric.name == "groundcover_host_cpu_user_spent_seconds_total" and attributes["state"] != "user"
-# - op: add
-#   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
-#   value: metric.name == "groundcover_host_cpu_iowait_spent_seconds_total" and attributes["state"] != "wait"
-# - op: add
-#   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
-#   value: metric.name == "groundcover_host_cpu_system_spent_seconds_total" and attributes["state"] != "system"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_idle_spent_seconds_total" and attributes["state"] != "idle"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_interrupt_spent_seconds_total" and attributes["state"] != "interrupt"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_nice_spent_seconds_total" and attributes["state"] != "nice"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_softirq_spent_seconds_total" and attributes["state"] != "softirq"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_steal_spent_seconds_total" and attributes["state"] != "steal"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_user_spent_seconds_total" and attributes["state"] != "user"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_iowait_spent_seconds_total" and attributes["state"] != "wait"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_system_spent_seconds_total" and attributes["state"] != "system"
 - op: add
   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
   value: metric.name == "groundcover_host_cpu_idle_spent_percent" and attributes["state"] != "idle"
