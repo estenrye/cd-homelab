@@ -4,7 +4,7 @@
   value:
     context: metric
     statements:
-      - copy_metric(name="system.cpu.time_seconds", description="Total CPU time spent in each CPU state") where metric.name == "system.cpu.time"
+      # - copy_metric(name="system.cpu.time_seconds", description="Total CPU time spent in each CPU state") where metric.name == "system.cpu.time"
       - copy_metric(name="system.cpu.utilization_cores", description="Number of logical CPU cores utilized in each CPU state.") where metric.name == "system.cpu.utilization"
       - copy_metric(name="system.cpu.utilization_percent", description="Percentage of CPU time spent in each CPU state.") where metric.name == "system.cpu.utilization"
       - copy_metric(name="system.cpu.logical_mcpu", description="Number of CPU cores on the host in millicores.") where metric.name == "system.cpu.logical.count"
@@ -13,24 +13,24 @@
   value:
     context: datapoint
     statements:
-      - delete_key(attributes, "cpu") where metric.name == "system.cpu.time_seconds"
+      # - delete_key(attributes, "cpu") where metric.name == "system.cpu.time_seconds"
       - delete_key(attributes, "cpu") where metric.name == "system.cpu.utilization_cores"
       - delete_key(attributes, "cpu") where metric.name == "system.cpu.utilization_percent"
-- op: add
-  path: /spec/config/processors/transform~1metrics/metric_statements/-
-  value:
-    context: metric
-    conditions:
-      - metric.name == "system.cpu.time_seconds"
-    statements:
-      - aggregate_on_attribute_value("sum", "state", ["idle"], "idle")
-      - aggregate_on_attribute_value("sum", "state", ["interrupt"], "interrupt")
-      - aggregate_on_attribute_value("sum", "state", ["nice"], "nice")
-      - aggregate_on_attribute_value("sum", "state", ["softirq"], "softirq")
-      - aggregate_on_attribute_value("sum", "state", ["steal"], "steal")
-      - aggregate_on_attribute_value("sum", "state", ["system"], "system")
-      - aggregate_on_attribute_value("sum", "state", ["user"], "user")
-      - aggregate_on_attribute_value("sum", "state", ["wait"], "wait")
+# - op: add
+#   path: /spec/config/processors/transform~1metrics/metric_statements/-
+#   value:
+#     context: metric
+#     conditions:
+#       - metric.name == "system.cpu.time_seconds"
+#     statements:
+#       - aggregate_on_attribute_value("sum", "state", ["idle"], "idle")
+#       - aggregate_on_attribute_value("sum", "state", ["interrupt"], "interrupt")
+#       - aggregate_on_attribute_value("sum", "state", ["nice"], "nice")
+#       - aggregate_on_attribute_value("sum", "state", ["softirq"], "softirq")
+#       - aggregate_on_attribute_value("sum", "state", ["steal"], "steal")
+#       - aggregate_on_attribute_value("sum", "state", ["system"], "system")
+#       - aggregate_on_attribute_value("sum", "state", ["user"], "user")
+#       - aggregate_on_attribute_value("sum", "state", ["wait"], "wait")
 - op: add
   path: /spec/config/processors/transform~1metrics/metric_statements/-
   value:
