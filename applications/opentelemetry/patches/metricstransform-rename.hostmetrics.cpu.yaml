@@ -5,15 +5,19 @@
     context: metric
     statements:
       - copy_metric(name="system.cpu.time_seconds", description="Total CPU time spent in each CPU state") where metric.name == "system.cpu.time"
+      - copy_metric(name="system.cpu.usage_mcpu", description="Number of logical CPU cores utilized on the host.") where metric.name == "system.cpu.utilization"
+      - copy_metric(name="system.cpu.usage_percent", description="Percentage of CPU utilized on the host.") where metric.name == "system.cpu.utilization"
       - copy_metric(name="system.cpu.utilization_cores", description="Number of logical CPU cores utilized in each CPU state.") where metric.name == "system.cpu.utilization"
       - copy_metric(name="system.cpu.utilization_percent", description="Percentage of CPU time spent in each CPU state.") where metric.name == "system.cpu.utilization"
-      - copy_metric(name="system.cpu.logical_mcpu", description="Number of CPU cores on the host in millicores.") where metric.name == "system.cpu.logical.count"
+      - copy_metric(name="system.cpu.logical_mcpu", description="Number of logical CPU cores on the host in millicores.") where metric.name == "system.cpu.logical.count"
 - op: add
   path: /spec/config/processors/transform~1metrics/metric_statements/-
   value:
     context: datapoint
     statements:
       - delete_key(attributes, "cpu") where metric.name == "system.cpu.time_seconds"
+      - delete_key(attributes, "cpu") where metric.name == "system.cpu.usage_mcpu"
+      - delete_key(attributes, "cpu") where metric.name == "system.cpu.usage_percent"
       - delete_key(attributes, "cpu") where metric.name == "system.cpu.utilization_cores"
       - delete_key(attributes, "cpu") where metric.name == "system.cpu.utilization_percent"
 - op: add
@@ -31,6 +35,32 @@
       - aggregate_on_attribute_value("sum", "state", ["system"], "system")
       - aggregate_on_attribute_value("sum", "state", ["user"], "user")
       - aggregate_on_attribute_value("sum", "state", ["wait"], "wait")
+- op: add
+  path: /spec/config/processors/transform~1metrics/metric_statements/-
+  value:
+    context: metric
+    conditions:
+      - metric.name == "system.cpu.usage_mcpu"
+    statements:
+      - aggregate_on_attribute_value("sum", "state", ["idle"], "idle")
+      - aggregate_on_attribute_value("sum", "state", ["interrupt", "nice", "softirq", "steal", "system", "user", "wait"], "usage")
+      - scale_metric(1000.0, "mCPU")
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "system.cpu.usage_mcpu" and attributes["state"] != "idle" and attributes["state"] != "usage"
+- op: add
+  path: /spec/config/processors/transform~1metrics/metric_statements/-
+  value:
+    context: metric
+    conditions:
+      - metric.name == "system.cpu.usage_percent"
+    statements:
+      - aggregate_on_attribute_value("mean", "state", ["idle"], "idle")
+      - aggregate_on_attribute_value("mean", "state", ["interrupt", "nice", "softirq", "steal", "system", "user", "wait"], "usage")
+      - scale_metric(100.0, "Percentage")
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "system.cpu.usage_percent" and attributes["state"] != "idle" and attributes["state"] != "usage"
 - op: add
   path: /spec/config/processors/transform~1metrics/metric_statements/-
   value:
