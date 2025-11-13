@@ -67,9 +67,31 @@ spec:
                 enabled: false
               system.cpu.utilization:
                 enabled: true
-          # disk:
+          disk:
+            metrics:
+              system.disk.io:
+                enabled: false
+              system.disk.io_time:
+                enabled: false
+              system.disk.merged:
+                enabled: false
+              system.disk.operation_time:
+                enabled: true
+              system.disk.operations:
+                enabled: false
+              system.disk.pending_operations:
+                enabled: false
+              system.disk.weighted_io_time:
+                enabled: false
           # filesystem:
           load:
+            metrics:
+              system.load.average_1m:
+                enabled: true
+              system.load.average_5m:
+                enabled: true
+              system.load.average_15m:
+                enabled: true
           # memory:
           # network:
           # process:
