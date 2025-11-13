@@ -33,3 +33,6 @@
 - op: add
   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
   value: metric.name == "groundcover_host_cpu_iowait_spent_percent" and attributes["state"] != "wait"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_system_spent_percent" and attributes["state"] != "system"
