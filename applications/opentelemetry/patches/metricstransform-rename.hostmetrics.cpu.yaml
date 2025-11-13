@@ -4,7 +4,7 @@
   value:
     context: metric
     statements:
-      # - copy_metric(name="system.cpu.time_seconds", description="Total CPU time spent in each CPU state") where metric.name == "system.cpu.time"
+      - copy_metric(name="system.cpu.time_seconds", description="Total CPU time spent in each CPU state") where metric.name == "system.cpu.time"
       - copy_metric(name="system.cpu.utilization_cores", description="Number of logical CPU cores utilized in each CPU state.") where metric.name == "system.cpu.utilization"
       - copy_metric(name="system.cpu.utilization_percent", description="Percentage of CPU time spent in each CPU state.") where metric.name == "system.cpu.utilization"
       - copy_metric(name="system.cpu.logical_mcpu", description="Number of CPU cores on the host in millicores.") where metric.name == "system.cpu.logical.count"
