@@ -1,3 +1,38 @@
+- op: add
+  path: /spec/config/processors/transform~1metrics/metric_statements/-
+  value:
+    context: metric
+    statements:
+      - copy_metric("groundcover_host_cpu_idle_spent_percent") where metric.name == "system.cpu.utilization_percent"
+      - copy_metric("groundcover_host_cpu_interrupt_spent_percent") where metric.name == "system.cpu.utilization_percent"
+      - copy_metric("groundcover_host_cpu_nice_spent_percent") where metric.name == "system.cpu.utilization_percent"
+      - copy_metric("groundcover_host_cpu_softirq_spent_percent") where metric.name == "system.cpu.utilization_percent"
+      - copy_metric("groundcover_host_cpu_steal_spent_percent") where metric.name == "system.cpu.utilization_percent"
+      - copy_metric("groundcover_host_cpu_system_spent_percent") where metric.name == "system.cpu.utilization_percent"
+      - copy_metric("groundcover_host_cpu_user_spent_percent") where metric.name == "system.cpu.utilization_percent"
+      - copy_metric("groundcover_host_cpu_iowait_spent_percent") where metric.name == "system.cpu.utilization_percent"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_idle_spent_percent" and attributes["state"] != "idle"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_interrupt_spent_percent" and attributes["state"] != "interrupt"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_nice_spent_percent" and attributes["state"] != "nice"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_softirq_spent_percent" and attributes["state"] != "softirq"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_steal_spent_percent" and attributes["state"] != "steal"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_user_spent_percent" and attributes["state"] != "user"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_cpu_iowait_spent_percent" and attributes["state"] != "wait"
+
 # - op: replace
 #   path: /spec/config/receivers/hostmetrics/scrapers/cpu/metrics/system.cpu.logical.count/enabled
 #   value: true
