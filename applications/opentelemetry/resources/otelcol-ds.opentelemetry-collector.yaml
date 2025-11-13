@@ -86,11 +86,11 @@ spec:
           # filesystem:
           load:
             metrics:
-              system.load.average_1m:
+              system.cpu.load.average_1m:
                 enabled: true
-              system.load.average_5m:
+              system.cpu.load.average_5m:
                 enabled: true
-              system.load.average_15m:
+              system.cpu.load.average_15m:
                 enabled: true
           # memory:
           # network:
