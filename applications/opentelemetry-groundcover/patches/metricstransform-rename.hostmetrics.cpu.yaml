@@ -20,7 +20,7 @@
       - copy_metric(name="groundcover_host_cpu_user_spent_percent", description="Percentage of CPU time spent in user mode") where metric.name == "system.cpu.utilization_percent"
       - copy_metric(name="groundcover_host_cpu_iowait_spent_percent", description="Percentage of CPU time spent waiting for I/O") where metric.name == "system.cpu.utilization_percent"
       - copy_metric(name="groundcover_host_cpu_num_cores", description="Number of CPU cores on the host") where metric.name == "system.cpu.logical.count"
-      - copy_metric(name="groundcover_host_cpu_capacity_m_cpu", description="CPU Capacity in the current host") where metric.name == "system.cpu.logical.count"
+      - copy_metric(name="groundcover_host_cpu_capacity_m_cpu", description="CPU Capacity in the current host") where metric.name == "system.cpu.logical_mcpu"
       - copy_metric(name="groundcover_host_cpu_load_avg15", description="CPU Load Average over 15 minutes") where metric.name == "system.cpu.load_average.15m"
       - copy_metric(name="groundcover_host_cpu_load_avg1", description="CPU Load Average over 1 minute") where metric.name == "system.cpu.load_average.1m"
       - copy_metric(name="groundcover_host_cpu_load_avg5", description="CPU Load Average over 5 minutes") where metric.name == "system.cpu.load_average.5m"
