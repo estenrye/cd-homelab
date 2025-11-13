@@ -191,15 +191,15 @@ spec:
           # receivers: [otlp, hostmetrics, kubeletstats]
           # Need custom otelcollector image with the envoyalsreceiver included to enable this
           # receivers: [kubeletstats, otlp, hostmetrics,  envoyals]
-          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter, metricstransform/rename, transform/metrics, filter]
+          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter, metricstransform/rename, transform/metrics, filter/ottl]
           exporters: [debug]
         logs:
           receivers: [otlp]
           # receivers: [otlp, hostmetrics,  envoyals]
-          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter, transform/metrics, filter]
+          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter, transform/metrics, filter/ottl]
           exporters: [debug]
         traces:
           receivers: [otlp]
           # receivers: [otlp, hostmetrics,  envoyals]
-          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter, transform/metrics, filter]
+          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter, transform/metrics, filter/ottl]
           exporters: [debug]
