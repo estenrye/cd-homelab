@@ -13,10 +13,10 @@
 - op: add
   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
   value: metric.name == "groundcover_host_disk_write_time_ms_total" and attributes["direction"] != "write"
-- op: add
-  path: /spec/config/processors/transform~1metrics/metric_statements/-
-  value:
-    context: datapoint
-    statements:
-      - delete_key(attributes, "direction") where metric.name == "groundcover_host_disk_read_time_ms_total"
-      - delete_key(attributes, "direction") where metric.name == "groundcover_host_disk_write_time_ms_total"
+# - op: add
+#   path: /spec/config/processors/transform~1metrics/metric_statements/-
+#   value:
+#     context: datapoint
+#     statements:
+#       - delete_key(attributes, "direction") where metric.name == "groundcover_host_disk_read_time_ms_total"
+#       - delete_key(attributes, "direction") where metric.name == "groundcover_host_disk_write_time_ms_total"
