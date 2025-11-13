@@ -62,7 +62,7 @@ spec:
               system.cpu.frequency:
                 enabled: false
               system.cpu.logical.count:
-                enabled: false
+                enabled: true
               system.cpu.physical.count:
                 enabled: false
               system.cpu.utilization:

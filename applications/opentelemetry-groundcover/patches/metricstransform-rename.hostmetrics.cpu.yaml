@@ -11,6 +11,7 @@
       - copy_metric(name="groundcover_host_cpu_system_spent_percent", description="Percentage of CPU time spent in system mode") where metric.name == "system.cpu.utilization_percent"
       - copy_metric(name="groundcover_host_cpu_user_spent_percent", description="Percentage of CPU time spent in user mode") where metric.name == "system.cpu.utilization_percent"
       - copy_metric(name="groundcover_host_cpu_iowait_spent_percent", description="Percentage of CPU time spent waiting for I/O") where metric.name == "system.cpu.utilization_percent"
+      - copy_metric(name="groundcover_host_cpu_num_cores", description="Number of CPU cores on the host") where metric.name == "system.cpu.logical.count"
 - op: add
   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
   value: metric.name == "groundcover_host_cpu_idle_spent_percent" and attributes["state"] != "idle"
@@ -32,23 +33,3 @@
 - op: add
   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
   value: metric.name == "groundcover_host_cpu_iowait_spent_percent" and attributes["state"] != "wait"
-
-# - op: replace
-#   path: /spec/config/receivers/hostmetrics/scrapers/cpu/metrics/system.cpu.logical.count/enabled
-#   value: true
-# - op: add
-#   path: /spec/config/processors/metricstransform~1rename/transforms/-
-#   value:
-#     include: system.cpu.logical.count
-#     action: update
-#     new_name: groundcover_host_cpu_usage_percent
-
-# - op: replace
-#   path: /spec/config/receivers/hostmetrics/scrapers/cpu/metrics/system.cpu.utilization/enabled
-#   value: true
-# - op: add
-#   path: /spec/config/processors/metricstransform~1rename/transforms/-
-#   value:
-#     include: system.cpu.utilization
-#     action: update
-#     new_name: groundcover_host_cpu_usage_percent
