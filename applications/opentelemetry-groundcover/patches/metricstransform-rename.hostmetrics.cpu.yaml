@@ -17,7 +17,7 @@
       - copy_metric(name="groundcover_host_cpu_iowait_spent_seconds_total", description="Total CPU time spent waiting for I/O") where metric.name == "system.cpu.time_seconds"
       - copy_metric(name="groundcover_host_cpu_softirq_spent_seconds_total", description="Total CPU time spent handling software interrupts") where metric.name == "system.cpu.time_seconds"
       - copy_metric(name="groundcover_host_cpu_interrupt_spent_percent", description="Percentage of CPU time spent handling interrupts") where metric.name == "system.cpu.utilization_percent"
-      - aggregate_on_attribute_value("sum", "state", ["interrupt", "softirq""], "interrupt") where metric.name == "groundcover_host_cpu_interrupt_spent_percent"
+      - aggregate_on_attribute_value("sum", "state", ["interrupt", "softirq"], "interrupt") where metric.name == "groundcover_host_cpu_interrupt_spent_percent"
       - copy_metric(name="groundcover_host_cpu_iowait_spent_percent", description="Percentage of CPU time spent waiting for I/O") where metric.name == "system.cpu.utilization_percent"
       - copy_metric(name="groundcover_host_cpu_guest_spent_seconds_total", description="Total CPU time spent handling guest processes") where metric.name == "system.cpu.time_seconds"
       - copy_metric(name="groundcover_host_cpu_user_spent_percent", description="Percentage of CPU time spent in user mode") where metric.name == "system.cpu.utilization_percent"
