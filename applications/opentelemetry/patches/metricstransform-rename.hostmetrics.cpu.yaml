@@ -86,8 +86,8 @@
     conditions:
       - metric.name == "system.cpu.usage_percent"
     statements:
-      - aggregate_on_attribute_value("mean", "state", ["idle"], "idle")
-      - aggregate_on_attribute_value("mean", "state", ["interrupt", "nice", "softirq", "steal", "system", "user", "wait"], "usage")
+      - aggregate_on_attribute_value("sum", "state", ["idle"], "idle")
+      - aggregate_on_attribute_value("sum", "state", ["interrupt", "nice", "softirq", "steal", "system", "user", "wait"], "usage")
 - op: add
   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
   value: metric.name == "system.cpu.usage_percent" and attributes["state"] != "idle" and attributes["state"] != "usage"
