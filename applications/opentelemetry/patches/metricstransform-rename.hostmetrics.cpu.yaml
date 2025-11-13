@@ -4,21 +4,21 @@
   value:
     context: metric
     statements:
-      - copy_metric("system.cpu.utilization.sum") where metric.name == "system.cpu.utilization"
-      - copy_metric("system.cpu.utilization.avg") where metric.name == "system.cpu.utilization"
+      - copy_metric("system.cpu.utilization_cores") where metric.name == "system.cpu.utilization"
+      - copy_metric("system.cpu.utilization_percent") where metric.name == "system.cpu.utilization"
 - op: add
   path: /spec/config/processors/transform~1metrics/metric_statements/-
   value:
     context: datapoint
     statements:
-      - delete_key(attributes, "cpu") where metric.name == "system.cpu.utilization.sum"
-      - delete_key(attributes, "cpu") where metric.name == "system.cpu.utilization.avg"
+      - delete_key(attributes, "cpu") where metric.name == "system.cpu.utilization_cores"
+      - delete_key(attributes, "cpu") where metric.name == "system.cpu.utilization_percent"
 - op: add
   path: /spec/config/processors/transform~1metrics/metric_statements/-
   value:
     context: metric
     conditions:
-      - metric.name == "system.cpu.utilization.sum"
+      - metric.name == "system.cpu.utilization_cores"
     statements:
       - aggregate_on_attribute_value("sum", "state", ["idle"], "idle")
       - aggregate_on_attribute_value("sum", "state", ["interrupt"], "interrupt")
@@ -33,7 +33,7 @@
   value:
     context: metric
     conditions:
-      - metric.name == "system.cpu.utilization.avg"
+      - metric.name == "system.cpu.utilization_percent"
     statements:
       - aggregate_on_attribute_value("mean", "state", ["idle"], "idle")
       - aggregate_on_attribute_value("mean", "state", ["interrupt"], "interrupt")
@@ -43,3 +43,4 @@
       - aggregate_on_attribute_value("mean", "state", ["system"], "system")
       - aggregate_on_attribute_value("mean", "state", ["user"], "user")
       - aggregate_on_attribute_value("mean", "state", ["wait"], "wait")
+      - scale_metric(100.0, "Percentage")
