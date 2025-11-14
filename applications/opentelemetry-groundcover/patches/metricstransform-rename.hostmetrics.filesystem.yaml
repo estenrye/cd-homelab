@@ -4,6 +4,8 @@
     context: metric
     statements:
       - copy_metric(name="groundcover_host_disk_space_total_bytes", description="Total disk space in the current host") where metric.name == "system.filesystem.usage"
+      - copy_metric(name="groundcover_host_disk_space_used_bytes", description="Used disk space in the current host") where metric.name == "system.filesystem.usage"
+      - copy_metric(name="groundcover_host_disk_space_free_bytes", description="Free disk space in the current host") where metric.name == "system.filesystem.usage"
 - op: add
   path: /spec/config/processors/transform~1metrics/metric_statements/-
   value:
@@ -13,21 +15,22 @@
       - delete_key(attributes, "mode") where metric.name == "groundcover_host_disk_space_total_bytes"
       - delete_key(attributes, "mountpoint") where metric.name == "groundcover_host_disk_space_total_bytes"
       - delete_key(attributes, "type") where metric.name == "groundcover_host_disk_space_total_bytes"
+      - delete_key(attributes, "device") where metric.name == "groundcover_host_disk_space_used_bytes"
+      - delete_key(attributes, "mode") where metric.name == "groundcover_host_disk_space_used_bytes"
+      - delete_key(attributes, "mountpoint") where metric.name == "groundcover_host_disk_space_used_bytes"
+      - delete_key(attributes, "type") where metric.name == "groundcover_host_disk_space_used_bytes"
+      - delete_key(attributes, "device") where metric.name == "groundcover_host_disk_space_free_bytes"
+      - delete_key(attributes, "mode") where metric.name == "groundcover_host_disk_space_free_bytes"
+      - delete_key(attributes, "mountpoint") where metric.name == "groundcover_host_disk_space_free_bytes"
+      - delete_key(attributes, "type") where metric.name == "groundcover_host_disk_space_free_bytes"
 - op: add
   path: /spec/config/processors/transform~1metrics/metric_statements/-
   value:
     context: metric
     statements:
       - aggregate_on_attribute_value("sum", "state", ["free", "reserved", "used"], "total") where metric.name == "groundcover_host_disk_space_total_bytes"
-      - aggregate_on_attribute_value("sum", "state", ["free"], "free") where metric.name == "groundcover_host_disk_space_total_bytes"
-      - aggregate_on_attribute_value("sum", "state", ["used", "reserved"], "used") where metric.name == "groundcover_host_disk_space_total_bytes"
-- op: add
-  path: /spec/config/processors/transform~1metrics/metric_statements/-
-  value:
-    context: metric
-    statements:
-      - copy_metric(name="groundcover_host_disk_space_used_bytes", description="Used disk space in the current host") where metric.name == "groundcover_host_disk_space_total_bytes"
-      - copy_metric(name="groundcover_host_disk_space_free_bytes", description="Free disk space in the current host") where metric.name == "groundcover_host_disk_space_total_bytes"
+      - aggregate_on_attribute_value("sum", "state", ["free"], "free") where metric.name == "groundcover_host_disk_space_free_bytes"
+      - aggregate_on_attribute_value("sum", "state", ["used", "reserved"], "used") where metric.name == "groundcover_host_disk_space_used_bytes"
 - op: add
   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
   value: metric.name == "groundcover_host_disk_space_total_bytes" and attributes["state"] != "total"
