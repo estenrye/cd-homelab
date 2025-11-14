@@ -121,10 +121,15 @@ spec:
               endpoint: 0.0.0.0:4318
     processors:
       resource:
+        # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/resourceprocessor/README.md
         attributes: []
       metricstransform/rename:
+        # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/metricstransformprocessor/README.md
         transforms: []
+      metricsgeneration:
+        rules: []
       filter/ottl:
+        # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/filterprocessor/README.md
         error_mode: "ignore"
         traces:
           span: []
@@ -137,6 +142,7 @@ spec:
         profiles:
           profile: []
       transform/metrics:
+        # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/transformprocessor/README.md
         error_mode: "ignore"
         metric_statements: []
       memory_limiter:
@@ -189,6 +195,7 @@ spec:
             k8s.node.uid:
               enabled: true
       k8sattributes:
+        # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/k8sattributesprocessor/README.md
         auth_type: 'serviceAccount'
         extract:
           metadata: # extracted from the pod
@@ -220,15 +227,15 @@ spec:
           # receivers: [otlp, hostmetrics, kubeletstats]
           # Need custom otelcollector image with the envoyalsreceiver included to enable this
           # receivers: [kubeletstats, otlp, hostmetrics,  envoyals]
-          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter, metricstransform/rename, transform/metrics, filter/ottl]
+          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter, metricstransform/rename, transform/metrics, filter/ottl, metricsgeneration]
           exporters: [debug]
         logs:
           receivers: [otlp]
           # receivers: [otlp, hostmetrics,  envoyals]
-          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter, transform/metrics, filter/ottl]
+          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter, transform/metrics, filter/ottl, metricsgeneration]
           exporters: [debug]
         traces:
           receivers: [otlp]
           # receivers: [otlp, hostmetrics,  envoyals]
-          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter, transform/metrics, filter/ottl]
+          processors: [resource, resourcedetection/system, k8sattributes, memory_limiter, transform/metrics, filter/ottl, metricsgeneration]
           exporters: [debug]
