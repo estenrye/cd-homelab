@@ -17,12 +17,10 @@
   path: /spec/config/processors/transform~1metrics/metric_statements/-
   value:
     context: metric
-    conditions:
-      - metric.name == "groundcover_host_disk_space_total_bytes"
     statements:
-      - aggregate_on_attribute_value("sum", "state", ["free", "reserved", "used"], "total")
-      - aggregate_on_attribute_value("sum", "state", ["free"], "free")
-      - aggregate_on_attribute_value("sum", "state", ["used", "reserved"], "used")
+      - aggregate_on_attribute_value("sum", "state", ["free", "reserved", "used"], "total") where metric.name == "groundcover_host_disk_space_total_bytes"
+      - aggregate_on_attribute_value("sum", "state", ["free"], "free") where metric.name == "groundcover_host_disk_space_total_bytes"
+      - aggregate_on_attribute_value("sum", "state", ["used", "reserved"], "used") where metric.name == "groundcover_host_disk_space_total_bytes"
       - copy_metric(name="groundcover_host_disk_space_used_bytes", description="Used disk space in the current host") where metric.name == "groundcover_host_disk_space_total_bytes"
       - copy_metric(name="groundcover_host_disk_space_free_bytes", description="Free disk space in the current host") where metric.name == "groundcover_host_disk_space_total_bytes"
 - op: add
