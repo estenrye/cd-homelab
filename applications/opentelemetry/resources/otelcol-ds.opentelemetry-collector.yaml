@@ -83,7 +83,14 @@ spec:
                 enabled: false
               system.disk.weighted_io_time:
                 enabled: false
-          # filesystem:
+          filesystem:
+            metrics:
+              system.filesystem.inodes.usage:
+                enabled: true
+              system.filesystem.usage:
+                enabled: true
+              system.filesystem.utilization:
+                enabled: true
           load:
             metrics:
               system.cpu.load_average.1m:

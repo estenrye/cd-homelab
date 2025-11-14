@@ -20,6 +20,11 @@ patches:
       group: opentelemetry.io
       kind: OpenTelemetryCollector
       name: otelcol-ds
+    path: patches/metricstransform-rename.hostmetrics.filesystem.yaml
+  - target:
+      group: opentelemetry.io
+      kind: OpenTelemetryCollector
+      name: otelcol-ds
     path: patches/resource.attributes.yaml
   - target:
       group: opentelemetry.io
