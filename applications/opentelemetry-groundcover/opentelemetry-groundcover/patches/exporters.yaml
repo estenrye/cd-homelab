@@ -1,0 +1,15 @@
+- op: add
+  path: /spec/config/exporters/otlp~1grpc-groundcover
+  value:
+    endpoint: ${GROUNDCOVER_SENSOR_ENDPOINT}:443
+    headers: 
+      apikey: ${INGESTION_KEY}
+- op: add
+  path: /spec/config/service/pipelines/metrics~1otlp/exporters/-
+  value: otlp/grpc-groundcover
+- op: add
+  path: /spec/config/service/pipelines/logs/exporters/-
+  value: otlp/grpc-groundcover
+- op: add
+  path: /spec/config/service/pipelines/traces/exporters/-
+  value: otlp/grpc-groundcover

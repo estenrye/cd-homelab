@@ -1,0 +1,39 @@
+- op: add
+  path: /spec/config/processors/transform~1metrics/metric_statements/-
+  value:
+    context: metric
+    statements:
+      - copy_metric(name="groundcover_network_rx_bytes_total", description="memory used in the current host") where metric.name == "system.network.io"
+      - copy_metric(name="groundcover_network_tx_bytes_total", description="memory used in the current host") where metric.name == "system.network.io"
+      - copy_metric(name="groundcover_network_rx_ops_total", description="memory used in the current host") where metric.name == "system.network.packets"
+      - copy_metric(name="groundcover_network_tx_ops_total", description="memory used in the current host") where metric.name == "system.network.packets"
+- op: add
+  path: /spec/config/processors/transform~1metrics/metric_statements/-
+  value:
+    context: datapoint
+    statements:
+      - delete_key(attributes, "device") where metric.name == "groundcover_network_rx_bytes_total"
+      - delete_key(attributes, "device") where metric.name == "groundcover_network_tx_bytes_total"
+      - delete_key(attributes, "device") where metric.name == "groundcover_network_rx_ops_total"
+      - delete_key(attributes, "device") where metric.name == "groundcover_network_tx_ops_total"
+- op: add
+  path: /spec/config/processors/transform~1metrics/metric_statements/-
+  value:
+    context: metric
+    statements:
+      - aggregate_on_attribute_value("sum", "direction", ["receive"], "receive") where metric.name == "groundcover_network_rx_bytes_total"
+      - aggregate_on_attribute_value("sum", "direction", ["transmit"], "transmit") where metric.name == "groundcover_network_tx_bytes_total"
+      - aggregate_on_attribute_value("sum", "direction", ["receive"], "receive") where metric.name == "groundcover_network_rx_ops_total"
+      - aggregate_on_attribute_value("sum", "direction", ["transmit"], "transmit") where metric.name == "groundcover_network_tx_ops_total"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_network_rx_bytes_total" and attributes["direction"] != "receive"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_network_tx_bytes_total" and attributes["direction"] != "transmit"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_network_rx_ops_total" and attributes["direction"] != "receive"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_network_tx_ops_total" and attributes["direction"] != "transmit"

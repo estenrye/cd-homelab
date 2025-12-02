@@ -1,0 +1,392 @@
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+metadata:
+  name: otelcol-ds
+spec:
+  mode: daemonset
+  terminationGracePeriodSeconds: 600
+  hostNetwork: true
+  # image: otel/opentelemetry-collector-k8s:0.139.0
+  image: quay.io/platform9/opentelemetry-collector-pcd:main@sha256:a0823ef10922db27d8d2514f3892e5d2bdab694005c8bcfdbc84aec9aa1d8238
+  serviceAccount: opentelemetry-collector
+  env:
+    - name: MY_POD_IP
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: status.podIP
+    - name: K8S_NODE_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: spec.nodeName
+    - name: K8S_NODE_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.hostIP
+  ports:  
+    - name: metrics
+      port: 8888
+      hostPort: 8888
+      protocol: TCP
+      targetPort: 8888
+    - name: otlp-grpc
+      port: 4317
+      hostPort: 4317
+      protocol: TCP
+      targetPort: 4317
+    - name: otlp-http
+      port: 4318
+      hostPort: 4318
+      protocol: TCP
+      targetPort: 4318
+    - name: envoyals
+      port: 4319
+      hostPort: 4319
+      protocol: TCP
+      targetPort: 4319
+  volumeMounts:
+    - name: hostfs
+      mountPath: /hostfs
+      readOnly: true
+      mountPropagation: HostToContainer
+    - name: proc-swaps
+      mountPath: /proc/swaps
+      readOnly: true
+      mountPropagation: HostToContainer
+  volumes:
+    - name: hostfs
+      hostPath:
+        path: /
+    - name: proc-swaps
+      hostPath:
+        path: /proc/swaps
+  config:
+    receivers:
+      # Receive metrics from the Envoy Access Log Service
+      # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/envoyalsreceiver
+      # https://gateway.envoyproxy.io/v1.5/tasks/observability/proxy-accesslog/#ggrpc-access-log-serviceals-sink
+      # Needs custom otelcollector image with the envoyalsreceiver included
+      # https://github.com/open-telemetry/opentelemetry-collector/tree/main/cmd/builder
+      # envoyals:
+      #   endpoint: 0.0.0.0:4319
+      # File Stats Receiver requires a custom image.
+      # filestats/hostfs_proc_swaps:
+      #   include: /hostfs/proc/swaps
+      #   collection_interval: 60s
+      #   metrics:
+      #     file.mtime:
+      #       enabled: false
+      #     file.size:
+      #       enabled: true
+      #     file.count:
+      #       enabled: true
+      #     file.atime:
+      #       enabled: false
+      #     file.ctime:
+      #       enabled: false
+      hostmetrics:
+        # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/hostmetricsreceiver
+        root_path: /hostfs
+        scrapers:
+          cpu:
+            # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/internal/scraper/cpuscraper/documentation.md
+            metrics:
+              system.cpu.time:
+                enabled: true
+              system.cpu.frequency:
+                enabled: false
+              system.cpu.logical.count:
+                enabled: true
+              system.cpu.physical.count:
+                enabled: false
+              system.cpu.utilization:
+                enabled: true
+          disk:
+            # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/internal/scraper/diskscraper/documentation.md
+            metrics:
+              system.disk.io:
+                enabled: false
+              system.disk.io_time:
+                enabled: false
+              system.disk.merged:
+                enabled: false
+              system.disk.operation_time:
+                enabled: true
+              system.disk.operations:
+                enabled: false
+              system.disk.pending_operations:
+                enabled: false
+              system.disk.weighted_io_time:
+                enabled: false
+          filesystem:
+            # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/internal/scraper/filesystemscraper/documentation.md
+            metrics:
+              system.filesystem.inodes.usage:
+                enabled: true
+              system.filesystem.usage:
+                enabled: true
+              system.filesystem.utilization:
+                enabled: true
+          load:
+            # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/internal/scraper/loadscraper/documentation.md
+            metrics:
+              system.cpu.load_average.1m:
+                enabled: true
+              system.cpu.load_average.5m:
+                enabled: true
+              system.cpu.load_average.15m:
+                enabled: true
+          memory:
+            # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/internal/scraper/memoryscraper/documentation.md
+            metrics:
+              system.memory.usage:
+                enabled: true
+              system.linux.memory.available:
+                enabled: true
+              system.linux.memory.dirty:
+                enabled: true
+              system.memory.limit:
+                enabled: true
+              system.memory.page_size:
+                enabled: true
+              system.memory.utilization:
+                enabled: true
+          paging:
+            metrics:
+              system.paging.faults:
+                enabled: true
+              system.paging.operations:
+                enabled: true
+              system.paging.usage:
+                enabled: true
+              system.paging.utilization:
+                enabled: true
+          network:
+            # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/internal/scraper/networkscraper/documentation.md
+            metrics:
+              system.network.connections:
+                enabled: true
+              system.network.dropped:
+                enabled: true
+              system.network.errors:
+                enabled: true
+              system.network.io:
+                enabled: true
+              system.network.packets:
+                enabled: true
+              system.network.conntrack.count:
+                enabled: true
+              system.network.conntrack.max:
+                enabled: true
+          # process:
+          # processes:
+      filelog:
+        exclude: []
+        include:
+        - /hostfs/var/log/pods/*/*/*.log
+        include_file_name: false
+        include_file_path: true
+        operators:
+        - id: container-parser
+          max_log_size: 102400
+          type: container
+        retry_on_failure:
+          enabled: true
+        start_at: end
+      kubeletstats:
+        collection_interval: 10s
+        auth_type: 'serviceAccount'
+        endpoint: '${env:K8S_NODE_NAME}:10250'
+        insecure_skip_verify: true
+        metric_groups:
+          - node
+          - pod
+          - container
+      otlp:
+          protocols:
+            grpc:
+              endpoint: 0.0.0.0:4317
+            http:
+              endpoint: 0.0.0.0:4318
+    processors:
+      groupbyattrs:
+        # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/groupbyattrsprocessor/README.md
+        keys: []
+      resource:
+        # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/resourceprocessor/README.md
+        attributes: []
+      metricstransform/rename:
+        # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/metricstransformprocessor/README.md
+        transforms: []
+      metricsgeneration:
+        # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/metricsgenerationprocessor/README.md
+        rules: []
+      filter/ottl:
+        # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/filterprocessor/README.md
+        error_mode: "ignore"
+        traces:
+          span: []
+          spanevent: []
+        metrics:
+          metric: []
+          datapoint: []
+        logs: 
+          log_record: []
+        profiles:
+          profile: []
+      transform/metrics:
+        # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/transformprocessor/README.md
+        error_mode: "ignore"
+        metric_statements: []
+      transform/logs:
+        error_mode: "ignore"
+        log_statements: []
+      memory_limiter:
+        check_interval: 1s
+        limit_percentage: 75
+        spike_limit_percentage: 15
+      resourcedetection/system:
+        detectors: [k8snode, docker, system]
+        system:
+          hostname_sources: ["os"]
+          resource_attributes:
+            host.arch:
+              enabled: true
+            host.cpu.cache.l2.size:
+              enabled: false
+            host.cpu.family:
+              enabled: false
+            host.cpu.model.id:
+              enabled: false
+            host.cpu.model.name:
+              enabled: true
+            host.cpu.stepping:
+              enabled: false
+            host.cpu.vendor.id:
+              enabled: false
+            host.id:
+              enabled: false
+            host.interface:
+              enabled: false
+            host.ip:
+              enabled: false
+            host.mac:
+              enabled: false
+            host.name:
+              enabled: false
+            os.build.id:
+              enabled: true
+            os.description:
+              enabled: false
+            os.name:
+              enabled: false
+            os.version:
+              enabled: false
+            os.type:
+              enabled: true
+        k8snode:
+          resource_attributes:
+            k8s.node.name:
+              enabled: true
+            k8s.node.uid:
+              enabled: true
+      k8sattributes:
+        extract:
+          metadata:
+          - k8s.namespace.name
+          - k8s.deployment.name
+          - k8s.statefulset.name
+          - k8s.daemonset.name
+          - k8s.cronjob.name
+          - k8s.job.name
+          - k8s.node.name
+          - k8s.pod.name
+          - k8s.pod.uid
+        filter:
+          node_from_env_var: K8S_NODE_NAME
+        passthrough: false
+        pod_association:
+        - sources:
+          - from: resource_attribute
+            name: k8s.pod.ip
+        - sources:
+          - from: resource_attribute
+            name: k8s.pod.uid
+        - sources:
+          - from: connection
+    connectors:
+      routing:
+        table:
+          - context: metric
+            condition: metric.name != "groundcover_container_mem_working_set_bytes"
+            pipelines:
+              - metrics/otlp
+          - context: metric
+            condition: metric.name == "groundcover_container_mem_working_set_bytes"
+            pipelines:
+              - metrics/debug-detailed
+              - metrics/otlp
+    exporters:
+      debug/detailed:
+        verbosity: detailed
+      debug/basic:
+        verbosity: basic
+    service:
+      pipelines:
+        metrics/otlp:
+          receivers:
+            - routing
+          exporters: []
+            # - debug/basic
+        metrics/debug-detailed:
+          receivers:
+            - routing
+          exporters:
+            - debug/detailed
+        metrics/debug-basic:
+          receivers:
+            - routing
+          # processors:
+            # - metricsgeneration
+          exporters:
+            - debug/basic
+        metrics:
+          receivers: 
+            - otlp
+            - hostmetrics
+            - kubeletstats
+            # - filestats/hostfs_proc_swaps
+          processors:
+            - groupbyattrs
+            - metricsgeneration
+            - resource
+            - resourcedetection/system
+            - k8sattributes
+            - metricstransform/rename
+            - transform/metrics
+            - filter/ottl
+          exporters: 
+            - routing
+        logs:
+          receivers: 
+            - otlp
+            - filelog
+          processors: 
+            - resource
+            - resourcedetection/system
+            - k8sattributes
+            - transform/logs
+            - filter/ottl
+          exporters: 
+            - debug/basic
+        traces:
+          receivers: 
+            - otlp
+          processors: 
+            - resource
+            - resourcedetection/system
+            - k8sattributes
+            - transform/metrics
+            - filter/ottl
+          exporters: 
+            - debug/basic

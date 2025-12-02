@@ -1,0 +1,6 @@
+- op: add
+  path: /spec/config/processors/transform~1metrics/metric_statements/-
+  value: replace_all_patterns(resource.attributes, "key", "k8s\\.node\\.name", "host_name")
+- op: add
+  path: /spec/config/processors/transform~1metrics/metric_statements/-
+  value: delete_key(resource.attributes, "k8s\\.node\\.name")

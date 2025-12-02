@@ -1,0 +1,15 @@
+- op: add
+  path: /spec/config/processors/transform~1metrics/metric_statements/-
+  value:
+    context: metric
+    statements:
+      - copy_metric(name="groundcover_host_disk_read_time_ms_total", description="Total time spent reading from disk per device in the current host") where metric.name == "system.disk.operation_time"
+      - scale_metric(1000.0, "ms") where metric.name == "groundcover_host_disk_read_time_ms_total"
+      - copy_metric(name="groundcover_host_disk_write_time_ms_total", description="Total time spent reading from disk per device in the current host") where metric.name == "system.disk.operation_time"
+      - scale_metric(1000.0, "ms") where metric.name == "groundcover_host_disk_write_time_ms_total"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_disk_read_time_ms_total" and attributes["direction"] != "read"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_disk_write_time_ms_total" and attributes["direction"] != "write"

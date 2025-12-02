@@ -40,13 +40,13 @@
 - op: add
   path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
   value: metric.name == "groundcover_host_disk_space_free_bytes" and attributes["state"] != "free"
-- op: add
-  path: /spec/config/processors/metricsgeneration/rules/-
-  value:
-    name: generate_groundcover_host_disk_utilization_percent
-    unit: "Percentage"
-    description: "Percentage of used disk space in the current host"
-    type: "calculate"
-    metric1: "groundcover_host_disk_space_used_bytes"
-    metric2: "groundcover_host_disk_space_total_bytes"
-    operation: "percent"
+# - op: add
+#   path: /spec/config/processors/metricsgeneration/rules/-
+#   value:
+#     name: generate_groundcover_host_disk_utilization_percent
+#     unit: "Percentage"
+#     description: "Percentage of used disk space in the current host"
+#     type: "calculate"
+#     metric1: "groundcover_host_disk_space_used_bytes"
+#     metric2: "groundcover_host_disk_space_total_bytes"
+#     operation: "percent"

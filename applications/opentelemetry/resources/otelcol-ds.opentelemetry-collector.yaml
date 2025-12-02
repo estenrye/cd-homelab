@@ -127,6 +127,7 @@ spec:
         # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/metricstransformprocessor/README.md
         transforms: []
       metricsgeneration:
+        # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/metricsgenerationprocessor/README.md
         rules: []
       filter/ottl:
         # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/filterprocessor/README.md
@@ -146,6 +147,8 @@ spec:
         error_mode: "ignore"
         metric_statements: []
       memory_limiter:
+        # https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/memorylimiterprocessor/README.md
+        # To be replaced by https://github.com/open-telemetry/opentelemetry-collector/blob/main/extension/memorylimiterextension/README.md
         check_interval: 1s
         limit_percentage: 75
         spike_limit_percentage: 15

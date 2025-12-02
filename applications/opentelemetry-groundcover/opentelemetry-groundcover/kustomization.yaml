@@ -1,0 +1,53 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: opentelemetry-operator-system
+
+resources:
+  - ../opentelemetry
+
+patches:
+  - target:
+      group: opentelemetry.io
+      kind: OpenTelemetryCollector
+      name: otelcol-ds
+    path: patches/metricstransform-rename.hostmetrics.cpu.yaml
+  - target:
+      group: opentelemetry.io
+      kind: OpenTelemetryCollector
+      name: otelcol-ds
+    path: patches/metricstransform-rename.hostmetrics.disk.yaml
+  - target:
+      group: opentelemetry.io
+      kind: OpenTelemetryCollector
+      name: otelcol-ds
+    path: patches/metricstransform-rename.hostmetrics.filesystem.yaml
+  - target:
+      group: opentelemetry.io
+      kind: OpenTelemetryCollector
+      name: otelcol-ds
+    path: patches/metricstransform-rename.hostmetrics.memory.yaml
+  - target:
+      group: opentelemetry.io
+      kind: OpenTelemetryCollector
+      name: otelcol-ds
+    path: patches/metricstransform-rename.hostmetrics.network.yaml
+  - target:
+      group: opentelemetry.io
+      kind: OpenTelemetryCollector
+      name: otelcol-ds
+    path: patches/metricstransform-rename.kubeletstats.container.yaml
+  - target:
+      group: opentelemetry.io
+      kind: OpenTelemetryCollector
+      name: otelcol-ds
+    path: patches/resource.attributes.yaml
+  - target:
+      group: opentelemetry.io
+      kind: OpenTelemetryCollector
+      name: otelcol-ds
+    path: patches/transform-metrics.label-rename.yaml
+  - target:
+      group: opentelemetry.io
+      kind: OpenTelemetryCollector
+      name: otelcol-ds
+    path: patches/exporters.yaml

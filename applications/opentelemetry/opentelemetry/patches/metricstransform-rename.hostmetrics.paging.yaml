@@ -1,0 +1,7 @@
+# - op: add
+#   path: /spec/config/processors/metricstransform~1rename/transforms/-
+#   value:
+#     include: ^file\.$(.*)$$
+#     match_type: regexp
+#     action: update
+#     new_name: file_$$(1)

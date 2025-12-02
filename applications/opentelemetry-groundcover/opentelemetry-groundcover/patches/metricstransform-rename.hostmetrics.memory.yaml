@@ -1,0 +1,59 @@
+- op: add
+  path: /spec/config/processors/transform~1metrics/metric_statements/-
+  value:
+    context: metric
+    statements:
+      - copy_metric(name="groundcover_host_mem_used_bytes", description="memory used in the current host") where metric.name == "system.memory.usage"
+      - copy_metric(name="groundcover_host_mem_capacity_bytes", description="Memory capacity in the current host") where metric.name == "system.memory.limit"
+      - copy_metric(name="groundcover_host_mem_used_percent", description="Percentage of used memory in the current host") where metric.name == "system.memory.utilization"
+      - scale_metric(100.0, "percent") where metric.name == "groundcover_host_mem_used_percent"
+      - copy_metric(name="groundcover_host_mem_available_bytes", description="Available memory in the current host") where metric.name == "system.linux.memory.available"
+      - copy_metric(name="groundcover_host_mem_free_bytes", description="Free memory in the current host") where metric.name == "system.memory.usage"
+      - copy_metric(name="groundcover_host_mem_buffers_bytes", description="Buffer memory in the current host") where metric.name == "system.memory.usage"
+      - copy_metric(name="groundcover_host_mem_slab_bytes", description="Slab memory in the current host") where metric.name == "system.memory.usage"
+      - aggregate_on_attribute_value("sum", "state", ["slab_reclaimable", "slab_unreclaimable"], "slab") where metric.name == "groundcover_host_mem_slab_bytes"
+      - copy_metric(name="groundcover_host_mem_sreclaimable_bytes", description="Reclaimable slab memory in the current host") where metric.name == "system.memory.usage"
+      - copy_metric(name="groundcover_host_mem_cached_bytes", description="Cached memory in the current host") where metric.name == "system.memory.usage"
+
+- op: add
+  path: /spec/config/processors/transform~1metrics/metric_statements/-
+  value:
+    context: metric
+    statements:
+      - copy_metric(name="groundcover_host_mem_swap_used_bytes", description="Used swap memory in the current host") where metric.name == "system.paging.usage"
+      - aggregate_on_attribute_value("sum", "state", ["used"], "used") where metric.name == "groundcover_host_mem_swap_used_bytes"
+      - copy_metric(name="groundcover_host_mem_swap_free_bytes", description="Free swap memory in the current host") where metric.name == "system.paging.usage"
+      - aggregate_on_attribute_value("sum", "state", ["free"], "free") where metric.name == "groundcover_host_mem_swap_free_bytes"
+      - copy_metric(name="groundcover_host_mem_swap_total_bytes", description="Total swap memory in the current host") where metric.name == "system.paging.usage"
+      - aggregate_on_attribute_value("sum", "state", ["free", "used", "cached"], "total") where metric.name == "groundcover_host_mem_swap_total_bytes"
+
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_mem_used_bytes" and attributes["state"] != "used"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_mem_used_percent" and attributes["state"] != "used"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_mem_free_bytes" and attributes["state"] != "free"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_mem_buffers_bytes" and attributes["state"] != "buffered"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_mem_slab_bytes" and attributes["state"] != "slab"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_mem_sreclaimable_bytes" and attributes["state"] != "slab_reclaimable"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_mem_cached_bytes" and attributes["state"] != "cached"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_mem_swap_used_bytes" and attributes["state"] != "used"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_mem_swap_free_bytes" and attributes["state"] != "free"
+- op: add
+  path: /spec/config/processors/filter~1ottl/metrics/datapoint/-
+  value: metric.name == "groundcover_host_mem_swap_total_bytes" and attributes["state"] != "total"

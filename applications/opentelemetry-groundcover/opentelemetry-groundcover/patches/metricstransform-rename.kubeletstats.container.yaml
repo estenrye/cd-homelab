@@ -1,0 +1,7 @@
+- op: add
+  path: /spec/config/processors/transform~1metrics/metric_statements/-
+  value:
+    context: metric
+    statements:
+      - copy_metric(name="groundcover_container_mem_working_set_bytes", description="Memory working set bytes for containers") where metric.name == "container.memory.working_set"
+      - copy_metric(name="groundcover_container_memory_working_set_bytes", description="Memory working set bytes for containers") where metric.name == "container.memory.working_set"
