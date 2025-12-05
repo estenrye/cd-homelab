@@ -19,7 +19,7 @@ terraform {
 
     onepassword = {
       source  = "1Password/onepassword"
-      version = "2.1.2"
+      version = "2.2.1"
     }
   }
 }
